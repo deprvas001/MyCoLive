@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.development.mycolive">
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".views.activity.BaseActivity"
+            android:theme="@style/AppTheme.NoActionBar" ></activity>
+        <activity
+            android:name=".views.activity.AboutUs"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".views.activity.NotificationDetails"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".views.activity.login.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".views.activity.BookingDetailPayment"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".views.activity.MapScreen"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".views.activity.MyFavourite"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".views.activity.Notification"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".views.activity.ContactUs"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".views.activity.ChangePassword"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".views.activity.TestimonialScreen" />
+        <activity
+            android:name=".views.activity.Testimonials"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".views.activity.NewPost"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".views.activity.CommentListScreen"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".views.activity.ShowHomeScreen"
+            android:label="@string/title_activity_show_home_screen"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".views.activity.CurrentBookingHistory"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".views.activity.MyBookingScreen"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".views.activity.RoomateDetails"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".views.activity.FindRoomate"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".views.activity.BookingDetailFill"
+            android:label="@string/title_activity_search_result"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".views.activity.RoomDetail"
+            android:label="@string/title_activity_search_result"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".views.activity.SearchResult"
+            android:label="@string/title_activity_search_result"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".views.activity.HomeScreen"
+            android:theme="@style/ActionBarTheme"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".views.activity.SignupScreen"
+            android:theme="@style/ActionBarTheme"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".views.activity.ResetPassword"
+            android:theme="@style/ActionBarTheme"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".views.activity.forgotPassword.ForgotPassword"
+            android:theme="@style/ActionBarTheme"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".views.activity.LoginScreen"
+            android:theme="@style/AppTheme1"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".views.activity.MainActivity" />
+        <activity
+            android:name=".views.activity.SplashScreen"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

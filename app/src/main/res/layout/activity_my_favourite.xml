@@ -1,0 +1,100 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/back"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:tint="@android:color/white"
+                        android:src="@drawable/ic_back"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:text="My Favourite"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp"
+
+                        android:gravity="center"/>
+
+                    <ImageView
+                        android:id="@+id/notification"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="16dp"
+                        android:tint="@android:color/white"
+                        android:src="@drawable/ic_bell"/>
+
+                </LinearLayout>
+
+
+
+            </androidx.appcompat.widget.Toolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="15dp"
+            android:background="@drawable/booking_background"
+            android:layout_gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/current_booking"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/booking_background_selected"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textColor="@android:color/white"
+                android:text="@string/current_booking"/>
+
+            <TextView
+                android:id="@+id/past_booking"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="@string/past_booking"/>
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/frameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="15dp"/>
+
+    </LinearLayout>
+
+</layout>

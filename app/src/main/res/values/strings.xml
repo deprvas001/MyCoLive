@@ -1,0 +1,121 @@
+<resources>
+    <string name="app_name">MyCoLive</string>
+    <string name="designer_apartment">Designer Apartments</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="forgot_password"><u>Forgot Password?</u></string>
+    <string name="log_in">Login</string>
+    <string name="social_login">Or connect with</string>
+    <string name="new_user">New User? <u><b><font fgcolor='#008577'>Signup</font></b></u></string>
+    <string name="eco_living">eCo-Living</string>
+    <string name="forgot_password_desc">Enter your email to receive an email to reset your password</string>
+    <string name="send">Send</string>
+    <string name="forgot_password_title">Forgot Password</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="personal_detail">My Personal Details</string>
+    <string name="Signup">Signup</string>
+    <string name="page_index"><font size="20">1</font> / 2</string>
+    <string name="page_index_second"><font size="20">2</font> / 2</string>
+    <string name="name">Name</string>
+    <string name="phone">Phone Number</string>
+    <string name="dob">DOB(DD-MM-YYYY)</string>
+    <string name="next">Next</string>
+    <string name="gender">Gender</string>
+    <string name="signin">Sign in with facebook</string>
+    <string name="already_sign">Already registered ? <u><b><font fgcolor='#008577'>Sign in</font></b></u></string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="new_account">New Account</string>
+    <string name="education_txt"><![CDATA[Fill educational details & current location]]></string>
+    <string name="location">Location</string>
+    <string name="terms_condition">I Accept Terms of use and <u> <font fgcolor='#008577'>Privacy Policy</font></u></string>
+    <string name="title_home">Home</string>
+    <string name="search">Search</string>
+    <string name="mybooking">My Booking</string>
+    <string name="community">Community </string>
+    <string name="profile">Profile</string>
+    <string name="find_roomate">Find Room, Apartment, Roommate</string>
+    <string name="view_all">View All</string>
+    <string name="featured_property">Featured Properties</string>
+    <string name="show_feature">Show All Featured Properties</string>
+    <string name="hot_property">Hot Properties</string>
+    <string name="show_propertie">Show All Hot Properties</string>
+    <string name="show_area">Show All Properties By Area</string>
+    <string name="area_property">Properties by area</string>
+    <string name="title_activity_search_result">SearchResult</string>
+    <string name="search_result">Search Result</string>
+    <string name="result_found">50+ Search Result</string>
+    <string name="facebook_link"><u>City Facebook Link</u></string>
+    <string name="features"><![CDATA[Features & Facilities]]></string>
+    <string name="dummy">Searching for a place to rent? All rental listings on realestateVIEW.com.au include pocket insights, helping you to find out more about this neighbourhood and the people who live. This provides a greater level of detail than general suburb median data provided on other websites.</string>
+    <string name="view_map"><u>View Map</u></string>
+    <string name="select_period">Select Period</string>
+    <string name="description">Ealry check is only available for 15 days before the booking date.(Depending upon availablity)</string>
+    <string name="upload_proof">Upload Your ID Proof</string>
+    <string name="send_booking">Send Booking Request</string>
+    <string name="nearest_property">Nearest Property</string>
+    <string name="booking_detail">Booking Details</string>
+    <string name="roomate_detail">Roommate Detail</string>
+    <string name="current_booking">Current Booking</string>
+    <string name="past_booking">Past Booking</string>
+    <string name="view_detail"><u>View Details</u></string>
+    <string name="current_booking_history">Current Booking History</string>
+    <string name="payment_detail">Payment Details</string>
+    <string name="done">Done</string>
+    <string name="Open">Drawer Open</string>
+    <string name="Close">Drawer Close</string>
+    <string name="title_activity_show_home_screen">ShowHomeScreen</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_tools">Tools</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_send">Send</string>
+    <string name="favourite">Favourite</string>
+    <string name="testimonial">Testimonial</string>
+    <string name="change_password">Change Password</string>
+    <string name="about_us">About Us</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="request_post">Request Appropiate Post</string>
+    <string name="reason">Reason</string>
+    <string name="save">Save</string>
+    <string name="dummy_one">Hi, I got a new apartment please check it out, call me if you want to rent …</string>
+    <string name="comment_list">Comment</string>
+    <string name="post">POST</string>
+    <string name="new_post">New Post</string>
+    <string name="dummy_lorem">Lorem ipsum dolor sitamet, consecteture adipi Lorem ipsum dolor</string>
+    <string name="new_password">New Password</string>
+    <string name="re_password">Re-enter Password</string>
+    <string name="save_password">Save Password</string>
+    <string name="notification">Notification</string>
+    <string name="message">Please click </string>
+    <string name="message1">OK </string>
+    <string name="message2">to clear all notification</string>
+    <string name="my_favourite">My Favourite</string>
+    <string name="map_screen">Map Screen</string>
+    <string name="home_screen">Home Screen</string>
+    <string name="terms_dummy">Mandengo Betou Yanika as lessor, here in after referred to as “Lessor” and Paul Smith as the lessee (hereinafter referred to as “Lessee”) in this place, at that date with the following conditions: 1. The Premises: The Lessor (owner) grants a lease to the Lessee who accepts the lease of a room at the apartment no Door No. :- 15, Flat No. :- 25 9/55 Caroline Street, South Yarra VIC, Australia The tenant of the room shall be Paul Smith. 2. Term of the Lease: The term of the lease shall be for a period commencing on Feb and finishing on June. After the expiration of the rental period mentioned above, the contract can be renewed by common consent for another definite or indefinite time period,. a. The parties agree that this contract is irrevocable during the period terminating on June. 3. Rental: a. The monthly rental shall be 3093€ The rental fee shall be transferred monthly in advance to Lessor’s bank account no later than the 3rd day of the month for which payment is due. International payment must be made through Transferwise (Select receiver currency HUF). You just need my email address as receiver manibudapest@gmail.com (https://transferwise.com/a/mandengoy) the contract.</string>
+    <string name="submit">Submit</string>
+    <string name="email_password">Email Password</string>
+    <string name="email_address">Email Address</string>
+    <string name="search_home">Where do you want to stay.</string>
+    <string name="terms_conditions"><![CDATA[Terms & Conditions]]></string>
+    <string name="accept_terms"><![CDATA[I accept Terms & Conditions]]></string>
+    <string name="view_property">View Property</string>
+    <string name="logout_sure">Are you sure?</string>
+    <string name="logout_txt2">You can login anytime, anywhere.</string>
+    <string name="dummy_two">It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>
+    <string name="loading">Loading Please wait ...</string>
+    <string name="invalid_credentails">Invalid Username or password.</string>
+    <string name="success">Success</string>
+
+</resources>
