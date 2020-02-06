@@ -1,4 +1,4 @@
-package com.development.mycolive.views.fragment;
+package com.development.mycolive.views.fragment.booking;
 
 
 import android.os.Bundle;
@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.development.mycolive.R;
 import com.development.mycolive.databinding.FragmentBookingBinding;
 import com.development.mycolive.views.activity.ShowHomeScreen;
+import com.development.mycolive.views.fragment.booking.CurrentBooking;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -68,12 +69,12 @@ public class BookingFragment extends Fragment implements View.OnClickListener {
                 bookingBinding.currentBooking.setBackground(null);
                 bookingBinding.pastBooking.setTextColor(getResources().getColor(R.color.white));
                 bookingBinding.currentBooking.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
-                loadFragment(new CurrentBooking());
+                loadFragment(new PastBooking());
                 break;
         }
     }
     private void initializeView(){
-        ((ShowHomeScreen)getActivity()).screenBinding.appBar.titleTxt.setText("My Booking");
+        ((ShowHomeScreen)getActivity()).screenBinding.appBar.titleTxt.setText("My BookingData");
     }
 
 }

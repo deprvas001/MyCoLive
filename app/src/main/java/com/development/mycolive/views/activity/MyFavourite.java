@@ -12,7 +12,6 @@ import android.view.View;
 
 import com.development.mycolive.R;
 import com.development.mycolive.databinding.ActivityMyFavouriteBinding;
-import com.development.mycolive.views.fragment.CurrentBooking;
 import com.development.mycolive.views.fragment.FavouriteProperty;
 import com.development.mycolive.views.fragment.FavouriteRoomate;
 

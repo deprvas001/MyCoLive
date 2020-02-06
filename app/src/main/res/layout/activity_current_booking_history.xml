@@ -44,14 +44,14 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Sr.No."
+                        android:text="@string/srno"
                         android:textColor="#A4A4A4"
                         android:layout_weight="1"/>
 
                     <TextView
+                        android:id="@+id/sr_value"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="01"
                         android:textColor="#000000"
                         android:gravity="right"
                         android:layout_weight="1"/>
@@ -69,14 +69,14 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Order Number"
+                        android:text="@string/order_no"
                         android:textColor="#A4A4A4"
                         android:layout_weight="1"/>
 
                     <TextView
+                        android:id="@+id/order_value"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="#322"
                         android:gravity="right"
                         android:textColor="#000000"
                         android:layout_weight="1"/>
@@ -94,14 +94,14 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Booking Date"
+                        android:text="@string/booking_date"
                         android:textColor="#A4A4A4"
                         android:layout_weight="1"/>
 
                     <TextView
+                        android:id="@+id/booking_date_value"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="27-11-2019"
                         android:gravity="right"
                         android:textColor="#000000"
                         android:layout_weight="1"/>
@@ -119,14 +119,14 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Booking for"
+                        android:text="@string/booking_for"
                         android:textColor="#A4A4A4"
                         android:layout_weight="1"/>
 
                     <TextView
+                        android:id="@+id/booking_for_value"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Dec 2019 - Jan 2020"
                         android:gravity="right"
                         android:textColor="#000000"
                         android:layout_weight="1"/>
@@ -146,14 +146,14 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Amount"
+                        android:text="@string/amount"
                         android:textColor="#A4A4A4"
                         android:layout_weight="1"/>
 
                     <TextView
+                        android:id="@+id/amount_value"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="$1200"
                         android:gravity="right"
                         android:textColor="#000000"
                         android:layout_weight="1"/>
@@ -178,14 +178,14 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Appartment Name"
+                        android:text="@string/appartment_name"
                         android:textColor="#A4A4A4"
                         android:layout_weight="1"/>
 
                     <TextView
+                        android:id="@+id/appartment_value"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Warburton"
                         android:textColor="#000000"
                         android:gravity="right"
                         android:layout_weight="1"/>
@@ -203,14 +203,39 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Room Name"
+                        android:text="@string/room_name"
+                        android:textColor="#A4A4A4"
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        android:id="@+id/room_name_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:textColor="#000000"
+                        android:layout_weight="1"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/post_code"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/post_code"
                         android:textColor="#A4A4A4"
                         android:layout_weight="1"/>
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Warburton1"
                         android:gravity="right"
                         android:textColor="#000000"
                         android:layout_weight="1"/>
@@ -228,39 +253,14 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Post Code"
+                        android:text="@string/address"
                         android:textColor="#A4A4A4"
                         android:layout_weight="1"/>
 
                     <TextView
+                        android:id="@+id/address"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="9490"
-                        android:gravity="right"
-                        android:textColor="#000000"
-                        android:layout_weight="1"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="Address"
-                        android:textColor="#A4A4A4"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="9/55 Caroline Street, Birmingham,UK"
                         android:gravity="right"
                         android:textColor="#000000"
                         android:layout_weight="1"/>
@@ -280,14 +280,14 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Near By"
+                        android:text="@string/near_by"
                         android:textColor="#A4A4A4"
                         android:layout_weight="1"/>
 
                     <TextView
+                        android:id="@+id/near_by"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Caroline Street"
                         android:gravity="right"
                         android:textColor="#000000"
                         android:layout_weight="1"/>
@@ -305,23 +305,27 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="ID Proof"
+                        android:text="@string/id_proof"
                         android:textColor="#A4A4A4"
                         android:layout_weight="1"/>
 
                     <TextView
+                        android:id="@+id/proof"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="NA"
                         android:gravity="right"
                         android:textColor="#000000"
                         android:layout_weight="1"/>
 
                 </LinearLayout>
 
-                <include
-                    android:id="@+id/booking_history"
-                    layout="@layout/booking_history_payment"/>
+                <!-- TODO: Update blank fragment layout -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    />
 
 
             </LinearLayout>

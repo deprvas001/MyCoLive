@@ -117,5 +117,24 @@
     <string name="loading">Loading Please wait ...</string>
     <string name="invalid_credentails">Invalid Username or password.</string>
     <string name="success">Success</string>
+    <string name="token">eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ3ZWJmdW1lYXBwLmNvbSIsImF1ZCI6IldlYmZ1bWUgSmFzb24gQXBwIiwiaWF0IjoxNTgwMTkwMzg3LCJuYmYiOjE1ODAxOTAzODcsImV4cCI6MTU4MTM5OTk4NywiZGF0YSI6eyJ1c2VyX3R5cGUiOiJEUklWRVIiLCJ1c2VyX2RldmljZV90eXBlIjoiQUROUk9JRCIsInVzZXJfZGV2aWNlX3Rva2VuIjoiMjM0MjM0ZHZkZmRmc2Rmc2RmIiwiU291cmNlcyI6IkFQUCIsInVzZXJfbmFtZSI6IlJhbmRoaXIga3VtYXIiLCJ1c2VyX2lkIjoiMzAiLCJsb2dpbl90eXBlIjoiRkFDRUJPT0siLCJ1c2VyX2xvZ19pZCI6MTh9fQ.HwyaAVzQEFWs3Fd8QSsWQtnfJQbraUtRZxaD4WnC5-8</string>
+    <string name="srno">Sr.No.</string>
+    <string name="order_no">Order Number</string>
+    <string name="booking_date">Booking Date</string>
+    <string name="booking_for">Booking For</string>
+    <string name="amount">Amount</string>
+    <string name="appartment_name">Appartment Name</string>
+    <string name="room_name">Room Name</string>
+    <string name="post_code">Post Code</string>
+    <string name="address">Address</string>
+    <string name="near_by">Near By</string>
+    <string name="id_proof">ID Proof</string>
+    <string name="month">Month</string>
+    <string name="status">Status</string>
+    <string name="payment_mode">Payment Mode</string>
+    <string name="receipt">Receipt</string>
+    <string name="approval">Approval</string>
+    <string name="payment_id">Payment Id</string>
+    <string name="payment_status">Payment Status</string>
 
 </resources>

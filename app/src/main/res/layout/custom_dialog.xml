@@ -11,6 +11,7 @@
         android:background="@color/colorPrimary">
 
         <ImageView
+            android:id="@+id/close"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="right"
@@ -58,7 +59,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Payment Id"
+            android:text="@string/payment_id"
             android:textColor="#4B4B4B"
             android:textStyle="bold"
             android:layout_weight="1"/>
@@ -67,7 +68,6 @@
             android:id="@+id/payment_id"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text=":00025767"
             android:textColor="#4B4B4B"
             android:layout_weight="1"/>
     </LinearLayout>
@@ -91,15 +91,15 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Payment Status"
+            android:text="@string/payment_status"
             android:textColor="#4B4B4B"
             android:textStyle="bold"
             android:layout_weight="1"/>
 
         <TextView
+            android:id="@+id/payment_status"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text=": Paid"
             android:textColor="#4B4B4B"
             android:layout_weight="1"/>
     </LinearLayout>
@@ -123,15 +123,15 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Month"
+            android:text="@string/month"
             android:textColor="#4B4B4B"
             android:textStyle="bold"
             android:layout_weight="1"/>
 
         <TextView
+            android:id="@+id/month"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text=": December 2019"
             android:textColor="#4B4B4B"
             android:layout_weight="1"/>
     </LinearLayout>
@@ -155,15 +155,15 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Payment Id"
+            android:text="@string/amount"
             android:textColor="#4B4B4B"
             android:textStyle="bold"
             android:layout_weight="1"/>
 
         <TextView
+            android:id="@+id/amount"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text=": $1200"
             android:textColor="#4B4B4B"
             android:textStyle="bold"
             android:layout_weight="1"/>
@@ -188,15 +188,15 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Payment Id"
+            android:text="@string/approval"
             android:textColor="#4B4B4B"
             android:textStyle="bold"
             android:layout_weight="1"/>
 
         <TextView
+            android:id="@+id/approval"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text=": Approved"
             android:textColor="#4B4B4B"
             android:layout_weight="1"/>
     </LinearLayout>

@@ -11,7 +11,7 @@ import android.view.View;
 
 import com.development.mycolive.R;
 import com.development.mycolive.databinding.ActivityMyBookingScreenBinding;
-import com.development.mycolive.views.fragment.CurrentBooking;
+import com.development.mycolive.views.fragment.booking.CurrentBooking;
 
 public class MyBookingScreen extends AppCompatActivity implements View.OnClickListener {
 ActivityMyBookingScreenBinding screenBinding;

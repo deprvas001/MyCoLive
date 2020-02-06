@@ -32,14 +32,14 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Month 1"
+                        android:text="@string/month"
                         android:textColor="#A4A4A4"
                         android:layout_weight="1"/>
 
                     <TextView
+                        android:id="@+id/month_name"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="December-2019"
                         android:textColor="#000000"
                         android:gravity="right"
                         android:layout_weight="1"/>
@@ -57,14 +57,14 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Status"
+                        android:text="@string/status"
                         android:textColor="#A4A4A4"
                         android:layout_weight="1"/>
 
                     <TextView
+                        android:id="@+id/status"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Paid"
                         android:gravity="right"
                         android:textColor="#000000"
                         android:layout_weight="1"/>
@@ -82,14 +82,14 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Payment Mode"
+                        android:text="@string/payment_mode"
                         android:textColor="#A4A4A4"
                         android:layout_weight="1"/>
 
                     <TextView
+                        android:id="@+id/payment_mode"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Card"
                         android:gravity="right"
                         android:textColor="#000000"
                         android:layout_weight="1"/>
@@ -107,14 +107,14 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Receipt"
+                        android:text="@string/receipt"
                         android:textColor="#A4A4A4"
                         android:layout_weight="1"/>
 
                     <TextView
+                        android:id="@+id/receipt"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="NA"
                         android:gravity="right"
                         android:textColor="#000000"
                         android:layout_weight="1"/>
@@ -134,14 +134,14 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Approval"
+                        android:text="@string/approval"
                         android:textColor="#A4A4A4"
                         android:layout_weight="1"/>
 
                     <TextView
+                        android:id="@+id/approval"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Approved"
                         android:gravity="right"
                         android:textColor="#000000"
                         android:layout_weight="1"/>

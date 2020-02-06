@@ -5,16 +5,13 @@ import android.os.Bundle;
 
 import com.development.mycolive.R;
 import com.development.mycolive.databinding.ActivityShowHomeScreenBinding;
-import com.development.mycolive.views.fragment.BookingFragment;
+import com.development.mycolive.views.fragment.booking.BookingFragment;
 import com.development.mycolive.views.fragment.Community;
 import com.development.mycolive.views.fragment.Home;
-import com.development.mycolive.views.fragment.ProfileScreenOne;
+import com.development.mycolive.views.fragment.profile.ProfileScreenOne;
 import com.development.mycolive.views.fragment.Search;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -25,21 +22,16 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 
 import android.view.MenuItem;
 
-import com.google.android.material.navigation.NavigationView;
-
 import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.view.Menu;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-public class ShowHomeScreen extends AppCompatActivity implements View.OnClickListener
+public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
         /*implements NavigationView.OnNavigationItemSelectedListener*/ {
  public    ActivityShowHomeScreenBinding screenBinding;
 

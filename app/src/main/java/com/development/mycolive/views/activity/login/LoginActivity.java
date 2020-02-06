@@ -1,6 +1,7 @@
 package com.development.mycolive.views.activity.login;
 
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
@@ -11,8 +12,10 @@ import android.widget.Toast;
 import com.development.mycolive.R;
 import com.development.mycolive.databinding.ActivityLoginBinding;
 import com.development.mycolive.views.activity.BaseActivity;
+import com.development.mycolive.views.activity.ShowHomeScreen;
 import com.development.mycolive.views.activity.forgotPassword.ForgotPassword;
 import com.development.mycolive.views.activity.SignupScreen;
+import com.development.mycolive.views.model.loginModel.LoginApiResponse;
 import com.development.mycolive.views.model.loginModel.LoginRequestModel;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
@@ -35,8 +38,8 @@ ActivityLoginBinding loginBinding;
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_login:
-                userLogin("","");
-               // startActivity(new Intent(this, ShowHomeScreen.class));
+             //   userLogin("","");
+                startActivity(new Intent(this, ShowHomeScreen.class));
                 break;
 
             case R.id.forgot_password:
@@ -56,23 +59,26 @@ ActivityLoginBinding loginBinding;
                  "123456","NORMAL","abc1111");
 
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
-        loginViewModel.getLoginUser(this,requestModel).observe(this, loginApiResponse -> {
-            if (loginApiResponse.getError()== null && loginApiResponse.getStatus()==400) {
-                // handle error here
-                hideProgressDialog();
-                showAlertDialog(this, getString(R.string.invalid_credentails));
-                //   Toast.makeText(this, getString(R.string.invalid_credentails), Toast.LENGTH_SHORT).show();
-            }else if (loginApiResponse.getError() == null) {
-                hideProgressDialog();
-                if(loginApiResponse.getResponse().getStatus() ==1 ){
-                    showAlertDialog(this, getString(R.string.success));
+        loginViewModel.getLoginUser(this,requestModel).observe(this, new Observer<LoginApiResponse>() {
+            @Override
+            public void onChanged(LoginApiResponse loginApiResponse) {
+                if (loginApiResponse.getError() == null && loginApiResponse.getStatus() == 400) {
+                    // handle error here
+                    LoginActivity.this.hideProgressDialog();
+                    LoginActivity.this.showAlertDialog(LoginActivity.this, LoginActivity.this.getString(R.string.invalid_credentails));
+                    //   Toast.makeText(this, getString(R.string.invalid_credentails), Toast.LENGTH_SHORT).show();
+                } else if (loginApiResponse.getError() == null) {
+                    LoginActivity.this.hideProgressDialog();
+                    if (loginApiResponse.getResponse().getStatus() == 1) {
+                        LoginActivity.this.showAlertDialog(LoginActivity.this, LoginActivity.this.getString(R.string.success));
+                    }
+                } else {
+                    // call failed.
+                    LoginActivity.this.hideProgressDialog();
+                    Throwable e = loginApiResponse.getError();
+                    Toast.makeText(LoginActivity.this, "Error is " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    // Log.e(TAG, "Error is " + e.getLocalizedMessage());
                 }
-            } else {
-                // call failed.
-                hideProgressDialog();
-                Throwable e = loginApiResponse.getError();
-                Toast.makeText(LoginActivity.this, "Error is " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                // Log.e(TAG, "Error is " + e.getLocalizedMessage());
             }
         });
     }
