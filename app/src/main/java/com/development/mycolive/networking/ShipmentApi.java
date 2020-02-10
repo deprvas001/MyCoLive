@@ -5,6 +5,7 @@ import com.development.mycolive.views.model.bookingHistory.BookingHistoryRespons
 import com.development.mycolive.views.model.editProfile.ProfileApiResponse;
 import com.development.mycolive.views.model.editProfile.ProfileResponse;
 import com.development.mycolive.views.model.forgotModel.ForgotRequestModel;
+import com.development.mycolive.views.model.home.HomeResponse;
 import com.development.mycolive.views.model.loginModel.LoginRequestModel;
 import com.development.mycolive.views.model.loginModel.LoginResponse;
 
@@ -83,4 +84,7 @@ public interface ShipmentApi {
     @GET("getProfile")
     Call<ProfileResponse> getProfile(
             @Query("type") String  type);
+
+    @GET("homePage")
+    Call<HomeResponse> getData();
 }

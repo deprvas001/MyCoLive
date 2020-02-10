@@ -94,6 +94,8 @@ FragmentCurrentBookingBinding bookingBinding ;
                      setRecycleView();
 
                 }
+                bookingBinding.shimmerViewContainer.stopShimmer();
+                bookingBinding.shimmerViewContainer.setVisibility(View.GONE);
             }
         });
        /* loginViewModel.getLoginUser(this,requestModel).observe(this, loginApiResponse -> {
@@ -115,5 +117,18 @@ FragmentCurrentBookingBinding bookingBinding ;
                 // Log.e(TAG, "Error is " + e.getLocalizedMessage());
             }
         });*/
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+          bookingBinding.shimmerViewContainer.startShimmer();
+    }
+
+    @Override
+    public void onPause() {
+        bookingBinding.shimmerViewContainer.stopShimmer();
+        super.onPause();
+
     }
 }

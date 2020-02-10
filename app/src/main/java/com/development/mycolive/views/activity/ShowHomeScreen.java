@@ -7,7 +7,7 @@ import com.development.mycolive.R;
 import com.development.mycolive.databinding.ActivityShowHomeScreenBinding;
 import com.development.mycolive.views.fragment.booking.BookingFragment;
 import com.development.mycolive.views.fragment.Community;
-import com.development.mycolive.views.fragment.Home;
+import com.development.mycolive.views.fragment.homeFragment.Home;
 import com.development.mycolive.views.fragment.profile.ProfileScreenOne;
 import com.development.mycolive.views.fragment.Search;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -25,7 +25,6 @@ import android.view.MenuItem;
 import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 

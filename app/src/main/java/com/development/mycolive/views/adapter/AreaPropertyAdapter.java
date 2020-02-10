@@ -2,7 +2,6 @@ package com.development.mycolive.views.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +12,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.development.mycolive.R;
 import com.development.mycolive.views.activity.RoomDetail;
-import com.development.mycolive.views.activity.RoomateDetails;
-import com.development.mycolive.views.model.PropertiesFeatures;
-import com.development.mycolive.views.model.home.HomeFeatureProperty;
+import com.development.mycolive.views.model.home.HomeHotProperty;
+import com.development.mycolive.views.model.home.HomePropertyArea;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class PropertiesAdapter extends RecyclerView.Adapter<PropertiesAdapter.MyViewHolder>  {
-    private List<HomeFeatureProperty> propertiesList;
+public class AreaPropertyAdapter extends RecyclerView.Adapter<AreaPropertyAdapter.MyViewHolder> {
+
+    private List<HomePropertyArea> propertiesList;
     private Context context;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -42,31 +41,32 @@ public class PropertiesAdapter extends RecyclerView.Adapter<PropertiesAdapter.My
     }
 
 
-    public PropertiesAdapter(Context context,List<HomeFeatureProperty> propertiesList) {
+    public AreaPropertyAdapter(Context context,List<HomePropertyArea> propertiesList) {
         this.context = context;
         this.propertiesList = propertiesList;
     }
 
     @Override
-    public PropertiesAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AreaPropertyAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.properties_layout, parent, false);
 
-        return new PropertiesAdapter.MyViewHolder(itemView);
+        return new AreaPropertyAdapter.MyViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(PropertiesAdapter.MyViewHolder holder, int position) {
-        HomeFeatureProperty  featureProperty = propertiesList.get(position);
-        holder.price.setText("$"+featureProperty.getPrice());
+    public void onBindViewHolder(AreaPropertyAdapter.MyViewHolder holder, int position) {
+        HomePropertyArea  featureProperty = propertiesList.get(position);
+      //  holder.price.setText("$"+featureProperty.getPrice());
         holder.address.setText(featureProperty.getAddress());
-        holder.name.setText(featureProperty.getPropertyName());
-        holder.rating.setText(featureProperty.getRating());
-        holder.created_date.setText(featureProperty.getCreatedDate());
+      //  holder.name.setText(featureProperty.getPropertyName());
+        holder.rating.setVisibility(View.GONE);
+    /*    holder.rating.setText(featureProperty.getRating());
+        holder.created_date.setText(featureProperty.getCreatedDate());*/
         Picasso.get()
                 .load(featureProperty.getImage())
-              /*  .placeholder(R.drawable.image1)
-                .error(R.drawable.err)*/
+                /*  .placeholder(R.drawable.image1)
+                  .error(R.drawable.err)*/
                 .into(holder.imageView);
 
         holder.imageView.setOnClickListener(new View.OnClickListener() {
@@ -75,7 +75,7 @@ public class PropertiesAdapter extends RecyclerView.Adapter<PropertiesAdapter.My
                 context.startActivity(new Intent(context, RoomDetail.class));
             }
         });
-       /* holder.title.setText(find_room.getType());*/
+        /* holder.title.setText(find_room.getType());*/
     }
 
     @Override

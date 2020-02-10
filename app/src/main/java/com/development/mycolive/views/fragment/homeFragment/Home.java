@@ -1,4 +1,4 @@
-package com.development.mycolive.views.fragment;
+package com.development.mycolive.views.fragment.homeFragment;
 
 
 import android.content.Intent;
@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,10 +22,19 @@ import com.development.mycolive.databinding.FragmentHomeBinding;
 import com.development.mycolive.views.activity.HomeScreen;
 import com.development.mycolive.views.activity.SearchResult;
 import com.development.mycolive.views.activity.ShowHomeScreen;
+import com.development.mycolive.views.adapter.AreaPropertyAdapter;
 import com.development.mycolive.views.adapter.FindAdapter;
+import com.development.mycolive.views.adapter.HotPropertyAdapter;
 import com.development.mycolive.views.adapter.PropertiesAdapter;
+import com.development.mycolive.views.fragment.booking.BookingViewModel;
 import com.development.mycolive.views.model.Find;
 import com.development.mycolive.views.model.PropertiesFeatures;
+import com.development.mycolive.views.model.booking.BookingApiResponse;
+import com.development.mycolive.views.model.booking.BookingData;
+import com.development.mycolive.views.model.home.HomeApiResponse;
+import com.development.mycolive.views.model.home.HomeFeatureProperty;
+import com.development.mycolive.views.model.home.HomeHotProperty;
+import com.development.mycolive.views.model.home.HomePropertyArea;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,14 +47,17 @@ public class Home extends Fragment {
     List<Find> finds = new ArrayList<>();
     List<PropertiesFeatures> featuresList = new ArrayList<>();
     private FindAdapter mAdapter;
+    List<BookingData> bookingList = new ArrayList<>();
+    HomeViewModel homeViewModel;
     private PropertiesAdapter propertiesAdapter;
+    private HotPropertyAdapter hotPropertyAdapter;
+    private AreaPropertyAdapter areaPropertyAdapter;
     RecyclerView.LayoutManager mLayoutManager;
     View view;
 
     public Home() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,36 +66,46 @@ public class Home extends Fragment {
         homeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
 
         initializeView();
-        setReyclerView();
-        typeRoom();
+       // setReyclerView();
+        getData();
+       // typeRoom();homeApiResponse
         return homeBinding.getRoot();
     }
 
-    private void setReyclerView() {
+    private void setReyclerView(List<HomeFeatureProperty> featurePropertyList,
+                                List<HomeHotProperty> hotPropertyList,List<HomePropertyArea> homePropertyAreaList) {
 
-        mAdapter = new FindAdapter(getActivity(), finds);
+    /*    mAdapter = new FindAdapter(getActivity(), finds);
         mLayoutManager = new GridLayoutManager(getActivity(),3);
         homeBinding.recyclerView.setLayoutManager(mLayoutManager);
         homeBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());
-        homeBinding.recyclerView.setAdapter(mAdapter);
+        homeBinding.recyclerView.setAdapter(mAdapter);*/
 
-        propertiesAdapter = new PropertiesAdapter(getActivity(), featuresList);
+        propertiesAdapter = new PropertiesAdapter(getActivity(), featurePropertyList);
         mLayoutManager = new GridLayoutManager(getContext(),2);
         homeBinding.recyclerViewFind.setLayoutManager(mLayoutManager);
         homeBinding.recyclerViewFind.setItemAnimator(new DefaultItemAnimator());
         homeBinding.recyclerViewFind.setAdapter(propertiesAdapter);
 
-        propertiesAdapter = new PropertiesAdapter(getActivity(), featuresList);
+        hotPropertyAdapter = new HotPropertyAdapter(getActivity(), hotPropertyList);
         mLayoutManager = new GridLayoutManager(getContext(),2);
         homeBinding.recyclerViewHot.setLayoutManager(mLayoutManager);
         homeBinding.recyclerViewHot.setItemAnimator(new DefaultItemAnimator());
-        homeBinding.recyclerViewHot.setAdapter(propertiesAdapter);
+        homeBinding.recyclerViewHot.setAdapter(hotPropertyAdapter);
 
-        propertiesAdapter = new PropertiesAdapter(getActivity(), featuresList);
+        areaPropertyAdapter = new AreaPropertyAdapter(getActivity(), homePropertyAreaList);
         mLayoutManager = new GridLayoutManager(getContext(),2);
         homeBinding.recyclerViewArea.setLayoutManager(mLayoutManager);
         homeBinding.recyclerViewArea.setItemAnimator(new DefaultItemAnimator());
         homeBinding.recyclerViewArea.setAdapter(propertiesAdapter);
+
+
+      /*
+        propertiesAdapter = new PropertiesAdapter(getActivity(), featuresList);
+        mLayoutManager = new GridLayoutManager(getContext(),2);
+        homeBinding.recyclerViewArea.setLayoutManager(mLayoutManager);
+        homeBinding.recyclerViewArea.setItemAnimator(new DefaultItemAnimator());
+        homeBinding.recyclerViewArea.setAdapter(propertiesAdapter);*/
     }
 
     private void typeRoom(){
@@ -114,5 +138,43 @@ public class Home extends Fragment {
                 getActivity().startActivity(new Intent(getActivity(), SearchResult.class));
             }
         });
+    }
+
+    private void getData() {
+        String type = "";
+
+        homeViewModel = ViewModelProviders.of(getActivity()).get(HomeViewModel.class);
+
+        homeViewModel.getData(getActivity(),type).observe(getActivity(), new Observer<HomeApiResponse>() {
+            @Override
+            public void onChanged(HomeApiResponse homeApiResponse) {
+                if (homeApiResponse.response != null) {
+
+                    List<HomeFeatureProperty> featurePropertyList =   homeApiResponse.getResponse().getData().getFeaturedPropertyList();
+                    List<HomeHotProperty> hotPropertyList = homeApiResponse.getResponse().getData().getHotPropertyList();
+                    List<HomePropertyArea> homePropertyAreaList = homeApiResponse.getResponse().getData().getPropertyAreaList();
+                    setReyclerView(featurePropertyList,hotPropertyList,homePropertyAreaList);
+               /*  bookingList.clear();
+                    bookingList = bookingApiResponse.response.getBookingDataList();
+                    setRecycleView();*/
+
+                }
+                homeBinding.shimmerViewContainer.stopShimmer();
+                homeBinding.shimmerViewContainer.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        homeBinding.shimmerViewContainer.startShimmer();
+    }
+
+    @Override
+    public void onPause() {
+        homeBinding.shimmerViewContainer.stopShimmer();
+        super.onPause();
+
     }
 }

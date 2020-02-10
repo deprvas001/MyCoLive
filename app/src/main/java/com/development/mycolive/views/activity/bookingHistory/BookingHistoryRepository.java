@@ -6,13 +6,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.development.mycolive.networking.RetrofitService;
 import com.development.mycolive.networking.ShipmentApi;
-import com.development.mycolive.views.activity.forgotPassword.ForgotRepository;
-import com.development.mycolive.views.model.booking.BookingApiResponse;
 import com.development.mycolive.views.model.bookingHistory.BookingHistoryApiResponse;
 import com.development.mycolive.views.model.bookingHistory.BookingHistoryResponse;
-import com.development.mycolive.views.model.forgotModel.ForgotRequestModel;
-import com.development.mycolive.views.model.loginModel.LoginApiResponse;
-import com.development.mycolive.views.model.loginModel.LoginResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,6 +39,7 @@ public class BookingHistoryRepository {
                     historyResponseLiveData.setValue(new BookingHistoryApiResponse(response.code()));
                 }
                 else {
+
                     if(response.isSuccessful()){
                         historyResponseLiveData.setValue(new BookingHistoryApiResponse(response.body()));
                     }

@@ -44,11 +44,11 @@ public class BookingDetailFill extends AppCompatActivity implements View.OnClick
     }
 
     private void setRecyclerview(){
-        propertiesAdapter = new PropertiesAdapter(BookingDetailFill.this, featuresList);
+      /*propertiesAdapter = new PropertiesAdapter(BookingDetailFill.this, featuresList);
         mLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         fillBinding.recyclerViewFind.setLayoutManager(mLayoutManager);
         fillBinding.recyclerViewFind.setItemAnimator(new DefaultItemAnimator());
-        fillBinding.recyclerViewFind.setAdapter(propertiesAdapter);
+        fillBinding.recyclerViewFind.setAdapter(propertiesAdapter);*/
     }
 
     private void typeRoom(){
