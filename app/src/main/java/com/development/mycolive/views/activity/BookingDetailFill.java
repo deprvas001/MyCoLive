@@ -2,9 +2,6 @@ package com.development.mycolive.views.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -15,9 +12,8 @@ import android.widget.ArrayAdapter;
 
 import com.development.mycolive.R;
 import com.development.mycolive.databinding.ActivityBookingDetailFillBinding;
-import com.development.mycolive.views.adapter.PropertiesAdapter;
-import com.development.mycolive.views.model.Find;
-import com.development.mycolive.views.model.PropertiesFeatures;
+import com.development.mycolive.adapter.PropertiesAdapter;
+import com.development.mycolive.model.PropertiesFeatures;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,13 +48,13 @@ public class BookingDetailFill extends AppCompatActivity implements View.OnClick
     }
 
     private void typeRoom(){
-        featuresList.clear();
+  /*      featuresList.clear();
         for (int i=0;i<4;i++){
             PropertiesFeatures propertiesFeatures = new PropertiesFeatures("4.2",
                     "South Yara","1 Day Ago","$1200","9");
             featuresList.add(propertiesFeatures);
         }
-        propertiesAdapter.notifyDataSetChanged();
+        propertiesAdapter.notifyDataSetChanged();*/
 
     }
 

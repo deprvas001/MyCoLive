@@ -1,7 +1,5 @@
 package com.development.mycolive.views.activity.forgotPassword
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -13,8 +11,8 @@ import androidx.lifecycle.ViewModelProviders
 import com.development.mycolive.R
 import com.development.mycolive.databinding.ActivityForgotPasswordBinding
 import com.development.mycolive.views.activity.BaseActivity
-import com.development.mycolive.views.model.forgotModel.ForgotRequestModel
-import com.development.mycolive.views.model.loginModel.LoginApiResponse
+import com.development.mycolive.model.forgotModel.ForgotRequestModel
+import com.development.mycolive.model.loginModel.LoginApiResponse
 
 class ForgotPassword :BaseActivity() , View.OnClickListener {
 

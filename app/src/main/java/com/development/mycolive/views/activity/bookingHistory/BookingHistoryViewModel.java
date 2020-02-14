@@ -5,8 +5,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
-import com.development.mycolive.views.model.bookingHistory.BookingHistoryApiResponse;
-import com.development.mycolive.views.model.forgotModel.ForgotRequestModel;
+import com.development.mycolive.model.bookingHistory.BookingHistoryApiResponse;
 
 public class BookingHistoryViewModel extends AndroidViewModel {
 

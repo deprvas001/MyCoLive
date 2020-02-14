@@ -1,7 +1,6 @@
 package com.development.mycolive.views.activity.bookingHistory;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -21,12 +20,10 @@ import com.development.mycolive.R;
 import com.development.mycolive.constant.ApiConstant;
 import com.development.mycolive.databinding.ActivityCurrentBookingHistoryBinding;
 import com.development.mycolive.views.activity.BaseActivity;
-import com.development.mycolive.views.adapter.CurrentBookingAdapter;
-import com.development.mycolive.views.adapter.MonthDataAdapter;
-import com.development.mycolive.views.model.booking.BookingData;
-import com.development.mycolive.views.model.bookingHistory.BookingHistoryApiResponse;
-import com.development.mycolive.views.model.bookingHistory.BookingHistoryData;
-import com.development.mycolive.views.model.bookingHistory.MonthHistory;
+import com.development.mycolive.adapter.MonthDataAdapter;
+import com.development.mycolive.model.bookingHistory.BookingHistoryApiResponse;
+import com.development.mycolive.model.bookingHistory.BookingHistoryData;
+import com.development.mycolive.model.bookingHistory.MonthHistory;
 
 import java.util.ArrayList;
 import java.util.List;

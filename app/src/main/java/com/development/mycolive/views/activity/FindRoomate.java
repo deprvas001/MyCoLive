@@ -11,10 +11,8 @@ import android.view.MenuItem;
 
 import com.development.mycolive.R;
 import com.development.mycolive.databinding.ActivityFindRoomateBinding;
-import com.development.mycolive.views.adapter.FindRoomateAdapter;
-import com.development.mycolive.views.adapter.PropertiesAdapter;
-import com.development.mycolive.views.model.FindRoomateModel;
-import com.development.mycolive.views.model.PropertiesFeatures;
+import com.development.mycolive.adapter.FindRoomateAdapter;
+import com.development.mycolive.model.FindRoomateModel;
 
 import java.util.ArrayList;
 import java.util.List;

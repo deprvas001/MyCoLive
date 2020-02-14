@@ -15,8 +15,8 @@ import com.development.mycolive.views.activity.BaseActivity;
 import com.development.mycolive.views.activity.ShowHomeScreen;
 import com.development.mycolive.views.activity.forgotPassword.ForgotPassword;
 import com.development.mycolive.views.activity.SignupScreen;
-import com.development.mycolive.views.model.loginModel.LoginApiResponse;
-import com.development.mycolive.views.model.loginModel.LoginRequestModel;
+import com.development.mycolive.model.loginModel.LoginApiResponse;
+import com.development.mycolive.model.loginModel.LoginRequestModel;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 ActivityLoginBinding loginBinding;

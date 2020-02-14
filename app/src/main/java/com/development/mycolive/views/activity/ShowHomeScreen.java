@@ -6,10 +6,10 @@ import android.os.Bundle;
 import com.development.mycolive.R;
 import com.development.mycolive.databinding.ActivityShowHomeScreenBinding;
 import com.development.mycolive.views.fragment.booking.BookingFragment;
-import com.development.mycolive.views.fragment.Community;
+import com.development.mycolive.views.fragment.communities.Communities;
 import com.development.mycolive.views.fragment.homeFragment.Home;
 import com.development.mycolive.views.fragment.profile.ProfileScreenOne;
-import com.development.mycolive.views.fragment.Search;
+import com.development.mycolive.views.fragment.filterSearch.Search;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import android.view.LayoutInflater;
@@ -67,7 +67,7 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
 
                 case R.id.community:
                     //  screenBinding.toolbar.toolbarText.setText(R.string.title_home);
-                    fragment = new Community();
+                    fragment = new Communities();
                     loadFragment(fragment);
                     return true;
             }

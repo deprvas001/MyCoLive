@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.development.mycolive.networking.RetrofitService;
 import com.development.mycolive.networking.ShipmentApi;
-import com.development.mycolive.views.model.bookingHistory.BookingHistoryApiResponse;
-import com.development.mycolive.views.model.bookingHistory.BookingHistoryResponse;
+import com.development.mycolive.model.bookingHistory.BookingHistoryApiResponse;
+import com.development.mycolive.model.bookingHistory.BookingHistoryResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;

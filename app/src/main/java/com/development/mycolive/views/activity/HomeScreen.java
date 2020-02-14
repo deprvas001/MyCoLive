@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.development.mycolive.R;
 import com.development.mycolive.databinding.ActivityHomeScreenBinding;
 import com.development.mycolive.views.fragment.homeFragment.Home;
-import com.development.mycolive.views.fragment.Search;
+import com.development.mycolive.views.fragment.filterSearch.Search;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 

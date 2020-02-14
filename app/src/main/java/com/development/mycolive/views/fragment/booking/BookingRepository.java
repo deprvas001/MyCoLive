@@ -7,8 +7,8 @@ import androidx.lifecycle.MutableLiveData;
 import com.development.mycolive.R;
 import com.development.mycolive.networking.RetrofitService;
 import com.development.mycolive.networking.ShipmentApi;
-import com.development.mycolive.views.model.booking.BookingApiResponse;
-import com.development.mycolive.views.model.booking.BookingResponse;
+import com.development.mycolive.model.booking.BookingApiResponse;
+import com.development.mycolive.model.booking.BookingResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,7 +36,7 @@ public class BookingRepository {
             @Override
             public void onResponse(Call<BookingResponse> call, Response<BookingResponse> response) {
                 if(response.code() == 401){
-                    loginResponseLiveData.setValue(null);
+                    loginResponseLiveData.setValue(new BookingApiResponse(response.code()));
                 }else if(response.code() == 400){
                     loginResponseLiveData.setValue(new BookingApiResponse(response.code()));
                 }

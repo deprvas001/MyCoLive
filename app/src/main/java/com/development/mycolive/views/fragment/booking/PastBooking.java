@@ -16,11 +16,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.development.mycolive.R;
-import com.development.mycolive.databinding.FragmentCurrentBookingBinding;
 import com.development.mycolive.databinding.FragmentPastBookingBinding;
-import com.development.mycolive.views.adapter.CurrentBookingAdapter;
-import com.development.mycolive.views.model.booking.BookingApiResponse;
-import com.development.mycolive.views.model.booking.BookingData;
+import com.development.mycolive.adapter.CurrentBookingAdapter;
+import com.development.mycolive.model.booking.BookingApiResponse;
+import com.development.mycolive.model.booking.BookingData;
 
 import java.util.ArrayList;
 import java.util.List;

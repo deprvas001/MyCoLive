@@ -11,14 +11,13 @@ import androidx.lifecycle.ViewModelProviders;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.development.mycolive.R;
 import com.development.mycolive.databinding.FragmentProfileScreenOneBinding;
 import com.development.mycolive.views.activity.ShowHomeScreen;
-import com.development.mycolive.views.fragment.booking.BookingViewModel;
-import com.development.mycolive.views.model.booking.BookingApiResponse;
-import com.development.mycolive.views.model.editProfile.ProfileApiResponse;
-import com.development.mycolive.views.model.editProfile.ProfileData;
+import com.development.mycolive.model.editProfile.ProfileApiResponse;
+import com.development.mycolive.model.editProfile.ProfileData;
 
 import java.util.List;
 
@@ -49,7 +48,7 @@ public class ProfileScreenOne extends Fragment {
     }
 
     private void getBooking() {
-        ((ShowHomeScreen) getActivity()).showProgressDialog(getString(R.string.loading));
+       // ((ShowHomeScreen) getActivity()).showProgressDialog(getString(R.string.loading));
         String type = "PROFILE";
 
         profileViewModel = ViewModelProviders.of(getActivity()).get(ProfileViewModel.class);
@@ -57,9 +56,14 @@ public class ProfileScreenOne extends Fragment {
         profileViewModel.getProfile(getActivity(), type).observe(getActivity(), new Observer<ProfileApiResponse>() {
             @Override
             public void onChanged(ProfileApiResponse apiResponse) {
-                ((ShowHomeScreen) getActivity()).hideProgressDialog();
+              //  ((ShowHomeScreen) getActivity()).hideProgressDialog();
                 if (apiResponse.response != null) {
                     setView(apiResponse);
+                }else if(apiResponse.getStatus() == 401){
+                    Toast.makeText(getActivity(), "Authentication Failed", Toast.LENGTH_SHORT).show();
+
+                }else{
+                    Toast.makeText(getActivity(), "Try Later", Toast.LENGTH_SHORT).show();
                 }
             }
         });

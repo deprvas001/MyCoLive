@@ -136,5 +136,17 @@
     <string name="approval">Approval</string>
     <string name="payment_id">Payment Id</string>
     <string name="payment_status">Payment Status</string>
+    <string name="room_apartment">Room/Apartment/Roomate</string>
+    <string name="district">District</string>
+    <string name="city_name">City Name</string>
+    <string name="university">University/Professional</string>
+    <string name="room">Room</string>
+
+    <string-array name="type_name">
+        <item>Room/Apartment/Roomate</item>
+        <item>Room</item>
+        <item>Apartment</item>
+        <item>Roommate</item>
+    </string-array>
 
 </resources>

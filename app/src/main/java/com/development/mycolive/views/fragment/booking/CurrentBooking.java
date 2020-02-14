@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,17 +18,9 @@ import android.widget.Toast;
 
 import com.development.mycolive.R;
 import com.development.mycolive.databinding.FragmentCurrentBookingBinding;
-import com.development.mycolive.views.activity.login.LoginActivity;
-import com.development.mycolive.views.activity.login.LoginViewModel;
-import com.development.mycolive.views.adapter.CurrentBookingAdapter;
-import com.development.mycolive.views.adapter.FindAdapter;
-import com.development.mycolive.views.adapter.PropertiesAdapter;
-import com.development.mycolive.views.model.CurrentBookingModel;
-import com.development.mycolive.views.model.Find;
-import com.development.mycolive.views.model.PropertiesFeatures;
-import com.development.mycolive.views.model.booking.BookingApiResponse;
-import com.development.mycolive.views.model.booking.BookingData;
-import com.development.mycolive.views.model.loginModel.LoginRequestModel;
+import com.development.mycolive.adapter.CurrentBookingAdapter;
+import com.development.mycolive.model.booking.BookingApiResponse;
+import com.development.mycolive.model.booking.BookingData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,6 +84,8 @@ FragmentCurrentBookingBinding bookingBinding ;
                      bookingList = bookingApiResponse.response.getBookingDataList();
                      setRecycleView();
 
+                }else if(bookingApiResponse.response ==null){
+                    Toast.makeText(getActivity(), "Try Later", Toast.LENGTH_SHORT).show();
                 }
                 bookingBinding.shimmerViewContainer.stopShimmer();
                 bookingBinding.shimmerViewContainer.setVisibility(View.GONE);

@@ -7,9 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.development.mycolive.views.activity.bookingHistory.BookingHistoryRepository;
-import com.development.mycolive.views.model.bookingHistory.BookingHistoryApiResponse;
-import com.development.mycolive.views.model.home.HomeApiResponse;
+import com.development.mycolive.model.home.HomeApiResponse;
 
 public class HomeViewModel extends AndroidViewModel {
 

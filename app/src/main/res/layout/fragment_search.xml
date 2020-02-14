@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,6 +25,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:padding="10dp"
+                tools:listitem="@layout/support_simple_spinner_dropdown_item"
+                android:entries="@array/type_name"
                 android:singleLine="true" />
 
             <androidx.appcompat.widget.AppCompatSpinner

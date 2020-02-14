@@ -10,16 +10,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.development.mycolive.R;
 import com.development.mycolive.databinding.ActivityFindRoomateBinding;
 import com.development.mycolive.databinding.FragmentFavouriteRoomateBinding;
-import com.development.mycolive.views.activity.FindRoomate;
-import com.development.mycolive.views.adapter.FindRoomateAdapter;
-import com.development.mycolive.views.model.FindRoomateModel;
+import com.development.mycolive.adapter.FindRoomateAdapter;
+import com.development.mycolive.model.FindRoomateModel;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -12,9 +12,8 @@ import android.view.View;
 
 import com.development.mycolive.R;
 import com.development.mycolive.databinding.ActivityNotificationBinding;
-import com.development.mycolive.views.adapter.NotificationAdapter;
-import com.development.mycolive.views.model.NotificationModel;
-import com.development.mycolive.views.model.TestimonialModel;
+import com.development.mycolive.adapter.NotificationAdapter;
+import com.development.mycolive.model.NotificationModel;
 
 import java.util.ArrayList;
 import java.util.List;

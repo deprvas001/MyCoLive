@@ -7,9 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.development.mycolive.views.fragment.booking.BookingRepository;
-import com.development.mycolive.views.model.booking.BookingApiResponse;
-import com.development.mycolive.views.model.editProfile.ProfileApiResponse;
+import com.development.mycolive.model.editProfile.ProfileApiResponse;
 
 public class ProfileViewModel extends AndroidViewModel {
 

@@ -6,11 +6,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.development.mycolive.networking.RetrofitService;
 import com.development.mycolive.networking.ShipmentApi;
-import com.development.mycolive.views.activity.bookingHistory.BookingHistoryRepository;
-import com.development.mycolive.views.model.bookingHistory.BookingHistoryApiResponse;
-import com.development.mycolive.views.model.bookingHistory.BookingHistoryResponse;
-import com.development.mycolive.views.model.editProfile.ProfileApiResponse;
-import com.development.mycolive.views.model.editProfile.ProfileResponse;
+import com.development.mycolive.model.editProfile.ProfileApiResponse;
+import com.development.mycolive.model.editProfile.ProfileResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,9 +34,7 @@ public class ProfileReporsitory {
         shipmentApi.getProfile(type).enqueue(new Callback<ProfileResponse>() {
             @Override
             public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
-                if(response.code() == 401){
-                    profileResponseLiveData.setValue(null);
-                }else if(response.code() == 400){
+                if(response.code() == 401 || response.code() == 400){
                     profileResponseLiveData.setValue(new ProfileApiResponse(response.code()));
                 }
                 else {

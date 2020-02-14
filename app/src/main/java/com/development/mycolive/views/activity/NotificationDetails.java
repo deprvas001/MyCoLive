@@ -8,8 +8,8 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.development.mycolive.R;
-import com.development.mycolive.databinding.ActivityNotificationBinding;
 import com.development.mycolive.databinding.ActivityNotificationDetailsBinding;
+import com.development.mycolive.views.activity.searchDetailPage.RoomDetail;
 
 public class NotificationDetails extends AppCompatActivity implements View.OnClickListener {
 ActivityNotificationDetailsBinding detailsBinding;
@@ -26,7 +26,7 @@ ActivityNotificationDetailsBinding detailsBinding;
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_view_property:
-                startActivity(new Intent(NotificationDetails.this,RoomDetail.class));
+                startActivity(new Intent(NotificationDetails.this, RoomDetail.class));
                 break;
 
             case R.id.back:

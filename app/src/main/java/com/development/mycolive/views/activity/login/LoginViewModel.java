@@ -7,8 +7,8 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
-import com.development.mycolive.views.model.loginModel.LoginApiResponse;
-import com.development.mycolive.views.model.loginModel.LoginRequestModel;
+import com.development.mycolive.model.loginModel.LoginApiResponse;
+import com.development.mycolive.model.loginModel.LoginRequestModel;
 
 public class LoginViewModel extends ViewModel {
     private MediatorLiveData<LoginApiResponse> mutableLiveData;

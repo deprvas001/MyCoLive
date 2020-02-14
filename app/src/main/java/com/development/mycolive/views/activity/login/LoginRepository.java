@@ -7,9 +7,9 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.development.mycolive.networking.RetrofitService;
 import com.development.mycolive.networking.ShipmentApi;
-import com.development.mycolive.views.model.loginModel.LoginApiResponse;
-import com.development.mycolive.views.model.loginModel.LoginRequestModel;
-import com.development.mycolive.views.model.loginModel.LoginResponse;
+import com.development.mycolive.model.loginModel.LoginApiResponse;
+import com.development.mycolive.model.loginModel.LoginRequestModel;
+import com.development.mycolive.model.loginModel.LoginResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;

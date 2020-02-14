@@ -17,8 +17,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".views.activity.BaseActivity"
-            android:theme="@style/AppTheme.NoActionBar" ></activity>
+        <activity android:name=".views.activity.viewCommunity.ViewCommunity"></activity>
+        <activity
+            android:name=".views.activity.BaseActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".views.activity.AboutUs"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -82,11 +84,11 @@
             android:label="@string/title_activity_search_result"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".views.activity.RoomDetail"
+            android:name=".views.activity.searchDetailPage.RoomDetail"
             android:label="@string/title_activity_search_result"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".views.activity.SearchResult"
+            android:name=".views.activity.searchResult.SearchResult"
             android:label="@string/title_activity_search_result"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

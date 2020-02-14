@@ -1,29 +1,20 @@
 package com.development.mycolive.views.fragment;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.development.mycolive.R;
-import com.development.mycolive.databinding.ActivitySearchResultBinding;
 import com.development.mycolive.databinding.FragmentFavouritePropertyBinding;
-import com.development.mycolive.views.activity.RoomDetail;
-import com.development.mycolive.views.activity.SearchResult;
-import com.development.mycolive.views.adapter.SearchScreenAdapter;
-import com.development.mycolive.views.clickListener.RecyclerTouchListener;
-import com.development.mycolive.views.model.SearchResultModel;
+import com.development.mycolive.adapter.SearchScreenAdapter;
+import com.development.mycolive.model.SearchResultModel;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -70,7 +61,7 @@ public class FavouriteProperty extends Fragment implements View.OnClickListener 
 
 
     private void setReyclerView(){
-        searchAdapter = new SearchScreenAdapter(getActivity(), searchList);
+/*        searchAdapter = new SearchScreenAdapter(getActivity(), searchList);
         mLayoutManager = new LinearLayoutManager(getActivity());
         propertyBinding.contentSearch.recyclerView.setLayoutManager(mLayoutManager);
         propertyBinding.contentSearch.recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -89,18 +80,18 @@ public class FavouriteProperty extends Fragment implements View.OnClickListener 
             public void onLongClick(View view, int position) {
 
             }
-        }));
+        }));*/
     }
 
     private void setSearchListItem(){
-        searchList.clear();
+      /*  searchList.clear();
 
         for(int i=0;i<5;i++){
             SearchResultModel resultModel = new SearchResultModel("","JMD Megapolish","");
             searchList.add(resultModel);
         }
 
-        searchAdapter.notifyDataSetChanged();
+        searchAdapter.notifyDataSetChanged();*/
     }
 
 }

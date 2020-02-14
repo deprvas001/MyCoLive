@@ -2,16 +2,13 @@ package com.development.mycolive.views.activity.forgotPassword;
 
 import android.content.Context;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.development.mycolive.networking.RetrofitService;
 import com.development.mycolive.networking.ShipmentApi;
-import com.development.mycolive.views.activity.login.LoginRepository;
-import com.development.mycolive.views.model.forgotModel.ForgotRequestModel;
-import com.development.mycolive.views.model.loginModel.LoginApiResponse;
-import com.development.mycolive.views.model.loginModel.LoginRequestModel;
-import com.development.mycolive.views.model.loginModel.LoginResponse;
+import com.development.mycolive.model.forgotModel.ForgotRequestModel;
+import com.development.mycolive.model.loginModel.LoginApiResponse;
+import com.development.mycolive.model.loginModel.LoginResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;

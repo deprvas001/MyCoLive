@@ -8,13 +8,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.development.mycolive.R;
 import com.development.mycolive.databinding.ActivityTestimonialsBinding;
-import com.development.mycolive.views.adapter.TestimonialAdapter;
-import com.development.mycolive.views.model.TestimonialModel;
+import com.development.mycolive.adapter.TestimonialAdapter;
+import com.development.mycolive.model.TestimonialModel;
 
 import java.util.ArrayList;
 import java.util.List;

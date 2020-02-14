@@ -10,9 +10,8 @@ import android.os.Bundle;
 
 import com.development.mycolive.R;
 import com.development.mycolive.databinding.ActivityCommentListScreenBinding;
-import com.development.mycolive.views.adapter.CurrentListAdapter;
-import com.development.mycolive.views.model.CommentListModel;
-import com.development.mycolive.views.model.PropertiesFeatures;
+import com.development.mycolive.adapter.CurrentListAdapter;
+import com.development.mycolive.model.CommentListModel;
 
 import java.util.ArrayList;
 import java.util.List;
