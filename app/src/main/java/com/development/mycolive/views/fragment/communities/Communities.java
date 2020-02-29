@@ -8,22 +8,35 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.development.mycolive.R;
+import com.development.mycolive.adapter.AllCommunityAdapter;
 import com.development.mycolive.databinding.FragmentCommunityBinding;
-import com.development.mycolive.views.activity.NewPost;
+import com.development.mycolive.model.communityModel.AllPost;
+import com.development.mycolive.model.communityModel.CommunityApiResponse;
+import com.development.mycolive.model.communityModel.SearchCommunityApiResponse;
+import com.development.mycolive.views.activity.postScreen.NewPost;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class Communities extends Fragment implements View.OnClickListener {
-FragmentCommunityBinding fragmentCommunityBinding;
-
-
+  public  FragmentCommunityBinding fragmentCommunityBinding;
+    CommunitiesViewModel communityViewModel;
+    private AllCommunityAdapter communityAdapter;
+    RecyclerView.LayoutManager mLayoutManager;
     public Communities() {
         // Required empty public constructor
     }
@@ -33,11 +46,13 @@ FragmentCommunityBinding fragmentCommunityBinding;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        fragmentCommunityBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_community, container, false);
-         setClickListener();
-         loadFragment(new AllCommunities());
+        fragmentCommunityBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_community, container, false);
+        setClickListener();
+        getCommunity("ALL");
+      //  loadFragment(new AllCommunities());
         return fragmentCommunityBinding.getRoot();
     }
+/*
 
     private void loadFragment(Fragment fragment) {
 // create a FragmentManager
@@ -48,18 +63,137 @@ FragmentCommunityBinding fragmentCommunityBinding;
         fragmentTransaction.replace(R.id.frameLayout, fragment);
         fragmentTransaction.commit(); // save the changes
     }
+*/
 
-    private void setClickListener(){
+    private void setClickListener() {
         fragmentCommunityBinding.fab.setOnClickListener(this);
+        fragmentCommunityBinding.allCommunity.setOnClickListener(this);
+        fragmentCommunityBinding.general.setOnClickListener(this);
+        fragmentCommunityBinding.accodmation.setOnClickListener(this);
+        fragmentCommunityBinding.searchEdit.setOnClickListener(this);
     }
 
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.fab:
                 startActivity(new Intent(getActivity(), NewPost.class));
                 break;
+
+            case R.id.all_community:
+                setViewBackground(view);
+                getCommunity("ALL");
+                //loadFragment(new AllCommunities());
+                break;
+
+            case R.id.general:
+                setViewBackground(view);
+                getCommunity("GENERAL");
+            //    loadFragment(new GeneralCommunity());
+                break;
+
+            case R.id.accodmation:
+                setViewBackground(view);
+                getCommunity("ACCOMODATION");
+              //  loadFragment(new AccodmationCommunity());
+                break;
+
+            case R.id.search_edit:
+                setViewBackground(view);
+                getSearchCommunity("General");
+                break;
         }
+    }
+
+    private void setViewBackground(View view) {
+        switch (view.getId()) {
+            case R.id.general:
+                fragmentCommunityBinding.general.setBackground(getResources().getDrawable(R.drawable.booking_background_selected));
+                fragmentCommunityBinding.general.setTextColor(getResources().getColor(R.color.white));
+                fragmentCommunityBinding.allCommunity.setTextColor(getResources().getColor(R.color.login_subheading));
+                fragmentCommunityBinding.allCommunity.setBackground(null);
+                fragmentCommunityBinding.accodmation.setTextColor(getResources().getColor(R.color.login_subheading));
+                fragmentCommunityBinding.accodmation.setBackground(null);
+                break;
+
+            case R.id.all_community:
+                fragmentCommunityBinding.allCommunity.setBackground(getResources().getDrawable(R.drawable.booking_background_selected));
+                fragmentCommunityBinding.allCommunity.setTextColor(getResources().getColor(R.color.white));
+                fragmentCommunityBinding.general.setTextColor(getResources().getColor(R.color.login_subheading));
+                fragmentCommunityBinding.general.setBackground(null);
+                fragmentCommunityBinding.accodmation.setTextColor(getResources().getColor(R.color.login_subheading));
+                fragmentCommunityBinding.accodmation.setBackground(null);
+                break;
+
+            case R.id.accodmation:
+                fragmentCommunityBinding.accodmation.setBackground(getResources().getDrawable(R.drawable.booking_background_selected));
+                fragmentCommunityBinding.accodmation.setTextColor(getResources().getColor(R.color.white));
+                fragmentCommunityBinding.allCommunity.setTextColor(getResources().getColor(R.color.login_subheading));
+                fragmentCommunityBinding.allCommunity.setBackground(null);
+                fragmentCommunityBinding.general.setTextColor(getResources().getColor(R.color.login_subheading));
+                fragmentCommunityBinding.general.setBackground(null);
+                break;
+
+            default:
+                fragmentCommunityBinding.allCommunity.setBackground(getResources().getDrawable(R.drawable.booking_background_selected));
+                fragmentCommunityBinding.allCommunity.setTextColor(getResources().getColor(R.color.white));
+                fragmentCommunityBinding.general.setTextColor(getResources().getColor(R.color.login_subheading));
+                fragmentCommunityBinding.general.setBackground(null);
+                fragmentCommunityBinding.accodmation.setTextColor(getResources().getColor(R.color.login_subheading));
+                fragmentCommunityBinding.accodmation.setBackground(null);
+
+                break;
+        }
+    }
+
+    private void getSearchCommunity(String type){
+
+        communityViewModel = ViewModelProviders.of(getActivity()).get(CommunitiesViewModel.class);
+
+        communityViewModel.getSearchData(getActivity(),type).observe(getActivity(), new Observer<SearchCommunityApiResponse>() {
+            @Override
+            public void onChanged(SearchCommunityApiResponse apiResponse) {
+                if(apiResponse.communityResponse !=null){
+                    List<AllPost> allPostList  = apiResponse.communityResponse.getData().getAllpost();
+                      setRecyclerview(allPostList);
+                }else if(apiResponse.getStatus()== 401){
+                      Toast.makeText(getActivity(), "Try Later", Toast.LENGTH_SHORT).show();
+                }else{
+                     Toast.makeText(getActivity(), "Try Later", Toast.LENGTH_SHORT).show();
+                }
+             /*   bookingBinding.shimmerViewContainer.stopShimmer();
+                bookingBinding.shimmerViewContainer.setVisibility(View.GONE);*/
+            }
+        });
+    }
+
+    private void setRecyclerview(List<AllPost> allPostList){
+        communityAdapter = new AllCommunityAdapter(getActivity(), allPostList);
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        fragmentCommunityBinding.recyclerView.setLayoutManager(mLayoutManager);
+        fragmentCommunityBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());
+        fragmentCommunityBinding.recyclerView.setAdapter(communityAdapter);
+    }
+
+    private void getCommunity(String type){
+
+        communityViewModel = ViewModelProviders.of(getActivity()).get(CommunitiesViewModel.class);
+
+        communityViewModel.getCommunityData(getActivity(),type).observe(getActivity(), new Observer<CommunityApiResponse>() {
+            @Override
+            public void onChanged(CommunityApiResponse communityApiResponse) {
+                if(communityApiResponse.response !=null){
+                    List<AllPost> allPostList  = communityApiResponse.getResponse().getData();
+                    setRecyclerview(allPostList);
+                }else if(communityApiResponse.getStatus()== 401){
+                    Toast.makeText(getActivity(), "Try Later", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getActivity(), "Try Later", Toast.LENGTH_SHORT).show();
+                }
+             /*   bookingBinding.shimmerViewContainer.stopShimmer();
+                bookingBinding.shimmerViewContainer.setVisibility(View.GONE);*/
+            }
+        });
     }
 }

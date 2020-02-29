@@ -25,6 +25,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="40dp"
+                    android:hint="@string/name"
                     android:textColorHint="@color/text_color_hint">
 
                     <EditText
@@ -42,6 +43,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="@string/email"
                     android:textColorHint="@color/text_color_hint">
 
                     <EditText
@@ -59,6 +61,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="@string/phone"
                     android:textColorHint="@color/text_color_hint">
 
                     <EditText
@@ -77,14 +80,14 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="@string/dob"
                     android:textColorHint="@color/text_color_hint">
 
                     <EditText
                         android:id="@+id/input_dob"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:focusableInTouchMode="true"
-                        android:text="10-12-2000"
+                        android:focusable="false"
                         android:textColor="@color/edit_text_color"
                         android:inputType="textEmailAddress"
                         android:maxLength="15"
@@ -107,7 +110,9 @@
                     android:textSize="16sp"
                         android:textColor="@color/edit_text_color"
                     android:text="Gender"/>
+
                 <RadioGroup
+                    android:id="@+id/radio_group"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -115,12 +120,15 @@
                     android:orientation="horizontal">
 
                     <RadioButton
+                        android:id="@+id/male_radionbtn"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:text="Male"
+                        android:checked="true"
                         android:layout_height="wrap_content"/>
 
                     <RadioButton
+                        android:id="@+id/female_radiobtn"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
@@ -134,11 +142,18 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/country"
+                        android:textColorHint="@color/text_color_hint">
 
 
                     <EditText
-                        android:layout_width="0dp"
+                        android:id="@+id/country"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:focusableInTouchMode="true"
                         android:text="Hungary"
@@ -148,10 +163,19 @@
                         android:singleLine="true"
                         android:textSize="14sp" />
 
+                    </com.google.android.material.textfield.TextInputLayout>
 
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/city_name"
+                        android:textColorHint="@color/text_color_hint">
 
                     <EditText
-                            android:layout_width="0dp"
+                            android:id="@+id/city"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:focusableInTouchMode="true"
                             android:text="Location"
@@ -161,7 +185,7 @@
                             android:singleLine="true"
                             android:textSize="14sp" />
 
-
+                    </com.google.android.material.textfield.TextInputLayout>
 
 
                 </LinearLayout>
@@ -171,11 +195,17 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/district"
+                        android:textColorHint="@color/text_color_hint">
 
                     <EditText
-                        android:layout_width="0dp"
+                        android:id="@+id/district"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:focusableInTouchMode="true"
                         android:text="Host City"
@@ -185,10 +215,19 @@
                         android:singleLine="true"
                         android:textSize="14sp" />
 
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/university"
+                        android:textColorHint="@color/text_color_hint">
+
 
 
                     <EditText
-                        android:layout_width="0dp"
+                        android:id="@+id/university"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:focusableInTouchMode="true"
                         android:text="Corvinus"
@@ -198,7 +237,7 @@
                         android:singleLine="true"
                         android:textSize="14sp" />
 
-
+                    </com.google.android.material.textfield.TextInputLayout>
 
 
                 </LinearLayout>
@@ -208,9 +247,11 @@
                 <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:hint="@string/post_code"
                         android:textColorHint="@color/text_color_hint">
 
                         <EditText
+                            android:id="@+id/post_code"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:focusableInTouchMode="true"
@@ -240,7 +281,7 @@
 
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_next"
+                android:id="@+id/btn_save"
                 android:layout_width="fill_parent"
                 android:layout_height="55dp"
                 android:layout_margin="40dp"

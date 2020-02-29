@@ -5,6 +5,10 @@ import android.content.Context;
 import androidx.lifecycle.MutableLiveData;
 
 import com.development.mycolive.R;
+import com.development.mycolive.model.communityModel.CommunityApiResponse;
+import com.development.mycolive.model.communityModel.CommunityResponse;
+import com.development.mycolive.model.communityModel.SearchCommunityApiResponse;
+import com.development.mycolive.model.communityModel.SearchCommunityResponse;
 import com.development.mycolive.model.viewCommunityModel.ViewCommunityApiResponse;
 import com.development.mycolive.model.viewCommunityModel.ViewCommunityResponse;
 import com.development.mycolive.networking.RetrofitService;
@@ -29,28 +33,56 @@ public class CommunitiesRepository {
         return communityRepository;
     }
 
-    public MutableLiveData<ViewCommunityApiResponse> getCommunityData(Context context, String type){
-        final MutableLiveData<ViewCommunityApiResponse> loginResponseLiveData =new MutableLiveData<>();
+    public MutableLiveData<CommunityApiResponse> getCommunityData(Context context, String type){
+        final MutableLiveData<CommunityApiResponse> loginResponseLiveData =new MutableLiveData<>();
         String token = String.valueOf(R.string.token);
 
-        shipmentApi.getCommunityData(type).enqueue(new Callback<ViewCommunityResponse>() {
+        shipmentApi.getCommunityData(type).enqueue(new Callback<CommunityResponse>() {
             @Override
-            public void onResponse(Call<ViewCommunityResponse> call, Response<ViewCommunityResponse> response) {
+            public void onResponse(Call<CommunityResponse> call, Response<CommunityResponse> response) {
                 if(response.code() == 401){
-                    loginResponseLiveData.setValue(new ViewCommunityApiResponse(response.code()));
+                    loginResponseLiveData.setValue(new CommunityApiResponse(response.code()));
                 }else if(response.code() == 400){
-                    loginResponseLiveData.setValue(new ViewCommunityApiResponse(response.code()));
+                    loginResponseLiveData.setValue(new CommunityApiResponse(response.code()));
                 }
                 else {
                     if(response.isSuccessful()){
-                        loginResponseLiveData.setValue(new ViewCommunityApiResponse(response.body()));
+                        loginResponseLiveData.setValue(new CommunityApiResponse(response.body()));
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<ViewCommunityResponse> call, Throwable t) {
-                loginResponseLiveData.setValue(new ViewCommunityApiResponse(t));
+            public void onFailure(Call<CommunityResponse> call, Throwable t) {
+                loginResponseLiveData.setValue(new CommunityApiResponse(t));
+            }
+        });
+
+        return  loginResponseLiveData;
+    }
+
+    public MutableLiveData<SearchCommunityApiResponse> getSearchData(Context context, String type){
+        final MutableLiveData<SearchCommunityApiResponse> loginResponseLiveData =new MutableLiveData<>();
+        String token = String.valueOf(R.string.token);
+
+        shipmentApi.getSearchData(type).enqueue(new Callback<SearchCommunityResponse>() {
+            @Override
+            public void onResponse(Call<SearchCommunityResponse> call, Response<SearchCommunityResponse> response) {
+                if(response.code() == 401){
+                    loginResponseLiveData.setValue(new SearchCommunityApiResponse(response.code()));
+                }else if(response.code() == 400){
+                    loginResponseLiveData.setValue(new SearchCommunityApiResponse(response.code()));
+                }
+                else {
+                    if(response.isSuccessful()){
+                        loginResponseLiveData.setValue(new SearchCommunityApiResponse(response.body()));
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SearchCommunityResponse> call, Throwable t) {
+                loginResponseLiveData.setValue(new SearchCommunityApiResponse(t));
             }
         });
 

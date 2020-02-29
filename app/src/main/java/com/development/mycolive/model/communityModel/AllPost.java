@@ -1,24 +1,62 @@
 package com.development.mycolive.model.communityModel;
 
-public class AllPost {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.List;
+
+public class AllPost implements Parcelable {
     private String id;
+    private String parent_comment_id;
+    private String post_type;
+    private String city;
+    private String university;
+    private String comment;
+    private List<String> image;
+    private String created_by;
+    private String date;
     private String post_type_name;
     private String city_name;
     private String university_name;
     private String user_name;
-    private String comment;
-    private String parent_comment_id;
-    private String image;
-    private String created_by;
-    private String comment_sender_name;
-    private String date;
-    private String post_type;
-    private String city_id;
-    private String university_id;
     private String profile_image;
     private String total_likes;
     private String user_like_this_comment;
     private String total_reply_comment;
+    private String comment_reply;
+
+    protected AllPost(Parcel in) {
+        id = in.readString();
+        parent_comment_id = in.readString();
+        post_type = in.readString();
+        city = in.readString();
+        university = in.readString();
+        comment = in.readString();
+        image = in.createStringArrayList();
+        created_by = in.readString();
+        date = in.readString();
+        post_type_name = in.readString();
+        city_name = in.readString();
+        university_name = in.readString();
+        user_name = in.readString();
+        profile_image = in.readString();
+        total_likes = in.readString();
+        user_like_this_comment = in.readString();
+        total_reply_comment = in.readString();
+        comment_reply = in.readString();
+    }
+
+    public static final Creator<AllPost> CREATOR = new Creator<AllPost>() {
+        @Override
+        public AllPost createFromParcel(Parcel in) {
+            return new AllPost(in);
+        }
+
+        @Override
+        public AllPost[] newArray(int size) {
+            return new AllPost[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -26,6 +64,70 @@ public class AllPost {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getParent_comment_id() {
+        return parent_comment_id;
+    }
+
+    public void setParent_comment_id(String parent_comment_id) {
+        this.parent_comment_id = parent_comment_id;
+    }
+
+    public String getPost_type() {
+        return post_type;
+    }
+
+    public void setPost_type(String post_type) {
+        this.post_type = post_type;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getUniversity() {
+        return university;
+    }
+
+    public void setUniversity(String university) {
+        this.university = university;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public List<String> getImage() {
+        return image;
+    }
+
+    public void setImage(List<String> image) {
+        this.image = image;
+    }
+
+    public String getCreated_by() {
+        return created_by;
+    }
+
+    public void setCreated_by(String created_by) {
+        this.created_by = created_by;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getPost_type_name() {
@@ -60,78 +162,6 @@ public class AllPost {
         this.user_name = user_name;
     }
 
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public String getParent_comment_id() {
-        return parent_comment_id;
-    }
-
-    public void setParent_comment_id(String parent_comment_id) {
-        this.parent_comment_id = parent_comment_id;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public String getCreated_by() {
-        return created_by;
-    }
-
-    public void setCreated_by(String created_by) {
-        this.created_by = created_by;
-    }
-
-    public String getComment_sender_name() {
-        return comment_sender_name;
-    }
-
-    public void setComment_sender_name(String comment_sender_name) {
-        this.comment_sender_name = comment_sender_name;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getPost_type() {
-        return post_type;
-    }
-
-    public void setPost_type(String post_type) {
-        this.post_type = post_type;
-    }
-
-    public String getCity_id() {
-        return city_id;
-    }
-
-    public void setCity_id(String city_id) {
-        this.city_id = city_id;
-    }
-
-    public String getUniversity_id() {
-        return university_id;
-    }
-
-    public void setUniversity_id(String university_id) {
-        this.university_id = university_id;
-    }
-
     public String getProfile_image() {
         return profile_image;
     }
@@ -162,5 +192,40 @@ public class AllPost {
 
     public void setTotal_reply_comment(String total_reply_comment) {
         this.total_reply_comment = total_reply_comment;
+    }
+
+    public String getComment_reply() {
+        return comment_reply;
+    }
+
+    public void setComment_reply(String comment_reply) {
+        this.comment_reply = comment_reply;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(parent_comment_id);
+        parcel.writeString(post_type);
+        parcel.writeString(city);
+        parcel.writeString(university);
+        parcel.writeString(comment);
+        parcel.writeStringList(image);
+        parcel.writeString(created_by);
+        parcel.writeString(date);
+        parcel.writeString(post_type_name);
+        parcel.writeString(city_name);
+        parcel.writeString(university_name);
+        parcel.writeString(user_name);
+        parcel.writeString(profile_image);
+        parcel.writeString(total_likes);
+        parcel.writeString(user_like_this_comment);
+        parcel.writeString(total_reply_comment);
+        parcel.writeString(comment_reply);
     }
 }

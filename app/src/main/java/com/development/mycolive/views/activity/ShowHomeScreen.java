@@ -5,12 +5,14 @@ import android.os.Bundle;
 
 import com.development.mycolive.R;
 import com.development.mycolive.databinding.ActivityShowHomeScreenBinding;
+import com.development.mycolive.session.SessionManager;
 import com.development.mycolive.views.fragment.booking.BookingFragment;
 import com.development.mycolive.views.fragment.communities.Communities;
 import com.development.mycolive.views.fragment.homeFragment.Home;
 import com.development.mycolive.views.fragment.profile.ProfileScreenOne;
 import com.development.mycolive.views.fragment.filterSearch.Search;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.squareup.picasso.Picasso;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,11 +31,15 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.ViewGroup;
+import android.widget.Button;
+
+import java.util.HashMap;
 
 public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
         /*implements NavigationView.OnNavigationItemSelectedListener*/ {
  public    ActivityShowHomeScreenBinding screenBinding;
-
+    // Session Manager Class
+    SessionManager session;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -88,10 +94,13 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
         //load fragment
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_container, fragment);
-      //  transaction.addToBackStack(null);
+      // transaction.addToBackStack(null);
         transaction.commit();
     }
     private void initializeView(){
+        // Session class instance
+        session = new SessionManager(getApplicationContext());
+        session.checkLogin();
         setSupportActionBar(screenBinding.appBar.toolbar);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -112,8 +121,8 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
                 }
             }
         });
-
         setClickListener();
+        getUserDetail();
 
     }
 
@@ -127,6 +136,7 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
         screenBinding.customNavigationDrawer.logout.setOnClickListener(this);
         screenBinding.customNavigationDrawer.aboutUs.setOnClickListener(this);
         screenBinding.appBar.notification.setOnClickListener(this);
+        screenBinding.customNavigationDrawer.logout.setOnClickListener(this);
     }
 
     @Override
@@ -190,14 +200,30 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
         //Now we need an AlertDialog.Builder object
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
+        Button button_ok = (Button)dialogView.findViewById(R.id.buttonOk);
+       /* button_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                session.logoutUser();
+            }
+        });*/
+
+        Button cancel = (Button)dialogView.findViewById(R.id.button_cancel);
+
+
         //setting the view of the builder to our custom view that we already inflated
         builder.setView(dialogView);
-
-
 
         //finally creating the alert dialog and displaying it
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+
+      /*  cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               alertDialog.dismiss();
+            }
+        });*/
     }
 
     private void checkDrawer(){
@@ -207,5 +233,25 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
         } else {
             super.onBackPressed();
         }
+    }
+
+    private void getUserDetail(){
+        // get user data from session
+        HashMap<String, String> user = session.getUserDetails();
+
+        // name
+        String name = user.get(SessionManager.KEY_NAME);
+
+        // email
+        String email = user.get(SessionManager.KEY_EMAIL);
+        String image = user.get(SessionManager.KEY_IMAGE);
+
+        screenBinding.headerLayout.name.setText(name);
+        screenBinding.headerLayout.email.setText(email);
+        Picasso.get()
+                .load(image)
+                /*  .placeholder(R.drawable.image1)
+                  .error(R.drawable.err)*/
+                .into(screenBinding.headerLayout.profileImage);
     }
 }

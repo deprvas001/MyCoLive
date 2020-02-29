@@ -62,7 +62,6 @@
                             android:hint="@string/email"
                             android:textColor="@color/edit_text_color"
                             android:inputType="textEmailAddress"
-                            android:maxLength="15"
                             android:singleLine="true"
                             android:textSize="14sp" />
 

@@ -5,15 +5,18 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import com.development.mycolive.R
+import com.development.mycolive.session.SessionManager
 import com.development.mycolive.views.activity.login.LoginActivity
 
 class SplashScreen : AppCompatActivity() {
+    private lateinit var session: SessionManager
     private val splashTime = 3000L //3 seconds
     private lateinit var  myHandler: Handler
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
+        session = SessionManager(applicationContext)
         myHandler = Handler()
         myHandler.postDelayed({
             goToMainActivity()
@@ -21,7 +24,8 @@ class SplashScreen : AppCompatActivity() {
     }
 
     private fun goToMainActivity(){
-        val mainActivityIntent = Intent(applicationContext, LoginActivity::class.java)
+      //  session.checkLogin()
+        val mainActivityIntent = Intent(applicationContext, ShowHomeScreen::class.java)
         startActivity(mainActivityIntent)
         finish()
     }

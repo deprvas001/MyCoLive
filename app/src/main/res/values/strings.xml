@@ -141,12 +141,21 @@
     <string name="city_name">City Name</string>
     <string name="university">University/Professional</string>
     <string name="room">Room</string>
+    <string name="country">Country</string>
+    <string name="favourite_booking">Favourite Property</string>
+    <string name="favourite_roomate">Favourite Roomate</string>
 
     <string-array name="type_name">
         <item>Room/Apartment/Roomate</item>
         <item>Room</item>
         <item>Apartment</item>
         <item>Roommate</item>
+    </string-array>
+
+    <string-array name="community_type">
+        <item>Post Type</item>
+        <item>General</item>
+        <item>Accomodation</item>
     </string-array>
 
 </resources>

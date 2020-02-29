@@ -32,7 +32,9 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-          <include layout="@layout/nav_header_show_home_screen"/>
+          <include
+              android:id="@+id/header_layout"
+              layout="@layout/nav_header_show_home_screen"/>
 
             <include
                 android:id="@+id/custom_navigation_drawer"

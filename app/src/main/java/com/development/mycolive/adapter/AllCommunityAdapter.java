@@ -1,16 +1,20 @@
 package com.development.mycolive.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 import com.development.mycolive.R;
 import com.development.mycolive.model.communityModel.AllPost;
+import com.development.mycolive.views.activity.viewCommunity.ViewCommunity;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -21,13 +25,25 @@ public class AllCommunityAdapter  extends RecyclerView.Adapter<AllCommunityAdapt
     private ViewGroup group;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView viewDetail;
-        public ImageView imageView;
+        public TextView viewDetail,name,type,city,university,comment,date,like,comment_count;
+        public ImageView imageView,user_image,post_image;
+        public LinearLayout postLayout;
 
         public MyViewHolder(View view) {
             super(view);
 
             imageView = (ImageView)view.findViewById(R.id.alert);
+            user_image= (ImageView)view.findViewById(R.id.imageView);
+            name = (TextView)view.findViewById(R.id.name);
+            type = (TextView)view.findViewById(R.id.type);
+            city = (TextView)view.findViewById(R.id.city);
+            university = (TextView)view.findViewById(R.id.university);
+            comment = (TextView)view.findViewById(R.id.comment);
+            date = (TextView)view.findViewById(R.id.date);
+            like = (TextView)view.findViewById(R.id.like);
+            comment_count = (TextView)view.findViewById(R.id.comment_count);
+            post_image = (ImageView)view.findViewById(R.id.post_image);
+            postLayout = (LinearLayout)view.findViewById(R.id.post_layout);
         }
     }
 
@@ -48,6 +64,35 @@ public class AllCommunityAdapter  extends RecyclerView.Adapter<AllCommunityAdapt
     @Override
     public void onBindViewHolder(AllCommunityAdapter.MyViewHolder holder, int position) {
         AllPost post = allPostList.get(position);
+        holder.name.setText(post.getUser_name());
+        holder.type.setText("Type: "+post.getPost_type_name());
+        holder.city.setText("City: "+post.getCity_name());
+        holder.university.setText("University: "+post.getUniversity_name());
+        holder.comment.setText(post.getComment());
+        holder.date.setText(post.getDate());
+        holder.like.setText(post.getTotal_likes());
+        holder.comment_count.setText(post.getTotal_reply_comment());
+
+        holder.postLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              context.startActivity(new Intent(context, ViewCommunity.class));
+            }
+        });
+
+        Picasso.get()
+                .load(post.getProfile_image())
+                /*  .placeholder(R.drawable.image1)
+                  .error(R.drawable.err)*/
+                .into(holder.user_image);
+
+        if(post.getImage().size()>0){
+            Picasso.get()
+                    .load(post.getImage().get(0))
+                    /*  .placeholder(R.drawable.image1)
+                      .error(R.drawable.err)*/
+                    .into(holder.post_image);
+        }
 
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override

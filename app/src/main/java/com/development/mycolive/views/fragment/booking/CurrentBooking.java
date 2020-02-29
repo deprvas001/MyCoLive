@@ -34,6 +34,7 @@ FragmentCurrentBookingBinding bookingBinding ;
     RecyclerView.LayoutManager mLayoutManager;
     List<BookingData> bookingList = new ArrayList<>();
     BookingViewModel bookingViewModel;
+
     public CurrentBooking() {
         // Required empty public constructor
     }

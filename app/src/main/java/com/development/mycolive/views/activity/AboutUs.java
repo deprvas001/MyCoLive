@@ -5,6 +5,7 @@ import androidx.databinding.DataBindingUtil;
 
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebSettings;
 
 import com.development.mycolive.R;
 import com.development.mycolive.databinding.ActivityAboutUsBinding;
@@ -16,6 +17,11 @@ ActivityAboutUsBinding usBinding;
         super.onCreate(savedInstanceState);
         usBinding = DataBindingUtil.setContentView(this,R.layout.activity_about_us);
         usBinding.back.setOnClickListener(this);
+        WebSettings webSettings = usBinding.webview.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+
+        usBinding.webview.loadUrl("https://www.google.com");
+
     }
 
     @Override

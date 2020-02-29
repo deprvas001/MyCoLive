@@ -56,7 +56,7 @@
             android:name=".views.activity.Testimonials"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".views.activity.NewPost"
+            android:name=".views.activity.postScreen.NewPost"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
@@ -97,7 +97,7 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".views.activity.SignupScreen"
-            android:theme="@style/ActionBarTheme"
+            android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".views.activity.ResetPassword"

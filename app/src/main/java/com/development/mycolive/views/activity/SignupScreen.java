@@ -10,7 +10,7 @@ import android.os.Bundle;
 
 import com.development.mycolive.R;
 import com.development.mycolive.databinding.ActivitySignupScreenBinding;
-import com.development.mycolive.views.fragment.SignUpOne;
+import com.development.mycolive.views.fragment.signUp.SignUpOne;
 
 public class SignupScreen extends AppCompatActivity {
 ActivitySignupScreenBinding screenBinding;

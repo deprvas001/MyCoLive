@@ -6,6 +6,7 @@ import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebViewClient;
 
 import com.development.mycolive.R;
@@ -34,9 +35,9 @@ ActivityContactUsBinding contactUsBinding;
     }
 
     private void setWebView(){
-        contactUsBinding.webview.setWebViewClient(new WebViewClient());
-        contactUsBinding.webview.getSettings().setJavaScriptEnabled(true);
-        contactUsBinding.webview.loadUrl("http://maps.google.com/maps?" /*+ "saddr=43.0054446,-87.9678884" + "&daddr=42.9257104,-88.0508355"*/);
+        WebSettings webSettings = contactUsBinding.webview.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        contactUsBinding.webview.loadUrl("https://www.google.com");
     }
 
     private void setClickListener(){

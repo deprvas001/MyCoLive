@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.development.mycolive.R;
 import com.development.mycolive.databinding.ActivityLoginBinding;
+import com.development.mycolive.session.SessionManager;
 import com.development.mycolive.views.activity.BaseActivity;
 import com.development.mycolive.views.activity.ShowHomeScreen;
 import com.development.mycolive.views.activity.forgotPassword.ForgotPassword;
@@ -21,10 +22,14 @@ import com.development.mycolive.model.loginModel.LoginRequestModel;
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 ActivityLoginBinding loginBinding;
     LoginViewModel loginViewModel;
+    SessionManager session;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loginBinding = DataBindingUtil.setContentView(this,R.layout.activity_login);
+        // Session class instance
+        session = new SessionManager(getApplicationContext());
+        // session.checkLogin();
         setClickListener();
     }
 
@@ -38,8 +43,21 @@ ActivityLoginBinding loginBinding;
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_login:
-             //   userLogin("","");
-                startActivity(new Intent(this, ShowHomeScreen.class));
+
+                if(loginBinding.inputEmail.getText().toString().isEmpty()){
+                    Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show();
+                    return;
+                }else if(loginBinding.inputPassword.getText().toString().isEmpty()){
+                    Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
+                    return;
+                }else{
+                    if (android.util.Patterns.EMAIL_ADDRESS.matcher(loginBinding.inputEmail.getText().toString()).matches()) {
+                        userLogin();
+                    }else{
+                        loginBinding.inputEmail.setError("Invalid Email Address");
+                    }
+                }
+               // startActivity(new Intent(this, ShowHomeScreen.class));
                 break;
 
             case R.id.forgot_password:
@@ -52,11 +70,12 @@ ActivityLoginBinding loginBinding;
         }
     }
 
-    private void userLogin(String username, String password) {
+    private void userLogin() {
          showProgressDialog(getString(R.string.loading));
-
-         LoginRequestModel requestModel = new LoginRequestModel("abc@yopmail.com",
-                 "123456","NORMAL","abc1111");
+          String user_email = loginBinding.inputEmail.getText().toString();
+          String password = loginBinding.inputPassword.getText().toString();
+         LoginRequestModel requestModel = new LoginRequestModel(user_email,
+                 password,"NORMAL","abc1111");
 
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         loginViewModel.getLoginUser(this,requestModel).observe(this, new Observer<LoginApiResponse>() {
@@ -68,10 +87,21 @@ ActivityLoginBinding loginBinding;
                     LoginActivity.this.showAlertDialog(LoginActivity.this, LoginActivity.this.getString(R.string.invalid_credentails));
                     //   Toast.makeText(this, getString(R.string.invalid_credentails), Toast.LENGTH_SHORT).show();
                 } else if (loginApiResponse.getError() == null) {
+                    String token = loginApiResponse.getResponse().getData().getAuthenticateToken();
+                    String userID = loginApiResponse.getResponse().getData().getUserId();
+                    String userType = loginApiResponse.getResponse().getData().getUserType();
+                    String name = loginApiResponse.getResponse().getData().getName();
+                    String email = loginApiResponse.getResponse().getData().getEmail();
+                    String image = loginApiResponse.getResponse().getData().getImage();
                     LoginActivity.this.hideProgressDialog();
                     if (loginApiResponse.getResponse().getStatus() == 1) {
-                        LoginActivity.this.showAlertDialog(LoginActivity.this, LoginActivity.this.getString(R.string.success));
+                        session.createLoginSession(name,
+                                email,userID,userType,token,image);
+                      //  LoginActivity.this.showAlertDialog(LoginActivity.this, LoginActivity.this.getString(R.string.success));
+                      startActivity(new Intent(LoginActivity.this,ShowHomeScreen.class));
                     }
+
+
                 } else {
                     // call failed.
                     LoginActivity.this.hideProgressDialog();

@@ -94,6 +94,8 @@ public class Home extends Fragment implements View.OnClickListener {
     private void initializeView() {
         ((ShowHomeScreen) getActivity()).screenBinding.appBar.titleTxt.setText("Home Screen");
         homeBinding.btnFeature.setOnClickListener(this);
+        homeBinding.hotPropertyBtn.setOnClickListener(this);
+        homeBinding.btnPropertyArea.setOnClickListener(this);
     }
 
     private void getData() {
@@ -138,6 +140,14 @@ public class Home extends Fragment implements View.OnClickListener {
             case R.id.btn_feature:
                 getActivity().startActivity(new Intent(getActivity(), SearchResult.class));
                 break;
+
+            case R.id.hot_property_btn:
+                getActivity().startActivity(new Intent(getActivity(), SearchResult.class));
+                break;
+
+            case R.id.btn_property_area:
+                getActivity().startActivity(new Intent(getActivity(), SearchResult.class));
+                break;
         }
     }
 
@@ -161,4 +171,6 @@ public class Home extends Fragment implements View.OnClickListener {
         homeBinding.roomApartment.roomMate.setText(countData.getTotal_roommate()+ " Roommate");
         homeBinding.roomApartment.apartment.setText(countData.getTotal_roommate()+" Apartment");
     }
+
+
 }

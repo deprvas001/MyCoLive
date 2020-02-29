@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<LinearLayout
+    android:id="@+id/post_layout"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -12,9 +16,9 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imageView"
-                android:layout_width="74dp"
-                android:layout_height="74dp"
-                android:src="@drawable/user"/>
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                />
 
             <LinearLayout
                 android:id="@+id/name_layout"
@@ -31,16 +35,15 @@
                 android:layout_marginLeft="10dp"
                 android:paddingLeft="5dp"
                 android:textColor="#000000"
-                android:textStyle="bold"
-                android:text="Jason"/>
+                android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#8C8C8C"
                 android:padding="5dp"
-                android:textSize="12sp"
-                android:text="1/12/2020"/>
+                android:textSize="12sp" />
 
             <ImageView
                 android:id="@+id/alert"
@@ -61,8 +64,7 @@
                 android:textSize="12sp"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/imageView"
-                android:layout_below="@id/name_layout"
-                android:text="Type: Accommondation"/>
+                android:layout_below="@id/name_layout" />
 
             <TextView
                 android:id="@+id/city"
@@ -74,7 +76,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/imageView"
                 android:layout_below="@id/type"
-                android:text="City: Voduz"/>
+                />
 
             <TextView
                 android:id="@+id/university"
@@ -86,7 +88,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/imageView"
                 android:layout_below="@id/city"
-                android:text="University: Carvinus"/>
+                />
 
 
         </RelativeLayout>
@@ -99,19 +101,40 @@
             android:layout_marginBottom="10dp">
 
         <TextView
+            android:id="@+id/comment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textColor="#4B4B4B"
             android:padding="10dp"
             android:layout_weight="1"
             android:maxLength="100"
-            android:layout_gravity="center_vertical"
-            android:text="@string/dummy_one"/>
-
+            android:layout_gravity="center_vertical" />
 
         </LinearLayout>
 
+    <com.smarteist.autoimageslider.SliderView
+        android:id="@+id/imageSlider"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="?attr/actionBarSize"
+        app:sliderAnimationDuration="600"
+        app:sliderAutoCycleDirection="back_and_forth"
+        app:sliderAutoCycleEnabled="true"
+        app:sliderCircularHandlerEnabled="true"
+        app:sliderIndicatorAnimationDuration="600"
+        app:sliderIndicatorGravity="center_horizontal|bottom"
+        app:sliderIndicatorMargin="15dp"
+        app:sliderIndicatorOrientation="horizontal"
+        app:sliderIndicatorPadding="3dp"
+        app:sliderIndicatorRadius="2dp"
+        app:sliderIndicatorSelectedColor="#5A5A5A"
+        app:sliderIndicatorUnselectedColor="#FFF"
+        app:sliderScrollTimeInSec="1"
+        android:visibility="gone"
+        app:sliderStartAutoCycle="true" />
+
         <TextView
+            android:id="@+id/know_more"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#199E8A"
@@ -124,9 +147,10 @@
 
 
         <ImageView
+            android:id="@+id/post_image"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/image2"/>
+            android:layout_height="150dp"
+            android:scaleType="fitCenter" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -135,23 +159,23 @@
             android:layout_marginBottom="10dp">
 
             <TextView
+                android:id="@+id/like"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textColor="#8C8C8C"
                 android:layout_weight="1"
                 android:paddingLeft="10dp"
                 android:drawableLeft="@drawable/ic_like"
-                android:drawablePadding="10dp"
-                android:text="12"/>
+                android:drawablePadding="10dp" />
 
             <TextView
+                android:id="@+id/comment_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#8C8C8C"
                 android:gravity="center"
                 android:drawablePadding="10dp"
-                android:drawableLeft="@drawable/ic_comment"
-                android:text="8"/>
+                android:drawableLeft="@drawable/ic_comment" />
 
             <TextView
                 android:layout_width="0dp"
@@ -173,3 +197,5 @@
 
 
     </LinearLayout>
+
+</layout>

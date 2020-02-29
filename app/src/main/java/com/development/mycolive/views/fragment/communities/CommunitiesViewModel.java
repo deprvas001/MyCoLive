@@ -8,6 +8,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.development.mycolive.model.communityModel.CommunityApiResponse;
+import com.development.mycolive.model.communityModel.SearchCommunityApiResponse;
+import com.development.mycolive.model.postCommunity.PostApiResponse;
 
 public class CommunitiesViewModel extends AndroidViewModel {
 
@@ -17,5 +19,9 @@ public class CommunitiesViewModel extends AndroidViewModel {
 
     public MutableLiveData<CommunityApiResponse> getCommunityData(Context context, String type) {
         return CommunitiesRepository.getInstance().getCommunityData(context, type);
+    }
+
+    public MutableLiveData<SearchCommunityApiResponse> getSearchData(Context context, String type) {
+        return CommunitiesRepository.getInstance().getSearchData(context, type);
     }
 }

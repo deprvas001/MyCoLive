@@ -62,7 +62,7 @@ FragmentAllCommunityBinding communityBinding;
 
 
     private void getCommunity(){
-        String type = "General";
+        String type = "ALL";
 
         communityViewModel = ViewModelProviders.of(getActivity()).get(CommunitiesViewModel.class);
 
@@ -70,7 +70,7 @@ FragmentAllCommunityBinding communityBinding;
             @Override
             public void onChanged(CommunityApiResponse communityApiResponse) {
                 if(communityApiResponse.response !=null){
-                 List<AllPost> allPostList  = communityApiResponse.getResponse().getData().getAllPost();
+                 List<AllPost> allPostList  = communityApiResponse.getResponse().getData();
                  setRecyclerview(allPostList);
                 }else if(communityApiResponse.getStatus()== 401){
                     Toast.makeText(getActivity(), "Try Later", Toast.LENGTH_SHORT).show();

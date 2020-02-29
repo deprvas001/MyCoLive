@@ -14,6 +14,7 @@
                 android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/search_edit"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_gravity="bottom"
@@ -42,47 +43,59 @@
 
 
                 <TextView
-                    android:id="@+id/current_booking"
+                    android:id="@+id/all_community"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
+                    android:layout_weight="0.4"
                     android:background="@drawable/booking_background_selected"
                     android:gravity="center_horizontal"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
+                    android:padding="5dp"
+                    android:autoSizeTextType="uniform"
                     android:textColor="@android:color/white"
                     android:text="All"/>
 
                 <TextView
+                    android:id="@+id/general"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
+                    android:layout_weight="0.7"
                     android:gravity="center_horizontal"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
+                    android:padding="5dp"
+                    android:autoSizeTextType="uniform"
                     android:text="General"/>
 
                 <TextView
+                    android:id="@+id/accodmation"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:textSize="12sp"
                     android:gravity="center_horizontal"
                     android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:autoSizeTextType="uniform"
                     android:text="Accomdation"/>
 
                 <TextView
                     android:id="@+id/past_booking"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
+                    android:layout_weight="0.8"
                     android:gravity="center_horizontal"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
+                    android:padding="5dp"
+                    android:autoSizeTextType="uniform"
                     android:text="Socail wall"/>
 
 
             </LinearLayout>
 
+                <!-- TODO: Update blank fragment layout -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp" />
+
                 <FrameLayout
+                    android:visibility="gone"
                     android:id="@+id/frameLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
