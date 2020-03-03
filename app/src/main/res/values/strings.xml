@@ -144,6 +144,16 @@
     <string name="country">Country</string>
     <string name="favourite_booking">Favourite Property</string>
     <string name="favourite_roomate">Favourite Roomate</string>
+    <string name="early_check">Early Check In (Optional)</string>
+    <string name="early_check_desc">Early check is only available for 15 days before the booking date.(Depending upon availability)</string>
+    <string name="arrival_date">Select Arrival Date(Early Check In)</string>
+    <string name="feature_facility"><![CDATA[Features & Facilities]]></string>
+    <string name="policies">By proceeding, you agree to our Policies</string>
+    <string name="proceed_further">Proceed Further</string>
+    <string name="price_description">Price Description</string>
+    <string name="monthly_rent">Monthly Rent</string>
+    <string name="security">Security</string>
+    <string name="sub_total">Sub Total</string>
 
     <string-array name="type_name">
         <item>Room/Apartment/Roomate</item>
@@ -157,5 +167,7 @@
         <item>General</item>
         <item>Accomodation</item>
     </string-array>
+
+    <string name="fcm_token">FCM Token: %s</string>
 
 </resources>

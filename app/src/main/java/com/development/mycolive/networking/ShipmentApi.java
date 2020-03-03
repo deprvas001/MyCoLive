@@ -14,6 +14,7 @@ import com.development.mycolive.model.loginModel.LoginRequestModel;
 import com.development.mycolive.model.loginModel.LoginResponse;
 import com.development.mycolive.model.postCommunity.PostCommunity;
 import com.development.mycolive.model.postCommunity.PostResponse;
+import com.development.mycolive.model.propertyDetailModel.PropertyDetailResponse;
 import com.development.mycolive.model.searchDetailPage.SearchDetailResponse;
 import com.development.mycolive.model.searchFilterModel.FilterResponse;
 import com.development.mycolive.model.signup.SignPostRequest;
@@ -230,6 +231,19 @@ public interface ShipmentApi {
             @Query("type") String  type,
             @Query("offset") String offset,
             @Query("per_page") String perPage);
+
+
+    @Headers({
+            "Content-Type: application/json",
+            "Sources: APP",
+            "user_type: USER",
+            "user_device_type: ADNROID",
+            "user_device_token: 234234dvdfdfsdfsdf",
+            "AuthenticateToken: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ3ZWJmdW1lYXBwLmNvbSIsImF1ZCI6IldlYmZ1bWUgSmFzb24gQXBwIiwiaWF0IjoxNTgyODk3NTQxLCJuYmYiOjE1ODI4OTc1NDEsImV4cCI6MTU4NDEwNzE0MSwiZGF0YSI6eyJ1c2VyX3R5cGUiOiJVU0VSIiwidXNlcl9kZXZpY2VfdHlwZSI6IkFETlJPSUQiLCJ1c2VyX2RldmljZV90b2tlbiI6IjIzNDIzNGR2ZGZkZnNkZnNkZiIsIlNvdXJjZXMiOiJBUFAiLCJ1c2VyX25hbWUiOiJhYmMiLCJ1c2VyX2lkIjoiMTYxIiwibG9naW5fdHlwZSI6Ik5PUk1BTCIsInVzZXJfbG9nX2lkIjoyNTl9fQ.zQOC85L9TVY8S8IYaRfleQCbE1K-zEl17AwgZ_d17Dg"
+    })
+    @GET("propertyById")
+    Call<PropertyDetailResponse> getPropertyDetail(
+            @Query("property_id") String  type);
 
 
 }

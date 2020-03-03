@@ -25,7 +25,7 @@ class SplashScreen : AppCompatActivity() {
 
     private fun goToMainActivity(){
       //  session.checkLogin()
-        val mainActivityIntent = Intent(applicationContext, ShowHomeScreen::class.java)
+        val mainActivityIntent = Intent(applicationContext,ShowHomeScreen::class.java)
         startActivity(mainActivityIntent)
         finish()
     }

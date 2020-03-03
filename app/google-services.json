@@ -1,0 +1,91 @@
+{
+  "project_info": {
+    "project_number": "626910624357",
+    "firebase_url": "https://manibudapest-f283e.firebaseio.com",
+    "project_id": "manibudapest-f283e",
+    "storage_bucket": "manibudapest-f283e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:626910624357:android:b935a16940944acef9a48c",
+        "android_client_info": {
+          "package_name": "com.development.mycolive"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "626910624357-fqcc89i5c1677mc58jnuul414kkbqi1t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.development.mycolive",
+            "certificate_hash": "c18338b0f35382d6b9dc2baf1b88121ae50acc40"
+          }
+        },
+        {
+          "client_id": "626910624357-hlsstphmj0u6vdk6cd0541g7r3sksa3c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAU914quj9_UMSw9XxRl006c-bS9ZjFU64"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "626910624357-hlsstphmj0u6vdk6cd0541g7r3sksa3c.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "626910624357-04kv6incqf8m1o7ck5c54jt17jtqo682.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.anj.mani"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:626910624357:android:2035187254535b7ff9a48c",
+        "android_client_info": {
+          "package_name": "com.google.firecast"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "626910624357-hlsstphmj0u6vdk6cd0541g7r3sksa3c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAU914quj9_UMSw9XxRl006c-bS9ZjFU64"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "626910624357-hlsstphmj0u6vdk6cd0541g7r3sksa3c.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "626910624357-04kv6incqf8m1o7ck5c54jt17jtqo682.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.anj.mani"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

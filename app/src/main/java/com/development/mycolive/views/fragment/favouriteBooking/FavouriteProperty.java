@@ -1,6 +1,7 @@
 package com.development.mycolive.views.fragment.favouriteBooking;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
@@ -26,6 +27,8 @@ import com.development.mycolive.model.editProfile.ProfilePostApiResponse;
 import com.development.mycolive.model.favourite.FavouriteApiResponse;
 import com.development.mycolive.model.favourite.FavouriteBookingModel;
 import com.development.mycolive.model.favourite.FavouritePropertyModel;
+import com.development.mycolive.views.activity.propertyDetail.PropertyDetail;
+import com.development.mycolive.views.activity.searchDetailPage.RoomDetail;
 import com.development.mycolive.views.fragment.profile.ProfileViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -80,6 +83,8 @@ public class FavouriteProperty extends Fragment implements View.OnClickListener 
             @Override
             public void onClick(View view, int position) {
                 FavouritePropertyModel resultModel = bookingModelList.get(position);
+                startActivity(new Intent(getActivity(), PropertyDetail.class));
+
                 /*startActivity(new Intent(getActivity(), RoomDetail.class));*/
                 // Toast.makeText(getApplicationContext(), resultModel.getAddress() + " is selected!", Toast.LENGTH_SHORT).show();
             }
