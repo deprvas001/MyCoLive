@@ -22,30 +22,30 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyViewHolder>  {
+public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyViewHolder> {
 
     private List<FavouritePropertyModel> propertiesList;
     private Context context;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView title,price,address,name,rating,created_date;
-        public ImageView imageView,favIcon;
+        public TextView title, price, address, name, rating, created_date, no_of_bathroom, no_of_room;
+        public ImageView imageView, favIcon;
         public LinearLayout viewLayout;
 
         public MyViewHolder(View view) {
             super(view);
-            imageView = (ImageView)view.findViewById(R.id.image);
-            price = (TextView)view.findViewById(R.id.price);
-            address = (TextView)view.findViewById(R.id.address);
-            name = (TextView)view.findViewById(R.id.type);
-            favIcon = (ImageView)view.findViewById(R.id.fav_icon);
-
-
+            imageView = (ImageView) view.findViewById(R.id.image);
+            price = (TextView) view.findViewById(R.id.price);
+            address = (TextView) view.findViewById(R.id.address);
+            name = (TextView) view.findViewById(R.id.type);
+            favIcon = (ImageView) view.findViewById(R.id.fav_icon);
+            no_of_bathroom = (TextView) view.findViewById(R.id.no_of_bathroom);
+            no_of_room = (TextView) view.findViewById(R.id.no_of_room);
         }
     }
 
 
-    public FavouriteAdapter(Context context,List<FavouritePropertyModel> propertiesList) {
+    public FavouriteAdapter(Context context, List<FavouritePropertyModel> propertiesList) {
         this.context = context;
         this.propertiesList = propertiesList;
     }
@@ -60,26 +60,27 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
 
     @Override
     public void onBindViewHolder(FavouriteAdapter.MyViewHolder holder, int position) {
-        FavouritePropertyModel  bookingModel = propertiesList.get(position);
+        FavouritePropertyModel bookingModel = propertiesList.get(position);
 
         holder.name.setText(bookingModel.getName());
         holder.price.setText(bookingModel.getPrice());
         holder.address.setText(bookingModel.getAddress());
+        holder.no_of_bathroom.setText(bookingModel.getNo_of_bathroom());
+        holder.no_of_room.setText(bookingModel.getNumber_of_room());
 
-        if(bookingModel.getFavourites().equals("1")){
+        if (bookingModel.getFavourites().equals("1")) {
             holder.favIcon.setColorFilter(ContextCompat.getColor(context,
                     R.color.colorPrimaryDark));
         }
 
-      List<PropertyImage>  imageList= bookingModel.getImage();
+        List<PropertyImage> imageList = bookingModel.getImage();
 
-        if(bookingModel.getImage().size()>0) {
+        if (bookingModel.getImage().size() > 0) {
             Picasso.get()
                     .load(imageList.get(0).getImage())
-                     // .placeholder(R.drawable.image1)
-                   //   .error(R.drawable.err)
+                    // .placeholder(R.drawable.image1)
+                    //   .error(R.drawable.err)
                     .into(holder.imageView);
-
         }
     }
 

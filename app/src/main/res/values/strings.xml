@@ -162,6 +162,14 @@
         <item>Roommate</item>
     </string-array>
 
+    <string-array name="duration">
+        <item>Period</item>
+        <item>Sept-Jan</item>
+        <item>Sept-June</item>
+        <item>Feb-June</item>
+        <item>Custom</item>
+    </string-array>
+
     <string-array name="community_type">
         <item>Post Type</item>
         <item>General</item>
@@ -169,5 +177,9 @@
     </string-array>
 
     <string name="fcm_token">FCM Token: %s</string>
+    <string name="description_txt">Description</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="view">View</string>
 
 </resources>

@@ -38,7 +38,7 @@ ActivityLoginBinding loginBinding;
         session = new SessionManager(getApplicationContext());
         // session.checkLogin();
         setClickListener();
-        userLogin();
+       // userLogin();
     }
 
     private void setClickListener(){

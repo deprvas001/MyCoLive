@@ -8,6 +8,8 @@ import com.development.mycolive.model.editProfile.ProfileApiResponse;
 import com.development.mycolive.model.editProfile.ProfileResponse;
 import com.development.mycolive.model.favourite.FavouriteApiResponse;
 import com.development.mycolive.model.favourite.FavouriteResponse;
+import com.development.mycolive.model.favourite.FavouriteRoomateApiResponse;
+import com.development.mycolive.model.favourite.FavouriteRoomateResponse;
 import com.development.mycolive.networking.RetrofitService;
 import com.development.mycolive.networking.ShipmentApi;
 import com.development.mycolive.views.fragment.profile.ProfileReporsitory;
@@ -50,6 +52,32 @@ public class FavouriteRepository {
             @Override
             public void onFailure(Call<FavouriteResponse> call, Throwable t) {
                 profileResponseLiveData.setValue(new FavouriteApiResponse(t));
+            }
+        });
+
+        return   profileResponseLiveData;
+    }
+
+
+    public MutableLiveData<FavouriteRoomateApiResponse> getFavouriteRoomate(Context context, String type){
+        final MutableLiveData<FavouriteRoomateApiResponse> profileResponseLiveData =new MutableLiveData<>();
+
+        shipmentApi.getFavouriteRoomate(type).enqueue(new Callback<FavouriteRoomateResponse>() {
+            @Override
+            public void onResponse(Call<FavouriteRoomateResponse> call, Response<FavouriteRoomateResponse> response) {
+                if(response.code() == 401 || response.code() == 400){
+                    profileResponseLiveData.setValue(new FavouriteRoomateApiResponse(response.code()));
+                }
+                else {
+                    if(response.isSuccessful()){
+                        profileResponseLiveData.setValue(new FavouriteRoomateApiResponse(response.body()));
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FavouriteRoomateResponse> call, Throwable t) {
+                profileResponseLiveData.setValue(new FavouriteRoomateApiResponse(t));
             }
         });
 

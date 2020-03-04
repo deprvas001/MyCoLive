@@ -12,12 +12,14 @@ import com.development.mycolive.model.propertyDetailModel.PropertyDetailApiRespo
 import com.development.mycolive.model.propertyDetailModel.PropertyDetailResponse;
 import com.development.mycolive.views.activity.bookingHistory.BookingHistoryRepository;
 
+import java.util.Map;
+
 public class PropertyDetailViewModel extends AndroidViewModel {
 
     public PropertyDetailViewModel(@NonNull Application application) {
         super(application);
     }
-    public MutableLiveData<PropertyDetailApiResponse> getPropertyDetail(Context context, String id) {
-        return PropertyDetailRepository.getInstance().getPropertyDetail(context, id);
+    public MutableLiveData<PropertyDetailApiResponse> getPropertyDetail(Context context, Map<String,String> headers,String id) {
+        return PropertyDetailRepository.getInstance().getPropertyDetail(context,headers, id);
     }
 }

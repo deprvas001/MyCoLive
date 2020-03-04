@@ -9,14 +9,20 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.DatePickerDialog;
 import android.graphics.Color;
+import android.media.MediaCas;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.DatePicker;
 
 import com.development.mycolive.R;
 import com.development.mycolive.adapter.FacilityAdapter;
 import com.development.mycolive.adapter.HomeSlideAdapter;
 import com.development.mycolive.adapter.MonthDataAdapter;
 import com.development.mycolive.adapter.PropertyDetailAdapter;
+import com.development.mycolive.constant.ApiConstant;
 import com.development.mycolive.databinding.ActivityPropertyDetailBinding;
 import com.development.mycolive.model.RoomCategoryDetail;
 import com.development.mycolive.model.bookingHistory.MonthHistory;
@@ -29,25 +35,36 @@ import com.development.mycolive.model.propertyDetailModel.PropertyRoomData;
 import com.development.mycolive.model.searchFilterModel.FilterApiResponse;
 import com.development.mycolive.model.searchScreen.CityModel;
 import com.development.mycolive.model.searchScreen.UniversityModel;
+import com.development.mycolive.session.SessionManager;
 import com.development.mycolive.views.fragment.filterSearch.SearchViewModel;
 import com.smarteist.autoimageslider.IndicatorAnimations;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class PropertyDetail extends AppCompatActivity {
+public class PropertyDetail extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
     ActivityPropertyDetailBinding propertyDetailBinding;
     private PropertyDetailAdapter roomAdapter;
     private FacilityAdapter facilityAdapter;
     RecyclerView.LayoutManager mLayoutManager;
     PropertyDetailViewModel detailViewModel;
+    SessionManager session;
+    int edit_position = 0,early_check=0;
+    private DatePickerDialog mDatePickerDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         propertyDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_property_detail);
-        getDefaultData();
+        setClickListener();
+        getSession();
+
     }
 
     private void setSliderAndView(List<HomeSlider> sliderList) {
@@ -84,12 +101,18 @@ public class PropertyDetail extends AppCompatActivity {
     }
 
 
-    private void getDefaultData() {
+    private void getDefaultData(String token) {
         String id = "6";
+        Map<String,String> headers = new HashMap<>();
+        headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);
+        headers.put(ApiConstant.SOURCES,ApiConstant.SOURCES_VALUE);
+        headers.put(ApiConstant.USER_TYPE,ApiConstant. USER_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TYPE,ApiConstant.USER_DEVICE_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TOKEN,ApiConstant.USER_DEVICE_TOKEN_VALUE);
+        headers.put(ApiConstant.AUTHENTICAT_TOKEN,token);
 
         detailViewModel = ViewModelProviders.of(this).get(PropertyDetailViewModel.class);
-
-        detailViewModel.getPropertyDetail(this, id).observe(this, new Observer<PropertyDetailApiResponse>() {
+        detailViewModel.getPropertyDetail(this, headers,id).observe(this, new Observer<PropertyDetailApiResponse>() {
             @Override
             public void onChanged(PropertyDetailApiResponse apiResponse) {
                 if (apiResponse.response != null) {
@@ -107,6 +130,114 @@ public class PropertyDetail extends AppCompatActivity {
         propertyDetailBinding.apartmentName.setText(apiResponse.getResponse().getData().get(0).getApartment_name());
         propertyDetailBinding.addressApartment.setText(apiResponse.getResponse().getData().get(0).getAddress());
         propertyDetailBinding.description.setText(apiResponse.getResponse().getData().get(0).getDescription());
+    }
+
+    private void getSession(){
+        session = new SessionManager(getApplicationContext());
+        // get user data from session
+        HashMap<String, String> user = session.getUserDetails();
+
+        // name
+        String name = user.get(SessionManager.KEY_NAME);
+
+        // email
+        String email = user.get(SessionManager.KEY_EMAIL);
+        String image = user.get(SessionManager.KEY_IMAGE);
+        String token = user.get(SessionManager.KEY_TOKEN);
+
+        getDefaultData(token);
+    }
+
+    private void setClickListener(){
+        setDateTimeField();
+        propertyDetailBinding.type.setOnItemSelectedListener(this);
+        propertyDetailBinding.fromEdit.setOnClickListener(this);
+        propertyDetailBinding.toEdit.setOnClickListener(this);
+        propertyDetailBinding.arrivalDate.setOnClickListener(this);
+        propertyDetailBinding.earlyCheckIn.setOnClickListener(this);
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+        switch (adapterView.getId()){
+            case R.id.type:
+                if(position>0){
+                    String period = adapterView.getSelectedItem().toString();
+                    if(position == 4){
+                        propertyDetailBinding.durationLayout.setVisibility(View.VISIBLE);
+                    }else{
+                        propertyDetailBinding.durationLayout.setVisibility(View.GONE);
+                    }
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.from_edit:
+                edit_position=1;
+                mDatePickerDialog.show();
+                break;
+
+            case R.id.to_edit:
+                edit_position=2;
+                mDatePickerDialog.show();
+                break;
+
+            case R.id.arrival_date:
+                edit_position=3;
+                mDatePickerDialog.show();
+                break;
+
+            case R.id.early_check_in:
+
+                if(early_check ==0){
+                    propertyDetailBinding.earlyCheckDescrp.setVisibility(View.VISIBLE);
+                    propertyDetailBinding.earlyCheckIn.setImageDrawable(getResources().getDrawable(R.drawable.ic_keyboard_arrow_up_black_24dp));
+                    early_check =1;
+                }else{
+                    propertyDetailBinding.earlyCheckDescrp.setVisibility(View.GONE);
+                    propertyDetailBinding.earlyCheckIn.setImageDrawable(getResources().getDrawable(R.drawable.ic_keyboard_arrow_down_black_24dp));
+                    early_check =0;
+                }
+                break;
+        }
+    }
+
+    private void setDateTimeField() {
+        Calendar newCalendar = Calendar.getInstance();
+        mDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                //  SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                SimpleDateFormat sd1 = new SimpleDateFormat("dd-MM-yyyy");
+                //  sd.setTimeZone(TimeZone.getTimeZone("UTC"));
+                final Date startDate = newDate.getTime();
+                // fdate = sd.format(startDate);
+                String final_date = sd1.format(startDate);
+               // oneBinding.fieldLayout.inputDob.setText(final_date);
+                if(edit_position == 1){
+                    propertyDetailBinding.fromEdit.setText(final_date);
+                }else if (edit_position == 2){
+                    propertyDetailBinding.toEdit.setText(final_date);
+                }else if(edit_position == 3){
+                    propertyDetailBinding.arrivalDate.setText(final_date);
+                }
+
+            }
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+         mDatePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+        /*  mDatePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());*/
 
     }
 }

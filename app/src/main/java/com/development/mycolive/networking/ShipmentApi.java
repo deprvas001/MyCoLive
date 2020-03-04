@@ -8,6 +8,7 @@ import com.development.mycolive.model.editProfile.PostProfileModel;
 import com.development.mycolive.model.editProfile.PostProfileResponse;
 import com.development.mycolive.model.editProfile.ProfileResponse;
 import com.development.mycolive.model.favourite.FavouriteResponse;
+import com.development.mycolive.model.favourite.FavouriteRoomateResponse;
 import com.development.mycolive.model.forgotModel.ForgotRequestModel;
 import com.development.mycolive.model.home.HomeResponse;
 import com.development.mycolive.model.loginModel.LoginRequestModel;
@@ -24,9 +25,12 @@ import com.development.mycolive.model.viewCommunityModel.CommentResponse;
 import com.development.mycolive.model.viewCommunityModel.LikeUnlike;
 import com.development.mycolive.model.viewCommunityModel.ViewCommunityResponse;
 
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.HeaderMap;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
@@ -232,7 +236,6 @@ public interface ShipmentApi {
             @Query("offset") String offset,
             @Query("per_page") String perPage);
 
-
     @Headers({
             "Content-Type: application/json",
             "Sources: APP",
@@ -241,8 +244,22 @@ public interface ShipmentApi {
             "user_device_token: 234234dvdfdfsdfsdf",
             "AuthenticateToken: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ3ZWJmdW1lYXBwLmNvbSIsImF1ZCI6IldlYmZ1bWUgSmFzb24gQXBwIiwiaWF0IjoxNTgyODk3NTQxLCJuYmYiOjE1ODI4OTc1NDEsImV4cCI6MTU4NDEwNzE0MSwiZGF0YSI6eyJ1c2VyX3R5cGUiOiJVU0VSIiwidXNlcl9kZXZpY2VfdHlwZSI6IkFETlJPSUQiLCJ1c2VyX2RldmljZV90b2tlbiI6IjIzNDIzNGR2ZGZkZnNkZnNkZiIsIlNvdXJjZXMiOiJBUFAiLCJ1c2VyX25hbWUiOiJhYmMiLCJ1c2VyX2lkIjoiMTYxIiwibG9naW5fdHlwZSI6Ik5PUk1BTCIsInVzZXJfbG9nX2lkIjoyNTl9fQ.zQOC85L9TVY8S8IYaRfleQCbE1K-zEl17AwgZ_d17Dg"
     })
+    @GET("favouriteList")
+    Call<FavouriteRoomateResponse> getFavouriteRoomate(
+            @Query("type") String  type);
+
+
+    /*  @Headers({
+            "Content-Type: application/json",
+            "Sources: APP",
+            "user_type: USER",
+            "user_device_type: ADNROID",
+            "user_device_token: 234234dvdfdfsdfsdf",
+            "AuthenticateToken: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ3ZWJmdW1lYXBwLmNvbSIsImF1ZCI6IldlYmZ1bWUgSmFzb24gQXBwIiwiaWF0IjoxNTgyODk3NTQxLCJuYmYiOjE1ODI4OTc1NDEsImV4cCI6MTU4NDEwNzE0MSwiZGF0YSI6eyJ1c2VyX3R5cGUiOiJVU0VSIiwidXNlcl9kZXZpY2VfdHlwZSI6IkFETlJPSUQiLCJ1c2VyX2RldmljZV90b2tlbiI6IjIzNDIzNGR2ZGZkZnNkZnNkZiIsIlNvdXJjZXMiOiJBUFAiLCJ1c2VyX25hbWUiOiJhYmMiLCJ1c2VyX2lkIjoiMTYxIiwibG9naW5fdHlwZSI6Ik5PUk1BTCIsInVzZXJfbG9nX2lkIjoyNTl9fQ.zQOC85L9TVY8S8IYaRfleQCbE1K-zEl17AwgZ_d17Dg"
+    })*/
     @GET("propertyById")
     Call<PropertyDetailResponse> getPropertyDetail(
+            @HeaderMap Map<String,String> headers,
             @Query("property_id") String  type);
 
 

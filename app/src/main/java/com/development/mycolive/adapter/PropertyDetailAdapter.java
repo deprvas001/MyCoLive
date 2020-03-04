@@ -13,11 +13,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.development.mycolive.R;
-import com.development.mycolive.model.RoomCategoryDetail;
-import com.development.mycolive.model.communityModel.AllPost;
-import com.development.mycolive.model.propertyDetailModel.PropertyImageSlider;
+import com.development.mycolive.model.home.HomeSlider;
+import com.development.mycolive.model.propertyDetailModel.FacilityData;
 import com.development.mycolive.model.propertyDetailModel.PropertyRoomData;
-import com.development.mycolive.views.activity.viewCommunity.ViewCommunity;
+import com.development.mycolive.views.activity.roomInformation.RoomInformation;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
@@ -31,9 +30,10 @@ public class PropertyDetailAdapter  extends RecyclerView.Adapter<PropertyDetailA
     private ViewGroup group;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView price,name,type,city,university,comment,date,like,comment_count;
-        public ImageView imageView,user_image,post_image;
-        public LinearLayout postLayout;
+        public TextView price,name,type,city,university,comment,date,facility_txt,more_facility,
+                like,comment_count;
+        public ImageView imageView,user_image,post_image,facility_image;
+        public LinearLayout room_info;
 
         public MyViewHolder(View view) {
             super(view);
@@ -41,6 +41,10 @@ public class PropertyDetailAdapter  extends RecyclerView.Adapter<PropertyDetailA
             imageView = (ImageView)view.findViewById(R.id.image);
             name = (TextView)view.findViewById(R.id.name);
             price = (TextView)view.findViewById(R.id.price);
+            room_info = (LinearLayout)view.findViewById(R.id.room_info);
+            facility_image = (ImageView)view.findViewById(R.id.facility_one);
+            facility_txt = (TextView)view.findViewById(R.id.facility_txt);
+            more_facility = (TextView) view.findViewById(R.id.more_facility);
 
         }
     }
@@ -62,39 +66,37 @@ public class PropertyDetailAdapter  extends RecyclerView.Adapter<PropertyDetailA
     @Override
     public void onBindViewHolder(PropertyDetailAdapter.MyViewHolder holder, int position) {
         PropertyRoomData roomData = detailList.get(position);
-        PropertyImageSlider imageSlider =  roomData.getImage_slider().get(0);
+        HomeSlider imageSlider =  roomData.getImage_slider().get(0);
+        FacilityData facilityData = roomData.getFacility().get(0);
         holder.name.setText(roomData.getApartment_name());
-        holder.price.setText(roomData.getTotal_price());
+        holder.price.setText("$"+roomData.getTotal_price()+"/Month");
+        holder.facility_txt.setText(facilityData.getFacilityString());
+        holder.more_facility.setText("+"+roomData.getImage_slider().size());
         Picasso.get()
                 .load(imageSlider.getImage())
                 /*  .placeholder(R.drawable.image1)
                   .error(R.drawable.err)*/
                 .into(holder.imageView);
+
+        Picasso.get()
+                .load(facilityData.getIcon_url())
+                /*  .placeholder(R.drawable.image1)
+                  .error(R.drawable.err)*/
+                .into(holder.facility_image);
+
+                holder.room_info.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(context,RoomInformation.class);
+                        intent.putExtra("room",roomData);
+                        context.startActivity(intent);
+                    }
+                });
     }
 
     @Override
     public int getItemCount() {
         return detailList.size();
-    }
-
-    private void showCustomDialog(Context context){
-        //before inflating the custom alert dialog layout, we will get the current activity viewgroup
-        //  ViewGroup viewGroup = context.findViewById(android.R.id.content);
-
-        //then we will inflate the custom alert dialog xml that we created
-        View dialogView = LayoutInflater.from(context).inflate(R.layout.custom_request_dialog, group, false);
-
-        //Now we need an AlertDialog.Builder object
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
-        //setting the view of the builder to our custom view that we already inflated
-        builder.setView(dialogView);
-
-
-
-        //finally creating the alert dialog and displaying it
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
     }
 
 }

@@ -1,13 +1,35 @@
 package com.development.mycolive.model.searchDetailPage;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
-public class PriceLevel {
+public class PriceLevel implements Parcelable {
     private String id;
     @SerializedName("room_id")
     private String roomId;
     private String label;
     private String price;
+
+    protected PriceLevel(Parcel in) {
+        id = in.readString();
+        roomId = in.readString();
+        label = in.readString();
+        price = in.readString();
+    }
+
+    public static final Creator<PriceLevel> CREATOR = new Creator<PriceLevel>() {
+        @Override
+        public PriceLevel createFromParcel(Parcel in) {
+            return new PriceLevel(in);
+        }
+
+        @Override
+        public PriceLevel[] newArray(int size) {
+            return new PriceLevel[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -39,5 +61,18 @@ public class PriceLevel {
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(roomId);
+        parcel.writeString(label);
+        parcel.writeString(price);
     }
 }

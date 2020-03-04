@@ -14,6 +14,8 @@ import com.development.mycolive.networking.RetrofitService;
 import com.development.mycolive.networking.ShipmentApi;
 import com.development.mycolive.views.activity.postScreen.PostRepository;
 
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,11 +35,11 @@ public class PropertyDetailRepository {
         return propertyDetailRepository;
     }
 
-    public MutableLiveData<PropertyDetailApiResponse> getPropertyDetail(Context context, String id){
+    public MutableLiveData<PropertyDetailApiResponse> getPropertyDetail(Context context, Map<String,String> headers, String id){
         final MutableLiveData<PropertyDetailApiResponse> loginResponseLiveData =new MutableLiveData<>();
         String token = String.valueOf(R.string.token);
 
-        shipmentApi.getPropertyDetail(id).enqueue(new Callback<PropertyDetailResponse>() {
+        shipmentApi.getPropertyDetail(headers,id).enqueue(new Callback<PropertyDetailResponse>() {
             @Override
             public void onResponse(Call<PropertyDetailResponse> call, Response<PropertyDetailResponse> response) {
                 if(response.code() == 401){

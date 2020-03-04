@@ -36,11 +36,11 @@ public class FindRoomate extends AppCompatActivity {
     }
 
     private void setRecyclerview(){
-        roomateAdapter = new FindRoomateAdapter(FindRoomate.this, roomateList);
+       /* roomateAdapter = new FindRoomateAdapter(FindRoomate.this, roomateList);
         mLayoutManager = new LinearLayoutManager(FindRoomate.this);
         roomateBinding.recyclerView.setLayoutManager(mLayoutManager);
         roomateBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());
-        roomateBinding.recyclerView.setAdapter(roomateAdapter);
+        roomateBinding.recyclerView.setAdapter(roomateAdapter);*/
     }
 
     private void typeRoomate(){

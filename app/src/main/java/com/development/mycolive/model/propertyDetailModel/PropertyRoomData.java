@@ -1,11 +1,15 @@
 package com.development.mycolive.model.propertyDetailModel;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.development.mycolive.model.home.HomeSlider;
 import com.development.mycolive.model.searchDetailPage.PriceLevel;
 
 import java.util.List;
 
-public class PropertyRoomData {
+public class PropertyRoomData  implements Parcelable {
     private String id;
     private String room_apartment;
     private String apartment_name;
@@ -22,9 +26,45 @@ public class PropertyRoomData {
     private Boolean fb_connected;
     private String total_room;
     private String  no_of_bathroom;
-    private List<PropertyImageSlider> image_slider;
+    private List<HomeSlider> image_slider;
     private List<FacilityData> facility;
     private List<PriceLevel> price_levels;
+
+
+    protected PropertyRoomData(Parcel in) {
+        id = in.readString();
+        room_apartment = in.readString();
+        apartment_name = in.readString();
+        post_code = in.readString();
+        district = in.readString();
+        university_id = in.readString();
+        city = in.readString();
+        address = in.readString();
+        near_by_area = in.readString();
+        latitude = in.readString();
+        longitude = in.readString();
+        description = in.readString();
+        total_price = in.readString();
+        byte tmpFb_connected = in.readByte();
+        fb_connected = tmpFb_connected == 0 ? null : tmpFb_connected == 1;
+        total_room = in.readString();
+        no_of_bathroom = in.readString();
+        image_slider =  (List<HomeSlider>) in.readValue(HomeSlider.class.getClassLoader());
+        facility =  (List<FacilityData>) in.readValue(FacilityData.class.getClassLoader());
+        price_levels =  (List<PriceLevel>) in.readValue(PriceLevel.class.getClassLoader());
+    }
+
+    public static final Creator<PropertyRoomData> CREATOR = new Creator<PropertyRoomData>() {
+        @Override
+        public PropertyRoomData createFromParcel(Parcel in) {
+            return new PropertyRoomData(in);
+        }
+
+        @Override
+        public PropertyRoomData[] newArray(int size) {
+            return new PropertyRoomData[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -154,11 +194,11 @@ public class PropertyRoomData {
         this.no_of_bathroom = no_of_bathroom;
     }
 
-    public List<PropertyImageSlider> getImage_slider() {
+    public List<HomeSlider> getImage_slider() {
         return image_slider;
     }
 
-    public void setImage_slider(List<PropertyImageSlider> image_slider) {
+    public void setImage_slider(List<HomeSlider> image_slider) {
         this.image_slider = image_slider;
     }
 
@@ -176,5 +216,33 @@ public class PropertyRoomData {
 
     public void setPrice_levels(List<PriceLevel> price_levels) {
         this.price_levels = price_levels;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(room_apartment);
+        parcel.writeString(apartment_name);
+        parcel.writeString(post_code);
+        parcel.writeString(district);
+        parcel.writeString(university_id);
+        parcel.writeString(city);
+        parcel.writeString(address);
+        parcel.writeString(near_by_area);
+        parcel.writeString(latitude);
+        parcel.writeString(longitude);
+        parcel.writeString(description);
+        parcel.writeString(total_price);
+        parcel.writeByte((byte) (fb_connected == null ? 0 : fb_connected ? 1 : 2));
+        parcel.writeString(total_room);
+        parcel.writeString(no_of_bathroom);
+        parcel.writeValue(image_slider);
+        parcel.writeValue(facility);
+        parcel.writeValue(price_levels);
     }
 }
