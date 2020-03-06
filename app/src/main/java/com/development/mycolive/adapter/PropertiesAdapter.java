@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.development.mycolive.R;
 import com.development.mycolive.model.home.HomeFeatureProperty;
+import com.development.mycolive.model.home.HomeSlider;
+import com.development.mycolive.views.activity.propertyDetail.PropertyDetail;
 import com.development.mycolive.views.activity.searchDetailPage.RoomDetail;
 import com.squareup.picasso.Picasso;
 
@@ -58,20 +60,27 @@ public class PropertiesAdapter extends RecyclerView.Adapter<PropertiesAdapter.My
     @Override
     public void onBindViewHolder(PropertiesAdapter.MyViewHolder holder, int position) {
         HomeFeatureProperty  featureProperty = propertiesList.get(position);
+       List<HomeSlider> homeSliderList = featureProperty.getImage_slider();
         holder.price.setText("$"+featureProperty.getPrice());
         holder.address.setText(featureProperty.getAddress());
-        holder.name.setText(featureProperty.getPropertyName());
+        holder.name.setText(featureProperty.getName());
+        holder.created_date.setText(featureProperty.getCreated_date());
+
+       /* holder.name.setText(featureProperty.getPropertyName());
         holder.rating.setText(featureProperty.getRating());
-        holder.created_date.setText(featureProperty.getCreatedDate());
+        holder.created_date.setText(featureProperty.getCreatedDate());*/
 
         holder.viewLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                context.startActivity(new Intent(context, RoomDetail.class));
+                Intent intent = new Intent(context,PropertyDetail.class);
+                intent.putExtra("Property_Id",featureProperty.getId());
+              context.startActivity(intent);
+              //  context.startActivity(new Intent(context, RoomDetail.class));
             }
         });
         Picasso.get()
-                .load(featureProperty.getImage())
+                .load(homeSliderList.get(0).getImage())
               /*  .placeholder(R.drawable.image1)
                 .error(R.drawable.err)*/
                 .into(holder.imageView);

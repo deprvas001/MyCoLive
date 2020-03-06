@@ -14,6 +14,8 @@ import com.development.mycolive.model.viewCommunityModel.ViewCommunityResponse;
 import com.development.mycolive.networking.RetrofitService;
 import com.development.mycolive.networking.ShipmentApi;
 
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,11 +35,11 @@ public class CommunitiesRepository {
         return communityRepository;
     }
 
-    public MutableLiveData<CommunityApiResponse> getCommunityData(Context context, String type){
+    public MutableLiveData<CommunityApiResponse> getCommunityData(Context context, Map<String,String> headers,String type){
         final MutableLiveData<CommunityApiResponse> loginResponseLiveData =new MutableLiveData<>();
         String token = String.valueOf(R.string.token);
 
-        shipmentApi.getCommunityData(type).enqueue(new Callback<CommunityResponse>() {
+        shipmentApi.getCommunityData(headers,type).enqueue(new Callback<CommunityResponse>() {
             @Override
             public void onResponse(Call<CommunityResponse> call, Response<CommunityResponse> response) {
                 if(response.code() == 401){

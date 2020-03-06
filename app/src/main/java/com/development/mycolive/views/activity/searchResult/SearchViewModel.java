@@ -8,13 +8,14 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.development.mycolive.model.home.HomeApiResponse;
+import com.development.mycolive.model.homeProperty.FeatureApiResponse;
 
 public class SearchViewModel extends AndroidViewModel {
 
     public SearchViewModel(@NonNull Application application) {
         super(application);
     }
-    public MutableLiveData<HomeApiResponse> getData(Context context, String type,String offset,String per_page) {
+    public MutableLiveData<FeatureApiResponse> getData(Context context, String type, String offset, String per_page) {
         return SearchResultRepository.getInstance().getData(context, type,offset,per_page);
     }
 }

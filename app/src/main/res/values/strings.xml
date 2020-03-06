@@ -181,5 +181,11 @@
     <string name="from">From</string>
     <string name="to">To</string>
     <string name="view">View</string>
+    <string name="title_activity_favourite_roomate_detail">FavouriteRoomateDetail</string>
+    <string name="RoomateDetail">Roommate Detail</string>
+    <string name="PropertyDetail">Property Detail</string>
+    <string name="RoomDetail">RoomDetail</string>
+    <string name="mycommunity">My Community</string>
+    <string name="old_password">Old Password</string>
 
 </resources>

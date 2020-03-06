@@ -13,6 +13,7 @@ import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.media.MediaCas;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
@@ -49,7 +50,7 @@ import java.util.List;
 import java.util.Map;
 
 public class PropertyDetail extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
-    ActivityPropertyDetailBinding propertyDetailBinding;
+   public ActivityPropertyDetailBinding propertyDetailBinding;
     private PropertyDetailAdapter roomAdapter;
     private FacilityAdapter facilityAdapter;
     RecyclerView.LayoutManager mLayoutManager;
@@ -57,11 +58,15 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
     SessionManager session;
     int edit_position = 0,early_check=0;
     private DatePickerDialog mDatePickerDialog;
+    String id="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         propertyDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_property_detail);
+        if(getIntent()!=null){
+            id= getIntent().getExtras().getString("Property_Id");
+        }
         setClickListener();
         getSession();
 
@@ -102,7 +107,7 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
 
 
     private void getDefaultData(String token) {
-        String id = "6";
+       /* String id = "6";*/
         Map<String,String> headers = new HashMap<>();
         headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);
         headers.put(ApiConstant.SOURCES,ApiConstant.SOURCES_VALUE);
@@ -130,7 +135,8 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
         propertyDetailBinding.apartmentName.setText(apiResponse.getResponse().getData().get(0).getApartment_name());
         propertyDetailBinding.addressApartment.setText(apiResponse.getResponse().getData().get(0).getAddress());
         propertyDetailBinding.description.setText(apiResponse.getResponse().getData().get(0).getDescription());
-    }
+        propertyDetailBinding.totalPrice.setText("$"+apiResponse.getResponse().getData().get(0).getTotal_price());
+     }
 
     private void getSession(){
         session = new SessionManager(getApplicationContext());
@@ -144,6 +150,11 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
         String email = user.get(SessionManager.KEY_EMAIL);
         String image = user.get(SessionManager.KEY_IMAGE);
         String token = user.get(SessionManager.KEY_TOKEN);
+
+        propertyDetailBinding.toolbar.setTitle(getResources().getString(R.string.PropertyDetail));
+        setSupportActionBar(propertyDetailBinding.toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         getDefaultData(token);
     }
@@ -168,6 +179,8 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
                         propertyDetailBinding.durationLayout.setVisibility(View.VISIBLE);
                     }else{
                         propertyDetailBinding.durationLayout.setVisibility(View.GONE);
+                        propertyDetailBinding.fromEdit.setText(null);
+                        propertyDetailBinding.toEdit.setText(null);
                     }
                 }
                 break;
@@ -239,5 +252,13 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
          mDatePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
         /*  mDatePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());*/
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

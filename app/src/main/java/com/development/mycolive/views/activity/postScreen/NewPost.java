@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.development.mycolive.R;
+import com.development.mycolive.constant.ApiConstant;
 import com.development.mycolive.databinding.ActivityNewPostBinding;
 import com.development.mycolive.model.postCommunity.PostApiResponse;
 import com.development.mycolive.model.postCommunity.PostCommunity;
@@ -24,18 +25,25 @@ import com.development.mycolive.model.searchScreen.CityModel;
 import com.development.mycolive.model.searchScreen.UniversityModel;
 import com.development.mycolive.model.viewCommunityModel.CommentApiResponse;
 import com.development.mycolive.model.viewCommunityModel.CommentPost;
+import com.development.mycolive.session.SessionManager;
+import com.development.mycolive.views.activity.BaseActivity;
+import com.development.mycolive.views.activity.ShowHomeScreen;
 import com.development.mycolive.views.activity.viewCommunity.CommunityViewModel;
 import com.development.mycolive.views.fragment.filterSearch.SearchViewModel;
 import com.nguyenhoanglam.imagepicker.model.Config;
 import com.nguyenhoanglam.imagepicker.model.Image;
 import com.nguyenhoanglam.imagepicker.ui.imagepicker.ImagePicker;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class NewPost extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+import retrofit2.http.Headers;
+
+public class NewPost extends BaseActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
     ActivityNewPostBinding postBinding;
     List<String> post_type = new ArrayList<String>();
     List<String> images = new ArrayList<>();
@@ -45,6 +53,8 @@ public class NewPost extends AppCompatActivity implements View.OnClickListener, 
     private String type="";
     private String city="";
     private String university="";
+    SessionManager session;
+    String token="";
     private HashMap<Integer,String> image_option =new HashMap<>();
 
 
@@ -53,7 +63,7 @@ public class NewPost extends AppCompatActivity implements View.OnClickListener, 
         super.onCreate(savedInstanceState);
         postBinding = DataBindingUtil.setContentView(this, R.layout.activity_new_post);
         setClickListener();
-        getDefaultData();
+       getSession();
 
     }
 
@@ -159,6 +169,8 @@ public class NewPost extends AppCompatActivity implements View.OnClickListener, 
     }
 
     private void getDefaultData() {
+        showProgressDialog(getResources().getString(R.string.loading));
+
         String type = "ALL";
 
         searchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
@@ -166,6 +178,7 @@ public class NewPost extends AppCompatActivity implements View.OnClickListener, 
         searchViewModel.getDefaultData(this, type).observe(this, new Observer<FilterApiResponse>() {
             @Override
             public void onChanged(FilterApiResponse filterApiResponse) {
+                hideProgressDialog();
                 if (filterApiResponse.filterResponse != null) {
                     List<CityModel> cityModelList = filterApiResponse.getFilterResponse().getData().getCityList();
                     List<UniversityModel> universityModelList = filterApiResponse.getFilterResponse().getData().getUniversityList();
@@ -256,7 +269,7 @@ public class NewPost extends AppCompatActivity implements View.OnClickListener, 
 
     private void convetBitmapString(Bitmap bitmap){
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 40, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream .toByteArray();
         String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
         images.add(encoded);
@@ -264,24 +277,38 @@ public class NewPost extends AppCompatActivity implements View.OnClickListener, 
 
 
     private void setPost(){
+       showProgressDialog(getResources().getString(R.string.loading));
+
+        Map<String,String> headers = new HashMap<>();
+        headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);
+        headers.put(ApiConstant.SOURCES,ApiConstant.SOURCES_VALUE);
+        headers.put(ApiConstant.USER_TYPE,ApiConstant. USER_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TYPE,ApiConstant.USER_DEVICE_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TOKEN,ApiConstant.USER_DEVICE_TOKEN_VALUE);
+        headers.put(ApiConstant.AUTHENTICAT_TOKEN,token);
+
         PostCommunity postCommunity = new PostCommunity();
-        postCommunity.setCity("2");
+        postCommunity.setCity(city);
         postCommunity.setComment("sdfsdf");
         postCommunity.setPost_type("2");
-        postCommunity.setUniversity("6");
+        postCommunity.setUniversity(university);
         postCommunity.setImage(images);
 
 
         postViewModel = ViewModelProviders.of(this).get(PostViewModel.class);
 
-        postViewModel.getResponse(this,postCommunity).observe(this, new Observer<PostApiResponse>() {
+        postViewModel.getResponse(this,headers,postCommunity).observe(this, new Observer<PostApiResponse>() {
             @Override
             public void onChanged(PostApiResponse apiResponse) {
+                hideProgressDialog();
                 if(apiResponse.response !=null){
-
+                    Toast.makeText(NewPost.this, "Success", Toast.LENGTH_SHORT).show();
+                    finish();
                 }else if(apiResponse.getStatus()== 401){
+                    Toast.makeText(NewPost.this, "Authentication", Toast.LENGTH_SHORT).show();
                 }
                 else{
+                    Toast.makeText(NewPost.this, "Try Later", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -329,5 +356,26 @@ public class NewPost extends AppCompatActivity implements View.OnClickListener, 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    private void getSession(){
+        session = new SessionManager(NewPost.this);
+        // get user data from session
+        HashMap<String, String> user = session.getUserDetails();
+        String name = user.get(SessionManager.KEY_NAME);
+
+        // email
+        String email = user.get(SessionManager.KEY_EMAIL);
+        String image = user.get(SessionManager.KEY_IMAGE);
+        token = user.get(SessionManager.KEY_TOKEN);
+
+        postBinding.name.setText(name);
+        Picasso.get()
+                .load(image)
+                // .placeholder(R.drawable.image1)
+                //   .error(R.drawable.err)
+                .into(postBinding.image);
+        //   getBooking(token);
+        getDefaultData();
     }
 }

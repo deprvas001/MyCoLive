@@ -62,6 +62,46 @@
                 android:padding="10dp"
                 android:singleLine="true" />
 
+            <LinearLayout
+                android:id="@+id/duration_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                >
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/from_edit"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:textSize="12sp"
+                    android:layout_weight="1"
+                    android:layout_marginTop="15dp"
+                    android:padding="10dp"
+                    android:editable="false"
+                    android:focusable="false"
+                    android:layout_marginLeft="10dp"
+                    android:drawableRight="@drawable/ic_calender"
+                    android:background="@drawable/edit_post_background"
+                    android:hint="@string/from"/>
+
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/to_edit"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:textSize="12sp"
+                    android:layout_weight="1"
+                    android:layout_marginTop="15dp"
+                    android:padding="10dp"
+                    android:focusable="false"
+                    android:layout_marginLeft="10dp"
+                    android:drawableRight="@drawable/ic_calender"
+                    android:background="@drawable/edit_post_background"
+                    android:hint="@string/to"/>
+
+            </LinearLayout>
+
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_search"

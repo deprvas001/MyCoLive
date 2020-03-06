@@ -12,6 +12,8 @@ import com.development.mycolive.networking.ShipmentApi;
 import com.development.mycolive.model.editProfile.ProfileApiResponse;
 import com.development.mycolive.model.editProfile.ProfileResponse;
 
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -31,10 +33,10 @@ public class ProfileReporsitory {
         return profileRepository;
     }
 
-    public MutableLiveData<ProfileApiResponse> getProfile(Context context, String type){
+    public MutableLiveData<ProfileApiResponse> getProfile(Context context, Map<String,String> headers ,String type){
         final MutableLiveData<ProfileApiResponse> profileResponseLiveData =new MutableLiveData<>();
 
-        shipmentApi.getProfile(type).enqueue(new Callback<ProfileResponse>() {
+        shipmentApi.getProfile(headers,type).enqueue(new Callback<ProfileResponse>() {
             @Override
             public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
                 if(response.code() == 401 || response.code() == 400){
@@ -57,10 +59,10 @@ public class ProfileReporsitory {
     }
 
 
-    public MutableLiveData<ProfilePostApiResponse> updateProfile(Context context, PostProfileModel postProfileModel){
+    public MutableLiveData<ProfilePostApiResponse> updateProfile(Context context,  Map<String,String> headers,PostProfileModel postProfileModel){
         final MutableLiveData<ProfilePostApiResponse> profileResponseLiveData =new MutableLiveData<>();
 
-        shipmentApi.updateProfile(postProfileModel).enqueue(new Callback<PostProfileResponse>() {
+        shipmentApi.updateProfile(headers,postProfileModel).enqueue(new Callback<PostProfileResponse>() {
             @Override
             public void onResponse(Call<PostProfileResponse> call, Response<PostProfileResponse> response) {
                 if(response.code() == 401 || response.code() == 400){

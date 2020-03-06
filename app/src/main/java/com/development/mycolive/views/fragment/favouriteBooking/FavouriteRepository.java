@@ -14,6 +14,8 @@ import com.development.mycolive.networking.RetrofitService;
 import com.development.mycolive.networking.ShipmentApi;
 import com.development.mycolive.views.fragment.profile.ProfileReporsitory;
 
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,10 +35,10 @@ public class FavouriteRepository {
         return favouriteRepository;
     }
 
-    public MutableLiveData<FavouriteApiResponse> getFavourite(Context context, String type,String offset,String perPage){
+    public MutableLiveData<FavouriteApiResponse> getFavourite(Context context, Map<String,String> headers, String type, String offset, String perPage){
         final MutableLiveData<FavouriteApiResponse> profileResponseLiveData =new MutableLiveData<>();
 
-        shipmentApi.getFavourite(type,offset,perPage).enqueue(new Callback<FavouriteResponse>() {
+        shipmentApi.getFavourite(headers,type,offset,perPage).enqueue(new Callback<FavouriteResponse>() {
             @Override
             public void onResponse(Call<FavouriteResponse> call, Response<FavouriteResponse> response) {
                 if(response.code() == 401 || response.code() == 400){
@@ -59,10 +61,10 @@ public class FavouriteRepository {
     }
 
 
-    public MutableLiveData<FavouriteRoomateApiResponse> getFavouriteRoomate(Context context, String type){
+    public MutableLiveData<FavouriteRoomateApiResponse> getFavouriteRoomate(Context context,Map<String,String> headers, String type){
         final MutableLiveData<FavouriteRoomateApiResponse> profileResponseLiveData =new MutableLiveData<>();
 
-        shipmentApi.getFavouriteRoomate(type).enqueue(new Callback<FavouriteRoomateResponse>() {
+        shipmentApi.getFavouriteRoomate(headers,type).enqueue(new Callback<FavouriteRoomateResponse>() {
             @Override
             public void onResponse(Call<FavouriteRoomateResponse> call, Response<FavouriteRoomateResponse> response) {
                 if(response.code() == 401 || response.code() == 400){

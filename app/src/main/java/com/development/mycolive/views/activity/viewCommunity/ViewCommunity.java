@@ -20,6 +20,7 @@ import com.development.mycolive.adapter.CommentAdapter;
 import com.development.mycolive.adapter.HomeSlideAdapter;
 import com.development.mycolive.adapter.MonthDataAdapter;
 import com.development.mycolive.adapter.ViewCommunitySlider;
+import com.development.mycolive.constant.ApiConstant;
 import com.development.mycolive.databinding.ActivityViewCommunityBinding;
 import com.development.mycolive.model.ViewCommentModel;
 import com.development.mycolive.model.ViewSliderModel;
@@ -34,44 +35,62 @@ import com.development.mycolive.model.viewCommunityModel.CommentReply;
 import com.development.mycolive.model.viewCommunityModel.LikeUnlike;
 import com.development.mycolive.model.viewCommunityModel.ViewCommunityApiResponse;
 import com.development.mycolive.model.viewCommunityModel.ViewCommunityModel;
+import com.development.mycolive.session.SessionManager;
+import com.development.mycolive.views.activity.BaseActivity;
 import com.development.mycolive.views.fragment.communities.CommunitiesViewModel;
 import com.smarteist.autoimageslider.IndicatorAnimations;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class ViewCommunity extends AppCompatActivity implements View.OnClickListener {
+import retrofit2.http.Headers;
+
+public class ViewCommunity extends BaseActivity implements View.OnClickListener {
     CommunityViewModel communityViewModel;
     ActivityViewCommunityBinding communityBinding;
     CommentAdapter commentAdapter;
     RecyclerView.LayoutManager mLayoutManager;
-
+    SessionManager session;
+    String token="",id="";
+    String comment_id="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         communityBinding = DataBindingUtil.setContentView(this,R.layout.activity_view_community);
-        getCommunity();
+        getSession();
         setClickListener();
     }
 
-    private void getCommunity(){
-        String type = "ALL";
-        String id = "84";
+    private void getCommunity(String id,String token){
+
+        showProgressDialog(getResources().getString(R.string.loading));
+        Map<String,String> headers = new HashMap<>();
+        headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);
+        headers.put(ApiConstant.SOURCES,ApiConstant.SOURCES_VALUE);
+        headers.put(ApiConstant.USER_TYPE,ApiConstant. USER_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TYPE,ApiConstant.USER_DEVICE_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TOKEN,ApiConstant.USER_DEVICE_TOKEN_VALUE);
+        headers.put(ApiConstant.METHOD,ApiConstant.METHOD_GET);
+        headers.put(ApiConstant.AUTHENTICAT_TOKEN,token);
 
         communityViewModel = ViewModelProviders.of(this).get(CommunityViewModel.class);
 
-        communityViewModel.getCommunityData(this,id).observe(this, new Observer<ViewCommunityApiResponse>() {
+        communityViewModel.getCommunityData(this,headers,id).observe(this, new Observer<ViewCommunityApiResponse>() {
             @Override
             public void onChanged(ViewCommunityApiResponse communityApiResponse) {
+                hideProgressDialog();
                 if(communityApiResponse.response !=null){
                       setView(communityApiResponse.getResponse().getData());
-                }else if(communityApiResponse.getStatus()== 401){
+                }
+                else if(communityApiResponse.getStatus()== 401){
                 }
                 else{
                 }
-             /*   bookingBinding.shimmerViewContainer.stopShimmer();
+             /*  bookingBinding.shimmerViewContainer.stopShimmer();
                 bookingBinding.shimmerViewContainer.setVisibility(View.GONE);*/
             }
         });
@@ -131,13 +150,18 @@ public class ViewCommunity extends AppCompatActivity implements View.OnClickList
     private void setClickListener(){
         communityBinding.postButton.setOnClickListener(this);
         communityBinding.communityViewLayout.like.setOnClickListener(this);
+        communityBinding.commentEdit.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.post_button:
-                commentPost();
+                if(communityBinding.commentEdit.getText().toString().isEmpty()){
+                    Toast.makeText(this, "Comment Field can not be empty.", Toast.LENGTH_SHORT).show();
+                }else{
+                    commentPost();
+                }
                 break;
 
             case R.id.like:
@@ -147,20 +171,34 @@ public class ViewCommunity extends AppCompatActivity implements View.OnClickList
     }
 
     private void commentPost(){
+        showProgressDialog(getResources().getString(R.string.loading));
         CommentPost commentPost = new CommentPost();
-        commentPost.setComment("Hi Testing");
-        commentPost.setComment_id("84");
+        commentPost.setComment(communityBinding.commentEdit.getText().toString());
+        commentPost.setComment_id(id);
+
+        Map<String,String> headers = new HashMap<>();
+        headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);
+        headers.put(ApiConstant.SOURCES,ApiConstant.SOURCES_VALUE);
+        headers.put(ApiConstant.USER_TYPE,ApiConstant. USER_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TYPE,ApiConstant.USER_DEVICE_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TOKEN,ApiConstant.USER_DEVICE_TOKEN_VALUE);
+        headers.put(ApiConstant.METHOD,ApiConstant.METHOD_GET);
+        headers.put(ApiConstant.AUTHENTICAT_TOKEN,token);
 
         communityViewModel = ViewModelProviders.of(this).get(CommunityViewModel.class);
 
-        communityViewModel.getCommentResponse(this,commentPost).observe(this, new Observer<CommentApiResponse>() {
+        communityViewModel.getCommentResponse(this,headers,commentPost).observe(this, new Observer<CommentApiResponse>() {
             @Override
             public void onChanged(CommentApiResponse apiResponse) {
+                hideProgressDialog();
                 if(apiResponse.response !=null){
-                   getCommunity();
+                    communityBinding.commentEdit.setText(null);
+                    getCommunity(id,token);
                 }else if(apiResponse.getStatus()== 401){
+                    Toast.makeText(ViewCommunity.this, "Try Later.", Toast.LENGTH_SHORT).show();
                 }
                 else{
+                    Toast.makeText(ViewCommunity.this, "Try Later.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -168,13 +206,24 @@ public class ViewCommunity extends AppCompatActivity implements View.OnClickList
 
     private void likeUnlike(){
         LikeUnlike likeUnlike = new LikeUnlike();
-        likeUnlike.setComment_id("84");
+        likeUnlike.setComment_id(id);
+
+
+        showProgressDialog(getResources().getString(R.string.loading));
+        Map<String,String> headers = new HashMap<>();
+        headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);
+        headers.put(ApiConstant.SOURCES,ApiConstant.SOURCES_VALUE);
+        headers.put(ApiConstant.USER_TYPE,ApiConstant. USER_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TYPE,ApiConstant.USER_DEVICE_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TOKEN,ApiConstant.USER_DEVICE_TOKEN_VALUE);
+        headers.put(ApiConstant.AUTHENTICAT_TOKEN,token);
 
         communityViewModel = ViewModelProviders.of(this).get(CommunityViewModel.class);
 
-        communityViewModel.getLikeUnilike(this,likeUnlike).observe(this, new Observer<CommentApiResponse>() {
+        communityViewModel.getLikeUnilike(this,headers,likeUnlike).observe(this, new Observer<CommentApiResponse>() {
             @Override
             public void onChanged(CommentApiResponse apiResponse) {
+                hideProgressDialog();
                 if(apiResponse.response !=null){
                   String likes =  apiResponse.getResponse().getData().getTotal_likes();
                   communityBinding.communityViewLayout.like.setText(likes);
@@ -194,5 +243,29 @@ public class ViewCommunity extends AppCompatActivity implements View.OnClickList
                 }
             }
         });
+    }
+
+    private void getSession(){
+        if(getIntent()!=null){
+            id = getIntent().getExtras().getString("Id");
+        }
+
+        session = new SessionManager(ViewCommunity.this);
+        // get user data from session
+        HashMap<String, String> user = session.getUserDetails();
+
+        // name
+        String name = user.get(SessionManager.KEY_NAME);
+
+        // email
+        String email = user.get(SessionManager.KEY_EMAIL);
+        String image = user.get(SessionManager.KEY_IMAGE);
+     //    id = user.get(SessionManager.KEY_USERID);
+        token = user.get(SessionManager.KEY_TOKEN);
+        getCommunity(id,token);
+
+      //  getCommunity("ALL");
+
+        //   getBooking(token);
     }
 }

@@ -37,7 +37,7 @@ ActivityContactUsBinding contactUsBinding;
     private void setWebView(){
         WebSettings webSettings = contactUsBinding.webview.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        contactUsBinding.webview.loadUrl("https://www.google.com");
+        contactUsBinding.webview.loadUrl("https://webfume.in/mani-budapest/landing/contactUs");
     }
 
     private void setClickListener(){

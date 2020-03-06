@@ -21,13 +21,16 @@ import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.development.mycolive.R;
+import com.development.mycolive.constant.ApiConstant;
 import com.development.mycolive.databinding.FragmentProfileScreenOneBinding;
 import com.development.mycolive.model.editProfile.Data;
 import com.development.mycolive.model.editProfile.PostProfileModel;
 import com.development.mycolive.model.editProfile.ProfilePostApiResponse;
+import com.development.mycolive.session.SessionManager;
 import com.development.mycolive.views.activity.ShowHomeScreen;
 import com.development.mycolive.model.editProfile.ProfileApiResponse;
 import com.development.mycolive.model.editProfile.ProfileData;
+import com.google.android.gms.common.api.Api;
 import com.nguyenhoanglam.imagepicker.model.Config;
 import com.nguyenhoanglam.imagepicker.model.Image;
 import com.nguyenhoanglam.imagepicker.ui.imagepicker.ImagePicker;
@@ -38,7 +41,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import retrofit2.http.Headers;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -49,11 +56,12 @@ import static android.app.Activity.RESULT_OK;
 public class ProfileScreenOne extends Fragment implements View.OnClickListener {
     FragmentProfileScreenOneBinding oneBinding;
     ProfileViewModel profileViewModel;
+    SessionManager session;
     private int REQUEST_CODE = 100;
     private String fdate = "";
     private String image_string = "";
     private DatePickerDialog mDatePickerDialog;
-
+    private String token="";
     public ProfileScreenOne() {
         // Required empty public constructor
     }
@@ -64,8 +72,8 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         oneBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile_screen_one, container, false);
         initializeView();
-        getBooking();
-          return oneBinding.getRoot();
+        getSession();
+        return oneBinding.getRoot();
     }
 
     private void initializeView() {
@@ -82,21 +90,32 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener {
 
     }
 
-    private void getBooking() {
-        // ((ShowHomeScreen) getActivity()).showProgressDialog(getString(R.string.loading));
-        String type = "PROFILE";
+    private void getBooking(String token) {
+        ((ShowHomeScreen) getActivity()).showProgressDialog(getResources().getString(R.string.loading));
+        String type = ApiConstant.PROFILE;
+
+        Map<String,String> headers = new HashMap<>();
+        headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);
+        headers.put(ApiConstant.SOURCES,ApiConstant.SOURCES_VALUE);
+        headers.put(ApiConstant.USER_TYPE,ApiConstant. USER_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TYPE,ApiConstant.USER_DEVICE_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TOKEN,ApiConstant.USER_DEVICE_TOKEN_VALUE);
+        headers.put(ApiConstant.METHOD,ApiConstant.METHOD_GET);
+        headers.put(ApiConstant.AUTHENTICAT_TOKEN,token);
 
         profileViewModel = ViewModelProviders.of(getActivity()).get(ProfileViewModel.class);
 
-        profileViewModel.getProfile(getActivity(), type).observe(getActivity(), new Observer<ProfileApiResponse>() {
+        profileViewModel.getProfile(getActivity(),headers, type).observe(getActivity(), new Observer<ProfileApiResponse>() {
             @Override
             public void onChanged(ProfileApiResponse apiResponse) {
-                //  ((ShowHomeScreen) getActivity()).hideProgressDialog();
+                  ((ShowHomeScreen) getActivity()).hideProgressDialog();
                 if (apiResponse.response != null) {
                     setView(apiResponse);
                 } else if (apiResponse.getStatus() == 401) {
+                    ((ShowHomeScreen) getActivity()).hideProgressDialog();
                     Toast.makeText(getActivity(), "Authentication Failed", Toast.LENGTH_SHORT).show();
                 } else {
+                    ((ShowHomeScreen) getActivity()).hideProgressDialog();
                     Toast.makeText(getActivity(), "Try Later", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -131,11 +150,10 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener {
                 oneBinding.fieldLayout.maleRadionbtn.setChecked(true);
             }
         }
-
-
     }
 
     private void profileUpdate() {
+        ((ShowHomeScreen) getActivity()).showProgressDialog(getResources().getString(R.string.loading));
 
         PostProfileModel postProfileModel = new PostProfileModel();
         postProfileModel.setName(oneBinding.fieldLayout.inputName.getText().toString());
@@ -148,24 +166,34 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener {
         postProfileModel.setUniversity(oneBinding.fieldLayout.university.getText().toString());
         postProfileModel.setPostCode(oneBinding.fieldLayout.postCode.getText().toString());
         postProfileModel.setImage(image_string);
+
         if (oneBinding.fieldLayout.femaleRadiobtn.isChecked()) {
             postProfileModel.setGender("Female");
         } else {
             postProfileModel.setGender("Male");
         }
 
+        Map<String,String> headers = new HashMap<>();
+        headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);
+        headers.put(ApiConstant.SOURCES,ApiConstant.SOURCES_VALUE);
+        headers.put(ApiConstant.USER_TYPE,ApiConstant. USER_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TYPE,ApiConstant.USER_DEVICE_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TOKEN,ApiConstant.USER_DEVICE_TOKEN_VALUE);
+        headers.put(ApiConstant.AUTHENTICAT_TOKEN,token);
+
 
         profileViewModel = ViewModelProviders.of(getActivity()).get(ProfileViewModel.class);
 
-        profileViewModel.updateProfile(getActivity(), postProfileModel).observe(getActivity(), new Observer<ProfilePostApiResponse>() {
+        profileViewModel.updateProfile(getActivity(),headers, postProfileModel).observe(getActivity(), new Observer<ProfilePostApiResponse>() {
             @Override
             public void onChanged(ProfilePostApiResponse apiResponse) {
-                //  ((ShowHomeScreen) getActivity()).hideProgressDialog();
+                 ((ShowHomeScreen) getActivity()).hideProgressDialog();
                 if (apiResponse.response != null) {
                     Toast.makeText(getActivity(), apiResponse.response.getMessage(), Toast.LENGTH_SHORT).show();
                 } else if (apiResponse.getStatus() == 401) {
                     Toast.makeText(getActivity(), "Authentication Failed", Toast.LENGTH_SHORT).show();
-                } else {
+                }
+                else {
                     Toast.makeText(getActivity(), "Try Later", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -214,7 +242,36 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.btn_save:
-                profileUpdate();
+                if(oneBinding.fieldLayout.inputName.getText().toString().isEmpty()){
+                    Toast.makeText(getActivity(), "Name field empty.", Toast.LENGTH_SHORT).show();
+                    return;
+                }else if(oneBinding.fieldLayout.inputEmail.getText().toString().isEmpty()){
+                    Toast.makeText(getActivity(), "Email field empty.", Toast.LENGTH_SHORT).show();
+                    return;
+                }else if(oneBinding.fieldLayout.inputPhone.getText().toString().isEmpty()){
+                    Toast.makeText(getActivity(), "Phone field empty.", Toast.LENGTH_SHORT).show();
+                    return;
+                }else if(oneBinding.fieldLayout.inputDob.getText().toString().isEmpty()){
+                    Toast.makeText(getActivity(), "Date of Birth field empty.", Toast.LENGTH_SHORT).show();
+                    return;
+                }else if(oneBinding.fieldLayout.country.getText().toString().isEmpty()){
+                    Toast.makeText(getActivity(), "Country field empty.", Toast.LENGTH_SHORT).show();
+                    return;
+                }else if(oneBinding.fieldLayout.city.getText().toString().isEmpty()){
+                    Toast.makeText(getActivity(), "City field empty.", Toast.LENGTH_SHORT).show();
+                    return;
+                }else if(oneBinding.fieldLayout.district.getText().toString().isEmpty()){
+                    Toast.makeText(getActivity(), "District field empty.", Toast.LENGTH_SHORT).show();
+                    return;
+                }else if(oneBinding.fieldLayout.university.getText().toString().isEmpty()){
+                    Toast.makeText(getActivity(), "University field empty.", Toast.LENGTH_SHORT).show();
+                    return;
+                }else if(oneBinding.fieldLayout.postCode.getText().toString().isEmpty()){
+                    Toast.makeText(getActivity(), "PostCode field empty.", Toast.LENGTH_SHORT).show();
+                    return;
+                }else{
+                    profileUpdate();
+                }
                 break;
 
         }
@@ -263,5 +320,23 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener {
        // mDatePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
         /*  mDatePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());*/
 
+    }
+
+
+    private void getSession(){
+        session = new SessionManager(getActivity());
+        // get user data from session
+        HashMap<String, String> user = session.getUserDetails();
+
+        // name
+        String name = user.get(SessionManager.KEY_NAME);
+
+        // email
+        String email = user.get(SessionManager.KEY_EMAIL);
+        String image = user.get(SessionManager.KEY_IMAGE);
+         token = user.get(SessionManager.KEY_TOKEN);
+
+
+        getBooking(token);
     }
 }

@@ -10,6 +10,8 @@ import com.development.mycolive.networking.ShipmentApi;
 import com.development.mycolive.model.booking.BookingApiResponse;
 import com.development.mycolive.model.booking.BookingResponse;
 
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,11 +30,11 @@ public class BookingRepository {
         return bookingRepository;
     }
 
-    public MutableLiveData<BookingApiResponse> getBooking(Context context, String type){
+    public MutableLiveData<BookingApiResponse> getBooking(Context context, Map<String,String> headers , String type){
         final MutableLiveData<BookingApiResponse> loginResponseLiveData =new MutableLiveData<>();
         String token = String.valueOf(R.string.token);
 
-        shipmentApi.getBooking(type).enqueue(new Callback<BookingResponse>() {
+        shipmentApi.getBooking(headers,type).enqueue(new Callback<BookingResponse>() {
             @Override
             public void onResponse(Call<BookingResponse> call, Response<BookingResponse> response) {
                 if(response.code() == 401){

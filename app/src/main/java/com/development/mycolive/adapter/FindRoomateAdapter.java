@@ -12,9 +12,12 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.development.mycolive.R;
+import com.development.mycolive.constant.ApiConstant;
 import com.development.mycolive.model.favourite.RoomateData;
+import com.development.mycolive.views.activity.FavouriteRoomateDetail;
 import com.development.mycolive.views.activity.RoomateDetails;
 import com.development.mycolive.model.FindRoomateModel;
+import com.development.mycolive.views.activity.searchDetailPage.RoomDetail;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -73,7 +76,10 @@ public class FindRoomateAdapter extends RecyclerView.Adapter<FindRoomateAdapter.
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                context.startActivity(new Intent(context, RoomateDetails.class));
+
+                Intent intent = new Intent(context, FavouriteRoomateDetail.class);
+                intent.putExtra(ApiConstant.ROOMMATAE_ID,roomateModel);
+                context.startActivity(intent);
             }
         });
 

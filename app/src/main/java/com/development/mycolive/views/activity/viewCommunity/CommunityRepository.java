@@ -16,6 +16,8 @@ import com.development.mycolive.model.viewCommunityModel.ViewCommunityResponse;
 import com.development.mycolive.networking.RetrofitService;
 import com.development.mycolive.networking.ShipmentApi;
 
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -35,11 +37,11 @@ public class CommunityRepository {
         return communityRepository;
     }
 
-    public MutableLiveData<ViewCommunityApiResponse> getCommunityData(Context context,  String id){
+    public MutableLiveData<ViewCommunityApiResponse> getCommunityData(Context context, Map<String,String> headers, String id){
         final MutableLiveData<ViewCommunityApiResponse> loginResponseLiveData =new MutableLiveData<>();
         String token = String.valueOf(R.string.token);
 
-        shipmentApi.getCommunityResponse(id).enqueue(new Callback<ViewCommunityResponse>() {
+        shipmentApi.getCommunityResponse(headers,id).enqueue(new Callback<ViewCommunityResponse>() {
             @Override
             public void onResponse(Call<ViewCommunityResponse> call, Response<ViewCommunityResponse> response) {
                 if(response.code() == 401){
@@ -64,11 +66,11 @@ public class CommunityRepository {
     }
 
 
-    public MutableLiveData<CommentApiResponse> getCommentResponse(Context context, CommentPost commentPost){
+    public MutableLiveData<CommentApiResponse> getCommentResponse(Context context, Map<String,String> headers , CommentPost commentPost){
         final MutableLiveData<CommentApiResponse> loginResponseLiveData =new MutableLiveData<>();
         String token = String.valueOf(R.string.token);
 
-        shipmentApi.getCommentReply(commentPost).enqueue(new Callback<CommentResponse>() {
+        shipmentApi.getCommentReply(headers,commentPost).enqueue(new Callback<CommentResponse>() {
             @Override
             public void onResponse(Call<CommentResponse> call, Response<CommentResponse> response) {
                 if(response.code() == 401){
@@ -93,11 +95,11 @@ public class CommunityRepository {
     }
 
 
-    public MutableLiveData<CommentApiResponse> getLikeUnlike(Context context, LikeUnlike likeUnlike){
+    public MutableLiveData<CommentApiResponse> getLikeUnlike(Context context,Map<String,String> headers, LikeUnlike likeUnlike){
         final MutableLiveData<CommentApiResponse> loginResponseLiveData =new MutableLiveData<>();
         String token = String.valueOf(R.string.token);
 
-        shipmentApi.getLikeUnlike(likeUnlike).enqueue(new Callback<CommentResponse>() {
+        shipmentApi.getLikeUnlike(headers,likeUnlike).enqueue(new Callback<CommentResponse>() {
             @Override
             public void onResponse(Call<CommentResponse> call, Response<CommentResponse> response) {
                 if(response.code() == 401){

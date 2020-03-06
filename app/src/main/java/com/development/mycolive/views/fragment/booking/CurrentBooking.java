@@ -17,13 +17,19 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.development.mycolive.R;
+import com.development.mycolive.constant.ApiConstant;
 import com.development.mycolive.databinding.FragmentCurrentBookingBinding;
 import com.development.mycolive.adapter.CurrentBookingAdapter;
 import com.development.mycolive.model.booking.BookingApiResponse;
 import com.development.mycolive.model.booking.BookingData;
+import com.development.mycolive.session.SessionManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import retrofit2.http.Headers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,7 +40,8 @@ FragmentCurrentBookingBinding bookingBinding ;
     RecyclerView.LayoutManager mLayoutManager;
     List<BookingData> bookingList = new ArrayList<>();
     BookingViewModel bookingViewModel;
-
+    SessionManager session;
+    String token="";
     public CurrentBooking() {
         // Required empty public constructor
     }
@@ -46,7 +53,7 @@ FragmentCurrentBookingBinding bookingBinding ;
         // Inflate the layout for this fragment
         bookingBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_current_booking,container,false);
 
-        getBooking();
+       getSession();
         return bookingBinding.getRoot();
     }
 
@@ -71,12 +78,25 @@ FragmentCurrentBookingBinding bookingBinding ;
     }*/
 
 
-    private void getBooking() {
+    private void getBooking(String token) {
+
+        Map<String,String> headers = new HashMap<>();
+        headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);
+        headers.put(ApiConstant.SOURCES,ApiConstant.SOURCES_VALUE);
+        headers.put(ApiConstant.USER_TYPE,ApiConstant. USER_TYPE_DRIVER);
+        headers.put(ApiConstant.USER_DEVICE_TYPE,ApiConstant.USER_DEVICE_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TOKEN,ApiConstant.USER_DEVICE_TOKEN_VALUE);
+        headers.put(ApiConstant.METHOD,ApiConstant.METHOD_GET);
+        headers.put(ApiConstant.AUTHENTICAT_TOKEN,token);
+
         String type = "CURRENTBOOKING";
+
+
+
 
         bookingViewModel = ViewModelProviders.of(getActivity()).get(BookingViewModel.class);
 
-        bookingViewModel.getBooking(getActivity(),type).observe(getActivity(), new Observer<BookingApiResponse>() {
+        bookingViewModel.getBooking(getActivity(),headers,type).observe(getActivity(), new Observer<BookingApiResponse>() {
             @Override
             public void onChanged(BookingApiResponse bookingApiResponse) {
                 if(bookingApiResponse.response !=null){
@@ -124,5 +144,22 @@ FragmentCurrentBookingBinding bookingBinding ;
         bookingBinding.shimmerViewContainer.stopShimmer();
         super.onPause();
 
+    }
+
+    private void getSession(){
+        session = new SessionManager(getActivity());
+        // get user data from session
+        HashMap<String, String> user = session.getUserDetails();
+
+        // name
+        String name = user.get(SessionManager.KEY_NAME);
+
+        // email
+        String email = user.get(SessionManager.KEY_EMAIL);
+        String image = user.get(SessionManager.KEY_IMAGE);
+        token = user.get(SessionManager.KEY_TOKEN);
+
+
+        getBooking(token);
     }
 }

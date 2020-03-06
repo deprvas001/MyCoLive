@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -16,6 +17,7 @@ import com.development.mycolive.R;
 import com.development.mycolive.model.home.HomeSlider;
 import com.development.mycolive.model.propertyDetailModel.FacilityData;
 import com.development.mycolive.model.propertyDetailModel.PropertyRoomData;
+import com.development.mycolive.views.activity.propertyDetail.PropertyDetail;
 import com.development.mycolive.views.activity.roomInformation.RoomInformation;
 import com.squareup.picasso.Picasso;
 
@@ -32,6 +34,7 @@ public class PropertyDetailAdapter  extends RecyclerView.Adapter<PropertyDetailA
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView price,name,type,city,university,comment,date,facility_txt,more_facility,
                 like,comment_count;
+        public CheckBox select;
         public ImageView imageView,user_image,post_image,facility_image;
         public LinearLayout room_info;
 
@@ -45,6 +48,7 @@ public class PropertyDetailAdapter  extends RecyclerView.Adapter<PropertyDetailA
             facility_image = (ImageView)view.findViewById(R.id.facility_one);
             facility_txt = (TextView)view.findViewById(R.id.facility_txt);
             more_facility = (TextView) view.findViewById(R.id.more_facility);
+            select = (CheckBox)view.findViewById(R.id.checkbox_select);
 
         }
     }
@@ -72,6 +76,16 @@ public class PropertyDetailAdapter  extends RecyclerView.Adapter<PropertyDetailA
         holder.price.setText("$"+roomData.getTotal_price()+"/Month");
         holder.facility_txt.setText(facilityData.getFacilityString());
         holder.more_facility.setText("+"+roomData.getImage_slider().size());
+
+        /*if(holder.select.isChecked()){
+
+          String total =  ((PropertyDetail)context).propertyDetailBinding.totalPrice.getText().toString();
+          int price_total = Integer.parseInt(total);
+          int room_price = Integer.parseInt(roomData.getTotal_price());
+          int final_total = price_total+room_price;
+            ((PropertyDetail)context).propertyDetailBinding.totalPrice.setText(String.valueOf(final_total));
+        }*/
+
         Picasso.get()
                 .load(imageSlider.getImage())
                 /*  .placeholder(R.drawable.image1)

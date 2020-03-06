@@ -10,7 +10,7 @@ public class HomeData {
     List<HomeFeatureProperty> featuredPropertyList;
 
     @SerializedName("hotProperty")
-    List<HomeHotProperty> hotPropertyList;
+    List<HomeFeatureProperty> hotProperty;
 
     @SerializedName("propertyByArea")
     List<HomePropertyArea> propertyAreaList;
@@ -26,12 +26,12 @@ public class HomeData {
         this.featuredPropertyList = featuredPropertyList;
     }
 
-    public List<HomeHotProperty> getHotPropertyList() {
-        return hotPropertyList;
+    public List<HomeFeatureProperty> getHotProperty() {
+        return hotProperty;
     }
 
-    public void setHotPropertyList(List<HomeHotProperty> hotPropertyList) {
-        this.hotPropertyList = hotPropertyList;
+    public void setHotProperty(List<HomeFeatureProperty> hotProperty) {
+        this.hotProperty = hotProperty;
     }
 
     public List<HomePropertyArea> getPropertyAreaList() {

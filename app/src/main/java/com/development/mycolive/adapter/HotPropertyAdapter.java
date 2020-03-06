@@ -12,7 +12,9 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.development.mycolive.R;
+import com.development.mycolive.model.home.HomeFeatureProperty;
 import com.development.mycolive.model.home.HomeHotProperty;
+import com.development.mycolive.model.home.HomeSlider;
 import com.development.mycolive.views.activity.searchDetailPage.RoomDetail;
 import com.squareup.picasso.Picasso;
 
@@ -20,7 +22,7 @@ import java.util.List;
 
 public class HotPropertyAdapter extends RecyclerView.Adapter<HotPropertyAdapter.MyViewHolder>  {
 
-    private List<HomeHotProperty> propertiesList;
+    private List<HomeFeatureProperty> propertiesList;
     private Context context;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -43,7 +45,7 @@ public class HotPropertyAdapter extends RecyclerView.Adapter<HotPropertyAdapter.
     }
 
 
-    public HotPropertyAdapter(Context context,List<HomeHotProperty> propertiesList) {
+    public HotPropertyAdapter(Context context,List<HomeFeatureProperty> propertiesList) {
         this.context = context;
         this.propertiesList = propertiesList;
     }
@@ -58,10 +60,11 @@ public class HotPropertyAdapter extends RecyclerView.Adapter<HotPropertyAdapter.
 
     @Override
     public void onBindViewHolder(HotPropertyAdapter.MyViewHolder holder, int position) {
-        HomeHotProperty  featureProperty = propertiesList.get(position);
+        HomeFeatureProperty  featureProperty = propertiesList.get(position);
+        List<HomeSlider> homeSliderList = featureProperty.getImage_slider();
         holder.price.setText("$"+featureProperty.getPrice());
         holder.address.setText(featureProperty.getAddress());
-        holder.name.setText(featureProperty.getPropertyName());
+        holder.name.setText(featureProperty.getName());
         holder.rating.setVisibility(View.GONE);
         holder.viewLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +73,7 @@ public class HotPropertyAdapter extends RecyclerView.Adapter<HotPropertyAdapter.
             }
         });
         Picasso.get()
-                .load(featureProperty.getImage())
+                .load(homeSliderList.get(0).getImage())
                 /*  .placeholder(R.drawable.image1)
                   .error(R.drawable.err)*/
                 .into(holder.imageView);

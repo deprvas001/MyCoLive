@@ -2,6 +2,7 @@ package com.development.mycolive.model.searchFilterModel;
 
 import com.development.mycolive.model.searchScreen.CityModel;
 import com.development.mycolive.model.searchScreen.DistrictModel;
+import com.development.mycolive.model.searchScreen.Period;
 import com.development.mycolive.model.searchScreen.UniversityModel;
 import com.google.gson.annotations.SerializedName;
 
@@ -16,6 +17,9 @@ public class FilterData {
 
     @SerializedName("university")
     private List<UniversityModel> universityList;
+
+    @SerializedName("period")
+    private List<Period> periodList;
 
 
     public List<CityModel> getCityList() {
@@ -40,5 +44,13 @@ public class FilterData {
 
     public void setUniversityList(List<UniversityModel> universityList) {
         this.universityList = universityList;
+    }
+
+    public List<Period> getPeriodList() {
+        return periodList;
+    }
+
+    public void setPeriodList(List<Period> periodList) {
+        this.periodList = periodList;
     }
 }

@@ -12,14 +12,16 @@ import com.development.mycolive.model.postCommunity.PostCommunity;
 import com.development.mycolive.model.viewCommunityModel.ViewCommunityApiResponse;
 import com.development.mycolive.views.activity.viewCommunity.CommunityRepository;
 
+import java.util.Map;
+
 public class PostViewModel extends AndroidViewModel {
 
     public PostViewModel(@NonNull Application application){
         super(application);
     }
 
-    public MutableLiveData<PostApiResponse> getResponse(Context context, PostCommunity postCommunity) {
-        return PostRepository.getInstance().getResponse(context,postCommunity);
+    public MutableLiveData<PostApiResponse> getResponse(Context context, Map<String,String> headers, PostCommunity postCommunity) {
+        return PostRepository.getInstance().getResponse(context,headers,postCommunity);
     }
 
 }

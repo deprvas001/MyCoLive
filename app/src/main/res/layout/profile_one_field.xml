@@ -32,7 +32,6 @@
                         android:id="@+id/input_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Emma Mudgar"
                         android:textColor="@color/edit_text_color"
                         android:maxLength="15"
                         android:singleLine="true"
@@ -50,9 +49,7 @@
                         android:id="@+id/input_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="emma.mudgar@webfume.com"
                         android:textColor="@color/edit_text_color"
-                        android:maxLength="15"
                         android:singleLine="true"
                         android:textSize="14sp" />
 
@@ -70,7 +67,6 @@
                         android:layout_height="wrap_content"
                         android:focusableInTouchMode="true"
                         android:textColor="@color/edit_text_color"
-                        android:text="+1-234-222-3455"
                         android:maxLength="15"
                         android:singleLine="true"
                         android:textSize="14sp" />
@@ -156,7 +152,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:focusableInTouchMode="true"
-                        android:text="Hungary"
                         android:textColor="@color/edit_text_color"
                         android:maxLength="15"
                         android:layout_weight="1"
@@ -178,7 +173,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:focusableInTouchMode="true"
-                            android:text="Location"
+
                             android:textColor="@color/edit_text_color"
                             android:maxLength="15"
                             android:layout_weight="1"
@@ -208,7 +203,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:focusableInTouchMode="true"
-                        android:text="Host City"
                         android:textColor="@color/edit_text_color"
                         android:maxLength="15"
                         android:layout_weight="1"
@@ -230,7 +224,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:focusableInTouchMode="true"
-                        android:text="Corvinus"
                         android:textColor="@color/edit_text_color"
                         android:maxLength="15"
                         android:layout_weight="1"
@@ -241,7 +234,6 @@
 
 
                 </LinearLayout>
-
 
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -255,7 +247,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:focusableInTouchMode="true"
-                            android:text="District 7/8/9"
                             android:textColor="@color/edit_text_color"
                             android:maxLength="15"
                             android:layout_weight="1"

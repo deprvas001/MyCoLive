@@ -7,6 +7,7 @@ import android.os.Handler
 import com.development.mycolive.R
 import com.development.mycolive.session.SessionManager
 import com.development.mycolive.views.activity.login.LoginActivity
+import com.development.mycolive.views.activity.testimonial.Testimonials
 
 class SplashScreen : AppCompatActivity() {
     private lateinit var session: SessionManager
@@ -25,7 +26,7 @@ class SplashScreen : AppCompatActivity() {
 
     private fun goToMainActivity(){
       //  session.checkLogin()
-        val mainActivityIntent = Intent(applicationContext,LoginActivity::class.java)
+        val mainActivityIntent = Intent(applicationContext, LoginActivity::class.java)
         startActivity(mainActivityIntent)
         finish()
     }

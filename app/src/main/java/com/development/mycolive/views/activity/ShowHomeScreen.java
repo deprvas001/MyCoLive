@@ -6,6 +6,9 @@ import android.os.Bundle;
 import com.development.mycolive.R;
 import com.development.mycolive.databinding.ActivityShowHomeScreenBinding;
 import com.development.mycolive.session.SessionManager;
+import com.development.mycolive.views.activity.changePassword.ChangePassword;
+import com.development.mycolive.views.activity.myCommunity.MyCommunity;
+import com.development.mycolive.views.activity.testimonial.Testimonials;
 import com.development.mycolive.views.fragment.booking.BookingFragment;
 import com.development.mycolive.views.fragment.communities.Communities;
 import com.development.mycolive.views.fragment.homeFragment.Home;
@@ -132,6 +135,7 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
         screenBinding.customNavigationDrawer.favouriteLayout.setOnClickListener(this);
         screenBinding.customNavigationDrawer.testimonialLayout.setOnClickListener(this);
         screenBinding.customNavigationDrawer.passwordLayout.setOnClickListener(this);
+        screenBinding.customNavigationDrawer.myCommunityLayout.setOnClickListener(this);
         screenBinding.customNavigationDrawer.contactLayout.setOnClickListener(this);
         screenBinding.customNavigationDrawer.logout.setOnClickListener(this);
         screenBinding.customNavigationDrawer.aboutUs.setOnClickListener(this);
@@ -158,12 +162,12 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
                 break;
 
             case R.id.testimonial_layout:
-               startActivity(new Intent(this,Testimonials.class));
+               startActivity(new Intent(this, Testimonials.class));
                // checkDrawer();
                 break;
 
             case R.id.password_layout:
-                startActivity(new Intent(this,ChangePassword.class));
+                startActivity(new Intent(this, ChangePassword.class));
               //  checkDrawer();
                 break;
 
@@ -179,6 +183,11 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
 
             case R.id.notification:
                 startActivity(new Intent(this,Notification.class));
+                // checkDrawer();
+                break;
+
+            case R.id.myCommunity_layout:
+                startActivity(new Intent(this, MyCommunity.class));
                 // checkDrawer();
                 break;
 
@@ -200,23 +209,29 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
         //Now we need an AlertDialog.Builder object
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        Button button_ok = (Button)dialogView.findViewById(R.id.buttonOk);
-       /* button_ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                session.logoutUser();
-            }
-        });*/
-
-        Button cancel = (Button)dialogView.findViewById(R.id.button_cancel);
-
-
         //setting the view of the builder to our custom view that we already inflated
         builder.setView(dialogView);
-
         //finally creating the alert dialog and displaying it
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+        Button button_ok = (Button)dialogView.findViewById(R.id.button_ok);
+        button_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                session.logoutUser();
+               // Toast.makeText(ShowHomeScreen.this, "Done", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Button cancel = (Button)dialogView.findViewById(R.id.button_cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
+
 
       /*  cancel.setOnClickListener(new View.OnClickListener() {
             @Override

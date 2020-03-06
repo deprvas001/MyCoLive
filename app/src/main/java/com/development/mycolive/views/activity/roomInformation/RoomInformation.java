@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.development.mycolive.R;
@@ -36,7 +37,10 @@ List<HomeSlider> homeSliderList=new ArrayList<>();
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         informationBinding = DataBindingUtil.setContentView(this,R.layout.activity_room_information);
-
+        informationBinding.toolbar.setTitle(getResources().getString(R.string.RoomDetail));
+        setSupportActionBar(informationBinding.toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
          roomData = (PropertyRoomData) getIntent().getParcelableExtra("room");
          setSliderAndView(roomData.getImage_slider());
 
@@ -77,5 +81,13 @@ List<HomeSlider> homeSliderList=new ArrayList<>();
         informationBinding.recyclerViewFacility.setLayoutManager(mLayoutManager);
         informationBinding.recyclerViewFacility.setItemAnimator(new DefaultItemAnimator());
         informationBinding.recyclerViewFacility.setAdapter(facilityAdapter);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

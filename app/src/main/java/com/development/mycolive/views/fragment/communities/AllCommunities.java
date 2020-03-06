@@ -17,16 +17,23 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.development.mycolive.R;
+import com.development.mycolive.constant.ApiConstant;
 import com.development.mycolive.databinding.FragmentAllCommunityBinding;
+import com.development.mycolive.session.SessionManager;
 import com.development.mycolive.views.activity.ShowHomeScreen;
 import com.development.mycolive.adapter.AllCommunityAdapter;
 import com.development.mycolive.model.AllCommunityModel;
 import com.development.mycolive.model.communityModel.AllPost;
 import com.development.mycolive.model.communityModel.CommunityApiResponse;
+import com.google.android.gms.common.api.Api;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import retrofit2.http.Headers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,6 +42,7 @@ public class AllCommunities extends Fragment {
 FragmentAllCommunityBinding communityBinding;
     private AllCommunityAdapter communityAdapter;
     RecyclerView.LayoutManager mLayoutManager;
+
     List<AllCommunityModel> communityList = new ArrayList<>();
     CommunitiesViewModel communityViewModel;
     public AllCommunities() {
@@ -64,9 +72,11 @@ FragmentAllCommunityBinding communityBinding;
     private void getCommunity(){
         String type = "ALL";
 
+
+
         communityViewModel = ViewModelProviders.of(getActivity()).get(CommunitiesViewModel.class);
 
-        communityViewModel.getCommunityData(getActivity(),type).observe(getActivity(), new Observer<CommunityApiResponse>() {
+        /*communityViewModel.getCommunityData(getActivity(),type).observe(getActivity(), new Observer<CommunityApiResponse>() {
             @Override
             public void onChanged(CommunityApiResponse communityApiResponse) {
                 if(communityApiResponse.response !=null){
@@ -77,10 +87,11 @@ FragmentAllCommunityBinding communityBinding;
                 }else{
                     Toast.makeText(getActivity(), "Try Later", Toast.LENGTH_SHORT).show();
                 }
-             /*   bookingBinding.shimmerViewContainer.stopShimmer();
-                bookingBinding.shimmerViewContainer.setVisibility(View.GONE);*/
+             *//*   bookingBinding.shimmerViewContainer.stopShimmer();
+                bookingBinding.shimmerViewContainer.setVisibility(View.GONE);*//*
             }
-        });
+        });*/
     }
+
 
 }

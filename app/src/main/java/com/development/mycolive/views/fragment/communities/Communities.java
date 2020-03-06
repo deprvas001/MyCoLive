@@ -21,13 +21,20 @@ import android.widget.Toast;
 
 import com.development.mycolive.R;
 import com.development.mycolive.adapter.AllCommunityAdapter;
+import com.development.mycolive.constant.ApiConstant;
 import com.development.mycolive.databinding.FragmentCommunityBinding;
 import com.development.mycolive.model.communityModel.AllPost;
 import com.development.mycolive.model.communityModel.CommunityApiResponse;
 import com.development.mycolive.model.communityModel.SearchCommunityApiResponse;
+import com.development.mycolive.session.SessionManager;
+import com.development.mycolive.views.activity.ShowHomeScreen;
 import com.development.mycolive.views.activity.postScreen.NewPost;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import retrofit2.http.Headers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,6 +44,9 @@ public class Communities extends Fragment implements View.OnClickListener {
     CommunitiesViewModel communityViewModel;
     private AllCommunityAdapter communityAdapter;
     RecyclerView.LayoutManager mLayoutManager;
+    SessionManager session;
+
+    String token="";
     public Communities() {
         // Required empty public constructor
     }
@@ -48,7 +58,8 @@ public class Communities extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         fragmentCommunityBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_community, container, false);
         setClickListener();
-        getCommunity("ALL");
+        getSession();
+       // getCommunity("ALL");
       //  loadFragment(new AllCommunities());
         return fragmentCommunityBinding.getRoot();
     }
@@ -100,8 +111,11 @@ public class Communities extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.search_edit:
-                setViewBackground(view);
-                getSearchCommunity("General");
+                if(!fragmentCommunityBinding.searchEdit.getText().toString().isEmpty()){
+                    setViewBackground(view);
+                    getSearchCommunity("General");
+                }
+                
                 break;
         }
     }
@@ -148,12 +162,14 @@ public class Communities extends Fragment implements View.OnClickListener {
     }
 
     private void getSearchCommunity(String type){
+        ((ShowHomeScreen) getActivity()).showProgressDialog(getResources().getString(R.string.loading));
 
         communityViewModel = ViewModelProviders.of(getActivity()).get(CommunitiesViewModel.class);
 
         communityViewModel.getSearchData(getActivity(),type).observe(getActivity(), new Observer<SearchCommunityApiResponse>() {
             @Override
             public void onChanged(SearchCommunityApiResponse apiResponse) {
+                ((ShowHomeScreen) getActivity()).hideProgressDialog();
                 if(apiResponse.communityResponse !=null){
                     List<AllPost> allPostList  = apiResponse.communityResponse.getData().getAllpost();
                       setRecyclerview(allPostList);
@@ -177,12 +193,22 @@ public class Communities extends Fragment implements View.OnClickListener {
     }
 
     private void getCommunity(String type){
+        ((ShowHomeScreen) getActivity()).showProgressDialog(getResources().getString(R.string.loading));
+        Map<String,String> headers = new HashMap<>();
+        headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);
+        headers.put(ApiConstant.SOURCES,ApiConstant.SOURCES_VALUE);
+        headers.put(ApiConstant.USER_TYPE,ApiConstant. USER_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TYPE,ApiConstant.USER_DEVICE_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TOKEN,ApiConstant.USER_DEVICE_TOKEN_VALUE);
+        headers.put(ApiConstant.METHOD,ApiConstant.METHOD_GET);
+        headers.put(ApiConstant.AUTHENTICAT_TOKEN,token);
 
         communityViewModel = ViewModelProviders.of(getActivity()).get(CommunitiesViewModel.class);
 
-        communityViewModel.getCommunityData(getActivity(),type).observe(getActivity(), new Observer<CommunityApiResponse>() {
+        communityViewModel.getCommunityData(getActivity(),headers,type).observe(getActivity(), new Observer<CommunityApiResponse>() {
             @Override
             public void onChanged(CommunityApiResponse communityApiResponse) {
+                ((ShowHomeScreen) getActivity()).hideProgressDialog();
                 if(communityApiResponse.response !=null){
                     List<AllPost> allPostList  = communityApiResponse.getResponse().getData();
                     setRecyclerview(allPostList);
@@ -195,5 +221,23 @@ public class Communities extends Fragment implements View.OnClickListener {
                 bookingBinding.shimmerViewContainer.setVisibility(View.GONE);*/
             }
         });
+    }
+
+    private void getSession(){
+        session = new SessionManager(getActivity());
+        // get user data from session
+        HashMap<String, String> user = session.getUserDetails();
+
+        // name
+        String name = user.get(SessionManager.KEY_NAME);
+
+        // email
+        String email = user.get(SessionManager.KEY_EMAIL);
+        String image = user.get(SessionManager.KEY_IMAGE);
+        token = user.get(SessionManager.KEY_TOKEN);
+
+        getCommunity("ALL");
+
+     //   getBooking(token);
     }
 }

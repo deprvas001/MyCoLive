@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.development.mycolive.constant.ApiConstant;
 import com.development.mycolive.databinding.ActivitySearchResultBinding;
+import com.development.mycolive.model.homeProperty.FeatureApiResponse;
 import com.development.mycolive.views.activity.Notification;
 import com.development.mycolive.views.activity.searchDetailPage.RoomDetail;
 import com.development.mycolive.adapter.SearchScreenAdapter;
@@ -49,7 +50,7 @@ ActivitySearchResultBinding resultBinding;
         resultBinding.back.setOnClickListener(this);
         resultBinding.notification.setOnClickListener(this);
 
-        resultBinding.contentSearch.recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),
+        /*resultBinding.contentSearch.recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),
                 resultBinding.contentSearch.recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
@@ -64,7 +65,7 @@ ActivitySearchResultBinding resultBinding;
             public void onLongClick(View view, int position) {
 
             }
-        }));
+        }));*/
     }
 
     @Override
@@ -120,14 +121,18 @@ ActivitySearchResultBinding resultBinding;
 
        searchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
 
-       searchViewModel.getData(this,type,offset,per_page).observe(this, new Observer<HomeApiResponse>() {
+       searchViewModel.getData(this,type,offset,per_page).observe(this, new Observer<FeatureApiResponse>() {
            @Override
-           public void onChanged(HomeApiResponse homeApiResponse) {
+           public void onChanged(FeatureApiResponse homeApiResponse) {
                if (homeApiResponse.response != null) {
+
+                   List<HomeFeatureProperty> homeFeaturePropertyList = homeApiResponse.getResponse().getData();
                    searchList.clear();
-                   List<HomeFeatureProperty> featurePropertyList =   homeApiResponse.getResponse().getData().getFeaturedPropertyList();
-                   searchList = featurePropertyList;
-                   setReyclerView(featurePropertyList);
+                   homeApiResponse.getResponse().getData();
+
+                 /*  List<HomeFeatureProperty> featurePropertyList =   homeApiResponse.getResponse().getData().getFeaturedPropertyList();
+                   searchList = featurePropertyList;*/
+                   setReyclerView(homeFeaturePropertyList);
 
                }
                resultBinding.contentSearch.shimmerViewContainer.stopShimmer();

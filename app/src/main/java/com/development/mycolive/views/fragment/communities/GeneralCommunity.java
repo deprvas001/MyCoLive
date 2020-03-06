@@ -54,7 +54,7 @@ FragmentGeneralCommunityBinding generalBinding;
 
         communityViewModel = ViewModelProviders.of(getActivity()).get(CommunitiesViewModel.class);
 
-        communityViewModel.getCommunityData(getActivity(),type).observe(getActivity(), new Observer<CommunityApiResponse>() {
+      /*  communityViewModel.getCommunityData(getActivity(),type).observe(getActivity(), new Observer<CommunityApiResponse>() {
             @Override
             public void onChanged(CommunityApiResponse communityApiResponse) {
                 if(communityApiResponse.response !=null){
@@ -65,10 +65,10 @@ FragmentGeneralCommunityBinding generalBinding;
                 }else{
                     Toast.makeText(getActivity(), "Try Later", Toast.LENGTH_SHORT).show();
                 }
-             /*   bookingBinding.shimmerViewContainer.stopShimmer();
-                bookingBinding.shimmerViewContainer.setVisibility(View.GONE);*/
+             *//*   bookingBinding.shimmerViewContainer.stopShimmer();
+                bookingBinding.shimmerViewContainer.setVisibility(View.GONE);*//*
             }
-        });
+        });*/
     }
 
     private void setRecyclerview(List<AllPost> allPostList){

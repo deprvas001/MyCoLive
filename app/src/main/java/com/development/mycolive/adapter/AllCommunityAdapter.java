@@ -76,7 +76,9 @@ public class AllCommunityAdapter  extends RecyclerView.Adapter<AllCommunityAdapt
         holder.postLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              context.startActivity(new Intent(context, ViewCommunity.class));
+                Intent intent = new Intent(context,ViewCommunity.class);
+                intent.putExtra("Id",post.getId());
+              context.startActivity(intent);
             }
         });
 

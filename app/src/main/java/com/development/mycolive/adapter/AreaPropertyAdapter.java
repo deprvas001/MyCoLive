@@ -59,7 +59,7 @@ public class AreaPropertyAdapter extends RecyclerView.Adapter<AreaPropertyAdapte
     @Override
     public void onBindViewHolder(AreaPropertyAdapter.MyViewHolder holder, int position) {
         HomePropertyArea  featureProperty = propertiesList.get(position);
-        holder.address.setText(featureProperty.getAddress());
+        holder.address.setText(featureProperty.getCity());
         holder.rating.setVisibility(View.GONE);
 
         holder.viewLayout.setOnClickListener(new View.OnClickListener() {

@@ -90,6 +90,46 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:orientation="horizontal"
+        android:id="@+id/myCommunity_layout">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tint="@android:color/white"
+            android:src="@drawable/community_icon"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp"
+            android:textColor="@android:color/white"
+            android:layout_gravity="center_vertical"
+            android:text="My Community"/>
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/nav_menu_forward"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="20dp"
+        android:background="#FFFFFF"
+        android:alpha="0.1"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:orientation="horizontal"
         android:id="@+id/password_layout">
 
         <ImageView

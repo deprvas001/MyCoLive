@@ -65,7 +65,7 @@ public class Home extends Fragment implements View.OnClickListener {
     }
 
     private void setReyclerView(List<HomeFeatureProperty> featurePropertyList,
-                                List<HomeHotProperty> hotPropertyList,
+                                List<HomeFeatureProperty> hotPropertyList,
                                 List<HomePropertyArea> homePropertyAreaList,
                                 List<HomeSlider> sliderList,CountData countData ) {
 
@@ -109,7 +109,7 @@ public class Home extends Fragment implements View.OnClickListener {
                 if (homeApiResponse.response != null) {
 
                     List<HomeFeatureProperty> featurePropertyList = homeApiResponse.getResponse().getData().getFeaturedPropertyList();
-                    List<HomeHotProperty> hotPropertyList = homeApiResponse.getResponse().getData().getHotPropertyList();
+                    List<HomeFeatureProperty> hotPropertyList = homeApiResponse.getResponse().getData().getHotProperty();
                     List<HomePropertyArea> homePropertyAreaList = homeApiResponse.getResponse().getData().getPropertyAreaList();
                     List<HomeSlider> sliderList = homeApiResponse.getResponse().getData().getSliderList();
                     CountData countData = homeApiResponse.getResponse().getData().getCountData();
@@ -169,7 +169,7 @@ public class Home extends Fragment implements View.OnClickListener {
 
         homeBinding.roomApartment.room.setText(countData.getTotal_room()+" Room");
         homeBinding.roomApartment.roomMate.setText(countData.getTotal_roommate()+ " Roommate");
-        homeBinding.roomApartment.apartment.setText(countData.getTotal_roommate()+" Apartment");
+        homeBinding.roomApartment.apartment.setText(countData.getTotal_apart()+" Apartment");
     }
 
 
