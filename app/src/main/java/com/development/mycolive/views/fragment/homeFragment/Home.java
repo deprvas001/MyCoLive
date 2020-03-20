@@ -48,6 +48,7 @@ public class Home extends Fragment implements View.OnClickListener {
     private AreaPropertyAdapter areaPropertyAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private FindAdapter mAdapter;
+    private double mSubTotal = 0;
 
     public Home() {
         // Required empty public constructor

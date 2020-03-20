@@ -10,39 +10,48 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaCas;
 import android.os.Bundle;
+import android.util.Property;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import com.development.mycolive.R;
 import com.development.mycolive.adapter.FacilityAdapter;
 import com.development.mycolive.adapter.HomeSlideAdapter;
 import com.development.mycolive.adapter.MonthDataAdapter;
 import com.development.mycolive.adapter.PropertyDetailAdapter;
+import com.development.mycolive.clickListener.RecyclerTouchListener;
 import com.development.mycolive.constant.ApiConstant;
 import com.development.mycolive.databinding.ActivityPropertyDetailBinding;
 import com.development.mycolive.model.RoomCategoryDetail;
 import com.development.mycolive.model.bookingHistory.MonthHistory;
 import com.development.mycolive.model.home.CountData;
 import com.development.mycolive.model.home.HomeSlider;
+import com.development.mycolive.model.paymentModel.PaymentRequestBody;
 import com.development.mycolive.model.propertyDetailModel.FacilityData;
 import com.development.mycolive.model.propertyDetailModel.PropertyDetailApiResponse;
+import com.development.mycolive.model.propertyDetailModel.PropertyDetailData;
 import com.development.mycolive.model.propertyDetailModel.PropertyImageSlider;
 import com.development.mycolive.model.propertyDetailModel.PropertyRoomData;
+import com.development.mycolive.model.searchDetailPage.BankAccount;
 import com.development.mycolive.model.searchFilterModel.FilterApiResponse;
 import com.development.mycolive.model.searchScreen.CityModel;
 import com.development.mycolive.model.searchScreen.UniversityModel;
 import com.development.mycolive.session.SessionManager;
+import com.development.mycolive.views.activity.bookingDetail.BookingDetails;
 import com.development.mycolive.views.fragment.filterSearch.SearchViewModel;
 import com.smarteist.autoimageslider.IndicatorAnimations;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -58,7 +67,11 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
     SessionManager session;
     int edit_position = 0,early_check=0;
     private DatePickerDialog mDatePickerDialog;
+    float total_cost;
     String id="";
+    String period,from,to;
+    BankAccount bankAccount;
+    List<PropertyRoomData> roomList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,8 +104,8 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
     }
 
 
-    private void setRecycleView(List<PropertyRoomData> detailList, List<FacilityData> facilityData){
-        roomAdapter = new PropertyDetailAdapter(this, detailList);
+    private void setRecycleView(List<PropertyRoomData> detailList, List<FacilityData> facilityData,String apartment_price){
+        roomAdapter = new PropertyDetailAdapter(this, detailList,apartment_price);
         mLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, true);
         propertyDetailBinding.recyclerView.setLayoutManager(mLayoutManager);
         propertyDetailBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -122,8 +135,11 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
             public void onChanged(PropertyDetailApiResponse apiResponse) {
                 if (apiResponse.response != null) {
                  initializeView(apiResponse);
+                List<PropertyDetailData> propertyDetails =   apiResponse.getResponse().getData();
+                bankAccount =  propertyDetails.get(0).getBank_account();
+                 String apartment_price = apiResponse.getResponse().getData().get(0).getTotal_price();
                  setRecycleView(apiResponse.getResponse().getData().get(0).getRoom(),
-                         apiResponse.getResponse().getData().get(0).getFacility());
+                         apiResponse.getResponse().getData().get(0).getFacility(),apartment_price);
                  setSliderAndView(apiResponse.getResponse().getData().get(0).getImage_slider());
                 }
             }
@@ -136,6 +152,8 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
         propertyDetailBinding.addressApartment.setText(apiResponse.getResponse().getData().get(0).getAddress());
         propertyDetailBinding.description.setText(apiResponse.getResponse().getData().get(0).getDescription());
         propertyDetailBinding.totalPrice.setText("$"+apiResponse.getResponse().getData().get(0).getTotal_price());
+
+        total_cost = Float.parseFloat(apiResponse.getResponse().getData().get(0).getTotal_price());
      }
 
     private void getSession(){
@@ -166,6 +184,20 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
         propertyDetailBinding.toEdit.setOnClickListener(this);
         propertyDetailBinding.arrivalDate.setOnClickListener(this);
         propertyDetailBinding.earlyCheckIn.setOnClickListener(this);
+        propertyDetailBinding.btnProceed.setOnClickListener(this);
+
+
+        propertyDetailBinding.recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),  propertyDetailBinding.recyclerView, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
 
     }
 
@@ -174,14 +206,21 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
         switch (adapterView.getId()){
             case R.id.type:
                 if(position>0){
-                    String period = adapterView.getSelectedItem().toString();
+                    // period = adapterView.getSelectedItem().toString();
+                    period = String.valueOf(position);
                     if(position == 4){
                         propertyDetailBinding.durationLayout.setVisibility(View.VISIBLE);
                     }else{
                         propertyDetailBinding.durationLayout.setVisibility(View.GONE);
                         propertyDetailBinding.fromEdit.setText(null);
                         propertyDetailBinding.toEdit.setText(null);
+                        from="";
+                        to="";
                     }
+                }else{
+                    period="";
+                    from="";
+                    to="";
                 }
                 break;
         }
@@ -195,6 +234,29 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View view) {
         switch (view.getId()){
+            case R.id.btn_proceed:
+                if(period.isEmpty()){
+                    Toast.makeText(this, "Please Select Period.", Toast.LENGTH_SHORT).show();
+                  return;
+                }/*else if(propertyDetailBinding.arrivalDate.getText().toString().isEmpty()){
+                    Toast.makeText(this, "Please Select Arrival date.", Toast.LENGTH_SHORT).show();
+                 return;
+                }*/else if(period.equals("4")){
+                    if(propertyDetailBinding.fromEdit.getText().toString().isEmpty()
+                            || propertyDetailBinding.toEdit.getText().toString().isEmpty()){
+                        Toast.makeText(this, "Please select from and to date.", Toast.LENGTH_SHORT).show();
+                    }else{
+                       from = propertyDetailBinding.fromEdit.getText().toString();
+                       to = propertyDetailBinding.fromEdit.getText().toString();
+                      //  Toast.makeText(this, "success", Toast.LENGTH_SHORT).show();
+                      bookingDetail();
+                    }
+
+                }else{
+                      bookingDetail();
+                }
+                break;
+
             case R.id.from_edit:
                 edit_position=1;
                 mDatePickerDialog.show();
@@ -260,5 +322,37 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void bookingDetail(){
+        if(PropertyDetailAdapter.roomDataList.size()>0){
+            if(propertyDetailBinding.policyAccept.isChecked() ){
+                PaymentRequestBody requestBody = new PaymentRequestBody();
+                if(period.equals("4")){
+                    requestBody.setDaterange(from+"-"+to);
+                }else{
+                    requestBody.setDaterange("");
+                }
+                requestBody.setReceipt("");
+                requestBody.setEarly_check(propertyDetailBinding.arrivalDate.getText().toString());
+                requestBody.setContract("1");
+                requestBody.setPayment_method("Bank");
+                requestBody.setDuration(period);
+
+
+                Intent intent = new Intent(PropertyDetail.this,BookingDetails.class);
+                intent.putExtra("total_price",total_cost);
+                intent.putExtra("booking_info",requestBody);
+                intent.putExtra("bank_account",bankAccount);
+                intent.putParcelableArrayListExtra("data", PropertyDetailAdapter.roomDataList);
+                startActivity(intent);
+            }else{
+                Toast.makeText(this, "Please accept Policy.", Toast.LENGTH_SHORT).show();
+            }     
+        }else{
+            Toast.makeText(this, "Please select room.", Toast.LENGTH_SHORT).show();
+        }
+       
+
     }
 }

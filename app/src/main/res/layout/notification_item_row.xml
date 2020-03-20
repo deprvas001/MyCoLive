@@ -22,55 +22,53 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:paddingRight="10dp"
+                    />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:src="@drawable/image2"/>
+                        android:id="@+id/notification_image"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
                     <TextView
+                        android:id="@+id/title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginLeft="10dp"
-                        android:textColor="#1D1500"
-                        android:text="Akki Villa 3 room apartment"/>
+                        android:textColor="#1D1500" />
 
                         <TextView
+                            android:id="@+id/shortDetails"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
                             android:layout_marginLeft="10dp"
-                            android:textColor="#555555"
-                            android:text="Erzsebet krt. 73, Racalmas, Fejer, 2459"/>
+                            android:textColor="#555555" />
 
                     </LinearLayout>
 
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/view_detail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginBottom="10dp"
-                    android:textAllCaps="false"
-                    android:text="View Property"
-                    android:padding="10dp"
-                    android:textColor="#555555"
-                    android:background="@drawable/edit_post_background"/>
 
 
             </LinearLayout>

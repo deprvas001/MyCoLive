@@ -7,7 +7,7 @@ import android.os.Handler
 import com.development.mycolive.R
 import com.development.mycolive.session.SessionManager
 import com.development.mycolive.views.activity.login.LoginActivity
-import com.development.mycolive.views.activity.testimonial.Testimonials
+import com.development.mycolive.views.activity.stripeScreen.PaymentActivity
 
 class SplashScreen : AppCompatActivity() {
     private lateinit var session: SessionManager

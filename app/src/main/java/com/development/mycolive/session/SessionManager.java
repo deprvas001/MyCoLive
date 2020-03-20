@@ -37,6 +37,7 @@ public class SessionManager {
     public static final String KEY_USERTYPE="userType";
     public static final String KEY_TOKEN = "token";
     public static final String KEY_IMAGE = "image";
+    public static final String KEY_LOGIN_TYPE = "loginType";
 
     // Constructor
     public SessionManager(Context context){
@@ -48,7 +49,7 @@ public class SessionManager {
     /**
      * Create login session
      * */
-    public void createLoginSession(String name, String email,String userId,String userType,String token,String image){
+    public void createLoginSession(String name, String email,String userId,String userType,String token,String image,String login_type){
         // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
 
@@ -59,6 +60,7 @@ public class SessionManager {
         editor.putString(KEY_USERTYPE,userType);
         editor.putString(KEY_TOKEN,token);
         editor.putString(KEY_IMAGE,image);
+        editor.putString(KEY_LOGIN_TYPE,login_type);
 
         // commit changes
         editor.commit();
@@ -115,6 +117,7 @@ public class SessionManager {
         editor.clear();
         editor.commit();
 
+
         // After logout redirect user to Loing Activity
         Intent i = new Intent(_context, LoginActivity.class);
         // Closing all the Activities
@@ -126,6 +129,7 @@ public class SessionManager {
         // Staring Login Activity
         _context.startActivity(i);
     }
+
 
     /**
      * Quick check for login

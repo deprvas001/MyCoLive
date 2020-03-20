@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".views.activity.FavouriteRoomateDetail"
+    tools:context=".views.activity.favouriteRoomate.FavouriteRoomateDetail"
     tools:showIn="@layout/activity_favourite_roomate_detail">
 
 </androidx.constraintlayout.widget.ConstraintLayout>

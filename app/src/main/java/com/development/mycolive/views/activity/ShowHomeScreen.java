@@ -8,6 +8,7 @@ import com.development.mycolive.databinding.ActivityShowHomeScreenBinding;
 import com.development.mycolive.session.SessionManager;
 import com.development.mycolive.views.activity.changePassword.ChangePassword;
 import com.development.mycolive.views.activity.myCommunity.MyCommunity;
+import com.development.mycolive.views.activity.notification.Notification;
 import com.development.mycolive.views.activity.testimonial.Testimonials;
 import com.development.mycolive.views.fragment.booking.BookingFragment;
 import com.development.mycolive.views.fragment.communities.Communities;
@@ -182,7 +183,7 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
                 break;
 
             case R.id.notification:
-                startActivity(new Intent(this,Notification.class));
+                startActivity(new Intent(this, Notification.class));
                 // checkDrawer();
                 break;
 

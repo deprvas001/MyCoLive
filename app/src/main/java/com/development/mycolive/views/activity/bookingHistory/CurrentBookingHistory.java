@@ -17,8 +17,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.development.mycolive.R;
+import com.development.mycolive.clickListener.RecyclerTouchListener;
 import com.development.mycolive.constant.ApiConstant;
 import com.development.mycolive.databinding.ActivityCurrentBookingHistoryBinding;
+import com.development.mycolive.session.SessionManager;
 import com.development.mycolive.views.activity.BaseActivity;
 import com.development.mycolive.adapter.MonthDataAdapter;
 import com.development.mycolive.model.bookingHistory.BookingHistoryApiResponse;
@@ -26,7 +28,9 @@ import com.development.mycolive.model.bookingHistory.BookingHistoryData;
 import com.development.mycolive.model.bookingHistory.MonthHistory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CurrentBookingHistory extends BaseActivity implements View.OnClickListener {
 ActivityCurrentBookingHistoryBinding historyBinding;
@@ -34,23 +38,31 @@ BookingHistoryViewModel viewModel;
     private MonthDataAdapter bookingAdapter;
     RecyclerView.LayoutManager mLayoutManager;
     List<MonthHistory> bookingList = new ArrayList<>();
+    SessionManager session;
+    String token="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         historyBinding = DataBindingUtil.setContentView(this,R.layout.activity_current_booking_history);
-       if(getIntent()!=null){
+       if(getIntent()!=null)
+       {
            String orderId =  getIntent().getExtras().getString(ApiConstant.ORDER_ID);
            String bookingType = getIntent().getExtras().getString(ApiConstant.BOOKING_TYPE);
-           Toast.makeText(this, bookingType, Toast.LENGTH_SHORT).show();
-           getHistory(bookingType,orderId);
+         //  Toast.makeText(this, bookingType, Toast.LENGTH_SHORT).show();
+          getSession(bookingType,orderId);
+
        }
         historyBinding.toolbar.setTitle(getString(R.string.current_booking_history));
         setSupportActionBar(historyBinding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+
+
+
      //   historyBinding.bookingHistory.viewDetail.setOnClickListener(this);
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -96,8 +108,17 @@ BookingHistoryViewModel viewModel;
     private void getHistory(String type,String orderId) {
          showProgressDialog(getString(R.string.loading));
 
+        Map<String,String> headers = new HashMap<>();
+        headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);
+        headers.put(ApiConstant.SOURCES,ApiConstant.SOURCES_VALUE);
+        headers.put(ApiConstant.USER_TYPE,ApiConstant. USER_TYPE_DRIVER);
+        headers.put(ApiConstant.USER_DEVICE_TYPE,ApiConstant.USER_DEVICE_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TOKEN,ApiConstant.USER_DEVICE_TOKEN_VALUE);
+        headers.put(ApiConstant.METHOD,ApiConstant.METHOD_GET);
+        headers.put(ApiConstant.AUTHENTICAT_TOKEN,token);
+
         viewModel = ViewModelProviders.of(this).get(BookingHistoryViewModel.class);
-        viewModel.bookingHistory(this,type,orderId).observe(this, new Observer<BookingHistoryApiResponse>() {
+        viewModel.bookingHistory(this,headers,type,orderId).observe(this, new Observer<BookingHistoryApiResponse>() {
             @Override
             public void onChanged(BookingHistoryApiResponse historyApiResponse) {
                 hideProgressDialog();
@@ -147,5 +168,21 @@ BookingHistoryViewModel viewModel;
         historyBinding.recyclerView.setLayoutManager(mLayoutManager);
         historyBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         historyBinding.recyclerView.setAdapter(bookingAdapter);
+    }
+
+    private void getSession(String bookingType,String orderId){
+        session = new SessionManager(this);
+        // get user data from session
+        HashMap<String, String> user = session.getUserDetails();
+
+        // name
+        String name = user.get(SessionManager.KEY_NAME);
+
+        // email
+        String email = user.get(SessionManager.KEY_EMAIL);
+        String image = user.get(SessionManager.KEY_IMAGE);
+        token = user.get(SessionManager.KEY_TOKEN);
+
+        getHistory(bookingType,orderId);
     }
 }

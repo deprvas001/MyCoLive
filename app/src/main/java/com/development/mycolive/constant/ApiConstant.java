@@ -22,4 +22,6 @@ public class ApiConstant {
     public static final String METHOD_GET="GET";
     public static final String ROOMMATAE_ID="roomate_id";
     public static final String PROFILE="PROFILE";
+    public static final String NORMAL = "NORMAL";
+    public static final String GOOGLE="GOOGLE";
 }

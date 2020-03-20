@@ -193,7 +193,7 @@ public class Communities extends Fragment implements View.OnClickListener {
     }
 
     private void getCommunity(String type){
-        ((ShowHomeScreen) getActivity()).showProgressDialog(getResources().getString(R.string.loading));
+        ((ShowHomeScreen) getActivity()).   showProgressDialog(getResources().getString(R.string.loading));
         Map<String,String> headers = new HashMap<>();
         headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);
         headers.put(ApiConstant.SOURCES,ApiConstant.SOURCES_VALUE);

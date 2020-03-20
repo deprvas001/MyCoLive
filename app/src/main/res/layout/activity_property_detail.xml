@@ -314,6 +314,7 @@
             android:orientation="vertical">
 
     <CheckBox
+        android:id="@+id/policy_accept"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
@@ -336,7 +337,7 @@
 
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_search"
+            android:id="@+id/btn_proceed"
             android:layout_width="wrap_content"
             android:layout_height="45dp"
             android:background="@drawable/button_background"

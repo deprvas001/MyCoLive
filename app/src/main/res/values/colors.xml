@@ -8,7 +8,7 @@
     <color name="address_color">#4B4B4B</color>
     <color name="login_subheading">#8C8C8C</color>
     <color name="navigation_color">#a0a0a0</color>
-    <color name="address_room">#A4A4A4</color>
+        <color name="address_room">#A4A4A4</color>
     <color name="white">#ffffff</color>
 
     <color name="placeholder_bg">#dddddd</color>

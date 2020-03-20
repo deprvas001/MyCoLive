@@ -12,6 +12,7 @@ import android.view.View;
 
 import com.development.mycolive.R;
 import com.development.mycolive.databinding.ActivityMyFavouriteBinding;
+import com.development.mycolive.views.activity.notification.Notification;
 import com.development.mycolive.views.fragment.favouriteBooking.FavouriteProperty;
 import com.development.mycolive.views.fragment.favouriteBooking.FavouriteRoomate;
 
@@ -69,7 +70,7 @@ ActivityMyFavouriteBinding favouriteBinding;
                 break;
 
             case R.id.notification:
-                startActivity(new Intent(this,Notification.class));
+                startActivity(new Intent(this, Notification.class));
                 break;
         }
     }

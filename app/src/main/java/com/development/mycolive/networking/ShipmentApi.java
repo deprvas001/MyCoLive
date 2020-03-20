@@ -10,6 +10,7 @@ import com.development.mycolive.model.editProfile.PostProfileResponse;
 import com.development.mycolive.model.editProfile.ProfileResponse;
 import com.development.mycolive.model.favourite.FavouriteResponse;
 import com.development.mycolive.model.favourite.FavouriteRoomateResponse;
+import com.development.mycolive.model.favouriteRoomate.RoomateFavResponse;
 import com.development.mycolive.model.filterModel.FilterSearchResponse;
 import com.development.mycolive.model.forgotModel.ForgotRequestModel;
 import com.development.mycolive.model.home.HomeResponse;
@@ -17,6 +18,11 @@ import com.development.mycolive.model.homeProperty.FeatureResponse;
 import com.development.mycolive.model.loginModel.LoginRequestModel;
 import com.development.mycolive.model.loginModel.LoginResponse;
 import com.development.mycolive.model.myCommunityModel.MyCommunityResponse;
+import com.development.mycolive.model.notificationModel.NotificationBodyRequest;
+import com.development.mycolive.model.notificationModel.NotificationResponse;
+import com.development.mycolive.model.paymentModel.PaymentModeRequest;
+import com.development.mycolive.model.paymentModel.PaymentRequestBody;
+import com.development.mycolive.model.paymentModel.PaymentResponse;
 import com.development.mycolive.model.postCommunity.PostCommunity;
 import com.development.mycolive.model.postCommunity.PostResponse;
 import com.development.mycolive.model.propertyDetailModel.PropertyDetailResponse;
@@ -24,6 +30,8 @@ import com.development.mycolive.model.searchDetailPage.SearchDetailResponse;
 import com.development.mycolive.model.searchFilterModel.FilterResponse;
 import com.development.mycolive.model.signup.SignPostRequest;
 import com.development.mycolive.model.signup.SignUpResponse;
+import com.development.mycolive.model.stripe.StripeRequestBody;
+import com.development.mycolive.model.stripe.StripeServerResponse;
 import com.development.mycolive.model.testimonialmodel.TestimonialResponse;
 import com.development.mycolive.model.viewCommunityModel.CommentPost;
 import com.development.mycolive.model.viewCommunityModel.CommentResponse;
@@ -86,17 +94,10 @@ public interface ShipmentApi {
             @Query("daterange") String range);
 
 
-    @Headers({
-            "Content-Type: application/json",
-            "Sources: APP",
-            "user_type: DRIVER",
-            "user_device_type: ADNROID",
-            "user_device_token: 234234dvdfdfsdfsdf",
-            "Method: GET",
-            "AuthenticateToken: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ3ZWJmdW1lYXBwLmNvbSIsImF1ZCI6IldlYmZ1bWUgSmFzb24gQXBwIiwiaWF0IjoxNTgwMTkwMzg3LCJuYmYiOjE1ODAxOTAzODcsImV4cCI6MTU4MTM5OTk4NywiZGF0YSI6eyJ1c2VyX3R5cGUiOiJEUklWRVIiLCJ1c2VyX2RldmljZV90eXBlIjoiQUROUk9JRCIsInVzZXJfZGV2aWNlX3Rva2VuIjoiMjM0MjM0ZHZkZmRmc2Rmc2RmIiwiU291cmNlcyI6IkFQUCIsInVzZXJfbmFtZSI6IlJhbmRoaXIga3VtYXIiLCJ1c2VyX2lkIjoiMzAiLCJsb2dpbl90eXBlIjoiRkFDRUJPT0siLCJ1c2VyX2xvZ19pZCI6MTh9fQ.HwyaAVzQEFWs3Fd8QSsWQtnfJQbraUtRZxaD4WnC5-8"
-    })
+
     @GET("bookingList")
     Call<BookingHistoryResponse> getHistory(
+            @HeaderMap Map<String,String> headers,
             @Query("type") String  type,
             @Query("order_id") String orderid);
 
@@ -220,4 +221,31 @@ public interface ShipmentApi {
             @Query("property_id") String  type);
 
 
+    @POST("booking")
+    Call<PaymentResponse> bookingPost(
+            @HeaderMap Map<String,String> headers,
+            @Body PaymentRequestBody requestBody);
+
+
+    @POST("view_notification")
+    Call<NotificationResponse> getNotification(
+            @HeaderMap Map<String,String> headers,
+            @Body NotificationBodyRequest requestBody);
+
+    @POST("sandbox_payment")
+    Call<StripeServerResponse> getStripeKey(
+            @HeaderMap Map<String,String> headers,
+            @Body StripeRequestBody requestBody);
+
+    @GET("getProfile")
+    Call<RoomateFavResponse> getRoomateDetail(
+            @HeaderMap Map<String,String> headers,
+            @Query("type") String  type,
+            @Query("user_id") String id);
+
+
+    @POST("payMonthlyPaymentDetails")
+    Call<PaymentResponse> payAmount(
+            @HeaderMap Map<String,String> headers,
+            @Body PaymentModeRequest request);
 }

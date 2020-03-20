@@ -65,8 +65,6 @@ FragmentCurrentBookingBinding bookingBinding ;
         bookingBinding.recyclerView.setAdapter(bookingAdapter);
     }
 
-
-
   /*  private void getBooking(){
          bookingList.clear();
         for (int i=0;i<4;i++){
@@ -90,8 +88,6 @@ FragmentCurrentBookingBinding bookingBinding ;
         headers.put(ApiConstant.AUTHENTICAT_TOKEN,token);
 
         String type = "CURRENTBOOKING";
-
-
 
 
         bookingViewModel = ViewModelProviders.of(getActivity()).get(BookingViewModel.class);

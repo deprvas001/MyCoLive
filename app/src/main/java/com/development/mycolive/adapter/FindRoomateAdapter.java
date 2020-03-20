@@ -14,10 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.development.mycolive.R;
 import com.development.mycolive.constant.ApiConstant;
 import com.development.mycolive.model.favourite.RoomateData;
-import com.development.mycolive.views.activity.FavouriteRoomateDetail;
-import com.development.mycolive.views.activity.RoomateDetails;
-import com.development.mycolive.model.FindRoomateModel;
-import com.development.mycolive.views.activity.searchDetailPage.RoomDetail;
+import com.development.mycolive.views.activity.favouriteRoomate.FavouriteRoomateDetail;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -78,7 +75,7 @@ public class FindRoomateAdapter extends RecyclerView.Adapter<FindRoomateAdapter.
             public void onClick(View view) {
 
                 Intent intent = new Intent(context, FavouriteRoomateDetail.class);
-                intent.putExtra(ApiConstant.ROOMMATAE_ID,roomateModel);
+                intent.putExtra(ApiConstant.ROOMMATAE_ID,roomateModel.getId());
                 context.startActivity(intent);
             }
         });

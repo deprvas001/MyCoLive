@@ -18,7 +18,7 @@ import com.development.mycolive.R;
 import com.development.mycolive.databinding.ActivityRoomDetailBinding;
 import com.development.mycolive.views.activity.BookingDetailFill;
 import com.development.mycolive.views.activity.MapScreen;
-import com.development.mycolive.views.activity.Notification;
+import com.development.mycolive.views.activity.notification.Notification;
 import com.development.mycolive.adapter.FeaturedFacilitesAdapter;
 import com.development.mycolive.adapter.SliderAdapter;
 import com.development.mycolive.model.FeaturedProperty;

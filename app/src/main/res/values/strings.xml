@@ -148,7 +148,7 @@
     <string name="early_check_desc">Early check is only available for 15 days before the booking date.(Depending upon availability)</string>
     <string name="arrival_date">Select Arrival Date(Early Check In)</string>
     <string name="feature_facility"><![CDATA[Features & Facilities]]></string>
-    <string name="policies">By proceeding, you agree to our Policies</string>
+    <string name="policies">By proceeding, you agree to our <u> <font fgcolor='#FF0000'>Policies</font></u></string>
     <string name="proceed_further">Proceed Further</string>
     <string name="price_description">Price Description</string>
     <string name="monthly_rent">Monthly Rent</string>
@@ -187,5 +187,20 @@
     <string name="RoomDetail">RoomDetail</string>
     <string name="mycommunity">My Community</string>
     <string name="old_password">Old Password</string>
+    <string name="year">year</string>
+    <string name="refer_friend">Refer Your Friend</string>
+    <string name="your_email">Enter Your Friend Email</string>
+    <string name="stripe">Stripe</string>
+    <string name="bank_transfer">Bank Transfer</string>
+    <string name="bank_detail">Bank Details</string>
+    <string name="account">Account Name:</string>
+    <string name="account_no">A/C No.:</string>
+    <string name="iban_no">IBAN No.:</string>
+    <string name="short_name">Short Name:</string>
+    <string name="description_text">Description:</string>
+    <string name="pay_now">Pay Now</string>
+    <string name="select_payment">Select Payment</string>
+    <string name="booking_confirmed">Booking Confirmed</string>
+    <string name="message_desc">A confirmation mail has been sent to your registered email.</string>
 
 </resources>

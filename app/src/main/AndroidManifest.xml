@@ -17,10 +17,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".views.activity.myCommunity.MyCommunity"
+        <activity android:name=".views.activity.paymentMode.PaymentMode"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".views.activity.FavouriteRoomateDetail"
+            android:name=".views.activity.paymentScreen.SelectPayment"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".views.activity.stripeScreen.PaymentActivity" />
+        <activity
+            android:name=".views.activity.bookingDetail.BookingDetails"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".views.activity.myCommunity.MyCommunity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".views.activity.favouriteRoomate.FavouriteRoomateDetail"
             android:label="@string/title_activity_favourite_roomate_detail"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -62,7 +72,7 @@
             android:name=".views.activity.MyFavourite"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".views.activity.Notification"
+            android:name=".views.activity.notification.Notification"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".views.activity.ContactUs"

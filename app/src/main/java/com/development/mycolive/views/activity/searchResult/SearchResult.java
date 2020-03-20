@@ -3,14 +3,10 @@ package com.development.mycolive.views.activity.searchResult;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.development.mycolive.constant.ApiConstant;
 import com.development.mycolive.databinding.ActivitySearchResultBinding;
 import com.development.mycolive.model.homeProperty.FeatureApiResponse;
-import com.development.mycolive.views.activity.Notification;
-import com.development.mycolive.views.activity.searchDetailPage.RoomDetail;
+import com.development.mycolive.views.activity.notification.Notification;
 import com.development.mycolive.adapter.SearchScreenAdapter;
-import com.development.mycolive.clickListener.RecyclerTouchListener;
-import com.development.mycolive.model.home.HomeApiResponse;
 import com.development.mycolive.model.home.HomeFeatureProperty;
 import com.google.android.material.snackbar.Snackbar;
 

@@ -9,6 +9,8 @@ import com.development.mycolive.networking.ShipmentApi;
 import com.development.mycolive.model.bookingHistory.BookingHistoryApiResponse;
 import com.development.mycolive.model.bookingHistory.BookingHistoryResponse;
 
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,10 +29,10 @@ public class BookingHistoryRepository {
         return historyRepository;
     }
 
-    public MutableLiveData<BookingHistoryApiResponse> bookingHistory(Context context,String type,String orderId){
+    public MutableLiveData<BookingHistoryApiResponse> bookingHistory(Context context, Map<String,String> headers,String type, String orderId){
         final MutableLiveData<BookingHistoryApiResponse> historyResponseLiveData =new MutableLiveData<>();
 
-        shipmentApi.getHistory(type,orderId).enqueue(new Callback<BookingHistoryResponse>() {
+        shipmentApi.getHistory(headers,type,orderId).enqueue(new Callback<BookingHistoryResponse>() {
             @Override
             public void onResponse(Call<BookingHistoryResponse> call, Response<BookingHistoryResponse> response) {
                 if(response.code() == 401){

@@ -1,6 +1,5 @@
 package com.development.mycolive.views.activity.testimonial;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -12,21 +11,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.BaseExpandableListAdapter;
 
 import com.development.mycolive.R;
 import com.development.mycolive.constant.ApiConstant;
 import com.development.mycolive.databinding.ActivityTestimonialsBinding;
 import com.development.mycolive.adapter.TestimonialAdapter;
 import com.development.mycolive.model.testimonialmodel.TestimonialApiResponse;
-import com.development.mycolive.model.testimonialmodel.TestimonialData;
 import com.development.mycolive.model.testimonialmodel.TestimonialModel;
-import com.development.mycolive.model.viewCommunityModel.ViewCommunityApiResponse;
 import com.development.mycolive.session.SessionManager;
 import com.development.mycolive.views.activity.BaseActivity;
-import com.development.mycolive.views.activity.Notification;
-import com.development.mycolive.views.activity.viewCommunity.CommunityViewModel;
-import com.development.mycolive.views.activity.viewCommunity.ViewCommunity;
+import com.development.mycolive.views.activity.notification.Notification;
 
 import java.util.ArrayList;
 import java.util.HashMap;

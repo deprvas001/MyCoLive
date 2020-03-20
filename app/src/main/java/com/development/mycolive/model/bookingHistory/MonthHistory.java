@@ -11,6 +11,33 @@ public class MonthHistory {
     private String receipt;
     private String approval;
     private String payment;
+    private String payment_id;
+    private String dues_month_id;
+    private int dues_amount;
+
+    public String getPayment_id() {
+        return payment_id;
+    }
+
+    public void setPayment_id(String payment_id) {
+        this.payment_id = payment_id;
+    }
+
+    public String getDues_month_id() {
+        return dues_month_id;
+    }
+
+    public void setDues_month_id(String dues_month_id) {
+        this.dues_month_id = dues_month_id;
+    }
+
+    public int getDues_amount() {
+        return dues_amount;
+    }
+
+    public void setDues_amount(int dues_amount) {
+        this.dues_amount = dues_amount;
+    }
 
     public String getMonth() {
         return month;

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -14,22 +15,29 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.development.mycolive.R;
+import com.development.mycolive.model.home.HomeFeatureProperty;
 import com.development.mycolive.model.home.HomeSlider;
 import com.development.mycolive.model.propertyDetailModel.FacilityData;
 import com.development.mycolive.model.propertyDetailModel.PropertyRoomData;
+import com.development.mycolive.model.searchDetailPage.RoomData;
 import com.development.mycolive.views.activity.propertyDetail.PropertyDetail;
 import com.development.mycolive.views.activity.roomInformation.RoomInformation;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PropertyDetailAdapter  extends RecyclerView.Adapter<PropertyDetailAdapter.MyViewHolder> {
 
-    private List<PropertyRoomData> detailList;
+    private List<PropertyRoomData> detailList ;
+    String apartment_price;
+    private List<PropertyRoomData> total_list_price =new ArrayList<>();
     private Context context;
     private ViewGroup group;
+    private float total=0;
+    public static ArrayList<PropertyRoomData> roomDataList = new ArrayList<>();
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView price,name,type,city,university,comment,date,facility_txt,more_facility,
@@ -53,9 +61,11 @@ public class PropertyDetailAdapter  extends RecyclerView.Adapter<PropertyDetailA
         }
     }
 
-    public PropertyDetailAdapter(Context context,List<PropertyRoomData> detailList) {
+    public PropertyDetailAdapter(Context context,List<PropertyRoomData> detailList,String apartment_price) {
+
         this.context = context;
         this.detailList = detailList;
+        this.apartment_price = apartment_price;
     }
 
     @Override
@@ -63,6 +73,7 @@ public class PropertyDetailAdapter  extends RecyclerView.Adapter<PropertyDetailA
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.room_category, parent, false);
         group = parent;
+        roomDataList.clear();
 
         return new PropertyDetailAdapter.MyViewHolder(itemView);
     }
@@ -76,6 +87,23 @@ public class PropertyDetailAdapter  extends RecyclerView.Adapter<PropertyDetailA
         holder.price.setText("$"+roomData.getTotal_price()+"/Month");
         holder.facility_txt.setText(facilityData.getFacilityString());
         holder.more_facility.setText("+"+roomData.getImage_slider().size());
+
+        total = Float.parseFloat(apartment_price);
+        holder.select.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (holder.select.isChecked()){
+                     total_list_price.add(roomData);
+                    roomDataList.add(roomData);
+                     getTotalPrice(roomData);
+                }else{
+                    if(roomDataList.contains(roomData)){
+                        roomDataList.remove(roomData);
+                    }
+                    getTotalSubtractPrice(roomData);
+                }
+            }
+        });
 
         /*if(holder.select.isChecked()){
 
@@ -113,4 +141,43 @@ public class PropertyDetailAdapter  extends RecyclerView.Adapter<PropertyDetailA
         return detailList.size();
     }
 
+   /* public void setData(List<PropertyRoomData> items) {
+        this.detailList = items;
+        notifyDataSetChanged();
+    }*/
+
+ /*   public float grandTotal() {
+        float totalPrice = 0;
+        for (int i = 0; i < detailList.size(); i++) {
+
+            totalPrice += Float.parseFloat(detailList.get(i).getTotal_price());
+        }
+        return totalPrice;
+    }*/
+
+
+ public float getTotalPrice(PropertyRoomData roomData){
+
+
+         float room_price = Float.parseFloat(roomData.getTotal_price());
+         total = total+room_price;
+
+
+      ((PropertyDetail)context).propertyDetailBinding.totalPrice.setText(String.valueOf(total));
+
+     return total;
+ }
+
+    public float getTotalSubtractPrice(PropertyRoomData roomData){
+
+     if(total_list_price.contains(roomData)){
+         float room_price = Float.parseFloat(roomData.getTotal_price());
+         total = total-room_price;
+     }
+
+      total_list_price.remove(roomData);
+        ((PropertyDetail)context).propertyDetailBinding.totalPrice.setText(String.valueOf(total));
+
+        return total;
+    }
 }

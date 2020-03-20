@@ -23,6 +23,7 @@ import com.development.mycolive.model.editProfile.ProfilePostApiResponse;
 import com.development.mycolive.model.signup.SignPostRequest;
 import com.development.mycolive.model.signup.SignUpApiResponse;
 import com.development.mycolive.views.activity.ShowHomeScreen;
+import com.development.mycolive.views.activity.SignupScreen;
 import com.development.mycolive.views.fragment.NewAccount;
 import com.development.mycolive.views.fragment.profile.ProfileViewModel;
 
@@ -112,7 +113,8 @@ private DatePickerDialog mDatePickerDialog;
     }
 
    private void setSignUp(){
-       ((ShowHomeScreen) getActivity()).showProgressDialog(getString(R.string.loading));
+
+       ((SignupScreen) getActivity()).showProgressDialog(getString(R.string.loading));
        SignPostRequest signPostRequest = new SignPostRequest();
        signPostRequest.setName(oneBinding.fieldLayout.inputName.getText().toString());
        signPostRequest.setEmail(oneBinding.fieldLayout.inputEmail.getText().toString());
@@ -128,10 +130,10 @@ private DatePickerDialog mDatePickerDialog;
        viewModel.setSignUp(getActivity(),  signPostRequest ).observe(getActivity(), new Observer<SignUpApiResponse>() {
            @Override
            public void onChanged(SignUpApiResponse apiResponse) {
-                 ((ShowHomeScreen) getActivity()).hideProgressDialog();
+               ((SignupScreen) getActivity()).hideProgressDialog();
                if (apiResponse.response != null) {
                    Toast.makeText(getActivity(), apiResponse.response.getMessage(), Toast.LENGTH_SHORT).show();
-                  loadFragment(new NewAccount());
+                 // loadFragment(new NewAccount());
                } else if (apiResponse.getStatus() == 401) {
                    Toast.makeText(getActivity(), "Authentication Failed", Toast.LENGTH_SHORT).show();
                } else if(apiResponse.getStatus() == 400){

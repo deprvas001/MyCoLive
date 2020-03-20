@@ -1,6 +1,7 @@
 package com.development.mycolive.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.development.mycolive.R;
 import com.development.mycolive.model.bookingHistory.MonthHistory;
+import com.development.mycolive.views.activity.paymentMode.PaymentMode;
 
 import java.util.List;
 
@@ -78,6 +80,9 @@ public class MonthDataAdapter  extends RecyclerView.Adapter<MonthDataAdapter.MyV
         //then we will inflate the custom alert dialog xml that we created
         View dialogView = LayoutInflater.from(context).inflate(R.layout.custom_dialog, group, false);
 
+        TextView payment_id = (TextView)dialogView.findViewById(R.id.payment_id);
+        payment_id.setText(": "+monthHistory.getPayment_id());
+
         TextView payment_status = (TextView)dialogView.findViewById(R.id.payment_status);
         payment_status.setText(": "+monthHistory.getStatus());
 
@@ -91,7 +96,30 @@ public class MonthDataAdapter  extends RecyclerView.Adapter<MonthDataAdapter.MyV
         approval.setText(": "+monthHistory.getApproval());
 
         Button ok = (Button)dialogView.findViewById(R.id.buttonOk);
-        ok.setOnClickListener(this);
+
+        if(monthHistory.getPayment().equals("1")){
+            ok.setText("Pay Now");
+        }else {
+            ok.setText("Ok");
+        }
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               if(monthHistory.getPayment().equals("1")){
+
+                   Intent intent = new Intent(context, PaymentMode.class);
+                   intent.putExtra("month_id",monthHistory.getDues_month_id());
+                   intent.putExtra("due_amount",monthHistory.getDues_amount());
+                   context.startActivity(intent);
+
+               }
+               else{
+
+               }
+
+            }
+        });
 
         //Now we need an AlertDialog.Builder object
         AlertDialog.Builder builder = new AlertDialog.Builder(context);

@@ -24,6 +24,7 @@ public class PropertiesAdapter extends RecyclerView.Adapter<PropertiesAdapter.My
     private List<HomeFeatureProperty> propertiesList;
     private Context context;
 
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title,price,address,name,rating,created_date;
         public ImageView imageView;
@@ -66,6 +67,8 @@ public class PropertiesAdapter extends RecyclerView.Adapter<PropertiesAdapter.My
         holder.name.setText(featureProperty.getName());
         holder.created_date.setText(featureProperty.getCreated_date());
 
+
+
        /* holder.name.setText(featureProperty.getPropertyName());
         holder.rating.setText(featureProperty.getRating());
         holder.created_date.setText(featureProperty.getCreatedDate());*/
@@ -94,6 +97,7 @@ public class PropertiesAdapter extends RecyclerView.Adapter<PropertiesAdapter.My
         });*/
        /* holder.title.setText(find_room.getType());*/
     }
+
 
     @Override
     public int getItemCount() {

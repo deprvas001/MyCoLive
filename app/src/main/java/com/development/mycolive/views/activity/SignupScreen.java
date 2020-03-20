@@ -12,7 +12,7 @@ import com.development.mycolive.R;
 import com.development.mycolive.databinding.ActivitySignupScreenBinding;
 import com.development.mycolive.views.fragment.signUp.SignUpOne;
 
-public class SignupScreen extends AppCompatActivity {
+public class SignupScreen extends BaseActivity {
 ActivitySignupScreenBinding screenBinding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
