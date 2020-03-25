@@ -97,6 +97,8 @@ public class Home extends Fragment implements View.OnClickListener {
         homeBinding.btnFeature.setOnClickListener(this);
         homeBinding.hotPropertyBtn.setOnClickListener(this);
         homeBinding.btnPropertyArea.setOnClickListener(this);
+
+        homeBinding.roomApartment.roomLayout.setOnClickListener(this);
     }
 
     private void getData() {
@@ -147,6 +149,10 @@ public class Home extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.btn_property_area:
+                getActivity().startActivity(new Intent(getActivity(), SearchResult.class));
+                break;
+
+            case R.id.room_layout:
                 getActivity().startActivity(new Intent(getActivity(), SearchResult.class));
                 break;
         }

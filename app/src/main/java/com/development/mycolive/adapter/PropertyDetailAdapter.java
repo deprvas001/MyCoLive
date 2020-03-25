@@ -84,7 +84,7 @@ public class PropertyDetailAdapter  extends RecyclerView.Adapter<PropertyDetailA
         HomeSlider imageSlider =  roomData.getImage_slider().get(0);
         FacilityData facilityData = roomData.getFacility().get(0);
         holder.name.setText(roomData.getApartment_name());
-        holder.price.setText("$"+roomData.getTotal_price()+"/Month");
+        holder.price.setText("€"+roomData.getTotal_price()+"/Month");
         holder.facility_txt.setText(facilityData.getFacilityString());
         holder.more_facility.setText("+"+roomData.getImage_slider().size());
 
@@ -163,7 +163,7 @@ public class PropertyDetailAdapter  extends RecyclerView.Adapter<PropertyDetailA
          total = total+room_price;
 
 
-      ((PropertyDetail)context).propertyDetailBinding.totalPrice.setText(String.valueOf(total));
+      ((PropertyDetail)context).propertyDetailBinding.totalPrice.setText("€"+String.valueOf(total));
 
      return total;
  }
@@ -176,7 +176,7 @@ public class PropertyDetailAdapter  extends RecyclerView.Adapter<PropertyDetailA
      }
 
       total_list_price.remove(roomData);
-        ((PropertyDetail)context).propertyDetailBinding.totalPrice.setText(String.valueOf(total));
+        ((PropertyDetail)context).propertyDetailBinding.totalPrice.setText("€"+String.valueOf(total));
 
         return total;
     }

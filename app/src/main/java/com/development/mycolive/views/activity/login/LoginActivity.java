@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -22,6 +24,14 @@ import com.development.mycolive.views.activity.forgotPassword.ForgotPassword;
 import com.development.mycolive.views.activity.SignupScreen;
 import com.development.mycolive.model.loginModel.LoginApiResponse;
 import com.development.mycolive.model.loginModel.LoginRequestModel;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
+import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -34,6 +44,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Arrays;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener,GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = LoginActivity.class.getSimpleName();
@@ -42,6 +58,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     SessionManager session;
     private static final int RC_SIGN_IN = 007;
     private GoogleApiClient mGoogleApiClient;
+    private CallbackManager callbackManager;
+    private boolean isVisible= false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +79,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         loginBinding.forgotPassword.setOnClickListener(this);
         loginBinding.signUp.setOnClickListener(this);
         loginBinding.googleLogin.setOnClickListener(this);
+        loginBinding.facebookLogin.setOnClickListener(this);
+        loginBinding.passwordVisibility.setOnClickListener(this);
+
+
     }
 
     @Override
@@ -71,10 +93,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 if(loginBinding.inputEmail.getText().toString().isEmpty()){
                     Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show();
                     return;
-                }/*else if(loginBinding.inputPassword.getText().toString().isEmpty()){
+                }else if(loginBinding.inputPassword.getText().toString().isEmpty()){
                     Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
                     return;
-                }*/else{
+                }else{
                     if (android.util.Patterns.EMAIL_ADDRESS.matcher(loginBinding.inputEmail.getText().toString()).matches()) {
 
                         String user_email = loginBinding.inputEmail.getText().toString();
@@ -89,11 +111,29 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                         loginBinding.inputEmail.setError("Invalid Email Address");
                     }
                 }
-               // startActivity(new Intent(this, ShowHomeScreen.class));
+                  // startActivity(new Intent(this, ShowHomeScreen.class));
+
                 break;
 
             case R.id.google_login:
                 signIn();
+                break;
+
+            case R.id.password_visibility:
+                if(!isVisible){
+                    isVisible = true;
+                    loginBinding.passwordVisibility.setImageDrawable(getResources().getDrawable(R.drawable.ic_visibility_black_24dp));
+                    loginBinding.inputPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+
+                }else{
+                    isVisible = false;
+                    loginBinding.passwordVisibility.setImageDrawable(getResources().getDrawable(R.drawable.ic_visibility_off_black_24dp));
+                    loginBinding.inputPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                }
+                break;
+
+            case R.id.facebook_login:
+                facebookSignIn();
                 break;
 
             case R.id.forgot_password:
@@ -174,6 +214,18 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 }
 
 private void initailzeView(){
+
+    boolean loggedOut = AccessToken.getCurrentAccessToken() == null;
+
+    if (!loggedOut) {
+    //    Picasso.with(this).load(Profile.getCurrentProfile().getProfilePictureUri(200, 200)).into(imageView);
+        Log.d("TAG", "Username is: " + Profile.getCurrentProfile().getName());
+
+        //Using Graph API
+        getUserProfile(AccessToken.getCurrentAccessToken());
+    }
+     callbackManager = CallbackManager.Factory.create();
+
     GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
 
             .requestEmail()
@@ -184,12 +236,33 @@ private void initailzeView(){
             .enableAutoManage(this, this)
             .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
             .build();
+
+    loginBinding.facebookButton.setReadPermissions(Arrays.asList("eamil","public_profile"));
+
+    loginBinding.facebookButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        @Override
+        public void onSuccess(LoginResult loginResult) {
+            boolean loggedIn = AccessToken.getCurrentAccessToken() == null;
+            Log.d("API123", loggedIn + " ??");
+        }
+
+        @Override
+        public void onCancel() {
+
+        }
+
+        @Override
+        public void onError(FacebookException error) {
+
+        }
+    });
 }
 
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
+
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
@@ -241,6 +314,8 @@ private void initailzeView(){
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
+        }else{
+            callbackManager.onActivityResult(requestCode,resultCode,data);
         }
     }
 
@@ -252,6 +327,42 @@ private void initailzeView(){
                   //      updateUI(false);
                     }
                 });
+    }
+
+
+    private void facebookSignIn(){
+
+    }
+
+    private void getUserProfile(AccessToken currentAccessToken) {
+        GraphRequest request = GraphRequest.newMeRequest(
+                currentAccessToken, new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        Log.d("TAG", object.toString());
+                        try {
+                            String first_name = object.getString("first_name");
+                            String last_name = object.getString("last_name");
+                            String email = object.getString("email");
+                            String id = object.getString("id");
+                            String image_url = "https://graph.facebook.com/" + id + "/picture?type=normal";
+
+                           /* txtUsername.setText("First Name: " + first_name + "\nLast Name: " + last_name);
+                            txtEmail.setText(email);
+                            Picasso.with(MainActivity.this).load(image_url).into(imageView);*/
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
+
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "first_name,last_name,email,id");
+        request.setParameters(parameters);
+        request.executeAsync();
+
     }
 
 }

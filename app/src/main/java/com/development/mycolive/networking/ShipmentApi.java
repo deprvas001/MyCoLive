@@ -69,7 +69,8 @@ public interface ShipmentApi {
             "Method: POST"
     })
     @POST("forgetPassword")
-    Call<LoginResponse> forgotPassword(@Body ForgotRequestModel requestModel);
+    Call<LoginResponse> forgotPassword(
+            @Body ForgotRequestModel requestModel);
 
 
 

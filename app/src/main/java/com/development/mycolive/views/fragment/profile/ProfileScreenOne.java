@@ -26,10 +26,16 @@ import com.development.mycolive.databinding.FragmentProfileScreenOneBinding;
 import com.development.mycolive.model.editProfile.Data;
 import com.development.mycolive.model.editProfile.PostProfileModel;
 import com.development.mycolive.model.editProfile.ProfilePostApiResponse;
+import com.development.mycolive.model.searchFilterModel.FilterApiResponse;
+import com.development.mycolive.model.searchScreen.CityModel;
+import com.development.mycolive.model.searchScreen.DistrictModel;
+import com.development.mycolive.model.searchScreen.Period;
+import com.development.mycolive.model.searchScreen.UniversityModel;
 import com.development.mycolive.session.SessionManager;
 import com.development.mycolive.views.activity.ShowHomeScreen;
 import com.development.mycolive.model.editProfile.ProfileApiResponse;
 import com.development.mycolive.model.editProfile.ProfileData;
+import com.development.mycolive.views.fragment.filterSearch.SearchViewModel;
 import com.google.android.gms.common.api.Api;
 import com.nguyenhoanglam.imagepicker.model.Config;
 import com.nguyenhoanglam.imagepicker.model.Image;
@@ -59,6 +65,10 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener {
     SessionManager session;
     private int REQUEST_CODE = 100;
     private String fdate = "";
+    SearchViewModel searchViewModel;
+    List<DistrictModel> districtModelList =new ArrayList<>();
+    List<UniversityModel> universityModelList = new ArrayList<>();
+    List<UniversityModel> university = new ArrayList<>();
     private String image_string = "";
     private DatePickerDialog mDatePickerDialog;
     private String token="";
@@ -100,7 +110,6 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener {
         headers.put(ApiConstant.USER_TYPE,ApiConstant. USER_TYPE_VALUE);
         headers.put(ApiConstant.USER_DEVICE_TYPE,ApiConstant.USER_DEVICE_TYPE_VALUE);
         headers.put(ApiConstant.USER_DEVICE_TOKEN,ApiConstant.USER_DEVICE_TOKEN_VALUE);
-        headers.put(ApiConstant.METHOD,ApiConstant.METHOD_GET);
         headers.put(ApiConstant.AUTHENTICAT_TOKEN,token);
 
         profileViewModel = ViewModelProviders.of(getActivity()).get(ProfileViewModel.class);
@@ -339,4 +348,32 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener {
 
         getBooking(token);
     }
+
+
+  /*  private void getDefaultData(){
+        String type = "ALL";
+
+        searchViewModel = ViewModelProviders.of(getActivity()).get(SearchViewModel.class);
+
+        searchViewModel.getDefaultData(getActivity(),type).observe(getActivity(), new Observer<FilterApiResponse>() {
+            @Override
+            public void onChanged(FilterApiResponse filterApiResponse) {
+                if(filterApiResponse.filterResponse !=null){
+                    districtModelList.clear();
+                    university.clear();
+                    List<CityModel>  cityModelList =    filterApiResponse.getFilterResponse().getData().getCityList();
+                    List<Period>  periodList = filterApiResponse.getFilterResponse().getData().getPeriodList();
+                    districtModelList = filterApiResponse.getFilterResponse().getData().getDistictList();
+                    universityModelList = filterApiResponse.getFilterResponse().getData().getUniversityList();
+                    setSpinner(cityModelList,periodList);
+
+
+                }else if(filterApiResponse.filterResponse ==null){
+                    Toast.makeText(getActivity(), "Try Later", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }*/
+
+
 }

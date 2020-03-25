@@ -41,6 +41,7 @@
               android:layout_marginBottom="30dp">
 
               <TextView
+                  android:id="@+id/title"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:text="@string/booking_confirmed"
@@ -64,6 +65,7 @@
                   android:layout_marginRight="20dp"/>
 
               <TextView
+                  android:id="@+id/confirmation"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:hint="@string/message_desc"

@@ -42,6 +42,8 @@ public class PaymentRepository {
             public void onResponse(Call<PaymentResponse> call, Response<PaymentResponse> response) {
                 if(response.code() == 401){
                     historyResponseLiveData.setValue(new PaymentApiResponse(response.code()));
+                }else if(response.code() ==500){
+                    historyResponseLiveData.setValue(new PaymentApiResponse(response.code()));
                 }
                 else if(response.code() == 400){
                    // ResponseBody responseBody = response.errorBody();

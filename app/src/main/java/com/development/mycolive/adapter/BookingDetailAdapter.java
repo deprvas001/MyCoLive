@@ -74,11 +74,11 @@ public class BookingDetailAdapter extends RecyclerView.Adapter<BookingDetailAdap
         List<HomeSlider> sliderList = roomData.getImage_slider();
         List<PriceLevel> priceLevels = roomData.getPrice_levels();
         holder.name.setText(roomData.getApartment_name());
-        holder.security.setText(priceLevels.get(1).getPrice());
-        holder.month_rent.setText(priceLevels.get(0).getPrice());
+        holder.security.setText("€"+priceLevels.get(1).getPrice());
+        holder.month_rent.setText("€"+priceLevels.get(0).getPrice());
 
        total = Float.parseFloat(priceLevels.get(0).getPrice())+Float.parseFloat(priceLevels.get(1).getPrice());
-        holder.sub_total.setText(String.valueOf(total));
+        holder.sub_total.setText("€"+String.valueOf(total));
         Picasso.get()
                 .load(sliderList.get(0).getImage())
                 // *//*  .placeholder(R.drawable.image1)

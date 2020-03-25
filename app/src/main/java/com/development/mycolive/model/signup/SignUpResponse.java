@@ -1,10 +1,12 @@
 package com.development.mycolive.model.signup;
 
+import com.development.mycolive.model.Data;
+
 public class SignUpResponse {
     private int status;
     private String message;
     private int id;
-
+    private Data data;
     public int getStatus() {
         return status;
     }
@@ -27,5 +29,13 @@ public class SignUpResponse {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Data getData() {
+        return data;
+    }
+
+    public void setData(Data data) {
+        this.data = data;
     }
 }

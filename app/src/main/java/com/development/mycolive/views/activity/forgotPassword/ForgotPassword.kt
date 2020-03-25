@@ -13,11 +13,13 @@ import com.development.mycolive.databinding.ActivityForgotPasswordBinding
 import com.development.mycolive.views.activity.BaseActivity
 import com.development.mycolive.model.forgotModel.ForgotRequestModel
 import com.development.mycolive.model.loginModel.LoginApiResponse
+import com.development.mycolive.session.SessionManager
 
 class ForgotPassword :BaseActivity() , View.OnClickListener {
 
     lateinit var passwordBinding: ActivityForgotPasswordBinding
     lateinit var toolbar:Toolbar
+    lateinit var session:SessionManager
     private var forgotRequestModel = ForgotRequestModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,15 +53,15 @@ class ForgotPassword :BaseActivity() , View.OnClickListener {
                 // startJobIntent.putExtra(AppConstants.JOBS_UPCOMING, upcoming)
                 startActivity(startJobIntent)*/
                // finish()
-                forgotPassword()
+               getSession()
 
             }
         }
     }
 
-   private fun forgotPassword(){
+   private fun forgotPassword(email_user: String?) {
        showProgressDialog(getString(R.string.loading))
-       forgotRequestModel.email="deepak.shadsf@webfume.com"
+       forgotRequestModel.email=email_user
        val forgotViewModel = ViewModelProviders.of(this).get(ForgotViewModel::class.java)
 
 
@@ -76,4 +78,20 @@ class ForgotPassword :BaseActivity() , View.OnClickListener {
            })
    }
 
+
+    private fun getSession() {
+        session = SessionManager(this)
+        // get user data from session
+        val user = session.getUserDetails()
+
+        // name
+        val name = user.get(SessionManager.KEY_NAME)
+
+        // email
+        val email = user.get(SessionManager.KEY_EMAIL)
+        val image = user.get(SessionManager.KEY_IMAGE)
+     //   token = user.get(SessionManager.KEY_TOKEN)
+
+         forgotPassword(email)
+    }
 }

@@ -21,6 +21,8 @@
     <string name="phone">Phone Number</string>
     <string name="dob">DOB(DD-MM-YYYY)</string>
     <string name="next">Next</string>
+    <string name="facebook_app_id">164646528174388</string>
+    <string name="fb_login_protocol_scheme">fb164646528174388</string>
     <string name="gender">Gender</string>
     <string name="signin">Sign in with facebook</string>
     <string name="already_sign">Already registered ? <u><b><font fgcolor='#008577'>Sign in</font></b></u></string>
@@ -30,7 +32,7 @@
     <string name="new_account">New Account</string>
     <string name="education_txt"><![CDATA[Fill educational details & current location]]></string>
     <string name="location">Location</string>
-    <string name="terms_condition">I Accept Terms of use and <u> <font fgcolor='#008577'>Privacy Policy</font></u></string>
+    <string name="terms_condition">I Accept  <u> <font fgcolor='#008577'>Terms And Condition</font></u></string>
     <string name="title_home">Home</string>
     <string name="search">Search</string>
     <string name="mybooking">My Booking</string>
@@ -202,5 +204,7 @@
     <string name="select_payment">Select Payment</string>
     <string name="booking_confirmed">Booking Confirmed</string>
     <string name="message_desc">A confirmation mail has been sent to your registered email.</string>
+    <string name="read_more">Read More</string>
+    <string name="read_less">Read Less</string>
 
 </resources>

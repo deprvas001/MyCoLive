@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
         android:id="@+id/layout"
         android:layout_width="fill_parent"
@@ -67,9 +68,16 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
+                  <LinearLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="horizontal">
+
+
                     <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:layout_marginTop="10dp"
                         android:hint="@string/password">
 
@@ -80,10 +88,19 @@
                             android:focusableInTouchMode="true"
                             android:inputType="textPassword"
                             android:maxLength="15"
-                            android:drawableRight="@drawable/ic_visibility_off_black_24dp"
                             android:textSize="14sp" />
 
                     </com.google.android.material.textfield.TextInputLayout>
+
+                      <ImageView
+                          android:id="@+id/password_visibility"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:layout_marginLeft="-20dp"
+                          android:layout_gravity="center_vertical"
+                          android:src="@drawable/ic_visibility_off_black_24dp"/>
+
+                  </LinearLayout>
 
 
                     <TextView
@@ -95,6 +112,8 @@
                         android:text="@string/forgot_password"
                         android:textColor="@color/colorPrimary"
                         android:textSize="14sp" />
+
+
 
                 </LinearLayout>
 
@@ -144,6 +163,7 @@
                         />
 
                     <ImageView
+                        android:id="@+id/facebook_login"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:padding="5dp"
@@ -159,6 +179,19 @@
                         />
 
                 </LinearLayout>
+
+                <com.facebook.login.widget.LoginButton
+                    android:id="@+id/facebook_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="15dp"
+                    android:visibility="gone"
+                    android:layout_gravity="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/sign_up"

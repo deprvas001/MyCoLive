@@ -2,6 +2,8 @@ package com.development.mycolive.views.fragment.signUp;
 
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
@@ -15,15 +17,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.development.mycolive.R;
+import com.development.mycolive.constant.ApiConstant;
 import com.development.mycolive.databinding.FragmentSignUpOneBinding;
 import com.development.mycolive.model.editProfile.ProfilePostApiResponse;
 import com.development.mycolive.model.signup.SignPostRequest;
 import com.development.mycolive.model.signup.SignUpApiResponse;
+import com.development.mycolive.session.SessionManager;
 import com.development.mycolive.views.activity.ShowHomeScreen;
 import com.development.mycolive.views.activity.SignupScreen;
+import com.development.mycolive.views.activity.login.LoginActivity;
 import com.development.mycolive.views.fragment.NewAccount;
 import com.development.mycolive.views.fragment.profile.ProfileViewModel;
 
@@ -31,15 +37,18 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
+
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SignUpOne extends Fragment implements View.OnClickListener {
+public class SignUpOne extends Fragment implements View.OnClickListener , RadioGroup.OnCheckedChangeListener {
 View view;
 FragmentSignUpOneBinding oneBinding;
 SignUpViewModel viewModel;
+private String gender="";
 private DatePickerDialog mDatePickerDialog;
-
+    SessionManager session;
     public SignUpOne() {
         // Required empty public constructor
     }
@@ -49,6 +58,7 @@ private DatePickerDialog mDatePickerDialog;
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         oneBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_sign_up_one,container,false);
+        session = new SessionManager(getContext());
         view = oneBinding.getRoot();
         setOnClickListener();
         return view;
@@ -69,6 +79,16 @@ private DatePickerDialog mDatePickerDialog;
         setDateTimeField();
         oneBinding.fieldLayout.btnNext.setOnClickListener(this);
         oneBinding.fieldLayout.signIn.setOnClickListener(this);
+        oneBinding.fieldLayout.radioGroup.setOnCheckedChangeListener(this);
+        oneBinding.fieldLayout.privacyPolicy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String url = "https://webfume.in/mani-budapest/landing/privacyPolicy";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+            }
+        });
         oneBinding.fieldLayout.inputDob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -121,7 +141,12 @@ private DatePickerDialog mDatePickerDialog;
        signPostRequest.setDob(oneBinding.fieldLayout.inputDob.getText().toString());
        signPostRequest.setMobile(oneBinding.fieldLayout.inputPhone.getText().toString());
        signPostRequest.setPassword(oneBinding.fieldLayout.password.getText().toString());
-       signPostRequest.setGender(oneBinding.fieldLayout.inputGender.getText().toString());
+       if(oneBinding.fieldLayout.maleRadionbtn.isChecked()){
+           gender = "M";
+       }else{
+           gender = "F";
+       }
+       signPostRequest.setGender(gender);
        signPostRequest.setLogin_type("NORMAL");
        signPostRequest.setTermCondition("1");
 
@@ -134,12 +159,31 @@ private DatePickerDialog mDatePickerDialog;
                if (apiResponse.response != null) {
                    Toast.makeText(getActivity(), apiResponse.response.getMessage(), Toast.LENGTH_SHORT).show();
                  // loadFragment(new NewAccount());
-               } else if (apiResponse.getStatus() == 401) {
-                   Toast.makeText(getActivity(), "Authentication Failed", Toast.LENGTH_SHORT).show();
-               } else if(apiResponse.getStatus() == 400){
+                 //  getActivity().finish();
+                   String type = ApiConstant.NORMAL;
+                   String token = apiResponse.getResponse().getData().getAuthenticateToken();
+                   String userID = apiResponse.getResponse().getData().getUserId();
+                   String userType = apiResponse.getResponse().getData().getUserType();
+                   String name = apiResponse.getResponse().getData().getName();
+                   String email = apiResponse.getResponse().getData().getEmail();
+                   String image = apiResponse.getResponse().getData().getImage();
+
+                   if (apiResponse.getResponse().getStatus() == 1) {
+                       session.createLoginSession(name,
+                               email,userID,userType,token,image,type);
+                       //  LoginActivity.this.showAlertDialog(LoginActivity.this, LoginActivity.this.getString(R.string.success));
+
+                       Intent i = new Intent(getActivity(), ShowHomeScreen.class);
+                       // Closing all the Activities
+                       i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                               Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                               Intent.FLAG_ACTIVITY_NEW_TASK);
+                       // Staring Login Activity
+                       getActivity().startActivity(i);
+
+                   }
+               }else {
                    Toast.makeText(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
-               } else {
-                   Toast.makeText(getActivity(), "Try Later", Toast.LENGTH_SHORT).show();
                }
            }
        });
@@ -162,7 +206,20 @@ private DatePickerDialog mDatePickerDialog;
                 oneBinding.fieldLayout.inputDob.setText(final_date);
             }
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
-       // mDatePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
-        /*  mDatePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());*/
+        //   mDatePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+        mDatePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 568025136000L);
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup radioGroup, int i) {
+        switch (radioGroup.getId()){
+            case R.id.male_radionbtn:
+                gender = "M";
+                break;
+
+            case R.id.female_radiobtn:
+                gender ="F";
+                break;
+        }
     }
 }

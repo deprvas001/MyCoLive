@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.development.mycolive.R;
@@ -68,6 +69,7 @@ ActivitySelectPaymentBinding paymentBinding;
         if (getIntent() != null) {
             total_price = getIntent().getExtras().getFloat("total_price");
             requestBody = getIntent().getParcelableExtra("booking_info");
+
             bankAccount = getIntent().getParcelableExtra("bank_account");
 
         }
@@ -75,7 +77,7 @@ ActivitySelectPaymentBinding paymentBinding;
     }
 
     private void setClickListener(){
-        paymentBinding.btnProceed.setText(String.valueOf(total_price)+" / "+"Pay Now");
+        paymentBinding.btnProceed.setText("€"+String.valueOf(total_price)+" / "+"Pay Now");
         paymentBinding.accountName.setText(bankAccount.getName());
         paymentBinding.accountNumber.setText(bankAccount.getAccountId());
         paymentBinding.ibanNo.setText(bankAccount.getIban());
@@ -186,9 +188,7 @@ ActivitySelectPaymentBinding paymentBinding;
 
     private void postBooking(){
             showProgressDialog(getResources().getString(R.string.loading));
-            List<String> roomIdList = new ArrayList<>();
-            roomIdList.add("43");
-            roomIdList.add("44");
+
             Map<String,String> headers = new HashMap<>();
             headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);
             headers.put(ApiConstant.SOURCES,ApiConstant.SOURCES_VALUE);
@@ -209,7 +209,7 @@ ActivitySelectPaymentBinding paymentBinding;
           requestBody.setReceipt(image_string);
 
 
-            viewModel = ViewModelProviders.of(this).get(PaymentViewModel.class);
+          viewModel = ViewModelProviders.of(this).get(PaymentViewModel.class);
 
         viewModel.bookingPost(this,headers,requestBody).observe(this, new Observer<PaymentApiResponse>() {
                 @Override
@@ -217,11 +217,16 @@ ActivitySelectPaymentBinding paymentBinding;
                     hideProgressDialog();
                     if(apiResponse.response !=null){
                       String message = apiResponse.getResponse().getMessage();
-                        Toast.makeText(SelectPayment.this, "Success", Toast.LENGTH_SHORT).show();
-                         showCustomDialog();
-                      // showCustomDialog();
-                    }else if(apiResponse.getStatus()== 401){
-                        Toast.makeText(SelectPayment.this, "Authentication", Toast.LENGTH_SHORT).show();
+                      if(apiResponse.getResponse().getStatus() == 1){
+                          showCustomDialog("Booking Confirmation",message);
+                      }else if(apiResponse.getResponse().getStatus() == 0){
+                          showCustomDialog("MCoLive",message);
+                      }else {
+                          showCustomDialog("MCoLive","Something went try Later.");
+                      }
+
+                    } else if(apiResponse.getStatus()== 401){
+                        Toast.makeText(SelectPayment.this, "UnAuthorized ", Toast.LENGTH_SHORT).show();
                     }
                     else{
                         Toast.makeText(SelectPayment.this, "Try Later", Toast.LENGTH_SHORT).show();
@@ -247,12 +252,18 @@ ActivitySelectPaymentBinding paymentBinding;
         postBooking();
     }
 
-    private void showCustomDialog(){
+    private void showCustomDialog(String title,String message){
         //then we will inflate the custom alert dialog xml that we created
         View dialogView = LayoutInflater.from(this).inflate(R.layout.booking_success_dialog,null);
 
         //Now we need an AlertDialog.Builder object
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        TextView title_txt = dialogView.findViewById(R.id.title);
+        title_txt.setText(title);
+
+
+        TextView confirmation_txt = dialogView.findViewById(R.id.confirmation);
+        confirmation_txt.setText(message);
 
         Button ok =(Button)dialogView.findViewById(R.id.buttonOk);
         //setting the view of the builder to our custom view that we already inflated

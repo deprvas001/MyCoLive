@@ -228,6 +228,7 @@
                     android:layout_marginRight="40dp"
                     android:background="@drawable/button_facebook_back"
                     android:padding="12dp"
+                    android:visibility="gone"
                     android:text="@string/signin"
                     android:textAllCaps="true"
                     android:drawableLeft="@drawable/ic_facebook"

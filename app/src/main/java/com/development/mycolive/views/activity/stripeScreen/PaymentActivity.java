@@ -3,6 +3,7 @@ package com.development.mycolive.views.activity.stripeScreen;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -75,14 +76,25 @@ public class PaymentActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         paymentBinding = DataBindingUtil.setContentView(this,R.layout.activity_payment);
+        paymentBinding.toolbar.setTitle(getString(R.string.stripe));
+        setSupportActionBar(paymentBinding.toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         if(getIntent()!=null){
             float total_price = getIntent().getExtras().getFloat("total_price");
-            paymentBinding.payButton.setText(String.valueOf(total_price)+" / Pay Now");
-
+            paymentBinding.payButton.setText("€"+String.valueOf(total_price)+" / Pay Now");
         }
-        getSession();
 
+        getSession();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected (item);
     }
 
     private void startCheckout() {

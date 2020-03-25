@@ -8,10 +8,10 @@ public class ProfileData {
   private String mobile;
   private String dob;
   private String country;
-  private String city;
+  private String city_name;
   private String post_code;
   private String district;
-  private String university;
+  private String university_name;
   private String status;
   private String term_condition;
   private String facebook_connected;
@@ -81,11 +81,11 @@ public class ProfileData {
     }
 
     public String getCity() {
-        return city;
+        return city_name;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setCity(String city_name) {
+        this.city_name = city_name;
     }
 
     public String getPost_code() {
@@ -105,11 +105,11 @@ public class ProfileData {
     }
 
     public String getUniversity() {
-        return university;
+        return university_name;
     }
 
-    public void setUniversity(String university) {
-        this.university = university;
+    public void setUniversity(String university_name) {
+        this.university_name = university_name;
     }
 
     public String getStatus() {

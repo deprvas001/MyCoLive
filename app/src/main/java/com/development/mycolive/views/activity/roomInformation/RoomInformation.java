@@ -70,9 +70,9 @@ List<HomeSlider> homeSliderList=new ArrayList<>();
         List<PriceLevel> priceLevel = roomData.getPrice_levels();
         int subtotal = Integer.parseInt(priceLevel.get(0).getPrice())+Integer.parseInt(priceLevel.get(1).getPrice());
         informationBinding.addressApartment.setText(roomData.getAddress());
-        informationBinding.monthRentPrice.setText("$ "+priceLevel.get(0).getPrice()+"/Month");
-        informationBinding.securityPrice.setText("$ "+priceLevel.get(1).getPrice()+"/Month");
-        informationBinding.subTotal.setText("$ "+String.valueOf(subtotal)+"/Month");
+        informationBinding.monthRentPrice.setText("€ "+priceLevel.get(0).getPrice()+"/Month");
+        informationBinding.securityPrice.setText("€ "+priceLevel.get(1).getPrice()+"/Month");
+        informationBinding.subTotal.setText("€ "+String.valueOf(subtotal)+"/Month");
         informationBinding.descriptionTxt.setText(roomData.getDescription());
 
 

@@ -62,7 +62,7 @@ public class HotPropertyAdapter extends RecyclerView.Adapter<HotPropertyAdapter.
     public void onBindViewHolder(HotPropertyAdapter.MyViewHolder holder, int position) {
         HomeFeatureProperty  featureProperty = propertiesList.get(position);
         List<HomeSlider> homeSliderList = featureProperty.getImage_slider();
-        holder.price.setText("$"+featureProperty.getPrice());
+        holder.price.setText("€"+featureProperty.getPrice());
         holder.address.setText(featureProperty.getAddress());
         holder.name.setText(featureProperty.getName());
         holder.rating.setVisibility(View.GONE);

@@ -16,6 +16,11 @@ import com.development.mycolive.networking.RetrofitService;
 import com.development.mycolive.networking.ShipmentApi;
 import com.development.mycolive.views.fragment.profile.ProfileReporsitory;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,8 +45,19 @@ public class SignRepository {
         shipmentApi.setSignUp(signPostRequest).enqueue(new Callback<SignUpResponse>() {
             @Override
             public void onResponse(Call<SignUpResponse> call, Response<SignUpResponse> response) {
-                if(response.code() == 401 || response.code() == 400){
-                    responseLiveData.setValue(new SignUpApiResponse(response.code()));
+                if(response.code() == 401 || response.code() == 400 || response.code() == 500){
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        String message = jObjError.getString("message");
+                        int status = jObjError.getInt("status");
+                        responseLiveData.setValue(new SignUpApiResponse(message,status,response.code()));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                 }
                 else {
                     if(response.isSuccessful()){

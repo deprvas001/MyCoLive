@@ -72,7 +72,7 @@ public class BookingDetails extends AppCompatActivity implements View.OnClickLis
             total_price = total_price+Float.parseFloat(roomDataList.get(i).getTotal_price());
         }
 
-        bookingDetailsBinding.totalPrice.setText("$"+String.valueOf(total_price));
+        bookingDetailsBinding.totalPrice.setText("€"+String.valueOf(total_price));
 
         setRecyclerView(roomDataList);
     }

@@ -69,6 +69,7 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
     private DatePickerDialog mDatePickerDialog;
     float total_cost;
     String id="";
+    boolean isTextViewClicked = false;
     String period,from,to;
     BankAccount bankAccount;
     List<PropertyRoomData> roomList = new ArrayList<>();
@@ -151,7 +152,7 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
         propertyDetailBinding.apartmentName.setText(apiResponse.getResponse().getData().get(0).getApartment_name());
         propertyDetailBinding.addressApartment.setText(apiResponse.getResponse().getData().get(0).getAddress());
         propertyDetailBinding.description.setText(apiResponse.getResponse().getData().get(0).getDescription());
-        propertyDetailBinding.totalPrice.setText("$"+apiResponse.getResponse().getData().get(0).getTotal_price());
+        propertyDetailBinding.totalPrice.setText("€"+apiResponse.getResponse().getData().get(0).getTotal_price());
 
         total_cost = Float.parseFloat(apiResponse.getResponse().getData().get(0).getTotal_price());
      }
@@ -185,6 +186,7 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
         propertyDetailBinding.arrivalDate.setOnClickListener(this);
         propertyDetailBinding.earlyCheckIn.setOnClickListener(this);
         propertyDetailBinding.btnProceed.setOnClickListener(this);
+        propertyDetailBinding.readMore.setOnClickListener(this);
 
 
         propertyDetailBinding.recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),  propertyDetailBinding.recyclerView, new RecyclerTouchListener.ClickListener() {
@@ -260,6 +262,23 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
             case R.id.from_edit:
                 edit_position=1;
                 mDatePickerDialog.show();
+                break;
+
+            case R.id.read_more:
+
+
+                if(isTextViewClicked){
+                    //This will shrink textview to 2 lines if it is expanded.
+                    propertyDetailBinding.description.setMaxLines(2);
+                    propertyDetailBinding.readMore.setText(getResources().getString(R.string.read_more));
+                    isTextViewClicked = false;
+                } else {
+                    propertyDetailBinding.readMore.setText(getResources().getString(R.string.read_less));
+                    //This will expand the textview if it is of 2 lines
+
+                    propertyDetailBinding.description.setMaxLines(Integer.MAX_VALUE);
+                    isTextViewClicked = true;
+                }
                 break;
 
             case R.id.to_edit:
