@@ -41,10 +41,6 @@ public class FindRoomateAdapter extends RecyclerView.Adapter<FindRoomateAdapter.
             address = (TextView)view.findViewById(R.id.address);
             fav_icon = (ImageView)view.findViewById(R.id.favourite_icon);
 
-
-
-          /*  title = (TextView) view.findViewById(R.id.type);
-            imageView = (ImageView)view.findViewById(R.id.image);*/
         }
     }
 

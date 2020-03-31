@@ -97,12 +97,19 @@ FragmentCurrentBookingBinding bookingBinding ;
             public void onChanged(BookingApiResponse bookingApiResponse) {
                 if(bookingApiResponse.response !=null){
 
-                     bookingList.clear();
-                     bookingList = bookingApiResponse.response.getBookingDataList();
-                     setRecycleView();
+                    if(bookingApiResponse.response.getStatus() == 1){
+                        bookingList.clear();
+                        bookingList = bookingApiResponse.response.getBookingDataList();
+                        setRecycleView();
+                    }else{
+                        Toast.makeText(getActivity(), bookingApiResponse.getResponse().getMessage(), Toast.LENGTH_SHORT).show();
 
-                }else if(bookingApiResponse.response ==null){
-                    Toast.makeText(getActivity(), "Try Later", Toast.LENGTH_SHORT).show();
+                    }
+
+
+                }else {
+                    Toast.makeText(getActivity(), bookingApiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+
                 }
                 bookingBinding.shimmerViewContainer.stopShimmer();
                 bookingBinding.shimmerViewContainer.setVisibility(View.GONE);

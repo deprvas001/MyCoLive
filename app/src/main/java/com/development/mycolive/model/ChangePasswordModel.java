@@ -1,31 +1,31 @@
 package com.development.mycolive.model;
 
 public class ChangePasswordModel {
-    private String user_name;
-    private String old_password;
-    private String new_password;
+    private String confirmPassword;
+    private String oldPassword;
+    private String newPassword;
 
-    public String getUser_name() {
-        return user_name;
+    public String getConfirmPassword() {
+        return confirmPassword;
     }
 
-    public void setUser_name(String user_name) {
-        this.user_name = user_name;
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 
-    public String getOld_password() {
-        return old_password;
+    public String getOldPassword() {
+        return oldPassword;
     }
 
-    public void setOld_password(String old_password) {
-        this.old_password = old_password;
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
     }
 
-    public String getNew_password() {
-        return new_password;
+    public String getNewPassword() {
+        return newPassword;
     }
 
-    public void setNew_password(String new_password) {
-        this.new_password = new_password;
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
     }
 }

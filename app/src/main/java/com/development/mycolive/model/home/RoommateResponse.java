@@ -1,12 +1,9 @@
-package com.development.mycolive.model.editProfile;
+package com.development.mycolive.model.home;
 
-import java.util.List;
-
-public class ProfileResponse {
+public class RoommateResponse {
     private int status;
     private String message;
-   // private Data data;
-    private ProfileData data;
+    private RoommateData data;
 
     public int getStatus() {
         return status;
@@ -24,11 +21,11 @@ public class ProfileResponse {
         this.message = message;
     }
 
-    public ProfileData getData() {
+    public RoommateData getData() {
         return data;
     }
 
-    public void setData(ProfileData data) {
+    public void setData(RoommateData data) {
         this.data = data;
     }
 }

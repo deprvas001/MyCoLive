@@ -3,9 +3,18 @@ package com.development.mycolive.model.loginModel;
 import com.development.mycolive.model.Data;
 
 public class LoginResponse {
+    private int isEmailExist;
     private int status;
     private String message;
     private Data data;
+
+    public int getIsEmailExist() {
+        return isEmailExist;
+    }
+
+    public void setIsEmailExist(int isEmailExist) {
+        this.isEmailExist = isEmailExist;
+    }
 
     public int getStatus() {
         return status;

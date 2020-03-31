@@ -1,10 +1,9 @@
-package com.development.mycolive.model.filterModel;
+package com.development.mycolive.model.logout;
 
-import com.development.mycolive.model.communityModel.CommunityResponse;
+import com.development.mycolive.model.postCommunity.PostResponse;
 
-public class FilterSearchApiResponse {
-
-    public FilterSearchResponse response;
+public class LogoutApiResponse {
+    public LogoutResponse response;
     private Throwable error;
     private String message;
     private int status;
@@ -18,34 +17,33 @@ public class FilterSearchApiResponse {
         this.status_code = status_code;
     }
 
-    public FilterSearchApiResponse(String message,int status,int status_code) {
+    public LogoutApiResponse(String message,int status,int status_code) {
         this.message = message;
         this.status = status;
         this.status_code = status_code;
     }
 
-
-    public FilterSearchApiResponse(FilterSearchResponse response) {
+    public LogoutApiResponse(LogoutResponse response) {
         this.response = response;
     }
 
-    public FilterSearchApiResponse(Throwable error) {
+    public LogoutApiResponse(Throwable error) {
         this.error = error;
     }
 
-    public FilterSearchApiResponse(String message) {
+    public LogoutApiResponse(String message) {
         this.message = message;
     }
 
-    public FilterSearchApiResponse(int status) {
+    public LogoutApiResponse(int status) {
         this.status = status;
     }
 
-    public FilterSearchResponse getResponse() {
+    public LogoutResponse getResponse() {
         return response;
     }
 
-    public void setResponse(FilterSearchResponse response) {
+    public void setResponse(LogoutResponse response) {
         this.response = response;
     }
 

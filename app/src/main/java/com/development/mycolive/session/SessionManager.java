@@ -7,6 +7,7 @@ import android.content.SharedPreferences.Editor;
 
 import com.development.mycolive.views.activity.ShowHomeScreen;
 import com.development.mycolive.views.activity.login.LoginActivity;
+import com.facebook.login.Login;
 
 import java.util.HashMap;
 
@@ -71,19 +72,16 @@ public class SessionManager {
      * If false it will redirect user to login page
      * Else won't do anything
      * */
-    public void checkLogin(){
+    public boolean checkLogin(){
         // Check login status
-        if(!this.isLoggedIn()){
+
+        return isLoggedIn();
+      /*  if(!this.isLoggedIn()){
             // user is not logged in redirect him to Login Activity
-            Intent i = new Intent(_context, ShowHomeScreen.class);
+            Intent i = new Intent(_context, LoginActivity.class);
 
-            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                    Intent.FLAG_ACTIVITY_CLEAR_TASK |
-                    Intent.FLAG_ACTIVITY_NEW_TASK);
-
-            // Staring Login Activity
             _context.startActivity(i);
-        }
+        }*/
 
     }
 
@@ -120,11 +118,9 @@ public class SessionManager {
         // After logout redirect user to Loing Activity
         Intent i = new Intent(_context, LoginActivity.class);
         // Closing all the Activities
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-        // Add new Flag to start new Activity
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
         // Staring Login Activity
         _context.startActivity(i);
     }

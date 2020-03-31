@@ -24,7 +24,10 @@
                 style="@style/Widget.AppCompat.Spinner.Underlined"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:padding="10dp"
+                android:paddingLeft="-5dp"
+                android:paddingRight="-5dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 tools:listitem="@layout/support_simple_spinner_dropdown_item"
                 android:entries="@array/type_name"
                 android:singleLine="true" />
@@ -35,7 +38,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginBottom="0dp"
-                android:padding="10dp"
+                android:paddingLeft="-5dp"
+                android:paddingRight="-5dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:singleLine="true" />
 
             <androidx.appcompat.widget.AppCompatSpinner
@@ -43,7 +49,10 @@
                 style="@style/Widget.AppCompat.Spinner.Underlined"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:padding="10dp"
+                android:paddingLeft="-5dp"
+                android:paddingRight="-5dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:singleLine="true" />
 
             <androidx.appcompat.widget.AppCompatSpinner
@@ -51,7 +60,10 @@
                 style="@style/Widget.AppCompat.Spinner.Underlined"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:padding="10dp"
+                android:paddingLeft="-5dp"
+                android:paddingRight="-5dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:singleLine="true" />
 
             <androidx.appcompat.widget.AppCompatSpinner
@@ -59,7 +71,10 @@
                 style="@style/Widget.AppCompat.Spinner.Underlined"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:padding="10dp"
+                android:paddingLeft="-5dp"
+                android:paddingRight="-5dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:singleLine="true" />
 
             <LinearLayout

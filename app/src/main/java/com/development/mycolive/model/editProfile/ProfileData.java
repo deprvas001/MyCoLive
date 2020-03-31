@@ -2,6 +2,7 @@ package com.development.mycolive.model.editProfile;
 
 public class ProfileData {
   private String id;
+  private String user_id;
   private String role_id;
   private String name;
   private String email;
@@ -23,6 +24,49 @@ public class ProfileData {
   private String address;
   private String late;
   private String lang;
+  private String city_id;
+  private String district_id;
+  private String university_id;
+
+    public String getCity_name() {
+        return city_name;
+    }
+
+    public void setCity_name(String city_name) {
+        this.city_name = city_name;
+    }
+
+    public String getUniversity_name() {
+        return university_name;
+    }
+
+    public void setUniversity_name(String university_name) {
+        this.university_name = university_name;
+    }
+
+    public String getCity_id() {
+        return city_id;
+    }
+
+    public void setCity_id(String city_id) {
+        this.city_id = city_id;
+    }
+
+    public String getDistrict_id() {
+        return district_id;
+    }
+
+    public void setDistrict_id(String district_id) {
+        this.district_id = district_id;
+    }
+
+    public String getUniversity_id() {
+        return university_id;
+    }
+
+    public void setUniversity_id(String university_id) {
+        this.university_id = university_id;
+    }
 
     public String getId() {
         return id;
@@ -198,5 +242,13 @@ public class ProfileData {
 
     public void setLang(String lang) {
         this.lang = lang;
+    }
+
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 }

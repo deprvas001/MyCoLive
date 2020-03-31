@@ -4,9 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.development.mycolive.R;
+import com.development.mycolive.constant.ApiConstant;
 import com.development.mycolive.databinding.ActivityShowHomeScreenBinding;
+import com.development.mycolive.model.ChangePasswordModel;
+import com.development.mycolive.model.logout.LogoutApiResponse;
+import com.development.mycolive.model.logout.LogoutRequestModel;
+import com.development.mycolive.model.postCommunity.PostApiResponse;
 import com.development.mycolive.session.SessionManager;
 import com.development.mycolive.views.activity.changePassword.ChangePassword;
+import com.development.mycolive.views.activity.changePassword.ChangePasswordViewModel;
 import com.development.mycolive.views.activity.myCommunity.MyCommunity;
 import com.development.mycolive.views.activity.notification.Notification;
 import com.development.mycolive.views.activity.testimonial.Testimonials;
@@ -33,15 +39,21 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
         /*implements NavigationView.OnNavigationItemSelectedListener*/ {
- public    ActivityShowHomeScreenBinding screenBinding;
+    public ActivityShowHomeScreenBinding screenBinding;
+    ChangePasswordViewModel viewModel;
+    String user_id, token;
     // Session Manager Class
     SessionManager session;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -84,10 +96,11 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
             return false;
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        screenBinding = DataBindingUtil.setContentView(this,R.layout.activity_show_home_screen);
+        screenBinding = DataBindingUtil.setContentView(this, R.layout.activity_show_home_screen);
         screenBinding.appBar.titleTxt.setText(getResources().getString(R.string.home_screen));
         initializeView();
         loadFragment(new Home());
@@ -98,17 +111,18 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
         //load fragment
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_container, fragment);
-      // transaction.addToBackStack(null);
+        // transaction.addToBackStack(null);
         transaction.commit();
     }
-    private void initializeView(){
+
+    private void initializeView() {
         // Session class instance
         session = new SessionManager(getApplicationContext());
         session.checkLogin();
         setSupportActionBar(screenBinding.appBar.toolbar);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this,screenBinding.drawerLayout, screenBinding.appBar.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, screenBinding.drawerLayout, screenBinding.appBar.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         screenBinding.drawerLayout.addDrawerListener(toggle);
         toggle.setHomeAsUpIndicator(R.drawable.ic_hamburger);
         toggle.setDrawerIndicatorEnabled(false);
@@ -130,8 +144,8 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
 
     }
 
-    private void setClickListener(){
-      //  screenBinding.navView.setNavigationItemSelectedListener(this);
+    private void setClickListener() {
+        //  screenBinding.navView.setNavigationItemSelectedListener(this);
         screenBinding.appBar.homeScreen.bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         screenBinding.customNavigationDrawer.favouriteLayout.setOnClickListener(this);
         screenBinding.customNavigationDrawer.testimonialLayout.setOnClickListener(this);
@@ -156,29 +170,29 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.favourite_layout:
-                startActivity(new Intent(ShowHomeScreen.this,MyFavourite.class));
-               // checkDrawer();
+                startActivity(new Intent(ShowHomeScreen.this, MyFavourite.class));
+                // checkDrawer();
                 break;
 
             case R.id.testimonial_layout:
-               startActivity(new Intent(this, Testimonials.class));
-               // checkDrawer();
+                startActivity(new Intent(this, Testimonials.class));
+                // checkDrawer();
                 break;
 
             case R.id.password_layout:
                 startActivity(new Intent(this, ChangePassword.class));
-              //  checkDrawer();
+                //  checkDrawer();
                 break;
 
             case R.id.contact_layout:
-                startActivity(new Intent(this,ContactUs.class));
-               // checkDrawer();
+                startActivity(new Intent(this, ContactUs.class));
+                // checkDrawer();
                 break;
 
             case R.id.about_us:
-                startActivity(new Intent(this,AboutUs.class));
+                startActivity(new Intent(this, AboutUs.class));
                 // checkDrawer();
                 break;
 
@@ -200,7 +214,7 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
     }
 
 
-    private void showCustomDialog(){
+    private void showCustomDialog() {
         //before inflating the custom alert dialog layout, we will get the current activity viewgroup
         ViewGroup viewGroup = findViewById(android.R.id.content);
 
@@ -215,17 +229,19 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
         //finally creating the alert dialog and displaying it
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
-        Button button_ok = (Button)dialogView.findViewById(R.id.button_ok);
+        Button button_ok = (Button) dialogView.findViewById(R.id.button_ok);
         button_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                session.logoutUser();
-               // Toast.makeText(ShowHomeScreen.this, "Done", Toast.LENGTH_SHORT).show();
+                checkLogout();
+
+              //  session.logoutUser();
+                // Toast.makeText(ShowHomeScreen.this, "Done", Toast.LENGTH_SHORT).show();
             }
         });
 
-        Button cancel = (Button)dialogView.findViewById(R.id.button_cancel);
+        Button cancel = (Button) dialogView.findViewById(R.id.button_cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -242,7 +258,7 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
         });*/
     }
 
-    private void checkDrawer(){
+    private void checkDrawer() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -251,7 +267,8 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
         }
     }
 
-    private void getUserDetail(){
+    private void getUserDetail() {
+        session = new SessionManager(this);
         // get user data from session
         HashMap<String, String> user = session.getUserDetails();
 
@@ -261,6 +278,9 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
         // email
         String email = user.get(SessionManager.KEY_EMAIL);
         String image = user.get(SessionManager.KEY_IMAGE);
+        user_id = user.get(SessionManager.KEY_USERID);
+        token = user.get(SessionManager.KEY_TOKEN);
+
 
         screenBinding.headerLayout.name.setText(name);
         screenBinding.headerLayout.email.setText(email);
@@ -270,4 +290,41 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
                   .error(R.drawable.err)*/
                 .into(screenBinding.headerLayout.profileImage);
     }
+
+
+    private void checkLogout() {
+        showProgressDialog(getResources().getString(R.string.loading));
+        Map<String, String> headers = new HashMap<>();
+        headers.put(ApiConstant.CONTENT_TYPE, ApiConstant.CONTENT_TYPE_VALUE);
+        headers.put(ApiConstant.AUTHENTICAT_TOKEN, token);
+
+        LogoutRequestModel requestModel = new LogoutRequestModel();
+        requestModel.setUser_id(user_id);
+
+        //   passwordModel.setUser_name(email);
+
+        viewModel = ViewModelProviders.of(this).get(ChangePasswordViewModel.class);
+
+        viewModel.logout(this, headers, requestModel).observe(this, new Observer<LogoutApiResponse>() {
+            @Override
+            public void onChanged(LogoutApiResponse apiResponse) {
+                hideProgressDialog();
+                if (apiResponse.response != null) {
+                    Toast.makeText(ShowHomeScreen.this, apiResponse.getResponse().getMessage(), Toast.LENGTH_SHORT).show();
+
+                    if (apiResponse.getResponse().getStatus() == 1) {
+                        //finish();
+                        session.logoutUser();
+                    }
+
+                } else {
+                    Toast.makeText(ShowHomeScreen.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
+             /*  bookingBinding.shimmerViewContainer.stopShimmer();
+                bookingBinding.shimmerViewContainer.setVisibility(View.GONE);*/
+            }
+        });
+    }
 }
+

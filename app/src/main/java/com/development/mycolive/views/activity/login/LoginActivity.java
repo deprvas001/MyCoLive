@@ -31,6 +31,7 @@ import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.Profile;
+import com.facebook.login.Login;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -157,37 +158,38 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         @Override
         public void onChanged(LoginApiResponse loginApiResponse) {
             hideProgressDialog();
-            if (loginApiResponse.getError() == null && loginApiResponse.getStatus() == 400) {
+            if ( loginApiResponse.getStatus_code() == 400 || loginApiResponse.getStatus_code() ==401
+                    || loginApiResponse.getStatus_code() ==500) {
                 // handle error here
-                LoginActivity.this.hideProgressDialog();
-                LoginActivity.this.showAlertDialog(LoginActivity.this, LoginActivity.this.getString(R.string.invalid_credentails));
-                //   Toast.makeText(this, getString(R.string.invalid_credentails), Toast.LENGTH_SHORT).show();
-            } else if (loginApiResponse.getError() == null) {
-                if(loginApiResponse.getResponse().getMessage().equalsIgnoreCase("false")){
-                    Toast.makeText(LoginActivity.this, "Please sign up.", Toast.LENGTH_SHORT).show();
-                    /*signOut();*/
-                }else{
-                    String token = loginApiResponse.getResponse().getData().getAuthenticateToken();
-                    String userID = loginApiResponse.getResponse().getData().getUserId();
-                    String userType = loginApiResponse.getResponse().getData().getUserType();
-                    String name = loginApiResponse.getResponse().getData().getName();
-                    String email = loginApiResponse.getResponse().getData().getEmail();
-                    String image = loginApiResponse.getResponse().getData().getImage();
-                    LoginActivity.this.hideProgressDialog();
+                Toast.makeText(LoginActivity.this,loginApiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+            } else if (loginApiResponse.response !=null) {
+                     Toast.makeText(LoginActivity.this,loginApiResponse.getResponse().getMessage(), Toast.LENGTH_SHORT).show();
 
                     if (loginApiResponse.getResponse().getStatus() == 1) {
+
+                        String token = loginApiResponse.getResponse().getData().getAuthenticateToken();
+                        String userID = loginApiResponse.getResponse().getData().getUserId();
+                        String userType = loginApiResponse.getResponse().getData().getUserType();
+                        String name = loginApiResponse.getResponse().getData().getName();
+                        String email = loginApiResponse.getResponse().getData().getEmail();
+                        String image = loginApiResponse.getResponse().getData().getImage();
+
                         session.createLoginSession(name,
                                 email,userID,userType,token,image,type);
                         //  LoginActivity.this.showAlertDialog(LoginActivity.this, LoginActivity.this.getString(R.string.success));
-                        startActivity(new Intent(LoginActivity.this,ShowHomeScreen.class));
+
+                        Intent i = new Intent(LoginActivity.this, ShowHomeScreen.class);
+                        // Closing all the Activities
+                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                                Intent.FLAG_ACTIVITY_NEW_TASK);
+                        // Staring Login Activity
+                        startActivity(i);
                     }
-                }
 
             } else {
                 // call failed.
-                LoginActivity.this.hideProgressDialog();
-                Throwable e = loginApiResponse.getError();
-                Toast.makeText(LoginActivity.this, "Error is " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this,loginApiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                 // Log.e(TAG, "Error is " + e.getLocalizedMessage());
             }
         }

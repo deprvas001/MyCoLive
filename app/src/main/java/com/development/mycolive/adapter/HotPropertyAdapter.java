@@ -15,6 +15,7 @@ import com.development.mycolive.R;
 import com.development.mycolive.model.home.HomeFeatureProperty;
 import com.development.mycolive.model.home.HomeHotProperty;
 import com.development.mycolive.model.home.HomeSlider;
+import com.development.mycolive.views.activity.propertyDetail.PropertyDetail;
 import com.development.mycolive.views.activity.searchDetailPage.RoomDetail;
 import com.squareup.picasso.Picasso;
 
@@ -66,12 +67,17 @@ public class HotPropertyAdapter extends RecyclerView.Adapter<HotPropertyAdapter.
         holder.address.setText(featureProperty.getAddress());
         holder.name.setText(featureProperty.getName());
         holder.rating.setVisibility(View.GONE);
+
         holder.viewLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                context.startActivity(new Intent(context, RoomDetail.class));
+                Intent intent = new Intent(context, PropertyDetail.class);
+                intent.putExtra("Property_Id",featureProperty.getId());
+                context.startActivity(intent);
+                //  context.startActivity(new Intent(context, RoomDetail.class));
             }
         });
+
         Picasso.get()
                 .load(homeSliderList.get(0).getImage())
                 /*  .placeholder(R.drawable.image1)

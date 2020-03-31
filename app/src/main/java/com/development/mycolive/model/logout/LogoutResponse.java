@@ -1,6 +1,6 @@
-package com.development.mycolive.model.postCommunity;
+package com.development.mycolive.model.logout;
 
-public class PostResponse {
+public class LogoutResponse {
     private String message;
     private int status;
 

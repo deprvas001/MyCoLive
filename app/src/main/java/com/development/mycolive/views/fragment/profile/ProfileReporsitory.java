@@ -7,11 +7,16 @@ import androidx.lifecycle.MutableLiveData;
 import com.development.mycolive.model.editProfile.PostProfileModel;
 import com.development.mycolive.model.editProfile.PostProfileResponse;
 import com.development.mycolive.model.editProfile.ProfilePostApiResponse;
+import com.development.mycolive.model.loginModel.LoginApiResponse;
 import com.development.mycolive.networking.RetrofitService;
 import com.development.mycolive.networking.ShipmentApi;
 import com.development.mycolive.model.editProfile.ProfileApiResponse;
 import com.development.mycolive.model.editProfile.ProfileResponse;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -39,8 +44,19 @@ public class ProfileReporsitory {
         shipmentApi.getProfile(headers,type).enqueue(new Callback<ProfileResponse>() {
             @Override
             public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
-                if(response.code() == 401 || response.code() == 400){
-                    profileResponseLiveData.setValue(new ProfileApiResponse(response.code()));
+                if(response.code() == 401 || response.code() == 400 || response.code() == 500){
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        String message = jObjError.getString("message");
+                        int status = jObjError.getInt("status");
+                        profileResponseLiveData.setValue(new ProfileApiResponse(message,status,response.code()));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                 }
                 else {
                     if(response.isSuccessful()){
@@ -59,25 +75,36 @@ public class ProfileReporsitory {
     }
 
 
-    public MutableLiveData<ProfilePostApiResponse> updateProfile(Context context,  Map<String,String> headers,PostProfileModel postProfileModel){
-        final MutableLiveData<ProfilePostApiResponse> profileResponseLiveData =new MutableLiveData<>();
+    public MutableLiveData<ProfileApiResponse> updateProfile(Context context,  Map<String,String> headers,PostProfileModel postProfileModel){
+        final MutableLiveData<ProfileApiResponse> profileResponseLiveData =new MutableLiveData<>();
 
-        shipmentApi.updateProfile(headers,postProfileModel).enqueue(new Callback<PostProfileResponse>() {
+        shipmentApi.updateProfile(headers,postProfileModel).enqueue(new Callback<ProfileResponse>() {
             @Override
-            public void onResponse(Call<PostProfileResponse> call, Response<PostProfileResponse> response) {
-                if(response.code() == 401 || response.code() == 400){
-                    profileResponseLiveData.setValue(new ProfilePostApiResponse(response.code()));
+            public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
+                if(response.code() == 401 || response.code() == 400 || response.code() == 500){
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        String message = jObjError.getString("message");
+                        int status = jObjError.getInt("status");
+                        profileResponseLiveData.setValue(new ProfileApiResponse(message,status,response.code()));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                 }
                 else {
                     if(response.isSuccessful()){
-                        profileResponseLiveData.setValue(new ProfilePostApiResponse(response.body()));
+                        profileResponseLiveData.setValue(new ProfileApiResponse(response.body()));
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<PostProfileResponse> call, Throwable t) {
-                profileResponseLiveData.setValue(new ProfilePostApiResponse(t));
+            public void onFailure(Call<ProfileResponse> call, Throwable t) {
+                profileResponseLiveData.setValue(new ProfileApiResponse(t));
             }
         });
 

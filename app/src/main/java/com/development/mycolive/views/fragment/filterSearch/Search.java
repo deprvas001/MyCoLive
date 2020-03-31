@@ -19,10 +19,13 @@ import android.widget.Toast;
 import com.development.mycolive.R;
 import com.development.mycolive.constant.ApiConstant;
 import com.development.mycolive.databinding.FragmentSearchBinding;
+import com.development.mycolive.model.editProfile.ProfileData;
+import com.development.mycolive.model.favourite.RoomateData;
 import com.development.mycolive.model.filterModel.FilterSearchApiResponse;
 import com.development.mycolive.model.home.HomeFeatureProperty;
 import com.development.mycolive.model.searchScreen.Period;
 import com.development.mycolive.session.SessionManager;
+import com.development.mycolive.views.activity.roomate.RoommateList;
 import com.development.mycolive.views.activity.searchResult.SearchResult;
 import com.development.mycolive.views.activity.ShowHomeScreen;
 import com.development.mycolive.model.searchFilterModel.FilterApiResponse;
@@ -241,7 +244,7 @@ FragmentSearchBinding searchBinding;
                         setSpinner(cityModelList,periodList);
 
 
-                    }else if(filterApiResponse.filterResponse ==null){
+                    }else {
                         Toast.makeText(getActivity(), "Try Later", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -250,12 +253,13 @@ FragmentSearchBinding searchBinding;
 
     private void getSerchData(){
        // https://webfume.in/mani-budapest/api/search?type=ROOM&city=Vaduz&district=2&university=6&duration=3&daterange=
+        ((ShowHomeScreen) getActivity()).showProgressDialog(getResources().getString(R.string.loading));
 
-        String type = "ROOM";
-        String city = "Vaduz";
-        String district = "2";
-        String university = "6";
-        String duration = "2";
+        String type = category_type;
+        String city = city_spinner;
+        String district = district_spiner;
+        String university = university_id;
+        String duration = duration_period;
         String daterange ="";
         Map<String,String> headers = new HashMap<>();
         headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);
@@ -272,21 +276,21 @@ FragmentSearchBinding searchBinding;
         ,city,district,university,duration,daterange).observe(getActivity(), new Observer<FilterSearchApiResponse>() {
             @Override
             public void onChanged(FilterSearchApiResponse filterApiResponse) {
+                ((ShowHomeScreen) getActivity()).hideProgressDialog();
+
                 if(filterApiResponse.response !=null){
-                  List<HomeFeatureProperty> homeFeaturePropertyList  =filterApiResponse.getResponse().getData().getResult();
-                    startActivity(new Intent(getActivity(), SearchResult.class));
+                    if(filterApiResponse.getResponse().getStatus() ==1){
+                        ArrayList<RoomateData> roommateList = filterApiResponse.getResponse().getData().getRoommate();
+                        if(type.equalsIgnoreCase("Roommate")){
+                            Intent intent = new Intent(getActivity(), RoommateList.class);
+                            intent.putParcelableArrayListExtra("roommateList",roommateList);
+                            startActivity(intent);
 
-                    /*districtModelList.clear();
-                    university.clear();
-                    List<CityModel>  cityModelList =    filterApiResponse.getFilterResponse().getData().getCityList();
-                    List<Period>  periodList = filterApiResponse.getFilterResponse().getData().getPeriodList();
-                    districtModelList = filterApiResponse.getFilterResponse().getData().getDistictList();
-                    universityModelList = filterApiResponse.getFilterResponse().getData().getUniversityList();
-                    setSpinner(cityModelList,periodList);*/
+                        }
+                    }
 
-
-                }else if(filterApiResponse.response ==null){
-                    Toast.makeText(getActivity(), "Try Later", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getActivity(), filterApiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });

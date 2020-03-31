@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.development.mycolive.R;
 import com.development.mycolive.constant.ApiConstant;
@@ -78,11 +79,20 @@ public class PastBooking extends Fragment {
         bookingViewModel.getBooking(getActivity(),headers, type).observe(getActivity(), new Observer<BookingApiResponse>() {
             @Override
             public void onChanged(BookingApiResponse bookingApiResponse) {
-                if (bookingApiResponse.response != null) {
+                if(bookingApiResponse.response !=null){
 
-                    bookingList.clear();
-                    bookingList = bookingApiResponse.response.getBookingDataList();
-                    setRecycleView();
+                    if(bookingApiResponse.response.getStatus() == 1){
+                        bookingList.clear();
+                        bookingList = bookingApiResponse.response.getBookingDataList();
+                        setRecycleView();
+                    }else{
+                        Toast.makeText(getActivity(), bookingApiResponse.getResponse().getMessage(), Toast.LENGTH_SHORT).show();
+
+                    }
+
+
+                }else {
+                    Toast.makeText(getActivity(), bookingApiResponse.getMessage(), Toast.LENGTH_SHORT).show();
 
                 }
             }

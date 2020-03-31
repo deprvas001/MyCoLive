@@ -1,26 +1,22 @@
 package com.development.mycolive.model.filterModel;
 
+import com.development.mycolive.model.editProfile.ProfileData;
+import com.development.mycolive.model.favourite.RoomateData;
 import com.development.mycolive.model.home.HomeFeatureProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FilterResponseData {
-    private RequestData request_data;
-    private List<HomeFeatureProperty>  result;
+  private ArrayList<RoomateData> roommate;
 
-    public RequestData getRequest_data() {
-        return request_data;
+
+
+    public ArrayList<RoomateData> getRoommate() {
+        return roommate;
     }
 
-    public void setRequest_data(RequestData request_data) {
-        this.request_data = request_data;
-    }
-
-    public List<HomeFeatureProperty> getResult() {
-        return result;
-    }
-
-    public void setResult(List<HomeFeatureProperty> result) {
-        this.result = result;
+    public void setRoommate(ArrayList<RoomateData> roommate) {
+        this.roommate = roommate;
     }
 }

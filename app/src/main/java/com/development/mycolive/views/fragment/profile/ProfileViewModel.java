@@ -23,7 +23,7 @@ public class ProfileViewModel extends AndroidViewModel {
         return ProfileReporsitory.getInstance().getProfile(context, headers , type);
     }
 
-    public MutableLiveData<ProfilePostApiResponse> updateProfile(Context context,  Map<String,String> headers,PostProfileModel postProfileModel) {
+    public MutableLiveData<ProfileApiResponse> updateProfile(Context context,  Map<String,String> headers,PostProfileModel postProfileModel) {
         return ProfileReporsitory.getInstance().updateProfile(context,headers, postProfileModel);
     }
 }

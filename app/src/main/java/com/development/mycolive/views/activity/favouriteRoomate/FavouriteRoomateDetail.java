@@ -46,7 +46,10 @@ ActivityFavouriteRoomateDetailBinding roomateDetailBinding;
         roomateDetailBinding = DataBindingUtil.setContentView(this,R.layout.activity_favourite_roomate_detail);
    //     roomateModel = (RoomateData) getIntent().getParcelableExtra(ApiConstant.ROOMMATAE_ID);
 
-        id = getIntent().getExtras().getString(ApiConstant.ROOMMATAE_ID);
+        if(getIntent()!=null){
+            id = getIntent().getExtras().getString(ApiConstant.ROOMMATAE_ID);
+        }
+
 
 
         initializeView();

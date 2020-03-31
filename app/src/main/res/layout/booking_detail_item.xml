@@ -151,21 +151,7 @@
             android:src="@drawable/ic_upload"/>
     </LinearLayout>
 
-    <CheckBox
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:padding="10dp"
-        android:text="@string/refer_friend"/>
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:singleLine="true"
-        android:textColor="@color/edit_text_color"
-        android:hint="@string/your_email"/>
 </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>

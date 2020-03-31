@@ -52,6 +52,7 @@ ActivitySelectPaymentBinding paymentBinding;
     private int REQUEST_CODE = 100;
     SessionManager session;
     String token;
+    String email;
     PaymentViewModel viewModel;
     float total_price;
     PaymentRequestBody requestBody;
@@ -71,6 +72,7 @@ ActivitySelectPaymentBinding paymentBinding;
             requestBody = getIntent().getParcelableExtra("booking_info");
 
             bankAccount = getIntent().getParcelableExtra("bank_account");
+            email = getIntent().getExtras().getString("refer_email");
 
         }
         setClickListener();
@@ -225,11 +227,8 @@ ActivitySelectPaymentBinding paymentBinding;
                           showCustomDialog("MCoLive","Something went try Later.");
                       }
 
-                    } else if(apiResponse.getStatus()== 401){
-                        Toast.makeText(SelectPayment.this, "UnAuthorized ", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        Toast.makeText(SelectPayment.this, "Try Later", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(SelectPayment.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -282,8 +281,6 @@ ActivitySelectPaymentBinding paymentBinding;
                 startActivity(i);
             }
         });
-
-
 
         //finally creating the alert dialog and displaying it
         AlertDialog alertDialog = builder.create();

@@ -5,6 +5,21 @@ public class ProfileApiResponse {
     private Throwable error;
     private String message;
     private int status;
+    private int status_code;
+
+    public int getStatus_code() {
+        return status_code;
+    }
+
+    public void setStatus_code(int status_code) {
+        this.status_code = status_code;
+    }
+
+    public ProfileApiResponse(String message,int status,int status_code) {
+        this.message = message;
+        this.status = status;
+        this.status_code = status_code;
+    }
 
     public ProfileApiResponse(ProfileResponse response) {
         this.response = response;

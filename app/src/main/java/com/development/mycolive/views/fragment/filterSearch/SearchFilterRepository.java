@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.lifecycle.MutableLiveData;
 
 import com.development.mycolive.R;
+import com.development.mycolive.model.editProfile.ProfileApiResponse;
 import com.development.mycolive.model.filterModel.FilterSearchApiResponse;
 import com.development.mycolive.model.filterModel.FilterSearchResponse;
 import com.development.mycolive.networking.RetrofitService;
@@ -12,6 +13,10 @@ import com.development.mycolive.networking.ShipmentApi;
 import com.development.mycolive.model.searchFilterModel.FilterApiResponse;
 import com.development.mycolive.model.searchFilterModel.FilterResponse;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -40,10 +45,19 @@ public class SearchFilterRepository {
         shipmentApi.getDefaultData(type).enqueue(new Callback<FilterResponse>() {
             @Override
             public void onResponse(Call<FilterResponse> call, Response<FilterResponse> response) {
-                if(response.code() == 401){
-                    loginResponseLiveData.setValue(new FilterApiResponse(response.code()));
-                }else if(response.code() == 400){
-                    loginResponseLiveData.setValue(new FilterApiResponse(response.code()));
+                if(response.code() == 401 || response.code() == 400 || response.code() == 500){
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        String message = jObjError.getString("message");
+                        int status = jObjError.getInt("status");
+                        loginResponseLiveData.setValue(new FilterApiResponse(message,status,response.code()));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                 }
                 else {
                     if(response.isSuccessful()){
@@ -69,10 +83,19 @@ public class SearchFilterRepository {
         shipmentApi.getFilterData(headers, type,city,district,university,duration,range).enqueue(new Callback<FilterSearchResponse>() {
             @Override
             public void onResponse(Call<FilterSearchResponse> call, Response<FilterSearchResponse> response) {
-                if(response.code() == 401){
-                    loginResponseLiveData.setValue(new FilterSearchApiResponse(response.code()));
-                }else if(response.code() == 400){
-                    loginResponseLiveData.setValue(new FilterSearchApiResponse(response.code()));
+                if(response.code() == 401 || response.code() == 400 || response.code() == 500){
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        String message = jObjError.getString("message");
+                        int status = jObjError.getInt("status");
+                        loginResponseLiveData.setValue(new FilterSearchApiResponse(message,status,response.code()));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                 }
                 else {
                     if(response.isSuccessful()){

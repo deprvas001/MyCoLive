@@ -16,9 +16,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.development.mycolive.R;
+import com.development.mycolive.constant.ApiConstant;
 import com.development.mycolive.databinding.FragmentHomeBinding;
+import com.development.mycolive.model.favourite.RoomateData;
+import com.development.mycolive.model.home.RoomateApiResponse;
+import com.development.mycolive.session.SessionManager;
+import com.development.mycolive.views.activity.roomate.RoommateList;
 import com.development.mycolive.views.activity.searchResult.SearchResult;
 import com.development.mycolive.views.activity.ShowHomeScreen;
 import com.development.mycolive.adapter.AreaPropertyAdapter;
@@ -35,13 +41,19 @@ import com.development.mycolive.model.home.HomeSlider;
 import com.smarteist.autoimageslider.IndicatorAnimations;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class Home extends Fragment implements View.OnClickListener {
     private FragmentHomeBinding homeBinding;
+    SessionManager session;
+    String token;
     private HomeViewModel homeViewModel;
     private PropertiesAdapter propertiesAdapter;
     private HotPropertyAdapter hotPropertyAdapter;
@@ -99,6 +111,7 @@ public class Home extends Fragment implements View.OnClickListener {
         homeBinding.btnPropertyArea.setOnClickListener(this);
 
         homeBinding.roomApartment.roomLayout.setOnClickListener(this);
+        homeBinding.roomApartment.roomateLayout.setOnClickListener(this);
     }
 
     private void getData() {
@@ -155,6 +168,10 @@ public class Home extends Fragment implements View.OnClickListener {
             case R.id.room_layout:
                 getActivity().startActivity(new Intent(getActivity(), SearchResult.class));
                 break;
+
+            case R.id.roomate_layout:
+                  getSession();
+                break;
         }
     }
 
@@ -179,5 +196,61 @@ public class Home extends Fragment implements View.OnClickListener {
         homeBinding.roomApartment.apartment.setText(countData.getTotal_apart()+" Apartment");
     }
 
+
+    private void getRoommateData() {
+        ((ShowHomeScreen) getActivity()).showProgressDialog(getResources().getString(R.string.loading));
+
+        String type = "ROOMMATE";
+
+        Map<String,String> headers = new HashMap<>();
+        headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);
+        headers.put(ApiConstant.SOURCES,ApiConstant.SOURCES_VALUE);
+        headers.put(ApiConstant.USER_TYPE,ApiConstant. USER_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TYPE,ApiConstant.USER_DEVICE_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TOKEN,ApiConstant.USER_DEVICE_TOKEN_VALUE);
+        headers.put(ApiConstant.METHOD,ApiConstant.METHOD_GET);
+        headers.put(ApiConstant.AUTHENTICAT_TOKEN,token);
+
+        homeViewModel = ViewModelProviders.of(getActivity()).get(HomeViewModel.class);
+
+        homeViewModel.getRoomateData(getActivity(),headers, type).observe(getActivity(), new Observer<RoomateApiResponse>() {
+            @Override
+            public void onChanged(RoomateApiResponse apiResponse) {
+                ((ShowHomeScreen) getActivity()).hideProgressDialog();
+
+                if (apiResponse.response != null) {
+                    if(apiResponse.getResponse().getStatus() ==1){
+                        ArrayList<RoomateData> roommateList = apiResponse.getResponse().getData().getData();
+                        if(type.equalsIgnoreCase("Roommate")){
+                            Intent intent = new Intent(getActivity(), RoommateList.class);
+                            intent.putParcelableArrayListExtra("roommateList",roommateList);
+                            startActivity(intent);
+
+                        }
+                    }
+
+                }else{
+                    Toast.makeText(getActivity(), "Try Later", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+
+    private void getSession(){
+        session = new SessionManager(getActivity());
+        // get user data from session
+        HashMap<String, String> user = session.getUserDetails();
+
+        // name
+        String name = user.get(SessionManager.KEY_NAME);
+
+        // email
+        String email = user.get(SessionManager.KEY_EMAIL);
+        String image = user.get(SessionManager.KEY_IMAGE);
+        token = user.get(SessionManager.KEY_TOKEN);
+
+        getRoommateData();
+    }
 
 }

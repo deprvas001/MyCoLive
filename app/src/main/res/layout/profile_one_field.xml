@@ -161,11 +161,46 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
 
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/city_spinner"
+                        style="@style/Widget.AppCompat.Spinner.Underlined"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginBottom="0dp"
+                        android:layout_marginRight="-5dp"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:paddingLeft="-5dp"
+                        android:singleLine="true" />
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/district_spinner"
+                        style="@style/Widget.AppCompat.Spinner.Underlined"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginRight="-5dp"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="-5dp"
+                        android:paddingTop="10dp"
+                        android:singleLine="true" />
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/university_spinner"
+                        style="@style/Widget.AppCompat.Spinner.Underlined"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:paddingBottom="10dp"
+                        android:layout_marginRight="-5dp"
+                        android:paddingTop="10dp"
+                        android:paddingLeft="-5dp"
+                        android:singleLine="true" />
+
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/city_name"
+                        android:visibility="gone"
                         android:textColorHint="@color/text_color_hint">
 
                     <EditText
@@ -196,6 +231,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/district"
+                        android:visibility="gone"
                         android:textColorHint="@color/text_color_hint">
 
                     <EditText
@@ -215,6 +251,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/university"
+                        android:visibility="gone"
                         android:textColorHint="@color/text_color_hint">
 
 

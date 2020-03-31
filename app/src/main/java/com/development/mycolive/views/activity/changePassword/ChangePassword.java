@@ -5,6 +5,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.development.mycolive.model.postCommunity.PostResponse;
 import com.development.mycolive.model.testimonialmodel.TestimonialApiResponse;
 import com.development.mycolive.session.SessionManager;
 import com.development.mycolive.views.activity.BaseActivity;
+import com.development.mycolive.views.activity.ShowHomeScreen;
 import com.development.mycolive.views.activity.testimonial.TestimonailViewModel;
 
 import java.util.HashMap;
@@ -116,11 +118,10 @@ ActivityChangePasswordBinding passwordBinding;
         headers.put(ApiConstant.AUTHENTICAT_TOKEN,token);
 
         ChangePasswordModel passwordModel = new ChangePasswordModel();
-        passwordModel.setNew_password(passwordBinding.inputNew.getText().toString());
-        passwordModel.setOld_password(passwordBinding.inputOld.getText().toString());
-        passwordModel.setUser_name(email);
-
-
+        passwordModel.setNewPassword(passwordBinding.inputNew.getText().toString());
+        passwordModel.setOldPassword(passwordBinding.inputOld.getText().toString());
+        passwordModel.setConfirmPassword(passwordBinding.inputReenter.getText().toString());
+     //   passwordModel.setUser_name(email);
 
         viewModel = ViewModelProviders.of(this).get(ChangePasswordViewModel.class);
 
@@ -128,15 +129,17 @@ ActivityChangePasswordBinding passwordBinding;
             @Override
             public void onChanged(PostApiResponse apiResponse) {
                 hideProgressDialog();
-                if(apiResponse.response !=null){
+                if (apiResponse.response != null) {
+                    Toast.makeText(ChangePassword.this, apiResponse.getResponse().getMessage(), Toast.LENGTH_SHORT).show();
 
-                  //  setRecyclerView(apiResponse.getResponse().getData().getTestimonial());
+                    if(apiResponse.getResponse().getStatus() == 1){
+                        finish();
+                    }
+
+                }else {
+                    Toast.makeText(ChangePassword.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                 }
-                else if(apiResponse.getStatus()== 401){
-                    Toast.makeText(ChangePassword.this, "Old Password", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                }
+
              /*  bookingBinding.shimmerViewContainer.stopShimmer();
                 bookingBinding.shimmerViewContainer.setVisibility(View.GONE);*/
             }

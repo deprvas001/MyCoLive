@@ -157,31 +157,43 @@ private DatePickerDialog mDatePickerDialog;
            public void onChanged(SignUpApiResponse apiResponse) {
                ((SignupScreen) getActivity()).hideProgressDialog();
                if (apiResponse.response != null) {
-                   Toast.makeText(getActivity(), apiResponse.response.getMessage(), Toast.LENGTH_SHORT).show();
-                 // loadFragment(new NewAccount());
-                 //  getActivity().finish();
-                   String type = ApiConstant.NORMAL;
-                   String token = apiResponse.getResponse().getData().getAuthenticateToken();
-                   String userID = apiResponse.getResponse().getData().getUserId();
-                   String userType = apiResponse.getResponse().getData().getUserType();
-                   String name = apiResponse.getResponse().getData().getName();
-                   String email = apiResponse.getResponse().getData().getEmail();
-                   String image = apiResponse.getResponse().getData().getImage();
 
-                   if (apiResponse.getResponse().getStatus() == 1) {
-                       session.createLoginSession(name,
-                               email,userID,userType,token,image,type);
-                       //  LoginActivity.this.showAlertDialog(LoginActivity.this, LoginActivity.this.getString(R.string.success));
+                   if(apiResponse.getResponse().getStatus() == 0){
+                       Toast.makeText(getActivity(), apiResponse.getResponse().getMessage(), Toast.LENGTH_SHORT).show();
+                   }else{
+                       // loadFragment(new NewAccount());
+                       //  getActivity().finish();
 
-                       Intent i = new Intent(getActivity(), ShowHomeScreen.class);
-                       // Closing all the Activities
-                       i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                               Intent.FLAG_ACTIVITY_CLEAR_TASK |
-                               Intent.FLAG_ACTIVITY_NEW_TASK);
-                       // Staring Login Activity
-                       getActivity().startActivity(i);
+                       Toast.makeText(getActivity(), apiResponse.getResponse().getMessage(), Toast.LENGTH_SHORT).show();
 
+                       String type = ApiConstant.NORMAL;
+                       String token = apiResponse.getResponse().getData().getAuthenticateToken();
+                       String userID = apiResponse.getResponse().getData().getUserId();
+                       String userType = apiResponse.getResponse().getData().getUserType();
+                       String name = apiResponse.getResponse().getData().getName();
+                       String email = apiResponse.getResponse().getData().getEmail();
+                       String image = apiResponse.getResponse().getData().getImage();
+
+
+
+
+                       if (apiResponse.getResponse().getStatus() == 1) {
+                           session.createLoginSession(name,
+                                   email,userID,userType,token,image,type);
+                           //  LoginActivity.this.showAlertDialog(LoginActivity.this, LoginActivity.this.getString(R.string.success));
+
+                           Intent i = new Intent(getActivity(), ShowHomeScreen.class);
+                           // Closing all the Activities
+                           i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                   Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                                   Intent.FLAG_ACTIVITY_NEW_TASK);
+                           // Staring Login Activity
+                           getActivity().startActivity(i);
+
+                       }
                    }
+
+
                }else {
                    Toast.makeText(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                }

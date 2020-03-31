@@ -14,9 +14,12 @@ import com.development.mycolive.model.favouriteRoomate.RoomateFavResponse;
 import com.development.mycolive.model.filterModel.FilterSearchResponse;
 import com.development.mycolive.model.forgotModel.ForgotRequestModel;
 import com.development.mycolive.model.home.HomeResponse;
+import com.development.mycolive.model.home.RoommateResponse;
 import com.development.mycolive.model.homeProperty.FeatureResponse;
 import com.development.mycolive.model.loginModel.LoginRequestModel;
 import com.development.mycolive.model.loginModel.LoginResponse;
+import com.development.mycolive.model.logout.LogoutRequestModel;
+import com.development.mycolive.model.logout.LogoutResponse;
 import com.development.mycolive.model.myCommunityModel.MyCommunityResponse;
 import com.development.mycolive.model.notificationModel.NotificationBodyRequest;
 import com.development.mycolive.model.notificationModel.NotificationResponse;
@@ -113,8 +116,13 @@ public interface ShipmentApi {
             @HeaderMap Map<String,String> headers,
             @Body ChangePasswordModel passwordModel);
 
+    @POST("userLogout")
+    Call<LogoutResponse> logout(
+            @HeaderMap Map<String,String> headers,
+            @Body LogoutRequestModel requestModel);
 
-    @GET("getProfile")
+
+    @GET("userProfile")
     Call<ProfileResponse> getProfile(
             @HeaderMap Map<String,String> headers,
             @Query("type") String  type);
@@ -185,7 +193,7 @@ public interface ShipmentApi {
 
 
     @POST("updateProfile")
-    Call<PostProfileResponse> updateProfile(
+    Call<ProfileResponse> updateProfile(
             @HeaderMap Map<String,String> headers,
             @Body PostProfileModel postProfileModel);
 
@@ -243,6 +251,12 @@ public interface ShipmentApi {
             @HeaderMap Map<String,String> headers,
             @Query("type") String  type,
             @Query("user_id") String id);
+
+
+    @GET("getProfile")
+    Call<RoommateResponse> getRoomateList(
+            @HeaderMap Map<String,String> headers,
+            @Query("type") String  type);
 
 
     @POST("payMonthlyPaymentDetails")

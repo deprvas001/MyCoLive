@@ -21,5 +21,4 @@ public class SignUpViewModel extends AndroidViewModel {
     public MutableLiveData<SignUpApiResponse> setSignUp(Context context, SignPostRequest signPostRequest) {
         return SignRepository.getInstance().setSignUp(context, signPostRequest);
     }
-
 }

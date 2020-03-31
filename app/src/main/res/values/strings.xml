@@ -96,7 +96,7 @@
     <string name="new_post">New Post</string>
     <string name="dummy_lorem">Lorem ipsum dolor sitamet, consecteture adipi Lorem ipsum dolor</string>
     <string name="new_password">New Password</string>
-    <string name="re_password">Re-enter Password</string>
+    <string name="re_password">Re-Confirm Password</string>
     <string name="save_password">Save Password</string>
     <string name="notification">Notification</string>
     <string name="message">Please click </string>
@@ -150,7 +150,8 @@
     <string name="early_check_desc">Early check is only available for 15 days before the booking date.(Depending upon availability)</string>
     <string name="arrival_date">Select Arrival Date(Early Check In)</string>
     <string name="feature_facility"><![CDATA[Features & Facilities]]></string>
-    <string name="policies">By proceeding, you agree to our <u> <font fgcolor='#FF0000'>Policies</font></u></string>
+    <string name="policies">By proceeding, you agree to our </string>
+    <string name="policy"><u> <font fgcolor='#FF0000'>Policies</font></u></string>
     <string name="proceed_further">Proceed Further</string>
     <string name="price_description">Price Description</string>
     <string name="monthly_rent">Monthly Rent</string>
@@ -159,9 +160,9 @@
 
     <string-array name="type_name">
         <item>Room/Apartment/Roomate</item>
-        <item>Room</item>
-        <item>Apartment</item>
-        <item>Roommate</item>
+        <item>ROOM</item>
+        <item>APARTMENT</item>
+        <item>ROOMMATE</item>
     </string-array>
 
     <string-array name="duration">
@@ -206,5 +207,7 @@
     <string name="message_desc">A confirmation mail has been sent to your registered email.</string>
     <string name="read_more">Read More</string>
     <string name="read_less">Read Less</string>
+    <string name="email_empty">Please Enter Email</string>
+    <string name="roommate_list">Roommate</string>
 
 </resources>

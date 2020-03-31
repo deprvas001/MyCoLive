@@ -1,10 +1,10 @@
-package com.development.mycolive.model.filterModel;
+package com.development.mycolive.model.home;
 
-import com.development.mycolive.model.communityModel.CommunityResponse;
+import com.development.mycolive.model.filterModel.FilterSearchResponse;
 
-public class FilterSearchApiResponse {
+public class RoomateApiResponse {
 
-    public FilterSearchResponse response;
+    public RoommateResponse response;
     private Throwable error;
     private String message;
     private int status;
@@ -18,34 +18,33 @@ public class FilterSearchApiResponse {
         this.status_code = status_code;
     }
 
-    public FilterSearchApiResponse(String message,int status,int status_code) {
+    public RoomateApiResponse(String message,int status,int status_code) {
         this.message = message;
         this.status = status;
         this.status_code = status_code;
     }
 
-
-    public FilterSearchApiResponse(FilterSearchResponse response) {
+    public RoomateApiResponse(RoommateResponse response) {
         this.response = response;
     }
 
-    public FilterSearchApiResponse(Throwable error) {
+    public RoomateApiResponse(Throwable error) {
         this.error = error;
     }
 
-    public FilterSearchApiResponse(String message) {
+    public RoomateApiResponse(String message) {
         this.message = message;
     }
 
-    public FilterSearchApiResponse(int status) {
+    public RoomateApiResponse(int status) {
         this.status = status;
     }
 
-    public FilterSearchResponse getResponse() {
+    public RoommateResponse getResponse() {
         return response;
     }
 
-    public void setResponse(FilterSearchResponse response) {
+    public void setResponse(RoommateResponse response) {
         this.response = response;
     }
 

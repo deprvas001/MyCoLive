@@ -13,6 +13,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaCas;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Property;
 import android.view.MenuItem;
@@ -70,8 +71,9 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
     float total_cost;
     String id="";
     boolean isTextViewClicked = false;
-    String period,from,to;
+    String period,from,to,lat,lng,title;
     BankAccount bankAccount;
+
     List<PropertyRoomData> roomList = new ArrayList<>();
 
     @Override
@@ -149,6 +151,9 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
 
 
     private void initializeView(PropertyDetailApiResponse apiResponse){
+        lat = apiResponse.getResponse().getData().get(0).getLatitude();
+        lng = apiResponse.getResponse().getData().get(0).getLongitude();
+        title = apiResponse.getResponse().getData().get(0).getApartment_name();
         propertyDetailBinding.apartmentName.setText(apiResponse.getResponse().getData().get(0).getApartment_name());
         propertyDetailBinding.addressApartment.setText(apiResponse.getResponse().getData().get(0).getAddress());
         propertyDetailBinding.description.setText(apiResponse.getResponse().getData().get(0).getDescription());
@@ -187,6 +192,8 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
         propertyDetailBinding.earlyCheckIn.setOnClickListener(this);
         propertyDetailBinding.btnProceed.setOnClickListener(this);
         propertyDetailBinding.readMore.setOnClickListener(this);
+        propertyDetailBinding.policyLink.setOnClickListener(this);
+        propertyDetailBinding.locationImage.setOnClickListener(this);
 
 
         propertyDetailBinding.recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),  propertyDetailBinding.recyclerView, new RecyclerTouchListener.ClickListener() {
@@ -225,6 +232,8 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
                     to="";
                 }
                 break;
+
+
         }
     }
 
@@ -262,6 +271,20 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
             case R.id.from_edit:
                 edit_position=1;
                 mDatePickerDialog.show();
+                break;
+
+            case R.id.policy_link:
+                String url = "https://webfume.in/mani-budapest/landing/privacyPolicy";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+                break;
+
+            case R.id.location_image:
+                String geoUri = "http://maps.google.com/maps?q=loc:" + lat + "," + lng + " (" + title + ")";
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(geoUri));
+                startActivity(intent);
                 break;
 
             case R.id.read_more:

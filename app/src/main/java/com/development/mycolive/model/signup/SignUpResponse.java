@@ -5,8 +5,18 @@ import com.development.mycolive.model.Data;
 public class SignUpResponse {
     private int status;
     private String message;
+    private int isEmailExist;
     private int id;
     private Data data;
+
+    public int getIsEmailExist() {
+        return isEmailExist;
+    }
+
+    public void setIsEmailExist(int isEmailExist) {
+        this.isEmailExist = isEmailExist;
+    }
+
     public int getStatus() {
         return status;
     }

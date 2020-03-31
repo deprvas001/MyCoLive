@@ -17,6 +17,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
@@ -35,6 +37,7 @@ import com.development.mycolive.session.SessionManager;
 import com.development.mycolive.views.activity.ShowHomeScreen;
 import com.development.mycolive.model.editProfile.ProfileApiResponse;
 import com.development.mycolive.model.editProfile.ProfileData;
+import com.development.mycolive.views.activity.changePassword.ChangePassword;
 import com.development.mycolive.views.fragment.filterSearch.SearchViewModel;
 import com.google.android.gms.common.api.Api;
 import com.nguyenhoanglam.imagepicker.model.Config;
@@ -59,11 +62,15 @@ import static android.app.Activity.RESULT_OK;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProfileScreenOne extends Fragment implements View.OnClickListener {
+public class ProfileScreenOne extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener{
     FragmentProfileScreenOneBinding oneBinding;
     ProfileViewModel profileViewModel;
     SessionManager session;
+    private boolean isDistrcitAvailable = false;
     private int REQUEST_CODE = 100;
+    String university_id="",duration_period="";
+    String city_spinner_id="";
+    String district_spiner="",category_type="";
     private String fdate = "";
     SearchViewModel searchViewModel;
     List<DistrictModel> districtModelList =new ArrayList<>();
@@ -71,7 +78,7 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener {
     List<UniversityModel> university = new ArrayList<>();
     private String image_string = "";
     private DatePickerDialog mDatePickerDialog;
-    private String token="";
+    private String token="",name="",email="",user_type="",type="";
     public ProfileScreenOne() {
         // Required empty public constructor
     }
@@ -91,6 +98,12 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener {
         ((ShowHomeScreen) getActivity()).screenBinding.appBar.titleTxt.setText("My Profile");
         oneBinding.profileImage.setOnClickListener(this);
         oneBinding.fieldLayout.btnSave.setOnClickListener(this);
+
+        oneBinding.fieldLayout.citySpinner.setOnItemSelectedListener(this);
+        oneBinding.fieldLayout.districtSpinner.setOnItemSelectedListener(this);
+        oneBinding.fieldLayout.universitySpinner.setOnItemSelectedListener(this);
+
+
         oneBinding.fieldLayout.inputDob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,6 +116,8 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener {
     private void getBooking(String token) {
         ((ShowHomeScreen) getActivity()).showProgressDialog(getResources().getString(R.string.loading));
         String type = ApiConstant.PROFILE;
+
+
 
         Map<String,String> headers = new HashMap<>();
         headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);
@@ -118,7 +133,7 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener {
             @Override
             public void onChanged(ProfileApiResponse apiResponse) {
                   ((ShowHomeScreen) getActivity()).hideProgressDialog();
-                if (apiResponse.response != null) {
+               /* if (apiResponse.response != null) {
                     setView(apiResponse);
                 } else if (apiResponse.getStatus() == 401) {
                     ((ShowHomeScreen) getActivity()).hideProgressDialog();
@@ -126,32 +141,49 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener {
                 } else {
                     ((ShowHomeScreen) getActivity()).hideProgressDialog();
                     Toast.makeText(getActivity(), "Try Later", Toast.LENGTH_SHORT).show();
+                }*/
+
+                ((ShowHomeScreen) getActivity()).hideProgressDialog();
+                if (apiResponse.response != null) {
+
+                    if(apiResponse.getResponse().getStatus() == 1){
+                        setView(apiResponse);
+                   //     Toast.makeText(getActivity(), apiResponse.getResponse().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                }else {
+                    Toast.makeText(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
     private void setView(ProfileApiResponse apiResponse) {
-        Data data = apiResponse.getResponse().getData();
-        List<ProfileData> profileData = data.getData();
-        oneBinding.fieldLayout.inputName.setText(profileData.get(0).getName());
-        oneBinding.fieldLayout.inputEmail.setText(profileData.get(0).getEmail());
-        oneBinding.fieldLayout.inputPhone.setText(profileData.get(0).getMobile());
-        oneBinding.fieldLayout.inputDob.setText(profileData.get(0).getDob());
-        oneBinding.fieldLayout.country.setText(profileData.get(0).getCountry());
-        oneBinding.fieldLayout.city.setText(profileData.get(0).getCity());
-        oneBinding.fieldLayout.district.setText(profileData.get(0).getDistrict());
-        oneBinding.fieldLayout.university.setText(profileData.get(0).getUniversity());
-        oneBinding.fieldLayout.postCode.setText(profileData.get(0).getPost_code());
+        ProfileData profileData = apiResponse.getResponse().getData();
+       // List<ProfileData> profileData = data.getData();
+
+        city_spinner_id = profileData.getCity_id();
+        district_spiner = profileData.getDistrict_id();
+        university_id = profileData.getUniversity_id();
+
+        oneBinding.fieldLayout.inputName.setText(profileData.getName());
+        oneBinding.fieldLayout.inputEmail.setText(profileData.getEmail());
+        oneBinding.fieldLayout.inputPhone.setText(profileData.getMobile());
+        oneBinding.fieldLayout.inputDob.setText(profileData.getDob());
+        oneBinding.fieldLayout.country.setText(profileData.getCountry());
+        oneBinding.fieldLayout.city.setText(profileData.getCity());
+        oneBinding.fieldLayout.district.setText(profileData.getDistrict());
+        oneBinding.fieldLayout.university.setText(profileData.getUniversity());
+        oneBinding.fieldLayout.postCode.setText(profileData.getPost_code());
 
         Picasso.get()
-                .load(profileData.get(0).getProfile_image())
+                .load(profileData.getProfile_image())
                 /*  .placeholder(R.drawable.image1)
                   .error(R.drawable.err)*/
                 .into(oneBinding.profileImage);
 
-        if (profileData.get(0).getGender() != null) {
-            if (profileData.get(0).getGender().equals("Female")) {
+        if (profileData.getGender() != null) {
+            if (profileData.getGender().equals("F")) {
                 oneBinding.fieldLayout.femaleRadiobtn.setChecked(true);
                 oneBinding.fieldLayout.maleRadionbtn.setChecked(false);
             } else {
@@ -159,6 +191,8 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener {
                 oneBinding.fieldLayout.maleRadionbtn.setChecked(true);
             }
         }
+
+        getDefaultData();
     }
 
     private void profileUpdate() {
@@ -170,16 +204,16 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener {
         postProfileModel.setMobile(oneBinding.fieldLayout.inputPhone.getText().toString());
         postProfileModel.setDob(oneBinding.fieldLayout.inputDob.getText().toString());
         postProfileModel.setCountry(oneBinding.fieldLayout.country.getText().toString());
-        postProfileModel.setCity(oneBinding.fieldLayout.city.getText().toString());
-        postProfileModel.setDistrict(oneBinding.fieldLayout.district.getText().toString());
-        postProfileModel.setUniversity(oneBinding.fieldLayout.university.getText().toString());
+        postProfileModel.setCity(city_spinner_id);
+        postProfileModel.setDistrict(district_spiner);
+        postProfileModel.setUniversity(university_id);
         postProfileModel.setPostCode(oneBinding.fieldLayout.postCode.getText().toString());
         postProfileModel.setImage(image_string);
 
         if (oneBinding.fieldLayout.femaleRadiobtn.isChecked()) {
-            postProfileModel.setGender("Female");
+            postProfileModel.setGender("F");
         } else {
-            postProfileModel.setGender("Male");
+            postProfileModel.setGender("M");
         }
 
         Map<String,String> headers = new HashMap<>();
@@ -193,12 +227,31 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener {
 
         profileViewModel = ViewModelProviders.of(getActivity()).get(ProfileViewModel.class);
 
-        profileViewModel.updateProfile(getActivity(),headers, postProfileModel).observe(getActivity(), new Observer<ProfilePostApiResponse>() {
+        profileViewModel.updateProfile(getActivity(),headers, postProfileModel).observe(getActivity(), new Observer<ProfileApiResponse>() {
             @Override
-            public void onChanged(ProfilePostApiResponse apiResponse) {
+            public void onChanged(ProfileApiResponse apiResponse) {
                  ((ShowHomeScreen) getActivity()).hideProgressDialog();
                 if (apiResponse.response != null) {
                     Toast.makeText(getActivity(), apiResponse.response.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    String userID =  apiResponse.getResponse().getData().getUser_id();
+                    String image = apiResponse.getResponse().getData().getProfile_image();
+                    String user_name = apiResponse.getResponse().getData().getName();
+                    String user_email = apiResponse.getResponse().getData().getEmail();
+
+                    session.createLoginSession(name,
+                            email,userID,user_type,token,image,type);
+
+
+                    ((ShowHomeScreen) getActivity()).screenBinding.headerLayout.name.setText(user_name);
+                    ((ShowHomeScreen) getActivity()).screenBinding.headerLayout.email.setText(user_email);
+
+                    Picasso.get()
+                            .load(image)
+                            /*  .placeholder(R.drawable.image1)
+                              .error(R.drawable.err)*/
+                            .into(((ShowHomeScreen) getActivity()).screenBinding.headerLayout.profileImage);
+
                 } else if (apiResponse.getStatus() == 401) {
                     Toast.makeText(getActivity(), "Authentication Failed", Toast.LENGTH_SHORT).show();
                 }
@@ -266,13 +319,13 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener {
                 }else if(oneBinding.fieldLayout.country.getText().toString().isEmpty()){
                     Toast.makeText(getActivity(), "Country field empty.", Toast.LENGTH_SHORT).show();
                     return;
-                }else if(oneBinding.fieldLayout.city.getText().toString().isEmpty()){
+                }else if(city_spinner_id.isEmpty()){
                     Toast.makeText(getActivity(), "City field empty.", Toast.LENGTH_SHORT).show();
                     return;
-                }else if(oneBinding.fieldLayout.district.getText().toString().isEmpty()){
+                }else if(district_spiner.isEmpty()){
                     Toast.makeText(getActivity(), "District field empty.", Toast.LENGTH_SHORT).show();
                     return;
-                }else if(oneBinding.fieldLayout.university.getText().toString().isEmpty()){
+                }else if(university_id.isEmpty()){
                     Toast.makeText(getActivity(), "University field empty.", Toast.LENGTH_SHORT).show();
                     return;
                 }else if(oneBinding.fieldLayout.postCode.getText().toString().isEmpty()){
@@ -339,6 +392,8 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener {
 
         // name
         String name = user.get(SessionManager.KEY_NAME);
+        user_type = user.get(SessionManager.KEY_USERTYPE);
+        type = user.get(SessionManager.KEY_LOGIN_TYPE);
 
         // email
         String email = user.get(SessionManager.KEY_EMAIL);
@@ -350,7 +405,7 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener {
     }
 
 
-  /*  private void getDefaultData(){
+    private void getDefaultData(){
         String type = "ALL";
 
         searchViewModel = ViewModelProviders.of(getActivity()).get(SearchViewModel.class);
@@ -368,12 +423,139 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener {
                     setSpinner(cityModelList,periodList);
 
 
-                }else if(filterApiResponse.filterResponse ==null){
+                }else {
                     Toast.makeText(getActivity(), "Try Later", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-    }*/
+    }
+
+    private void setSpinner(List<CityModel> cityModelList,List<Period>  periodList) {
+
+        CityModel cityModel = new CityModel();
+        cityModel.setCity_name(getResources().getString(R.string.city_name));
+
+        DistrictModel districtModel = new DistrictModel();
+        districtModel.setDistrict_name(getString(R.string.district));
 
 
+
+        cityModelList.add(0,cityModel);
+        districtModelList.add(0,districtModel);
+
+        Period period = new Period();
+        period.setName(getString(R.string.select_period));
+        periodList.add(0,period);
+
+
+       /* // Creating adapter for spinner
+        ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, type_category);
+        // Drop down layout style - list view with radio button
+        typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // attaching data adapter to spinner
+        searchBinding.type.setAdapter(typeAdapter);*/
+
+        ArrayAdapter<CityModel> cityAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, cityModelList);
+        cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        oneBinding.fieldLayout.citySpinner.setAdapter(cityAdapter);
+
+
+        if(!city_spinner_id.equalsIgnoreCase("N/A") && !city_spinner_id.equalsIgnoreCase("") ){
+            for(int i=0;i<cityModelList.size();i++){
+                if (city_spinner_id.equals(cityModelList.get(i).getId())){
+
+                    oneBinding.fieldLayout.citySpinner.setSelection(i);
+                }
+            }
+        }
+
+        ArrayAdapter<DistrictModel> districtAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, districtModelList);
+        districtAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        oneBinding.fieldLayout.districtSpinner.setAdapter(districtAdapter);
+        oneBinding.fieldLayout.districtSpinner.setSelection(Integer.parseInt(district_spiner),false);
+
+        if(!district_spiner.equalsIgnoreCase("N/A") && !district_spiner.equalsIgnoreCase("") ){
+            for(int i=0;i<districtModelList.size();i++){
+                if (district_spiner.equals(districtModelList.get(i).getId())){
+
+                    oneBinding.fieldLayout.districtSpinner.setSelection(i);
+                }
+            }
+        }
+
+
+        ArrayAdapter<UniversityModel> universityAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item,universityModelList);
+        universityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        oneBinding.fieldLayout.universitySpinner.setAdapter(universityAdapter);
+
+        if(!university_id.equalsIgnoreCase("N/A") && !university_id.equalsIgnoreCase("") ){
+            for(int i=0;i<universityModelList.size();i++){
+                if (university_id.equals(universityModelList.get(i).getId())){
+
+                    oneBinding.fieldLayout.universitySpinner.setSelection(i);
+                }
+            }
+        }
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+        switch (adapterView.getId()){
+
+
+            case R.id.city_spinner:
+                if(position>0){
+                    CityModel cityModel = (CityModel)adapterView.getSelectedItem();
+                    city_spinner_id = cityModel.getId();
+                    Toast.makeText(getActivity(), cityModel.getCity_name(), Toast.LENGTH_SHORT).show();
+                }else{
+                    city_spinner_id="";
+                }
+                break;
+
+            case R.id.district_spinner:
+                if(position>0){
+                    university.clear();
+                    UniversityModel universityMode = new UniversityModel();
+                    universityMode.setUniversity_name(getString(R.string.university));
+                    university.add(0,universityMode);
+                    for(DistrictModel districtModel:districtModelList){
+                        for(UniversityModel universityModel:universityModelList) {
+                            if(universityModel.getDistrict_id().equals(districtModel.getId())){
+                                university.add(universityModel);
+                                DistrictModel district = (DistrictModel)adapterView.getSelectedItem();
+                                Toast.makeText(getActivity(), district.getDistrict_name(), Toast.LENGTH_SHORT).show();
+                                district_spiner = district.getId();
+                                ArrayAdapter<UniversityModel> universityAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, university);
+                                universityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                oneBinding.fieldLayout.universitySpinner.setAdapter(universityAdapter);
+
+                            }
+                        }
+                    }
+                }else{
+                    district_spiner = "";
+                }
+
+                break;
+
+            case R.id.university_spinner:
+                if(position>0){
+                    UniversityModel universityModel = (UniversityModel)adapterView.getSelectedItem();
+                    university_id = universityModel.getId();
+                    Toast.makeText(getActivity(), universityModel.getUniversity_name(), Toast.LENGTH_SHORT).show();
+                }else{
+                    university_id="";
+                }
+
+                break;
+
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
 }

@@ -86,8 +86,14 @@ public class FavouriteRoomate extends Fragment {
 
                 //  ((ShowHomeScreen) getActivity()).hideProgressDialog();
                 if (apiResponse.response != null) {
-                    List<RoomateData> roomateDataList = apiResponse.getResponse().getData();
-                    setRecyclerview(roomateDataList);
+                    if(apiResponse.getResponse().getStatus() ==1){
+                        List<RoomateData> roomateDataList = apiResponse.getResponse().getData();
+
+                        if(roomateDataList.size()>0){
+                            setRecyclerview(roomateDataList);
+                        }
+                    }
+
 
                 } else if (apiResponse.getStatus() == 401) {
                     Toast.makeText(getActivity(), "Authentication Failed", Toast.LENGTH_SHORT).show();

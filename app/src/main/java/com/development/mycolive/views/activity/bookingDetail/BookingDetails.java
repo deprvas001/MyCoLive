@@ -41,6 +41,7 @@ public class BookingDetails extends AppCompatActivity implements View.OnClickLis
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         if (getIntent() != null) {
+
         roomDataList = getIntent().getParcelableArrayListExtra("data");
         total_price = getIntent().getExtras().getFloat("total_price");
         requestBody = getIntent().getParcelableExtra("booking_info");
@@ -72,7 +73,7 @@ public class BookingDetails extends AppCompatActivity implements View.OnClickLis
             total_price = total_price+Float.parseFloat(roomDataList.get(i).getTotal_price());
         }
 
-        bookingDetailsBinding.totalPrice.setText("€"+String.valueOf(total_price));
+        bookingDetailsBinding.btnProceed.setText("€"+String.valueOf(total_price)+" / Proceed Further");
 
         setRecyclerView(roomDataList);
     }
@@ -94,16 +95,44 @@ public class BookingDetails extends AppCompatActivity implements View.OnClickLis
         switch (view.getId()){
             case R.id.btn_proceed:
 
-                if(bookingDetailsBinding.policAccept.isChecked()){
-                    Intent i = new Intent(this,SelectPayment.class);
-                    i.putExtra("total_price",total_price);
-                    i.putExtra("booking_info",requestBody);
-                    i.putExtra("bank_account",bankAccount);
-                    startActivity(i);
+                if(bookingDetailsBinding.referFriend.isChecked()){
+                   String email = bookingDetailsBinding.referEdit.getText().toString();
+
+                   if(email.isEmpty()){
+                       Toast.makeText(this, "Please Enter Email", Toast.LENGTH_SHORT).show();
+                   }else{
+                       if (android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                           gotoNext(email);
+                       }else{
+                           bookingDetailsBinding.referEdit.setError("Enter valid email.");
+                       }
+
+                   }
+                }else{
+                    gotoNext("");
+                }
+
+
+                /*if(bookingDetailsBinding.policAccept.isChecked()){
+
                 }else{
                     Toast.makeText(this, "Please accept policy.", Toast.LENGTH_SHORT).show();
-                }
+                }*/
                 break;
         }
     }
+
+    private void gotoNext(String email){
+
+        Intent i = new Intent(this,SelectPayment.class);
+        i.putExtra("total_price",total_price);
+        i.putExtra("booking_info",requestBody);
+        i.putExtra("bank_account",bankAccount);
+        i.putExtra("refer_email",email);
+        startActivity(i);
+
+
+    }
+
+
 }

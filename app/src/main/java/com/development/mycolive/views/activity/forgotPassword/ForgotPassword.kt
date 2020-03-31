@@ -30,8 +30,10 @@ class ForgotPassword :BaseActivity() , View.OnClickListener {
     }
 
     private fun intitializeView(){
-        passwordBinding.toolbar.setTitle("")
+        passwordBinding.toolbar.title = getString(R.string.forgot_password_title)
         setSupportActionBar(passwordBinding.toolbar)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.setDisplayShowHomeEnabled(true)
      //   passwordBinding.toolbar.navigationIcon = resources.getDrawable(R.drawable.back_arrow)
     }
 
@@ -53,7 +55,12 @@ class ForgotPassword :BaseActivity() , View.OnClickListener {
                 // startJobIntent.putExtra(AppConstants.JOBS_UPCOMING, upcoming)
                 startActivity(startJobIntent)*/
                // finish()
-               getSession()
+                val email: String = passwordBinding.inputEmail.text.toString()
+               if(email.isEmpty()){
+                  Toast.makeText(this, getString(R.string.email_empty), Toast.LENGTH_LONG).show()
+               }else{
+                   forgotPassword(email)
+               }
 
             }
         }
@@ -66,32 +73,23 @@ class ForgotPassword :BaseActivity() , View.OnClickListener {
 
 
            forgotViewModel.forgotPassword(this, forgotRequestModel).observe(this,Observer{ loginApiResponse: LoginApiResponse? ->
+               hideProgressDialog()
+               if (loginApiResponse!!.response != null) {
+                   if(loginApiResponse!!.getResponse()!!.status   == 1){
 
-               if(loginApiResponse!!.getResponse()!!.status   == 1){
-                   hideProgressDialog()
-                   Toast.makeText(this, loginApiResponse!!.getResponse().message, Toast.LENGTH_LONG).show()
-               }else if(loginApiResponse!!.getResponse()!!.status   == 0){
-                   hideProgressDialog()
-                   Toast.makeText(this, loginApiResponse!!.getResponse().message, Toast.LENGTH_LONG).show()
+                       Toast.makeText(this, loginApiResponse!!.getResponse().message, Toast.LENGTH_LONG).show()
+                   }else if(loginApiResponse!!.getResponse()!!.status   == 0){
+                       Toast.makeText(this, loginApiResponse!!.getResponse().message, Toast.LENGTH_LONG).show()
+                   }
+               }else{
+                   Toast.makeText(this, loginApiResponse!!.getMessage(), Toast.LENGTH_SHORT).show()
+
                }
+
+
+
 
            })
    }
 
-
-    private fun getSession() {
-        session = SessionManager(this)
-        // get user data from session
-        val user = session.getUserDetails()
-
-        // name
-        val name = user.get(SessionManager.KEY_NAME)
-
-        // email
-        val email = user.get(SessionManager.KEY_EMAIL)
-        val image = user.get(SessionManager.KEY_IMAGE)
-     //   token = user.get(SessionManager.KEY_TOKEN)
-
-         forgotPassword(email)
-    }
 }

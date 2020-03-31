@@ -14,6 +14,7 @@ public class PaymentRequestBody implements Parcelable {
     private String receipt;
     private String daterange;
 
+
     public PaymentRequestBody(){
 
     }
