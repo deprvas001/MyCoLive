@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.development.mycolive.databinding.ActivitySearchResultBinding;
 import com.development.mycolive.model.homeProperty.FeatureApiResponse;
+import com.development.mycolive.views.activity.PropertyMap;
 import com.development.mycolive.views.activity.notification.Notification;
 import com.development.mycolive.adapter.SearchScreenAdapter;
 import com.development.mycolive.model.home.HomeFeatureProperty;
@@ -28,7 +29,7 @@ import java.util.List;
 
 public class SearchResult extends AppCompatActivity implements View.OnClickListener {
 ActivitySearchResultBinding resultBinding;
-    List<HomeFeatureProperty> searchList = new ArrayList<>();
+    ArrayList<HomeFeatureProperty> searchList = new ArrayList<>();
     private SearchScreenAdapter searchAdapter;
     RecyclerView.LayoutManager mLayoutManager;
     SearchViewModel searchViewModel;
@@ -45,31 +46,15 @@ ActivitySearchResultBinding resultBinding;
         resultBinding.fab.setOnClickListener(this);
         resultBinding.back.setOnClickListener(this);
         resultBinding.notification.setOnClickListener(this);
-
-        /*resultBinding.contentSearch.recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),
-                resultBinding.contentSearch.recyclerView, new RecyclerTouchListener.ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                HomeFeatureProperty resultModel = searchList.get(position);
-                Intent intent = new Intent(SearchResult.this,RoomDetail.class);
-                intent.putExtra(ApiConstant.ID,resultModel.getId());
-                startActivity(intent);
-                // Toast.makeText(getApplicationContext(), resultModel.getAddress() + " is selected!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));*/
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.fab:
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                 Intent intent = new Intent(SearchResult.this, PropertyMap.class);
+                 intent.putParcelableArrayListExtra("search_list",searchList);
+                  startActivity(intent);
                 break;
 
             case R.id.back:
@@ -122,9 +107,10 @@ ActivitySearchResultBinding resultBinding;
            public void onChanged(FeatureApiResponse homeApiResponse) {
                if (homeApiResponse.response != null) {
 
-                   List<HomeFeatureProperty> homeFeaturePropertyList = homeApiResponse.getResponse().getData();
+                   ArrayList<HomeFeatureProperty> homeFeaturePropertyList = homeApiResponse.getResponse().getData();
                    searchList.clear();
                    homeApiResponse.getResponse().getData();
+                   searchList = homeFeaturePropertyList;
 
                  /*  List<HomeFeatureProperty> featurePropertyList =   homeApiResponse.getResponse().getData().getFeaturedPropertyList();
                    searchList = featurePropertyList;*/

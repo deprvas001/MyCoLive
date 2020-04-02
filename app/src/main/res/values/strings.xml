@@ -209,5 +209,6 @@
     <string name="read_less">Read Less</string>
     <string name="email_empty">Please Enter Email</string>
     <string name="roommate_list">Roommate</string>
+    <string name="title_activity_property_map">Map</string>
 
 </resources>

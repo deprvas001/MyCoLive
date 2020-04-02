@@ -49,28 +49,35 @@
                             android:layout_marginRight="15dp"
                              />
 
-                        <TextView
-                            android:id="@+id/name_view"
-                            android:layout_width="wrap_content"
+
+                        <LinearLayout
+                            android:id="@+id/name_view_layout"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_toRightOf="@id/imageView"
-                            android:text="Name : "
-                            android:textColor="#4B4B4B" />
-
+                            android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/name"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
                             android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/name_view"
                             android:textColor="#4B4B4B" />
 
+
+                          <ImageView
+                              android:id="@+id/fav_icon"
+                              android:layout_width="24dp"
+                              android:layout_height="24dp"
+                              android:src="@drawable/favourite_icon"/>
+
+                        </LinearLayout>
 
                         <TextView
                             android:id="@+id/age_view"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/name"
+                            android:layout_below="@id/name_view_layout"
                             android:layout_toRightOf="@id/imageView"
                             android:text="Age : "
                             android:textColor="#8C8C8C" />
@@ -79,7 +86,7 @@
                             android:id="@+id/age"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/name"
+                            android:layout_below="@id/name_view_layout"
                             android:layout_toRightOf="@id/age_view"
                             android:textColor="#4B4B4B" />
 
@@ -108,6 +115,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@id/email"
                             android:layout_toRightOf="@id/imageView"
+                            android:text="Phone : "
                             android:textColor="#8C8C8C" />
 
                         <TextView
@@ -141,7 +149,7 @@
                             android:id="@+id/resident_view"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/imageView"
+                            android:layout_below="@id/gender"
                             android:text="Resident Country : "
                             android:textColor="#8C8C8C" />
 
@@ -149,7 +157,7 @@
                             android:id="@+id/resident"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/imageView"
+                            android:layout_below="@id/gender"
                             android:layout_toRightOf="@id/resident_view"
                             android:textColor="#4B4B4B" />
 
@@ -224,6 +232,24 @@
                     android:layout_margin="15dp">
 
                 </WebView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/university"
+                    android:layout_toRightOf="@id/location_view"
+                    android:text="@string/nearest_property"
+                    android:layout_marginLeft="15dp"
+                    android:textStyle="bold"
+                    android:textColor="#4B4B4B" />
+
+                <!-- TODO: Update blank fragment layout -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    />
 
             </LinearLayout>
         </ScrollView>

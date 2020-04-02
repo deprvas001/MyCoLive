@@ -1,11 +1,14 @@
 package com.development.mycolive.model.home;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.development.mycolive.model.propertyDetailModel.FacilityData;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class HomeFeatureProperty {
+public class HomeFeatureProperty implements Parcelable {
    private String id;
    private String count;
    private String no_of_bathroom;
@@ -29,6 +32,48 @@ public class HomeFeatureProperty {
    private String district;
    private List<FacilityData> facilityList;
    private List<HomeSlider> image_slider;
+
+   public HomeFeatureProperty(){
+
+   }
+
+    protected HomeFeatureProperty(Parcel in) {
+        id = in.readString();
+        count = in.readString();
+        no_of_bathroom = in.readString();
+        name = in.readString();
+        number_of_room = in.readString();
+        price = in.readString();
+        price_without_security = in.readString();
+        room_size = in.readString();
+        max_occupy = in.readString();
+        description = in.readString();
+        created_date = in.readString();
+        apartment_name = in.readString();
+        location = in.readString();
+        district_name = in.readString();
+        near_by_area = in.readString();
+        address = in.readString();
+        latitude = in.readString();
+        longitude = in.readString();
+        fplink = in.readString();
+        fclink = in.readString();
+        district = in.readString();
+        facilityList = in.createTypedArrayList(FacilityData.CREATOR);
+        image_slider = in.createTypedArrayList(HomeSlider.CREATOR);
+    }
+
+    public static final Creator<HomeFeatureProperty> CREATOR = new Creator<HomeFeatureProperty>() {
+        @Override
+        public HomeFeatureProperty createFromParcel(Parcel in) {
+            return new HomeFeatureProperty(in);
+        }
+
+        @Override
+        public HomeFeatureProperty[] newArray(int size) {
+            return new HomeFeatureProperty[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -212,5 +257,37 @@ public class HomeFeatureProperty {
 
     public void setImage_slider(List<HomeSlider> image_slider) {
         this.image_slider = image_slider;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(count);
+        parcel.writeString(no_of_bathroom);
+        parcel.writeString(name);
+        parcel.writeString(number_of_room);
+        parcel.writeString(price);
+        parcel.writeString(price_without_security);
+        parcel.writeString(room_size);
+        parcel.writeString(max_occupy);
+        parcel.writeString(description);
+        parcel.writeString(created_date);
+        parcel.writeString(apartment_name);
+        parcel.writeString(location);
+        parcel.writeString(district_name);
+        parcel.writeString(near_by_area);
+        parcel.writeString(address);
+        parcel.writeString(latitude);
+        parcel.writeString(longitude);
+        parcel.writeString(fplink);
+        parcel.writeString(fclink);
+        parcel.writeString(district);
+        parcel.writeTypedList(facilityList);
+        parcel.writeTypedList(image_slider);
     }
 }

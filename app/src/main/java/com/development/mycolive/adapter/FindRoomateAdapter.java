@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.development.mycolive.R;
@@ -66,6 +67,14 @@ public class FindRoomateAdapter extends RecyclerView.Adapter<FindRoomateAdapter.
         holder.address.setText(roomateModel.getAddress());
         holder.city.setText(roomateModel.getCity_name());
         holder.university.setText(roomateModel.getUniversity_name());
+
+        if(roomateModel.getFavourites() ==0 ){
+            holder.fav_icon.setColorFilter(ContextCompat.getColor(context,
+                    R.color.text_color_hint), android.graphics.PorterDuff.Mode.MULTIPLY);
+        }else{
+            holder.fav_icon.setColorFilter(ContextCompat.getColor(context,
+                    R.color.colorPrimaryDark), android.graphics.PorterDuff.Mode.MULTIPLY);
+        }
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

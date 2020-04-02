@@ -3,12 +3,13 @@ package com.development.mycolive.model.homeProperty;
 import com.development.mycolive.model.home.HomeFeatureProperty;
 import com.development.mycolive.model.propertyDetailModel.FacilityData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FeatureResponse {
     private String message;
     private int status;
-    private List<HomeFeatureProperty> data;
+    private ArrayList<HomeFeatureProperty> data;
 
     public String getMessage() {
         return message;
@@ -26,11 +27,11 @@ public class FeatureResponse {
         this.status = status;
     }
 
-    public List<HomeFeatureProperty> getData() {
+    public ArrayList<HomeFeatureProperty> getData() {
         return data;
     }
 
-    public void setData(List<HomeFeatureProperty> data) {
+    public void setData(ArrayList<HomeFeatureProperty> data) {
         this.data = data;
     }
 }

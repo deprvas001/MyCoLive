@@ -10,6 +10,7 @@ import com.development.mycolive.model.editProfile.PostProfileResponse;
 import com.development.mycolive.model.editProfile.ProfileResponse;
 import com.development.mycolive.model.favourite.FavouriteResponse;
 import com.development.mycolive.model.favourite.FavouriteRoomateResponse;
+import com.development.mycolive.model.favouriteRoomate.FavouriteRequest;
 import com.development.mycolive.model.favouriteRoomate.RoomateFavResponse;
 import com.development.mycolive.model.filterModel.FilterSearchResponse;
 import com.development.mycolive.model.forgotModel.ForgotRequestModel;
@@ -251,6 +252,11 @@ public interface ShipmentApi {
             @HeaderMap Map<String,String> headers,
             @Query("type") String  type,
             @Query("user_id") String id);
+
+    @POST("updateFavourite")
+    Call<RoomateFavResponse> setFav(
+            @HeaderMap Map<String,String> headers,
+            @Body FavouriteRequest requestBody);
 
 
     @GET("getProfile")

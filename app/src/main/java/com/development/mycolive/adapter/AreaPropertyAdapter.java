@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.development.mycolive.R;
 import com.development.mycolive.model.home.HomePropertyArea;
+import com.development.mycolive.views.activity.propertyDetail.PropertyDetail;
 import com.development.mycolive.views.activity.searchDetailPage.RoomDetail;
 import com.squareup.picasso.Picasso;
 
@@ -59,13 +60,17 @@ public class AreaPropertyAdapter extends RecyclerView.Adapter<AreaPropertyAdapte
     @Override
     public void onBindViewHolder(AreaPropertyAdapter.MyViewHolder holder, int position) {
         HomePropertyArea  featureProperty = propertiesList.get(position);
-        holder.address.setText(featureProperty.getCity());
+        holder.address.setText(featureProperty.getCount()+" "+featureProperty.getCity());
+        holder.price.setVisibility(View.GONE);
+        holder.name.setVisibility(View.GONE);
         holder.rating.setVisibility(View.GONE);
 
         holder.viewLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                context.startActivity(new Intent(context, RoomDetail.class));
+                Intent intent = new Intent(context, PropertyDetail.class);
+                intent.putExtra("Property_Id",featureProperty.getPost_code());
+                context.startActivity(intent);
             }
         });
         Picasso.get()

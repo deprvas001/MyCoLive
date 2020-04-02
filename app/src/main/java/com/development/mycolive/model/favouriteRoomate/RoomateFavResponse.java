@@ -8,7 +8,17 @@ public class RoomateFavResponse {
 
     private int status;
     private String message;
+    private int is_fav;
     private RoomateFavData data;
+
+
+    public int getIs_fav() {
+        return is_fav;
+    }
+
+    public void setIs_fav(int is_fav) {
+        this.is_fav = is_fav;
+    }
 
     public int getStatus() {
         return status;

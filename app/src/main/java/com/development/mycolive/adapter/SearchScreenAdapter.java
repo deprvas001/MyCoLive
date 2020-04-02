@@ -64,7 +64,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
         holder.adddress.setText(search_room.getAddress());
         holder.noOfBathroom.setText(search_room.getNo_of_bathroom());
         holder.noOfRoom.setText(search_room.getNumber_of_room());
-        holder.price.setText("$ "+search_room.getPrice());
+        holder.price.setText("€ "+search_room.getPrice());
 
         holder.propertyLayout.setOnClickListener(new View.OnClickListener() {
             @Override

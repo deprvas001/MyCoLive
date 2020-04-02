@@ -7,6 +7,10 @@ public class HomeSlider implements Parcelable {
     private String id;
     private String image;
 
+    public HomeSlider(){
+
+    }
+
     protected HomeSlider(Parcel in) {
         id = in.readString();
         image = in.readString();

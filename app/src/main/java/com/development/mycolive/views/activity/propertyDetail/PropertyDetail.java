@@ -137,13 +137,21 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onChanged(PropertyDetailApiResponse apiResponse) {
                 if (apiResponse.response != null) {
-                 initializeView(apiResponse);
-                List<PropertyDetailData> propertyDetails =   apiResponse.getResponse().getData();
-                bankAccount =  propertyDetails.get(0).getBank_account();
-                 String apartment_price = apiResponse.getResponse().getData().get(0).getTotal_price();
-                 setRecycleView(apiResponse.getResponse().getData().get(0).getRoom(),
-                         apiResponse.getResponse().getData().get(0).getFacility(),apartment_price);
-                 setSliderAndView(apiResponse.getResponse().getData().get(0).getImage_slider());
+
+                    if(apiResponse.getResponse().getData().size()>0 &&
+                       apiResponse.getResponse().getStatus() == 1){
+                        initializeView(apiResponse);
+                        List<PropertyDetailData> propertyDetails =   apiResponse.getResponse().getData();
+                        bankAccount =  propertyDetails.get(0).getBank_account();
+                        String apartment_price = apiResponse.getResponse().getData().get(0).getTotal_price();
+                        setRecycleView(apiResponse.getResponse().getData().get(0).getRoom(),
+                                apiResponse.getResponse().getData().get(0).getFacility(),apartment_price);
+                        setSliderAndView(apiResponse.getResponse().getData().get(0).getImage_slider());
+                    }else{
+                        Toast.makeText(PropertyDetail.this, apiResponse.getResponse().getMessage(), Toast.LENGTH_SHORT).show();
+                        finish();
+                     }
+
                 }
             }
         });
