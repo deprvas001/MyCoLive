@@ -1,6 +1,7 @@
 package com.development.mycolive.model.favouriteRoomate;
 
 import com.development.mycolive.model.favourite.FavouritePropertyModel;
+import com.development.mycolive.model.home.HomeFeatureProperty;
 
 import java.util.List;
 

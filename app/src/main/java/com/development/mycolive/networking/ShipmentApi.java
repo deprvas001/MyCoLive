@@ -51,6 +51,7 @@ import retrofit2.http.HeaderMap;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 
 public interface ShipmentApi {
     @Headers({
@@ -132,7 +133,7 @@ public interface ShipmentApi {
     Call<HomeResponse> getData();
 
     @GET("getProperty")
-    Call<FeatureResponse> getRoomList(@Query("type") String  type,
+    Call<FeatureResponse> getRoomList(@QueryMap Map<String,String> params,
                                       @Query("offset") String  offset,
                                       @Query("per_page") String  per_page);
 

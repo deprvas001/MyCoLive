@@ -29,6 +29,9 @@ public class HomeFeatureProperty implements Parcelable {
    private String longitude;
    private String fplink;
    private String fclink;
+   private String city;
+   private String post_code;
+   private String image;
    private String district;
    private List<FacilityData> facilityList;
    private List<HomeSlider> image_slider;
@@ -59,6 +62,9 @@ public class HomeFeatureProperty implements Parcelable {
         fplink = in.readString();
         fclink = in.readString();
         district = in.readString();
+        city = in.readString();
+        post_code =in.readString();
+        image = in.readString();
         facilityList = in.createTypedArrayList(FacilityData.CREATOR);
         image_slider = in.createTypedArrayList(HomeSlider.CREATOR);
     }
@@ -169,6 +175,30 @@ public class HomeFeatureProperty implements Parcelable {
 
     public void setApartment_name(String apartment_name) {
         this.apartment_name = apartment_name;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getPost_code() {
+        return post_code;
+    }
+
+    public void setPost_code(String post_code) {
+        this.post_code = post_code;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getLocation() {
@@ -287,6 +317,9 @@ public class HomeFeatureProperty implements Parcelable {
         parcel.writeString(fplink);
         parcel.writeString(fclink);
         parcel.writeString(district);
+        parcel.writeString(city);
+        parcel.writeString(post_code);
+        parcel.writeString(image);
         parcel.writeTypedList(facilityList);
         parcel.writeTypedList(image_slider);
     }

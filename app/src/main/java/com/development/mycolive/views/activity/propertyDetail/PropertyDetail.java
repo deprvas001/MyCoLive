@@ -396,13 +396,16 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
                 intent.putExtra("bank_account",bankAccount);
                 intent.putParcelableArrayListExtra("data", PropertyDetailAdapter.roomDataList);
                 startActivity(intent);
+
             }else{
                 Toast.makeText(this, "Please accept Policy.", Toast.LENGTH_SHORT).show();
             }     
         }else{
             Toast.makeText(this, "Please select room.", Toast.LENGTH_SHORT).show();
         }
-       
+    }
+
+  public   void showCustomDialog(){
 
     }
 }

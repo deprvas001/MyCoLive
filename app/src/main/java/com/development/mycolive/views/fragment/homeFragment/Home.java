@@ -54,6 +54,7 @@ public class Home extends Fragment implements View.OnClickListener {
     private FragmentHomeBinding homeBinding;
     SessionManager session;
     String token;
+    Intent intent;
     private HomeViewModel homeViewModel;
     private PropertiesAdapter propertiesAdapter;
     private HotPropertyAdapter hotPropertyAdapter;
@@ -112,6 +113,7 @@ public class Home extends Fragment implements View.OnClickListener {
 
         homeBinding.roomApartment.roomLayout.setOnClickListener(this);
         homeBinding.roomApartment.roomateLayout.setOnClickListener(this);
+        homeBinding.roomApartment.apartmentLayout.setOnClickListener(this);
     }
 
     private void getData() {
@@ -154,19 +156,34 @@ public class Home extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_feature:
-                getActivity().startActivity(new Intent(getActivity(), SearchResult.class));
+                intent = new Intent(getActivity(),SearchResult.class);
+                intent.putExtra("type","FEATUREDPROPERTY");
+                getActivity().startActivity(intent);
                 break;
 
             case R.id.hot_property_btn:
-                getActivity().startActivity(new Intent(getActivity(), SearchResult.class));
+               intent = new Intent(getActivity(),SearchResult.class);
+                intent.putExtra("type","FEATUREDPROPERTY");
+                getActivity().startActivity(intent);
                 break;
 
             case R.id.btn_property_area:
-                getActivity().startActivity(new Intent(getActivity(), SearchResult.class));
+                intent = new Intent(getActivity(),SearchResult.class);
+                intent.putExtra("type","PROPERTYBYAREA");
+                getActivity().startActivity(intent);
                 break;
 
             case R.id.room_layout:
-                getActivity().startActivity(new Intent(getActivity(), SearchResult.class));
+                intent = new Intent(getActivity(),SearchResult.class);
+                intent.putExtra("type","ROOM");
+                getActivity().startActivity(intent);
+                break;
+
+
+            case R.id.apartment_layout:
+                intent = new Intent(getActivity(),SearchResult.class);
+                intent.putExtra("type","ALLPROPERTY");
+                getActivity().startActivity(intent);
                 break;
 
             case R.id.roomate_layout:

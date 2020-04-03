@@ -11,6 +11,8 @@ import com.development.mycolive.networking.ShipmentApi;
 import com.development.mycolive.model.home.HomeApiResponse;
 import com.development.mycolive.model.home.HomeResponse;
 
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,10 +32,10 @@ public class SearchResultRepository {
         return searchResultRepository;
     }
 
-    public MutableLiveData<FeatureApiResponse> getData(Context context, String type, String offset, String per_page){
+    public MutableLiveData<FeatureApiResponse> getData(Context context, Map<String,String> params, String offset, String per_page){
         final MutableLiveData<FeatureApiResponse> homeResponseLiveData =new MutableLiveData<>();
 
-        shipmentApi.getRoomList(type,offset,per_page).enqueue(new Callback<FeatureResponse>() {
+        shipmentApi.getRoomList(params,offset,per_page).enqueue(new Callback<FeatureResponse>() {
             @Override
             public void onResponse(Call<FeatureResponse> call, Response<FeatureResponse> response) {
                 if(response.code() == 401){

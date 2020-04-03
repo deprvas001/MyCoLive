@@ -133,8 +133,9 @@ PropertiesAdapter propertiesAdapter;
                 if(apiResponse.response !=null){
 
                     RoomateData roomateData = apiResponse.getResponse().getData().getData().get(0);
-
+                    List<HomeFeatureProperty> homeFeaturePropertyList = apiResponse.getResponse().getData().getNearByArea();
                     setView(roomateData);
+                    setReyclerView(homeFeaturePropertyList);
 
                     if(roomateData.getFavourites() == 0){
                             roomateDetailBinding.favIcon.setColorFilter(ContextCompat.getColor(FavouriteRoomateDetail.this,
@@ -173,8 +174,6 @@ PropertiesAdapter propertiesAdapter;
         roomateDetailBinding.university.setText(roomateModel.getUniversity_name());
         roomateDetailBinding.location.setText(roomateModel.getAddress());
         setWebView(roomateModel.getLate(),roomateModel.getLang());
-
-        setData();
     }
 
     private void setReyclerView(List<HomeFeatureProperty> featurePropertyList) {
@@ -184,32 +183,6 @@ PropertiesAdapter propertiesAdapter;
         roomateDetailBinding.recyclerView.setLayoutManager(mLayoutManager);
         roomateDetailBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         roomateDetailBinding.recyclerView.setAdapter(propertiesAdapter);
-    }
-
-    private void setData(){
-        List<HomeFeatureProperty> featurePropertyList =new ArrayList<>();
-        List<HomeSlider> homeSliderList =new ArrayList<>();
-
-
-        for(int i=0;i<4;i++){
-            HomeFeatureProperty property = new HomeFeatureProperty();
-            property.setId("1");
-            property.setAddress("USA");
-            property.setApartment_name("Villa");
-            property.setDescription("Searching for a place to rent? All rental listings on realestateVIEW.com.au include pocket insights, helping you to find out more about this neighbourhood and the people who live. This provides a greater level of detail than general suburb median data provided on other websites");
-            property.setDistrict("USA");
-            property.setName("Villa");
-            property.setPrice("1200");
-            property.setCreated_date("1/04/2020");
-            HomeSlider homeSlider =new HomeSlider();
-            homeSlider.setImage("https://webfume.in/mani-budapest/assets/uploads/15682850555d7a217fe296aimage.jpeg");
-            homeSliderList.add(homeSlider);
-            property.setImage_slider(homeSliderList);
-            featurePropertyList.add(property);
-        }
-
-       setReyclerView(featurePropertyList);
-
     }
 
     @Override
