@@ -7,11 +7,17 @@ import androidx.lifecycle.MutableLiveData;
 import com.development.mycolive.model.paymentModel.PaymentApiResponse;
 import com.development.mycolive.model.paymentModel.PaymentRequestBody;
 import com.development.mycolive.model.paymentModel.PaymentResponse;
+import com.development.mycolive.model.propertyDetailModel.PropertyDetailApiResponse;
 import com.development.mycolive.model.stripe.StripeApiResponse;
 import com.development.mycolive.model.stripe.StripeRequestBody;
 import com.development.mycolive.model.stripe.StripeServerResponse;
 import com.development.mycolive.networking.RetrofitService;
 import com.development.mycolive.networking.ShipmentApi;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -40,16 +46,19 @@ public class StripeRepository {
         shipmentApi.getStripeKey(headers,requestBody).enqueue(new Callback<StripeServerResponse>() {
             @Override
             public void onResponse(Call<StripeServerResponse> call, Response<StripeServerResponse> response) {
-                if(response.code() == 401){
-                    historyResponseLiveData.setValue(new StripeApiResponse(response.code()));
-                }
-                else if(response.code() == 400){
-                    // ResponseBody responseBody = response.errorBody();
-                    //  String message =    response.message();
-                    //  historyResponseLiveData.setValue(new PaymentApiResponse(message));
-                    historyResponseLiveData.setValue(new StripeApiResponse(response.code()));
-                }
+                    if (response.code() == 401 || response.code() == 400 || response.code() == 500) {
+                        try {
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            String message = jObjError.getString("message");
+                            int status = jObjError.getInt("status");
+                            historyResponseLiveData.setValue(new StripeApiResponse(message, status, response.code()));
 
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 else {
 
                     if(response.isSuccessful()){

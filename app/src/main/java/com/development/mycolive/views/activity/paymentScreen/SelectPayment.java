@@ -52,7 +52,7 @@ ActivitySelectPaymentBinding paymentBinding;
     private int REQUEST_CODE = 100;
     SessionManager session;
     String token;
-    String email;
+   ArrayList<String> email;
     PaymentViewModel viewModel;
     float total_price;
     PaymentRequestBody requestBody;
@@ -72,7 +72,9 @@ ActivitySelectPaymentBinding paymentBinding;
             requestBody = getIntent().getParcelableExtra("booking_info");
 
             bankAccount = getIntent().getParcelableExtra("bank_account");
-            email = getIntent().getExtras().getString("refer_email");
+            email = getIntent().getStringArrayListExtra("email");
+
+            requestBody.setEmail_id(email);
 
         }
         setClickListener();
@@ -157,6 +159,9 @@ ActivitySelectPaymentBinding paymentBinding;
             }else{
                 Intent intent = new Intent(SelectPayment.this,PaymentActivity.class);
                 intent.putExtra("total_price",total_price);
+                intent.putExtra("booking_info",requestBody);
+                intent.putExtra("bank_account",bankAccount);
+                /*intent.put("refer_email",email);*/
                startActivity(intent);
             }
 

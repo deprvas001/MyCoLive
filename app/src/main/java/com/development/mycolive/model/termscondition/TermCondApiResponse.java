@@ -1,13 +1,13 @@
-package com.development.mycolive.model.stripe;
+package com.development.mycolive.model.termscondition;
 
-import com.development.mycolive.model.paymentModel.PaymentResponse;
+import com.development.mycolive.model.propertyDetailModel.PropertyDetailResponse;
+import com.development.mycolive.model.signup.SignUpResponse;
 
-public class StripeApiResponse {
-    public StripeServerResponse response;
+public class TermCondApiResponse {
+    public TermConditionResponse response;
     private Throwable error;
     private String message;
     private int status;
-
     private int status_code;
 
 
@@ -20,33 +20,30 @@ public class StripeApiResponse {
         this.status_code = status_code;
     }
 
-    public StripeApiResponse (String message,int status,int status_code) {
+    public TermCondApiResponse(String message,int status,int status_code) {
         this.message = message;
         this.status = status;
         this.status_code = status_code;
     }
 
-    public StripeApiResponse(StripeServerResponse response) {
+
+    public TermCondApiResponse(TermConditionResponse response) {
         this.response = response;
     }
 
-    public StripeApiResponse(Throwable error) {
+    public TermCondApiResponse(Throwable error) {
         this.error = error;
     }
 
-    public StripeApiResponse(String message) {
-        this.message = message;
-    }
-
-    public StripeApiResponse(int status) {
+    public TermCondApiResponse(int status) {
         this.status = status;
     }
 
-    public StripeServerResponse getResponse() {
+    public TermConditionResponse getResponse() {
         return response;
     }
 
-    public void setResponse(StripeServerResponse response) {
+    public void setResponse(TermConditionResponse response) {
         this.response = response;
     }
 

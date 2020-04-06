@@ -1,5 +1,6 @@
 package com.development.mycolive.views.activity.propertyDetail;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
@@ -15,11 +16,18 @@ import android.graphics.Color;
 import android.media.MediaCas;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Property;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.development.mycolive.R;
@@ -44,7 +52,11 @@ import com.development.mycolive.model.searchDetailPage.BankAccount;
 import com.development.mycolive.model.searchFilterModel.FilterApiResponse;
 import com.development.mycolive.model.searchScreen.CityModel;
 import com.development.mycolive.model.searchScreen.UniversityModel;
+import com.development.mycolive.model.termscondition.ContractResponse;
+import com.development.mycolive.model.termscondition.TermCondApiResponse;
+import com.development.mycolive.model.termscondition.TermRequest;
 import com.development.mycolive.session.SessionManager;
+import com.development.mycolive.views.activity.BaseActivity;
 import com.development.mycolive.views.activity.bookingDetail.BookingDetails;
 import com.development.mycolive.views.fragment.filterSearch.SearchViewModel;
 import com.smarteist.autoimageslider.IndicatorAnimations;
@@ -70,6 +82,7 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
     private DatePickerDialog mDatePickerDialog;
     float total_cost;
     String id="";
+    String token="";
     boolean isTextViewClicked = false;
     String period,from,to,lat,lng,title;
     BankAccount bankAccount;
@@ -181,7 +194,7 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
         // email
         String email = user.get(SessionManager.KEY_EMAIL);
         String image = user.get(SessionManager.KEY_IMAGE);
-        String token = user.get(SessionManager.KEY_TOKEN);
+         token = user.get(SessionManager.KEY_TOKEN);
 
         propertyDetailBinding.toolbar.setTitle(getResources().getString(R.string.PropertyDetail));
         setSupportActionBar(propertyDetailBinding.toolbar);
@@ -376,7 +389,7 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
 
     private void bookingDetail(){
         if(PropertyDetailAdapter.roomDataList.size()>0){
-            if(propertyDetailBinding.policyAccept.isChecked() ){
+
                 PaymentRequestBody requestBody = new PaymentRequestBody();
                 if(period.equals("4")){
                     requestBody.setDaterange(from+"-"+to);
@@ -389,23 +402,114 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
                 requestBody.setPayment_method("Bank");
                 requestBody.setDuration(period);
 
+                List<String> id_list = new ArrayList<>();
 
-                Intent intent = new Intent(PropertyDetail.this,BookingDetails.class);
-                intent.putExtra("total_price",total_cost);
-                intent.putExtra("booking_info",requestBody);
-                intent.putExtra("bank_account",bankAccount);
-                intent.putParcelableArrayListExtra("data", PropertyDetailAdapter.roomDataList);
-                startActivity(intent);
 
-            }else{
-                Toast.makeText(this, "Please accept Policy.", Toast.LENGTH_SHORT).show();
-            }     
+            for(int i=0;i<PropertyDetailAdapter.roomDataList.size();i++){
+                id_list.add(PropertyDetailAdapter.roomDataList.get(i).getId());
+            }
+
+              requestBody.setRoom_id(id_list);
+
+              getContract(token,total_cost,requestBody,bankAccount);
+
+
         }else{
             Toast.makeText(this, "Please select room.", Toast.LENGTH_SHORT).show();
         }
     }
 
-  public   void showCustomDialog(){
+  public   void showCustomDialog(ContractResponse contractResponse ,PaymentRequestBody requestBody){
+      //before inflating the custom alert dialog layout, we will get the current activity viewgroup
+      ViewGroup viewGroup = findViewById(android.R.id.content);
 
+      //then we will inflate the custom alert dialog xml that we created
+      View dialogView = LayoutInflater.from(this).inflate(R.layout.custom_terms_condition, viewGroup, false);
+
+      //Now we need an AlertDialog.Builder object
+      AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+      //setting the view of the builder to our custom view that we already inflated
+      builder.setView(dialogView);
+      //finally creating the alert dialog and displaying it
+      AlertDialog alertDialog = builder.create();
+      alertDialog.show();
+
+      Spanned htmlAsSpanned = Html.fromHtml(contractResponse.getContractDetails());
+
+      TextView contract = (TextView)dialogView.findViewById(R.id.contract);
+      contract.setText(htmlAsSpanned);
+
+      CheckBox check = (CheckBox)dialogView.findViewById(R.id.terms_condition);
+
+      Button button_ok = (Button)dialogView.findViewById(R.id.buttonOk);
+      button_ok.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+              if(check.isChecked()){
+                  if(contractResponse.getIs_available() == 1 ){
+                      Intent intent = new Intent(PropertyDetail.this,BookingDetails.class);
+                      intent.putExtra("contract_response",contractResponse);
+                      intent.putExtra("bank_info",bankAccount);
+                      intent.putExtra("total_price",total_cost);
+                      intent.putExtra("booking_info",requestBody);
+                      intent.putExtra("bank_account",bankAccount);
+                      intent.putParcelableArrayListExtra("data", PropertyDetailAdapter.roomDataList);
+                      startActivity(intent);
+                  }else{
+                      Toast.makeText(PropertyDetail.this, contractResponse.getMsg(), Toast.LENGTH_SHORT).show();
+                  }
+
+              }else{
+                  Toast.makeText(PropertyDetail.this, "Please accept terms And condition", Toast.LENGTH_SHORT).show();
+              }
+          }
+      });
+
+    }
+
+
+    private void getContract(String token, float total_cost, PaymentRequestBody requestBody, BankAccount bankAccount) {
+        /* String id = "6";*/
+
+        TermRequest request = new TermRequest();
+        request.setDuration(period);
+        request.setEarly_check(requestBody.getEarly_check());
+        request.setDaterange(requestBody.getDaterange());
+        request.setRoom_id(requestBody.getRoom_id());
+
+
+
+        Map<String,String> headers = new HashMap<>();
+        headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);
+        headers.put(ApiConstant.SOURCES,ApiConstant.SOURCES_VALUE);
+        headers.put(ApiConstant.USER_TYPE,ApiConstant. USER_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TYPE,ApiConstant.USER_DEVICE_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TOKEN,ApiConstant.USER_DEVICE_TOKEN_VALUE);
+        headers.put(ApiConstant.AUTHENTICAT_TOKEN,token);
+
+        detailViewModel = ViewModelProviders.of(this).get(PropertyDetailViewModel.class);
+        detailViewModel.getTermsCondition(this, headers,request).observe(this, new Observer<TermCondApiResponse>() {
+            @Override
+            public void onChanged(TermCondApiResponse apiResponse) {
+                if (apiResponse.response != null) {
+                    if(apiResponse.getResponse().getStatus() ==1){
+                        if(apiResponse.getResponse().getData().getIs_available() == 1){
+                            showCustomDialog(apiResponse.response.getData(),requestBody);
+                        }else{
+                            Toast.makeText(PropertyDetail.this, apiResponse.getResponse().getData().getMsg()
+                                    , Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+
+                    }else{
+                        Toast.makeText(PropertyDetail.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    }
+
+                }
+
+        });
     }
 }

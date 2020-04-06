@@ -20,6 +20,8 @@ import com.development.mycolive.R;
 import com.development.mycolive.constant.ApiConstant;
 import com.development.mycolive.databinding.ActivityPaymentBinding;
 import com.development.mycolive.model.paymentModel.PaymentApiResponse;
+import com.development.mycolive.model.paymentModel.PaymentRequestBody;
+import com.development.mycolive.model.searchDetailPage.BankAccount;
 import com.development.mycolive.model.stripe.StripeApiResponse;
 import com.development.mycolive.model.stripe.StripeRequestBody;
 import com.development.mycolive.session.SessionManager;
@@ -71,6 +73,10 @@ public class PaymentActivity extends BaseActivity {
     private String paymentIntentClientSecret;
     String stripePublishableKey;
     private Stripe stripe;
+    float total_price;
+    PaymentRequestBody requestBody;
+    BankAccount bankAccount;
+    String email;
     ActivityPaymentBinding paymentBinding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +88,13 @@ public class PaymentActivity extends BaseActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         if(getIntent()!=null){
-            float total_price = getIntent().getExtras().getFloat("total_price");
+             total_price = getIntent().getExtras().getFloat("total_price");
+            total_price = getIntent().getExtras().getFloat("total_price");
+            requestBody = getIntent().getParcelableExtra("booking_info");
+
+            bankAccount = getIntent().getParcelableExtra("bank_account");
+         //   email = getIntent().getExtras().getString("refer_email");
+
             paymentBinding.payButton.setText("€"+String.valueOf(total_price)+" / Pay Now");
         }
 
@@ -256,12 +268,13 @@ public class PaymentActivity extends BaseActivity {
             PaymentIntent.Status status = paymentIntent.getStatus();
             if (status == PaymentIntent.Status.Succeeded) {
                 // Payment completed successfully
-                Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                /*Gson gson = new GsonBuilder().setPrettyPrinting().create();
                 activity.displayAlert(
                         "Payment completed",
                         gson.toJson(paymentIntent),
                         true
-                );
+                );*/
+                activity.postRequestServer();
             } else if (status == PaymentIntent.Status.RequiresPaymentMethod) {
                 // Payment failed – allow retrying using a different payment method
                 activity.displayAlert(
@@ -285,13 +298,13 @@ public class PaymentActivity extends BaseActivity {
     }
 
 
-    private void getStripeKeys(){
+    private void getStripeKeys(String email){
 
             showProgressDialog(getResources().getString(R.string.loading));
 
         StripeRequestBody requestBody = new StripeRequestBody();
-        requestBody.setEmail("randhir.kumar@webfume.com");
-        requestBody.setAmount("200");
+        requestBody.setEmail(email);
+        requestBody.setAmount(String.valueOf(total_price));
 
 
             Map<String,String> headers = new HashMap<>();
@@ -341,7 +354,52 @@ public class PaymentActivity extends BaseActivity {
         String image = user.get(SessionManager.KEY_IMAGE);
         token = user.get(SessionManager.KEY_TOKEN);
 
-        getStripeKeys();
+        getStripeKeys(email);
     }
 
+
+    public void postRequestServer(){
+        showProgressDialog(getResources().getString(R.string.loading));
+
+        Map<String,String> headers = new HashMap<>();
+        headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);
+        headers.put(ApiConstant.SOURCES,ApiConstant.SOURCES_VALUE);
+        headers.put(ApiConstant.USER_TYPE,ApiConstant. USER_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TYPE,ApiConstant.USER_DEVICE_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TOKEN,ApiConstant.USER_DEVICE_TOKEN_VALUE);
+        headers.put(ApiConstant.AUTHENTICAT_TOKEN,token);
+
+          /* PaymentRequestBody requestBody = new PaymentRequestBody();
+           requestBody.setRoom_id(roomIdList);
+           requestBody.setDuration("4");
+           requestBody.setPayment_method("BANK");
+           requestBody.setContract("1");
+           requestBody.setEarly_check("23-03-2020");
+           requestBody.setReceipt(image_string);
+           requestBody.setDaterange("Apr 2020 - Jun 2020");*/
+        requestBody.setPayment_method(ApiConstant.BANK_STRIPE);
+        requestBody.setReceipt("");
+
+
+        PaymentViewModel paymentViewModel = ViewModelProviders.of(this).get(PaymentViewModel.class);
+
+        paymentViewModel.bookingPost(this,headers,requestBody).observe(this, new Observer<PaymentApiResponse>() {
+            @Override
+            public void onChanged(PaymentApiResponse apiResponse) {
+                hideProgressDialog();
+                if(apiResponse.response !=null){
+                    String message = apiResponse.getResponse().getMessage();
+                    if(apiResponse.getResponse().getStatus()==1){
+
+                        displayAlert("Payment completed",message,true);
+                    }else{
+                        displayAlert("Payment failed",message,false);
+                    }
+
+                }else {
+                    Toast.makeText(PaymentActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
 }

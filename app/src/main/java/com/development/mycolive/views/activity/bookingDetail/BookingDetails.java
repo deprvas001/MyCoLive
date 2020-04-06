@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.development.mycolive.databinding.ActivityBookingDetailsBinding;
 import com.development.mycolive.model.paymentModel.PaymentRequestBody;
 import com.development.mycolive.model.propertyDetailModel.PropertyRoomData;
 import com.development.mycolive.model.searchDetailPage.BankAccount;
+import com.development.mycolive.model.termscondition.ContractResponse;
 import com.development.mycolive.views.activity.paymentScreen.SelectPayment;
 
 import java.util.ArrayList;
@@ -26,10 +28,12 @@ import java.util.List;
 public class BookingDetails extends AppCompatActivity implements View.OnClickListener {
     ActivityBookingDetailsBinding bookingDetailsBinding;
     ArrayList<PropertyRoomData> roomDataList=new ArrayList<>();
-    float total_price =0;
+    float total_price =0,early_check=0,final_price;
     BookingDetailAdapter bookingDetailAdapter;
     RecyclerView.LayoutManager mLayoutManager;
     PaymentRequestBody requestBody;
+    ContractResponse contractResponse;
+    ArrayList<String> email_id = new ArrayList<>();
     List<String> id_list =new ArrayList<>();
     BankAccount bankAccount;
     @Override
@@ -46,6 +50,10 @@ public class BookingDetails extends AppCompatActivity implements View.OnClickLis
         total_price = getIntent().getExtras().getFloat("total_price");
         requestBody = getIntent().getParcelableExtra("booking_info");
         bankAccount = getIntent().getParcelableExtra("bank_account") ;
+        contractResponse = getIntent().getParcelableExtra("contract_response");
+
+         early_check  = contractResponse.getEarly_checkin_rent();
+         requestBody.setEarly_check_price(String.valueOf(early_check));
 
 
         for(int i=0;i<roomDataList.size();i++){
@@ -73,8 +81,9 @@ public class BookingDetails extends AppCompatActivity implements View.OnClickLis
             total_price = total_price+Float.parseFloat(roomDataList.get(i).getTotal_price());
         }
 
-        bookingDetailsBinding.btnProceed.setText("€"+String.valueOf(total_price)+" / Proceed Further");
-
+          final_price = total_price+early_check;
+          bookingDetailsBinding.totalPrice.setText("€"+String.valueOf(total_price)+" + "+early_check+" (Early_Check_In_Price)");
+          bookingDetailsBinding.finalPrice.setText("€"+final_price);
         setRecyclerView(roomDataList);
     }
 
@@ -88,6 +97,7 @@ public class BookingDetails extends AppCompatActivity implements View.OnClickLis
 
     private void setClickListener(){
         bookingDetailsBinding.btnProceed.setOnClickListener(this);
+        bookingDetailsBinding.policyLink.setOnClickListener(this);
     }
 
     @Override
@@ -102,22 +112,34 @@ public class BookingDetails extends AppCompatActivity implements View.OnClickLis
                        Toast.makeText(this, "Please Enter Email", Toast.LENGTH_SHORT).show();
                    }else{
                        if (android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                           gotoNext(email);
+
+                           if(bookingDetailsBinding.policAccept.isChecked()){
+                               email_id.add(email);
+                               gotoNext(email);
+                           }else{
+                               Toast.makeText(this, "Please accept policy.", Toast.LENGTH_SHORT).show();
+                           }
+
                        }else{
                            bookingDetailsBinding.referEdit.setError("Enter valid email.");
                        }
 
                    }
                 }else{
-                    gotoNext("");
+                    if(bookingDetailsBinding.policAccept.isChecked()){
+                        email_id.add("");
+                        gotoNext("");
+                    }else{
+                        Toast.makeText(this, "Please accept policy.", Toast.LENGTH_SHORT).show();
+                    }
                 }
+                break;
 
-
-                /*if(bookingDetailsBinding.policAccept.isChecked()){
-
-                }else{
-                    Toast.makeText(this, "Please accept policy.", Toast.LENGTH_SHORT).show();
-                }*/
+            case R.id.policy_link:
+                String url = "https://webfume.in/mani-budapest/landing/privacyPolicy";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
                 break;
         }
     }
@@ -125,13 +147,11 @@ public class BookingDetails extends AppCompatActivity implements View.OnClickLis
     private void gotoNext(String email){
 
         Intent i = new Intent(this,SelectPayment.class);
-        i.putExtra("total_price",total_price);
+        i.putExtra("total_price",final_price);
         i.putExtra("booking_info",requestBody);
         i.putExtra("bank_account",bankAccount);
-        i.putExtra("refer_email",email);
+        i.putStringArrayListExtra("email",email_id);
         startActivity(i);
-
-
     }
 
 

@@ -81,11 +81,28 @@ public class PropertyDetailAdapter  extends RecyclerView.Adapter<PropertyDetailA
     @Override
     public void onBindViewHolder(PropertyDetailAdapter.MyViewHolder holder, int position) {
         PropertyRoomData roomData = detailList.get(position);
-        HomeSlider imageSlider =  roomData.getImage_slider().get(0);
-        FacilityData facilityData = roomData.getFacility().get(0);
+        if(roomData.getImage_slider().size()>0){
+            HomeSlider imageSlider =  roomData.getImage_slider().get(0);
+            Picasso.get()
+                    .load(imageSlider.getImage())
+                    /*  .placeholder(R.drawable.image1)
+                      .error(R.drawable.err)*/
+                    .into(holder.imageView);
+        }
+
+        if(roomData.getFacility().size()>0){
+            FacilityData facilityData = roomData.getFacility().get(0);
+            holder.facility_txt.setText(facilityData.getFacilityString());
+            Picasso.get()
+                    .load(facilityData.getIcon_url())
+                    /*  .placeholder(R.drawable.image1)
+                      .error(R.drawable.err)*/
+                    .into(holder.facility_image);
+        }
+
         holder.name.setText(roomData.getApartment_name());
         holder.price.setText("€"+roomData.getTotal_price()+"/Month");
-        holder.facility_txt.setText(facilityData.getFacilityString());
+
         holder.more_facility.setText("+"+roomData.getImage_slider().size());
 
         total = Float.parseFloat(apartment_price);
@@ -114,17 +131,9 @@ public class PropertyDetailAdapter  extends RecyclerView.Adapter<PropertyDetailA
             ((PropertyDetail)context).propertyDetailBinding.totalPrice.setText(String.valueOf(final_total));
         }*/
 
-        Picasso.get()
-                .load(imageSlider.getImage())
-                /*  .placeholder(R.drawable.image1)
-                  .error(R.drawable.err)*/
-                .into(holder.imageView);
 
-        Picasso.get()
-                .load(facilityData.getIcon_url())
-                /*  .placeholder(R.drawable.image1)
-                  .error(R.drawable.err)*/
-                .into(holder.facility_image);
+
+
 
                 holder.room_info.setOnClickListener(new View.OnClickListener() {
                     @Override

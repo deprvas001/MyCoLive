@@ -210,5 +210,6 @@
     <string name="email_empty">Please Enter Email</string>
     <string name="roommate_list">Roommate</string>
     <string name="title_activity_property_map">Map</string>
+    <string name="accept">Accept</string>
 
 </resources>

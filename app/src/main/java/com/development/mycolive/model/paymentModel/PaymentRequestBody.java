@@ -13,6 +13,8 @@ public class PaymentRequestBody implements Parcelable {
     private String early_check;
     private String receipt;
     private String daterange;
+    private List<String> friend_email;
+    private String early_check_price;
 
 
     public PaymentRequestBody(){
@@ -27,6 +29,8 @@ public class PaymentRequestBody implements Parcelable {
         early_check = in.readString();
         receipt = in.readString();
         daterange = in.readString();
+        early_check_price = in.readString();
+        friend_email = in.createStringArrayList();
     }
 
     public static final Creator<PaymentRequestBody> CREATOR = new Creator<PaymentRequestBody>() {
@@ -97,6 +101,22 @@ public class PaymentRequestBody implements Parcelable {
         this.daterange = daterange;
     }
 
+    public String getEarly_check_price() {
+        return early_check_price;
+    }
+
+    public void setEarly_check_price(String early_check_price) {
+        this.early_check_price = early_check_price;
+    }
+
+    public List<String> getEmail_id() {
+        return friend_email;
+    }
+
+    public void setEmail_id(List<String> friend_email) {
+        this.friend_email = friend_email;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -111,5 +131,7 @@ public class PaymentRequestBody implements Parcelable {
         parcel.writeString(early_check);
         parcel.writeString(receipt);
         parcel.writeString(daterange);
+        parcel.writeString(early_check_price);
+        parcel.writeStringList(friend_email);
     }
 }

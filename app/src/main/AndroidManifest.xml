@@ -69,7 +69,8 @@
         <activity
             android:name=".views.activity.paymentScreen.SelectPayment"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".views.activity.stripeScreen.PaymentActivity" />
+        <activity android:name=".views.activity.stripeScreen.PaymentActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".views.activity.bookingDetail.BookingDetails"
             android:theme="@style/AppTheme.NoActionBar" />

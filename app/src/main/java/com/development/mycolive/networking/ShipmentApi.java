@@ -36,6 +36,9 @@ import com.development.mycolive.model.signup.SignPostRequest;
 import com.development.mycolive.model.signup.SignUpResponse;
 import com.development.mycolive.model.stripe.StripeRequestBody;
 import com.development.mycolive.model.stripe.StripeServerResponse;
+import com.development.mycolive.model.termscondition.TermCondApiResponse;
+import com.development.mycolive.model.termscondition.TermConditionResponse;
+import com.development.mycolive.model.termscondition.TermRequest;
 import com.development.mycolive.model.testimonialmodel.TestimonialResponse;
 import com.development.mycolive.model.viewCommunityModel.CommentPost;
 import com.development.mycolive.model.viewCommunityModel.CommentResponse;
@@ -231,6 +234,11 @@ public interface ShipmentApi {
             @HeaderMap Map<String,String> headers,
             @Query("property_id") String  type);
 
+
+    @POST("viewTermAndCondition")
+    Call<TermConditionResponse> getTermsCondition(
+            @HeaderMap Map<String,String> headers,
+            @Body TermRequest request);
 
     @POST("booking")
     Call<PaymentResponse> bookingPost(

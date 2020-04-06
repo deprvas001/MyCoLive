@@ -24,4 +24,6 @@ public class ApiConstant {
     public static final String PROFILE="PROFILE";
     public static final String NORMAL = "NORMAL";
     public static final String GOOGLE="GOOGLE";
+
+    public static final String BANK_STRIPE="STRIP";
 }

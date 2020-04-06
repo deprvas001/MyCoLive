@@ -77,7 +77,7 @@ public class BookingDetailAdapter extends RecyclerView.Adapter<BookingDetailAdap
         holder.security.setText("€"+priceLevels.get(1).getPrice());
         holder.month_rent.setText("€"+priceLevels.get(0).getPrice());
 
-       total = Float.parseFloat(priceLevels.get(0).getPrice())+Float.parseFloat(priceLevels.get(1).getPrice());
+        total = Float.parseFloat(priceLevels.get(0).getPrice())+Float.parseFloat(priceLevels.get(1).getPrice());
         holder.sub_total.setText("€"+String.valueOf(total));
         Picasso.get()
                 .load(sliderList.get(0).getImage())
@@ -85,59 +85,7 @@ public class BookingDetailAdapter extends RecyclerView.Adapter<BookingDetailAdap
                 //  .error(R.drawable.err)*//*
                 .into(holder.imageView);
 
-        /*HomeSlider imageSlider =  roomData.getImage_slider().get(0);
-        FacilityData facilityData = roomData.getFacility().get(0);
-        holder.name.setText(roomData.getApartment_name());
-        holder.price.setText("$"+roomData.getTotal_price()+"/Month");
-        holder.facility_txt.setText(facilityData.getFacilityString());
-        holder.more_facility.setText("+"+roomData.getImage_slider().size());
 
-        total = Float.parseFloat(apartment_price);
-        holder.select.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (holder.select.isChecked()){
-                    total_list_price.add(roomData);
-                    roomDataList.add(roomData);
-                    getTotalPrice(roomData);
-                }else{
-                    if(roomDataList.contains(roomData)){
-                        roomDataList.remove(roomData);
-                    }
-                    getTotalSubtractPrice(roomData);
-                }
-            }
-        });*/
-
-        /*if(holder.select.isChecked()){
-
-          String total =  ((PropertyDetail)context).propertyDetailBinding.totalPrice.getText().toString();
-          int price_total = Integer.parseInt(total);
-          int room_price = Integer.parseInt(roomData.getTotal_price());
-          int final_total = price_total+room_price;
-            ((PropertyDetail)context).propertyDetailBinding.totalPrice.setText(String.valueOf(final_total));
-        }*/
-
-       /* Picasso.get()
-                .load(imageSlider.getImage())
-                *//*  .placeholder(R.drawable.image1)
-                  .error(R.drawable.err)*//*
-                .into(holder.imageView);
-
-        Picasso.get()
-                .load(facilityData.getIcon_url())
-                *//*  .placeholder(R.drawable.image1)
-                  .error(R.drawable.err)*//*
-                .into(holder.facility_image);
-
-        holder.room_info.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, RoomInformation.class);
-                intent.putExtra("room",roomData);
-                context.startActivity(intent);
-            }
-        });*/
     }
 
     @Override
