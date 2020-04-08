@@ -54,10 +54,7 @@ ActivitySearchResultBinding resultBinding;
            }
           if(bundle.containsKey("post_code")){
              post_code = bundle.getString("post_code");
-          }
-
-
-       }
+          } }
         setClickListener();
         getPropertyList();
     }

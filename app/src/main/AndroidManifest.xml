@@ -22,7 +22,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".views.activity.PropertyByAreaResult"></activity>
+        <activity android:name=".views.activity.FilterResultProperty"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".views.activity.PropertyByAreaResult" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -69,8 +71,9 @@
         <activity
             android:name=".views.activity.paymentScreen.SelectPayment"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".views.activity.stripeScreen.PaymentActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".views.activity.stripeScreen.PaymentActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".views.activity.bookingDetail.BookingDetails"
             android:theme="@style/AppTheme.NoActionBar" />

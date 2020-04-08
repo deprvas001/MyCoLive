@@ -211,5 +211,7 @@
     <string name="roommate_list">Roommate</string>
     <string name="title_activity_property_map">Map</string>
     <string name="accept">Accept</string>
+    <string name="check_network">Check your network</string>
+    <string name="password_empty">Please enter password</string>
 
 </resources>

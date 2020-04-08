@@ -122,7 +122,7 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
 
     private void setRecycleView(List<PropertyRoomData> detailList, List<FacilityData> facilityData,String apartment_price){
         roomAdapter = new PropertyDetailAdapter(this, detailList,apartment_price);
-        mLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, true);
+        mLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false);
         propertyDetailBinding.recyclerView.setLayoutManager(mLayoutManager);
         propertyDetailBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         propertyDetailBinding.recyclerView.setAdapter(roomAdapter);

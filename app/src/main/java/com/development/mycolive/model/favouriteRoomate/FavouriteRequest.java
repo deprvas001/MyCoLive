@@ -2,7 +2,7 @@ package com.development.mycolive.model.favouriteRoomate;
 
 public class FavouriteRequest {
     private String type;
-    private String user_id;
+    private String id;
 
     public String getType() {
         return type;
@@ -12,11 +12,11 @@ public class FavouriteRequest {
         this.type = type;
     }
 
-    public String getUser_id() {
-        return user_id;
+    public String getId() {
+        return id;
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public void setId(String id) {
+        this.id = id;
     }
 }

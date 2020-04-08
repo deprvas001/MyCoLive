@@ -200,7 +200,7 @@ PropertiesAdapter propertiesAdapter;
 
         FavouriteRequest request = new FavouriteRequest();
         request.setType(type);
-        request.setUser_id(id);
+        request.setId(id);
 
         Map<String,String> headers = new HashMap<>();
         headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);

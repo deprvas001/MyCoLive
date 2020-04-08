@@ -25,6 +25,7 @@ import com.development.mycolive.model.filterModel.FilterSearchApiResponse;
 import com.development.mycolive.model.home.HomeFeatureProperty;
 import com.development.mycolive.model.searchScreen.Period;
 import com.development.mycolive.session.SessionManager;
+import com.development.mycolive.views.activity.FilterResultProperty;
 import com.development.mycolive.views.activity.roomate.RoommateList;
 import com.development.mycolive.views.activity.searchResult.SearchResult;
 import com.development.mycolive.views.activity.ShowHomeScreen;
@@ -127,7 +128,12 @@ FragmentSearchBinding searchBinding;
         searchBinding.type.setOnItemSelectedListener(this);
         searchBinding.duration.setOnItemSelectedListener(this);
 
-        getDefaultData();
+        if( ((ShowHomeScreen) getActivity()).isNetworkAvailable(getActivity())){
+            getDefaultData();
+        }else{
+            Toast.makeText(getActivity(), getString(R.string.check_network), Toast.LENGTH_SHORT).show();
+        }
+
 
     }
 
@@ -281,14 +287,42 @@ FragmentSearchBinding searchBinding;
                 if(filterApiResponse.response !=null){
                     if(filterApiResponse.getResponse().getStatus() ==1){
                         ArrayList<RoomateData> roommateList = filterApiResponse.getResponse().getData().getRoommate();
-                        if(type.equalsIgnoreCase("Roommate")){
-                            Intent intent = new Intent(getActivity(), RoommateList.class);
-                            intent.putParcelableArrayListExtra("roommateList",roommateList);
-                            startActivity(intent);
+                        ArrayList<HomeFeatureProperty> apartmentList =filterApiResponse.getResponse().getData().getApartment();
+                        ArrayList<HomeFeatureProperty> roomList =filterApiResponse.getResponse().getData().getRoom();
 
+                        if(type.equalsIgnoreCase("Roommate")){
+                            if(roommateList!=null){
+                                if(roommateList.size()>0){
+                                    Intent intent = new Intent(getActivity(), RoommateList.class);
+                                    intent.putParcelableArrayListExtra("roommateList",roommateList);
+                                    startActivity(intent);
+                                }else{
+                                    Toast.makeText(getActivity(), "No Result Found", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                        }else if(type.equalsIgnoreCase("APARTMENT")){
+                            if(apartmentList!=null){
+                                if(apartmentList.size()>0){
+                                    Intent intent = new Intent(getActivity(), FilterResultProperty.class);
+                                    intent.putParcelableArrayListExtra("property",apartmentList);
+                                    startActivity(intent);
+                                }else{
+                                    Toast.makeText(getActivity(), "No Result Found", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }else if(type.equalsIgnoreCase("ROOM")){
+                            if(roomList !=null){
+                                if(roomList.size()>0){
+                                    Intent intent = new Intent(getActivity(), FilterResultProperty.class);
+                                    intent.putParcelableArrayListExtra("property",roomList);
+                                    startActivity(intent);
+                                }else{
+                                    Toast.makeText(getActivity(), "No Result Found", Toast.LENGTH_SHORT).show();
+                                }
+                            }
                         }
                     }
-
                 }else {
                     Toast.makeText(getActivity(), filterApiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                 }

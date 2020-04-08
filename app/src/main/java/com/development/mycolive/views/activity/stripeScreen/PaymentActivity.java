@@ -3,6 +3,7 @@ package com.development.mycolive.views.activity.stripeScreen;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +21,7 @@ import com.development.mycolive.R;
 import com.development.mycolive.constant.ApiConstant;
 import com.development.mycolive.databinding.ActivityPaymentBinding;
 import com.development.mycolive.model.paymentModel.PaymentApiResponse;
+import com.development.mycolive.model.paymentModel.PaymentModeRequest;
 import com.development.mycolive.model.paymentModel.PaymentRequestBody;
 import com.development.mycolive.model.searchDetailPage.BankAccount;
 import com.development.mycolive.model.stripe.StripeApiResponse;
@@ -27,6 +29,8 @@ import com.development.mycolive.model.stripe.StripeRequestBody;
 import com.development.mycolive.session.SessionManager;
 import com.development.mycolive.views.activity.BaseActivity;
 import com.development.mycolive.views.activity.ShowHomeScreen;
+import com.development.mycolive.views.activity.paymentMode.PaymentMode;
+import com.development.mycolive.views.activity.paymentMode.PaymentModeViewModel;
 import com.development.mycolive.views.activity.paymentScreen.PaymentViewModel;
 import com.development.mycolive.views.activity.paymentScreen.SelectPayment;
 import com.google.gson.Gson;
@@ -67,7 +71,8 @@ public class PaymentActivity extends BaseActivity {
     // 10.0.2.2 is the Android emulator's alias to localhost
     private static final String BACKEND_URL = "https://webfume.in/mani-budapest/api/";
     SessionManager session;
-    String token;
+    String token,month_id;
+    boolean isCurrent = false;
     private StripPaymentViewModel viewModel;
     private OkHttpClient httpClient = new OkHttpClient();
     private String paymentIntentClientSecret;
@@ -89,13 +94,18 @@ public class PaymentActivity extends BaseActivity {
 
         if(getIntent()!=null){
              total_price = getIntent().getExtras().getFloat("total_price");
-            total_price = getIntent().getExtras().getFloat("total_price");
             requestBody = getIntent().getParcelableExtra("booking_info");
-
             bankAccount = getIntent().getParcelableExtra("bank_account");
          //   email = getIntent().getExtras().getString("refer_email");
-
             paymentBinding.payButton.setText("€"+String.valueOf(total_price)+" / Pay Now");
+
+            Bundle bundle = getIntent().getExtras();
+            if(bundle !=null){
+                if(bundle.containsKey("month_id")){
+                    month_id = getIntent().getExtras().getString("month_id");
+                    isCurrent = getIntent().getExtras().getBoolean("current_booking");
+                }
+            }
         }
 
         getSession();
@@ -274,7 +284,12 @@ public class PaymentActivity extends BaseActivity {
                         gson.toJson(paymentIntent),
                         true
                 );*/
-                activity.postRequestServer();
+                if(!activity.isCurrent){
+                    activity.postRequestServer();
+                }else{
+                    activity.payAmount();
+                }
+
             } else if (status == PaymentIntent.Status.RequiresPaymentMethod) {
                 // Payment failed – allow retrying using a different payment method
                 activity.displayAlert(
@@ -314,9 +329,6 @@ public class PaymentActivity extends BaseActivity {
             headers.put(ApiConstant.USER_DEVICE_TYPE,ApiConstant.USER_DEVICE_TYPE_VALUE);
             headers.put(ApiConstant.USER_DEVICE_TOKEN,ApiConstant.USER_DEVICE_TOKEN_VALUE);
             headers.put(ApiConstant.AUTHENTICAT_TOKEN,token);
-
-
-
 
             viewModel = ViewModelProviders.of(this).get(StripPaymentViewModel.class);
 
@@ -401,5 +413,77 @@ public class PaymentActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+
+    private void payAmount(){
+        showProgressDialog(getResources().getString(R.string.loading));
+
+        PaymentModeRequest modeRequest =new PaymentModeRequest();
+        modeRequest.setMonth_id(month_id);
+        modeRequest.setPayment_method("STRIPE");
+        modeRequest.setReceipt("");
+
+        Map<String,String> headers = new HashMap<>();
+        headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);
+        headers.put(ApiConstant.SOURCES,ApiConstant.SOURCES_VALUE);
+        headers.put(ApiConstant.USER_TYPE,ApiConstant. USER_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TYPE,ApiConstant.USER_DEVICE_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TOKEN,ApiConstant.USER_DEVICE_TOKEN_VALUE);
+        headers.put(ApiConstant.AUTHENTICAT_TOKEN,token);
+
+
+
+
+      PaymentModeViewModel  viewModel1 = ViewModelProviders.of(this).get(PaymentModeViewModel.class);
+
+        viewModel1.payAmount(this,headers,modeRequest).observe(this, new Observer<PaymentApiResponse>() {
+            @Override
+            public void onChanged(PaymentApiResponse apiResponse) {
+                hideProgressDialog();
+                if(apiResponse.response !=null){
+                    if(apiResponse.getResponse().getStatus() ==1){
+                        String message = apiResponse.getResponse().getMessage();
+                      //  Toast.makeText(PaymentMode.this, "Success", Toast.LENGTH_SHORT).show();
+                        showCustomDialog();
+                    }
+                }
+                else{
+                    Toast.makeText(PaymentActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void showCustomDialog(){
+        //then we will inflate the custom alert dialog xml that we created
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.booking_success_dialog,null);
+
+        //Now we need an AlertDialog.Builder object
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        Button ok =(Button)dialogView.findViewById(R.id.buttonOk);
+        //setting the view of the builder to our custom view that we already inflated
+        builder.setView(dialogView);
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(PaymentActivity.this, ShowHomeScreen.class);
+                // Closing all the Activities
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                        Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                // Staring Login Activity
+                startActivity(i);
+            }
+        });
+
+
+
+        //finally creating the alert dialog and displaying it
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }

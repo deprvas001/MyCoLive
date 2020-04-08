@@ -37,6 +37,7 @@ import com.development.mycolive.session.SessionManager;
 import com.development.mycolive.views.activity.ShowHomeScreen;
 import com.development.mycolive.model.editProfile.ProfileApiResponse;
 import com.development.mycolive.model.editProfile.ProfileData;
+import com.development.mycolive.views.activity.SignupScreen;
 import com.development.mycolive.views.activity.changePassword.ChangePassword;
 import com.development.mycolive.views.fragment.filterSearch.SearchViewModel;
 import com.google.android.gms.common.api.Api;
@@ -401,7 +402,13 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener, 
          token = user.get(SessionManager.KEY_TOKEN);
 
 
-        getBooking(token);
+
+        if( ((ShowHomeScreen) getActivity()).isNetworkAvailable(getActivity())){
+            getBooking(token);
+        }else{
+            Toast.makeText(getActivity(), getString(R.string.check_network), Toast.LENGTH_SHORT).show();
+        }
+
     }
 
 

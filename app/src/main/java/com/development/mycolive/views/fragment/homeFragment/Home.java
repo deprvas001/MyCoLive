@@ -156,38 +156,69 @@ public class Home extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_feature:
-                intent = new Intent(getActivity(),SearchResult.class);
-                intent.putExtra("type","FEATUREDPROPERTY");
-                getActivity().startActivity(intent);
+                if( ((ShowHomeScreen) getActivity()).isNetworkAvailable(getActivity())){
+                    intent = new Intent(getActivity(),SearchResult.class);
+                    intent.putExtra("type","FEATUREDPROPERTY");
+                    getActivity().startActivity(intent);
+                }else{
+                    Toast.makeText(getActivity(), getString(R.string.check_network), Toast.LENGTH_SHORT).show();
+                }
+
                 break;
 
             case R.id.hot_property_btn:
-               intent = new Intent(getActivity(),SearchResult.class);
-                intent.putExtra("type","FEATUREDPROPERTY");
-                getActivity().startActivity(intent);
+                if( ((ShowHomeScreen) getActivity()).isNetworkAvailable(getActivity())){
+                    intent = new Intent(getActivity(),SearchResult.class);
+                    intent.putExtra("type","FEATUREDPROPERTY");
+                    getActivity().startActivity(intent);
+                }else{
+                    Toast.makeText(getActivity(), getString(R.string.check_network), Toast.LENGTH_SHORT).show();
+                }
                 break;
 
             case R.id.btn_property_area:
-                intent = new Intent(getActivity(),SearchResult.class);
-                intent.putExtra("type","PROPERTYBYAREA");
-                getActivity().startActivity(intent);
+
+                if( ((ShowHomeScreen) getActivity()).isNetworkAvailable(getActivity())){
+                    intent = new Intent(getActivity(),SearchResult.class);
+                    intent.putExtra("type","PROPERTYBYAREA");
+                    getActivity().startActivity(intent);
+                }else{
+                    Toast.makeText(getActivity(), getString(R.string.check_network), Toast.LENGTH_SHORT).show();
+                }
+
                 break;
 
             case R.id.room_layout:
-                intent = new Intent(getActivity(),SearchResult.class);
-                intent.putExtra("type","ROOM");
-                getActivity().startActivity(intent);
+                if( ((ShowHomeScreen) getActivity()).isNetworkAvailable(getActivity())){
+                    intent = new Intent(getActivity(),SearchResult.class);
+                    intent.putExtra("type","ROOM");
+                    getActivity().startActivity(intent);
+                }else{
+                    Toast.makeText(getActivity(), getString(R.string.check_network), Toast.LENGTH_SHORT).show();
+                }
+
                 break;
 
 
             case R.id.apartment_layout:
-                intent = new Intent(getActivity(),SearchResult.class);
-                intent.putExtra("type","ALLPROPERTY");
-                getActivity().startActivity(intent);
+
+                if( ((ShowHomeScreen) getActivity()).isNetworkAvailable(getActivity())){
+                    intent = new Intent(getActivity(),SearchResult.class);
+                    intent.putExtra("type","ALLPROPERTY");
+                    getActivity().startActivity(intent);
+                }else{
+                    Toast.makeText(getActivity(), getString(R.string.check_network), Toast.LENGTH_SHORT).show();
+                }
+
                 break;
 
             case R.id.roomate_layout:
-                  getSession();
+                if( ((ShowHomeScreen) getActivity()).isNetworkAvailable(getActivity())){
+                    getSession();
+                }else{
+                    Toast.makeText(getActivity(), getString(R.string.check_network), Toast.LENGTH_SHORT).show();
+                }
+
                 break;
         }
     }

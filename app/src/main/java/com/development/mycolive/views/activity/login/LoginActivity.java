@@ -43,6 +43,7 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.squareup.picasso.Picasso;
@@ -91,28 +92,31 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         switch (view.getId()){
             case R.id.btn_login:
 
-                if(loginBinding.inputEmail.getText().toString().isEmpty()){
-                    Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show();
-                    return;
-                }else if(loginBinding.inputPassword.getText().toString().isEmpty()){
-                    Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
-                    return;
+                if(isNetworkAvailable(LoginActivity.this)){
+                    if(loginBinding.inputEmail.getText().toString().isEmpty()){
+                        Toast.makeText(this, getString(R.string.email_empty), Toast.LENGTH_SHORT).show();
+                        return;
+                    }else if(loginBinding.inputPassword.getText().toString().isEmpty()){
+                        Toast.makeText(this, getString(R.string.password_empty), Toast.LENGTH_SHORT).show();
+                        return;
+                    }else{
+                        if (android.util.Patterns.EMAIL_ADDRESS.matcher(loginBinding.inputEmail.getText().toString()).matches()) {
+
+                            String user_email = loginBinding.inputEmail.getText().toString();
+                            String password = loginBinding.inputPassword.getText().toString();
+                            String type = ApiConstant.NORMAL;
+                            String social_id = "abc1111";
+
+                            userLogin(user_email,password,type,social_id);
+
+                        }
+                        else {
+                            loginBinding.inputEmail.setError("Invalid Email Address");
+                        }
+                    }
                 }else{
-                    if (android.util.Patterns.EMAIL_ADDRESS.matcher(loginBinding.inputEmail.getText().toString()).matches()) {
-
-                        String user_email = loginBinding.inputEmail.getText().toString();
-                        String password = loginBinding.inputPassword.getText().toString();
-                        String type = ApiConstant.NORMAL;
-                        String social_id = "abc1111";
-
-                        userLogin(user_email,password,type,social_id);
-
-                    }
-                    else {
-                        loginBinding.inputEmail.setError("Invalid Email Address");
-                    }
+                    showAlertDialog(LoginActivity.this,getString(R.string.check_network));
                 }
-                  // startActivity(new Intent(this, ShowHomeScreen.class));
 
                 break;
 

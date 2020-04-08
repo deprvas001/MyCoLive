@@ -9,8 +9,25 @@ import java.util.List;
 
 public class FilterResponseData {
   private ArrayList<RoomateData> roommate;
+  private ArrayList<HomeFeatureProperty> apartment;
+  private ArrayList<HomeFeatureProperty> room;
 
 
+    public ArrayList<HomeFeatureProperty> getApartment() {
+        return apartment;
+    }
+
+    public void setApartment(ArrayList<HomeFeatureProperty> apartment) {
+        this.apartment = apartment;
+    }
+
+    public ArrayList<HomeFeatureProperty> getRoom() {
+        return room;
+    }
+
+    public void setRoom(ArrayList<HomeFeatureProperty> room) {
+        this.room = room;
+    }
 
     public ArrayList<RoomateData> getRoommate() {
         return roommate;

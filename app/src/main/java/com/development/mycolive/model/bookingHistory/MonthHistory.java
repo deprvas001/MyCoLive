@@ -13,7 +13,7 @@ public class MonthHistory {
     private String payment;
     private String payment_id;
     private String dues_month_id;
-    private int dues_amount;
+    private float dues_amount;
 
     public String getPayment_id() {
         return payment_id;
@@ -31,11 +31,11 @@ public class MonthHistory {
         this.dues_month_id = dues_month_id;
     }
 
-    public int getDues_amount() {
+    public float getDues_amount() {
         return dues_amount;
     }
 
-    public void setDues_amount(int dues_amount) {
+    public void setDues_amount(float dues_amount) {
         this.dues_amount = dues_amount;
     }
 

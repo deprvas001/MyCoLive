@@ -122,7 +122,12 @@ private DatePickerDialog mDatePickerDialog;
                     return;
                 }
                 else{
-                    setSignUp();
+                    if( ((SignupScreen) getActivity()).isNetworkAvailable(getActivity())){
+                        setSignUp();
+                    }else{
+                        Toast.makeText(getActivity(), getString(R.string.check_network), Toast.LENGTH_SHORT).show();
+                    }
+
                 }
                 break;
 

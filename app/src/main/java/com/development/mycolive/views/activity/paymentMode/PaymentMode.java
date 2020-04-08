@@ -41,7 +41,9 @@ import java.util.Map;
 
 public class PaymentMode extends BaseActivity implements RadioGroup.OnCheckedChangeListener, View.OnClickListener {
     ActivityPaymentModeBinding modeBinding;
-    String month_id,payment_amount;
+    String month_id;
+    float payment_amount;
+
     String image_string="";
     private int REQUEST_CODE = 100;
     SessionManager session;
@@ -59,7 +61,7 @@ public class PaymentMode extends BaseActivity implements RadioGroup.OnCheckedCha
 
         if (getIntent() != null) {
             month_id = getIntent().getExtras().getString("month_id");
-            payment_amount = getIntent().getExtras().getString("due_amount");
+            payment_amount = getIntent().getExtras().getFloat("due_amount");
         }
         setClickListener();
     }
@@ -132,6 +134,8 @@ public class PaymentMode extends BaseActivity implements RadioGroup.OnCheckedCha
             } else {
                 Intent intent = new Intent(PaymentMode.this, PaymentActivity.class);
                 intent.putExtra("total_price", payment_amount);
+                intent.putExtra("month_id",month_id);
+                intent.putExtra("current_booking",true);
                 startActivity(intent);
             }
 
@@ -182,7 +186,7 @@ public class PaymentMode extends BaseActivity implements RadioGroup.OnCheckedCha
 
         PaymentModeRequest modeRequest =new PaymentModeRequest();
         modeRequest.setMonth_id(month_id);
-        modeRequest.setPayment_method("Bank");
+        modeRequest.setPayment_method("BANK");
         modeRequest.setReceipt(image_string);
 
         Map<String,String> headers = new HashMap<>();
@@ -203,15 +207,14 @@ public class PaymentMode extends BaseActivity implements RadioGroup.OnCheckedCha
             public void onChanged(PaymentApiResponse apiResponse) {
                 hideProgressDialog();
                 if(apiResponse.response !=null){
-                    String message = apiResponse.getResponse().getMessage();
-                    Toast.makeText(PaymentMode.this, "Success", Toast.LENGTH_SHORT).show();
-                    showCustomDialog();
-                    // showCustomDialog();
-                }else if(apiResponse.getStatus()== 401){
-                    Toast.makeText(PaymentMode.this, "Authentication", Toast.LENGTH_SHORT).show();
+                    if(apiResponse.getResponse().getStatus() ==1){
+                        String message = apiResponse.getResponse().getMessage();
+                        Toast.makeText(PaymentMode.this, "Success", Toast.LENGTH_SHORT).show();
+                        showCustomDialog();
+                    }
                 }
                 else{
-                    Toast.makeText(PaymentMode.this, "Try Later", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PaymentMode.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
