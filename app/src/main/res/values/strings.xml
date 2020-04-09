@@ -213,5 +213,6 @@
     <string name="accept">Accept</string>
     <string name="check_network">Check your network</string>
     <string name="password_empty">Please enter password</string>
+    <string name="view_community">View Community</string>
 
 </resources>

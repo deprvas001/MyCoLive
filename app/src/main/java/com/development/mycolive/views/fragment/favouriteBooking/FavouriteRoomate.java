@@ -27,6 +27,9 @@ import com.development.mycolive.model.favourite.FavouritePropertyModel;
 import com.development.mycolive.model.favourite.FavouriteRoomateApiResponse;
 import com.development.mycolive.model.favourite.RoomateData;
 import com.development.mycolive.session.SessionManager;
+import com.development.mycolive.views.activity.MyFavourite;
+import com.development.mycolive.views.activity.ShowHomeScreen;
+import com.development.mycolive.views.activity.favouriteRoomate.FavouriteRoomateDetail;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,6 +62,7 @@ public class FavouriteRoomate extends Fragment {
     }
 
     private void setRecyclerview(List<RoomateData> roomateDataList){
+        favouriteRoomateBinding.matchFound.setText(String.valueOf(roomateDataList.size()) + " Result Found" );
         roomateAdapter = new FindRoomateAdapter(getActivity(), roomateDataList);
         mLayoutManager = new LinearLayoutManager(getActivity());
         favouriteRoomateBinding.recyclerView.setLayoutManager(mLayoutManager);
@@ -68,6 +72,7 @@ public class FavouriteRoomate extends Fragment {
 
 
     private void getFavuoriteList(String token){
+        ((MyFavourite) getActivity()).showProgressDialog(getResources().getString(R.string.loading));
         String type = "ROOMMATE";
 
         Map<String,String> headers = new HashMap<>();
@@ -84,7 +89,7 @@ public class FavouriteRoomate extends Fragment {
             @Override
             public void onChanged(FavouriteRoomateApiResponse apiResponse) {
 
-                //  ((ShowHomeScreen) getActivity()).hideProgressDialog();
+                 ((MyFavourite) getActivity()).hideProgressDialog();
                 if (apiResponse.response != null) {
                     if(apiResponse.getResponse().getStatus() ==1){
                         List<RoomateData> roomateDataList = apiResponse.getResponse().getData();
@@ -92,13 +97,11 @@ public class FavouriteRoomate extends Fragment {
                         if(roomateDataList.size()>0){
                             setRecyclerview(roomateDataList);
                         }
+                    }else{
+                        Toast.makeText(getActivity(), apiResponse.getResponse().getMessage(), Toast.LENGTH_SHORT).show();
                     }
-
-
-                } else if (apiResponse.getStatus() == 401) {
-                    Toast.makeText(getActivity(), "Authentication Failed", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getActivity(), "Try Later", Toast.LENGTH_SHORT).show();
+                } else{
+                    Toast.makeText(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });

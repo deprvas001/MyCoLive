@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.development.mycolive.R;
 import com.development.mycolive.constant.ApiConstant;
@@ -81,11 +82,14 @@ public class Testimonials extends BaseActivity implements View.OnClickListener {
                 hideProgressDialog();
                 if(apiResponse.response !=null){
 
-                    setRecyclerView(apiResponse.getResponse().getData().getTestimonial());
-                }
-                else if(apiResponse.getStatus()== 401){
-                }
-                else{
+                    if(apiResponse.getResponse().getStatus() == 1){
+                        setRecyclerView(apiResponse.getResponse().getData().getTestimonial());
+                    }else {
+                        Toast.makeText(Testimonials.this, apiResponse.getResponse().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                }else{
+                    Toast.makeText(Testimonials.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                 }
              /*  bookingBinding.shimmerViewContainer.stopShimmer();
                 bookingBinding.shimmerViewContainer.setVisibility(View.GONE);*/

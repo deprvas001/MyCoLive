@@ -6,12 +6,17 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.development.mycolive.model.bookingHistory.BookingHistoryApiResponse;
 import com.development.mycolive.model.bookingHistory.BookingHistoryResponse;
+import com.development.mycolive.model.loginModel.LoginApiResponse;
 import com.development.mycolive.model.testimonialmodel.TestimonialApiResponse;
 import com.development.mycolive.model.testimonialmodel.TestimonialResponse;
 import com.development.mycolive.networking.RetrofitService;
 import com.development.mycolive.networking.ShipmentApi;
 import com.development.mycolive.views.activity.bookingHistory.BookingHistoryRepository;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -38,10 +43,19 @@ public class TestimonialRepository {
         shipmentApi.getTestimonial(headers,type).enqueue(new Callback<TestimonialResponse>() {
             @Override
             public void onResponse(Call<TestimonialResponse> call, Response<TestimonialResponse> response) {
-                if(response.code() == 401){
-                    historyResponseLiveData.setValue(null);
-                }else if(response.code() == 400){
-                    historyResponseLiveData.setValue(new TestimonialApiResponse(response.code()));
+                if(response.code() == 401 || response.code() == 400 || response.code() == 500){
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        String message = jObjError.getString("message");
+                        int status = jObjError.getInt("status");
+                        historyResponseLiveData.setValue(new TestimonialApiResponse(message,status,response.code()));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                 }
                 else {
 

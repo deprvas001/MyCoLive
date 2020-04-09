@@ -1,5 +1,6 @@
 package com.development.mycolive.views.activity.viewCommunity;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
@@ -9,10 +10,21 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.development.mycolive.R;
@@ -24,11 +36,16 @@ import com.development.mycolive.constant.ApiConstant;
 import com.development.mycolive.databinding.ActivityViewCommunityBinding;
 import com.development.mycolive.model.ViewCommentModel;
 import com.development.mycolive.model.ViewSliderModel;
+import com.development.mycolive.model.alert.AlertRequest;
 import com.development.mycolive.model.bookingHistory.MonthHistory;
 import com.development.mycolive.model.communityModel.AllPost;
 import com.development.mycolive.model.communityModel.CommunityApiResponse;
 import com.development.mycolive.model.home.CountData;
 import com.development.mycolive.model.home.HomeSlider;
+import com.development.mycolive.model.searchFilterModel.AlertReason;
+import com.development.mycolive.model.searchFilterModel.FilterApiResponse;
+import com.development.mycolive.model.searchScreen.CityModel;
+import com.development.mycolive.model.searchScreen.Period;
 import com.development.mycolive.model.viewCommunityModel.CommentApiResponse;
 import com.development.mycolive.model.viewCommunityModel.CommentPost;
 import com.development.mycolive.model.viewCommunityModel.CommentReply;
@@ -38,6 +55,7 @@ import com.development.mycolive.model.viewCommunityModel.ViewCommunityModel;
 import com.development.mycolive.session.SessionManager;
 import com.development.mycolive.views.activity.BaseActivity;
 import com.development.mycolive.views.fragment.communities.CommunitiesViewModel;
+import com.development.mycolive.views.fragment.filterSearch.SearchViewModel;
 import com.smarteist.autoimageslider.IndicatorAnimations;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
@@ -57,6 +75,8 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
     SessionManager session;
     String token="",id="";
     String comment_id="";
+    int reason_check = 0;
+    AlertReason alertReason;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -148,9 +168,15 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
     }
 
     private void setClickListener(){
+        communityBinding.toolbar.setTitle(getResources().getString(R.string.view_community));
+        setSupportActionBar(communityBinding.toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         communityBinding.postButton.setOnClickListener(this);
         communityBinding.communityViewLayout.like.setOnClickListener(this);
         communityBinding.commentEdit.setOnClickListener(this);
+        communityBinding.communityViewLayout.alert.setOnClickListener(this);
     }
 
     @Override
@@ -167,6 +193,36 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
             case R.id.like:
                 likeUnlike();
                 break;
+
+            case R.id.alert:
+                getDefaultData();
+                break;
+
+
+            case 01:
+             //  ((RadioButton)v).getText() +" Id is "+v.getId());
+              //  ((RadioButton)view).getText() +" Id is "+view.getId()
+                alertReason = (AlertReason) ((RadioButton)view).getTag();
+                reason_check = Integer.parseInt(alertReason.getId());
+             //  Toast.makeText(this, ((RadioButton)view).getText(), Toast.LENGTH_SHORT).show();
+                break;
+
+            case 11:
+                //  ((RadioButton)v).getText() +" Id is "+v.getId());
+                //  ((RadioButton)view).getText() +" Id is "+view.getId()
+                 alertReason = (AlertReason) ((RadioButton)view).getTag();
+                reason_check = Integer.parseInt(alertReason.getId());
+                //  Toast.makeText(this, ((RadioButton)view).getText(), Toast.LENGTH_SHORT).show();
+                break;
+
+            case 21:
+                //  ((RadioButton)v).getText() +" Id is "+v.getId());
+                //  ((RadioButton)view).getText() +" Id is "+view.getId()
+                alertReason = (AlertReason) ((RadioButton)view).getTag();
+                reason_check = Integer.parseInt(alertReason.getId());
+                //  Toast.makeText(this, ((RadioButton)view).getText(), Toast.LENGTH_SHORT).show();
+                break;
+
         }
     }
 
@@ -235,11 +291,8 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
                       communityBinding.communityViewLayout.like.setTextColor(getResources().getColor(R.color.login_subheading));
                       communityBinding.communityViewLayout.like.setCompoundDrawableTintList(ColorStateList.valueOf(getResources().getColor(R.color.login_subheading)));
                   }
-                }else if(apiResponse.getStatus()== 401)
-                {
-
-                }
-                else{
+                }else{
+                    Toast.makeText(ViewCommunity.this, "Try Later", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -267,5 +320,145 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
       //  getCommunity("ALL");
 
         //   getBooking(token);
+    }
+
+    private void getDefaultData(){
+        showProgressDialog(getResources().getString(R.string.loading));
+        String type = "ALL";
+
+       SearchViewModel searchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
+
+        searchViewModel.getDefaultData(this,type).observe(this, new Observer<FilterApiResponse>() {
+            @Override
+            public void onChanged(FilterApiResponse filterApiResponse) {
+                  hideProgressDialog();
+                 if(filterApiResponse.filterResponse !=null){
+                   List<AlertReason> reasonList = filterApiResponse.getFilterResponse().getData().getReasons();
+
+                   /* List<CityModel>  cityModelList =    filterApiResponse.getFilterResponse().getData().getCityList();
+                    List<Period>  periodList = filterApiResponse.getFilterResponse().getData().getPeriodList();*/
+                     showCustomDialog(reasonList);
+                }else {
+                    Toast.makeText(ViewCommunity.this, "Try Later", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void showCustomDialog(List<AlertReason> reasonList){
+        //before inflating the custom alert dialog layout, we will get the current activity viewgroup
+          ViewGroup viewGroup = findViewById(android.R.id.content);
+
+        //then we will inflate the custom alert dialog xml that we created
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.custom_request_dialog, viewGroup, false);
+
+        //Now we need an AlertDialog.Builder object
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        //setting the view of the builder to our custom view that we already inflated
+        builder.setView(dialogView);
+
+        EditText name = (EditText)dialogView.findViewById(R.id.name) ;
+        EditText email = (EditText)dialogView.findViewById(R.id.email);
+        Button ok = (Button)dialogView.findViewById(R.id.buttonOk);
+        ImageView close_dialog = (ImageView)dialogView.findViewById(R.id.close);
+
+        RadioGroup radioGroup = (RadioGroup)dialogView.findViewById(R.id.reason_group);
+
+        try {
+            radioGroup .setOrientation(LinearLayout.VERTICAL);
+            for (int i = 0; i <= reasonList.size(); i++) {
+                RadioButton rdbtn = new RadioButton(this);
+                rdbtn.setId(0+1);
+                rdbtn.setText(reasonList.get(i).getReason());
+                rdbtn.setTag(reasonList.get(i));
+                rdbtn.setOnClickListener(this);
+                radioGroup.addView(rdbtn);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(name.getText().toString().isEmpty()){
+                    Toast.makeText(ViewCommunity.this, "Please enter name", Toast.LENGTH_SHORT).show();
+                    return;
+                }else if(email.getText().toString().isEmpty()){
+                    Toast.makeText(ViewCommunity.this, "Please enter email", Toast.LENGTH_SHORT).show();
+                    return;
+                }else{
+
+                  if(reason_check != 0){
+                      EditText description_edit = (EditText)dialogView.findViewById(R.id.description);
+                      String description = description_edit.getText().toString();
+                      sendRequest(name,email,description,String.valueOf(reason_check),id);
+                      alertDialog.dismiss();
+                  }else{
+                      Toast.makeText(ViewCommunity.this, "Select Reason", Toast.LENGTH_SHORT).show();
+                  }
+                }
+            }
+        });
+
+
+        close_dialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               alertDialog.dismiss();
+            }
+        });
+
+    }
+
+    private void sendRequest(EditText name, EditText email, String description, String reason , String id){
+        showProgressDialog(getResources().getString(R.string.loading));
+        Map<String,String> headers = new HashMap<>();
+        headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);
+        headers.put(ApiConstant.SOURCES,ApiConstant.SOURCES_VALUE);
+        headers.put(ApiConstant.USER_TYPE,ApiConstant. USER_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TYPE,ApiConstant.USER_DEVICE_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TOKEN,ApiConstant.USER_DEVICE_TOKEN_VALUE);
+        headers.put(ApiConstant.AUTHENTICAT_TOKEN,token);
+
+        AlertRequest alertRequest = new AlertRequest();
+        alertRequest.setName(name.getText().toString());
+        alertRequest.setEmail(email.getText().toString());
+        alertRequest.setReason(reason);
+        alertRequest.setComment_id(id);
+        alertRequest.setDescription(description);
+
+        communityViewModel = ViewModelProviders.of(this).get(CommunityViewModel.class);
+
+        communityViewModel.sendComplain(this,headers,alertRequest).observe(this, new Observer<ViewCommunityApiResponse>() {
+            @Override
+            public void onChanged(ViewCommunityApiResponse communityApiResponse) {
+                hideProgressDialog();
+                if(communityApiResponse.response !=null){
+                    if(communityApiResponse.getResponse().getStatus() == 1){
+                        String message = communityApiResponse.getResponse().getMessage();
+                        Toast.makeText(ViewCommunity.this, message, Toast.LENGTH_SHORT).show();
+                    }
+                  //  setView(communityApiResponse.getResponse().getData());
+                }else{
+                    Toast.makeText(ViewCommunity.this, communityApiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+             /*  bookingBinding.shimmerViewContainer.stopShimmer();
+                bookingBinding.shimmerViewContainer.setVisibility(View.GONE);*/
+            }
+        });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

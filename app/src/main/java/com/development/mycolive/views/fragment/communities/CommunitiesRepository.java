@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.lifecycle.MutableLiveData;
 
 import com.development.mycolive.R;
+import com.development.mycolive.model.booking.BookingApiResponse;
 import com.development.mycolive.model.communityModel.CommunityApiResponse;
 import com.development.mycolive.model.communityModel.CommunityResponse;
 import com.development.mycolive.model.communityModel.SearchCommunityApiResponse;
@@ -14,6 +15,10 @@ import com.development.mycolive.model.viewCommunityModel.ViewCommunityResponse;
 import com.development.mycolive.networking.RetrofitService;
 import com.development.mycolive.networking.ShipmentApi;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -42,10 +47,19 @@ public class CommunitiesRepository {
         shipmentApi.getCommunityData(headers,type).enqueue(new Callback<CommunityResponse>() {
             @Override
             public void onResponse(Call<CommunityResponse> call, Response<CommunityResponse> response) {
-                if(response.code() == 401){
-                    loginResponseLiveData.setValue(new CommunityApiResponse(response.code()));
-                }else if(response.code() == 400){
-                    loginResponseLiveData.setValue(new CommunityApiResponse(response.code()));
+                if(response.code() == 401 || response.code() == 400 || response.code() == 500){
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        String message = jObjError.getString("message");
+                        int status = jObjError.getInt("status");
+                        loginResponseLiveData.setValue(new CommunityApiResponse(message,status,response.code()));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                 }
                 else {
                     if(response.isSuccessful()){

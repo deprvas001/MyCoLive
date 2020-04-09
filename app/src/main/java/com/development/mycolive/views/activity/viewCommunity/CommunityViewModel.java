@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.development.mycolive.model.alert.AlertRequest;
 import com.development.mycolive.model.viewCommunityModel.CommentApiResponse;
 import com.development.mycolive.model.viewCommunityModel.CommentPost;
 import com.development.mycolive.model.viewCommunityModel.LikeUnlike;
@@ -30,5 +31,10 @@ public class CommunityViewModel extends AndroidViewModel {
 
     public MutableLiveData<CommentApiResponse> getLikeUnilike(Context context,Map<String,String> headers, LikeUnlike likeUnlike) {
         return CommunityRepository.getInstance().getLikeUnlike(context,headers,likeUnlike);
+    }
+
+
+    public MutableLiveData<ViewCommunityApiResponse> sendComplain(Context context, Map<String,String> headers, AlertRequest alertRequest) {
+        return CommunityRepository.getInstance().sendComplain(context,headers,alertRequest);
     }
 }

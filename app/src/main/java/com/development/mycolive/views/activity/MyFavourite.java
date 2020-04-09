@@ -16,7 +16,7 @@ import com.development.mycolive.views.activity.notification.Notification;
 import com.development.mycolive.views.fragment.favouriteBooking.FavouriteProperty;
 import com.development.mycolive.views.fragment.favouriteBooking.FavouriteRoomate;
 
-public class MyFavourite extends AppCompatActivity implements View.OnClickListener {
+public class MyFavourite extends BaseActivity implements View.OnClickListener {
 ActivityMyFavouriteBinding favouriteBinding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

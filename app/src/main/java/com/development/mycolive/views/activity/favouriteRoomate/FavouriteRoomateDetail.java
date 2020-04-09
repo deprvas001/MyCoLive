@@ -179,7 +179,7 @@ PropertiesAdapter propertiesAdapter;
     private void setReyclerView(List<HomeFeatureProperty> featurePropertyList) {
 
         propertiesAdapter = new PropertiesAdapter(this, featurePropertyList);
-        mLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, true);
+        mLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false);
         roomateDetailBinding.recyclerView.setLayoutManager(mLayoutManager);
         roomateDetailBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         roomateDetailBinding.recyclerView.setAdapter(propertiesAdapter);

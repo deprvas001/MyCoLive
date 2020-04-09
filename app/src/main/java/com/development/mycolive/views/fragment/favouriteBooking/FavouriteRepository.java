@@ -4,6 +4,7 @@ import android.content.Context;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.development.mycolive.model.communityModel.CommunityApiResponse;
 import com.development.mycolive.model.editProfile.ProfileApiResponse;
 import com.development.mycolive.model.editProfile.ProfileResponse;
 import com.development.mycolive.model.favourite.FavouriteApiResponse;
@@ -14,6 +15,10 @@ import com.development.mycolive.networking.RetrofitService;
 import com.development.mycolive.networking.ShipmentApi;
 import com.development.mycolive.views.fragment.profile.ProfileReporsitory;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -41,8 +46,19 @@ public class FavouriteRepository {
         shipmentApi.getFavourite(headers,type,offset,perPage).enqueue(new Callback<FavouriteResponse>() {
             @Override
             public void onResponse(Call<FavouriteResponse> call, Response<FavouriteResponse> response) {
-                if(response.code() == 401 || response.code() == 400){
-                    profileResponseLiveData.setValue(new FavouriteApiResponse(response.code()));
+                if(response.code() == 401 || response.code() == 400 || response.code() == 500){
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        String message = jObjError.getString("message");
+                        int status = jObjError.getInt("status");
+                        profileResponseLiveData.setValue(new FavouriteApiResponse(message,status,response.code()));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                 }
                 else {
                     if(response.isSuccessful()){
@@ -67,8 +83,19 @@ public class FavouriteRepository {
         shipmentApi.getFavouriteRoomate(headers,type).enqueue(new Callback<FavouriteRoomateResponse>() {
             @Override
             public void onResponse(Call<FavouriteRoomateResponse> call, Response<FavouriteRoomateResponse> response) {
-                if(response.code() == 401 || response.code() == 400){
-                    profileResponseLiveData.setValue(new FavouriteRoomateApiResponse(response.code()));
+                if(response.code() == 401 || response.code() == 400 || response.code() == 500){
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        String message = jObjError.getString("message");
+                        int status = jObjError.getInt("status");
+                        profileResponseLiveData.setValue(new FavouriteRoomateApiResponse(message,status,response.code()));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                 }
                 else {
                     if(response.isSuccessful()){

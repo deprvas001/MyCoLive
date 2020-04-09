@@ -21,6 +21,8 @@ public class FilterData {
     @SerializedName("period")
     private List<Period> periodList;
 
+    private List<AlertReason> reasons;
+
 
     public List<CityModel> getCityList() {
         return cityList;
@@ -52,5 +54,13 @@ public class FilterData {
 
     public void setPeriodList(List<Period> periodList) {
         this.periodList = periodList;
+    }
+
+    public List<AlertReason> getReasons() {
+        return reasons;
+    }
+
+    public void setReasons(List<AlertReason> reasons) {
+        this.reasons = reasons;
     }
 }

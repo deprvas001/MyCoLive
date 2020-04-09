@@ -99,7 +99,8 @@
         <activity
             android:name=".views.activity.propertyDetail.PropertyDetail"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".views.activity.viewCommunity.ViewCommunity" />
+        <activity android:name=".views.activity.viewCommunity.ViewCommunity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".views.activity.BaseActivity"
             android:theme="@style/AppTheme.NoActionBar" />

@@ -29,6 +29,8 @@ import com.development.mycolive.model.favourite.FavouriteApiResponse;
 import com.development.mycolive.model.favourite.FavouriteBookingModel;
 import com.development.mycolive.model.favourite.FavouritePropertyModel;
 import com.development.mycolive.session.SessionManager;
+import com.development.mycolive.views.activity.MyFavourite;
+import com.development.mycolive.views.activity.favouriteRoomate.FavouriteRoomateDetail;
 import com.development.mycolive.views.activity.propertyDetail.PropertyDetail;
 import com.development.mycolive.views.activity.searchDetailPage.RoomDetail;
 import com.development.mycolive.views.fragment.profile.ProfileViewModel;
@@ -106,13 +108,16 @@ public class FavouriteProperty extends Fragment implements View.OnClickListener 
     }
 
    private void getFavuoriteList(String token){
+       ((MyFavourite) getActivity()).showProgressDialog(getResources().getString(R.string.loading));
+
+
        Map<String,String> headers = new HashMap<>();
        headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);
        headers.put(ApiConstant.SOURCES,ApiConstant.SOURCES_VALUE);
        headers.put(ApiConstant.USER_TYPE,ApiConstant. USER_TYPE_VALUE);
        headers.put(ApiConstant.USER_DEVICE_TYPE,ApiConstant.USER_DEVICE_TYPE_VALUE);
        headers.put(ApiConstant.USER_DEVICE_TOKEN,ApiConstant.USER_DEVICE_TOKEN_VALUE);
-       headers.put(ApiConstant.AUTHENTICAT_TOKEN,token);
+       headers.put(ApiConstant.AUTHENTICAT_TOKEN,"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ3ZWJmdW1lYXBwLmNvbSIsImF1ZCI6IldlYmZ1bWUgSmFzb24gQXBwIiwiaWF0IjoxNTg2NDMwMzI2LCJuYmYiOjE1ODY0MzAzMjYsImV4cCI6MTU4NzYzOTkyNiwiZGF0YSI6eyJ1c2VyX3R5cGUiOiJVU0VSIiwidXNlcl9kZXZpY2VfdHlwZSI6IkFETlJPSUQiLCJ1c2VyX2RldmljZV90b2tlbiI6ImYtdXlwcUMzMmtOWmpQYjBJeWUzWWM6QVBBOTFiRlhSQ1lSWFdhRktnZ2NaZVFOQXkxNTRCY093ZzJqVWpqVktoYWZlUEZVdExLRmJRVklJMy1yRjByUndrS1U0RXIxX1RoTDcxd2k4SXpLczBnZ3ptTkwyOXpCLVQtVW5WdEN5V3VhcGNUYkhsNmRvbXhIZHRDTXhydHd1b2dmVmxKQ2FKV0EiLCJTb3VyY2VzIjoiQVBQIiwidXNlcl9uYW1lIjoiYWJjIHRlc3QgIiwidXNlcl9pZCI6IjMwIiwibG9naW5fdHlwZSI6Ik5PUk1BTCIsInVzZXJfbG9nX2lkIjoxMjc4fX0.IKMbOe_D7mf573OKvROgLs0VWtqLZl_9eaJ2v-3z4bU");
 
 
         String type = "PROPERTY";
@@ -123,15 +128,25 @@ public class FavouriteProperty extends Fragment implements View.OnClickListener 
         viewModel.getFavourite(getActivity(),headers, type,offset,per_page).observe(getActivity(), new Observer<FavouriteApiResponse>() {
            @Override
            public void onChanged(FavouriteApiResponse apiResponse) {
-               //  ((ShowHomeScreen) getActivity()).hideProgressDialog();
+               ((MyFavourite) getActivity()).hideProgressDialog();
+
                if (apiResponse.response != null) {
-                 List<FavouritePropertyModel> bookingModelList = apiResponse.getResponse().getData();
-                 setReyclerView(bookingModelList);
-                   Toast.makeText(getActivity(), apiResponse.response.getMessage(), Toast.LENGTH_SHORT).show();
-               } else if (apiResponse.getStatus() == 401) {
-                   Toast.makeText(getActivity(), "Authentication Failed", Toast.LENGTH_SHORT).show();
-               } else {
-                   Toast.makeText(getActivity(), "Try Later", Toast.LENGTH_SHORT).show();
+                   if(apiResponse.getResponse().getStatus() ==1){
+                       List<FavouritePropertyModel> bookingModelList = apiResponse.getResponse().getData();
+                       if(bookingModelList.size()>0){
+                           setReyclerView(bookingModelList);
+                       }else{
+                           Toast.makeText(getActivity(), "No Favourite Property", Toast.LENGTH_SHORT).show();
+                       }
+
+                      // Toast.makeText(getActivity(), apiResponse.response.getMessage(), Toast.LENGTH_SHORT).show();
+                   }else{
+                       Toast.makeText(getActivity(), apiResponse.getResponse().getMessage(), Toast.LENGTH_SHORT).show();
+
+                   }
+               } else{
+                   Toast.makeText(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+
                }
            }
        });

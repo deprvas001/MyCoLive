@@ -1,6 +1,7 @@
 package com.development.mycolive.networking;
 
 import com.development.mycolive.model.ChangePasswordModel;
+import com.development.mycolive.model.alert.AlertRequest;
 import com.development.mycolive.model.booking.BookingResponse;
 import com.development.mycolive.model.bookingHistory.BookingHistoryResponse;
 import com.development.mycolive.model.communityModel.CommunityResponse;
@@ -175,6 +176,11 @@ public interface ShipmentApi {
     Call<ViewCommunityResponse> getCommunityResponse(
             @HeaderMap Map<String,String> headers,
             @Query("comment_id") String id );
+
+    @POST("appropiatePost")
+    Call<ViewCommunityResponse> sendComplain(
+            @HeaderMap Map<String,String> headers,
+            @Body AlertRequest alertRequest);
 
 
 

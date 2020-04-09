@@ -129,4 +129,6 @@ public class AllCommunityAdapter  extends RecyclerView.Adapter<AllCommunityAdapt
         alertDialog.show();
     }
 
+
+
 }

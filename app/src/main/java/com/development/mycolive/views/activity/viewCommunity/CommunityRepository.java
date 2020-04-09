@@ -5,8 +5,10 @@ import android.content.Context;
 import androidx.lifecycle.MutableLiveData;
 
 import com.development.mycolive.R;
+import com.development.mycolive.model.alert.AlertRequest;
 import com.development.mycolive.model.communityModel.CommunityApiResponse;
 import com.development.mycolive.model.communityModel.CommunityResponse;
+import com.development.mycolive.model.loginModel.LoginApiResponse;
 import com.development.mycolive.model.viewCommunityModel.CommentApiResponse;
 import com.development.mycolive.model.viewCommunityModel.CommentPost;
 import com.development.mycolive.model.viewCommunityModel.CommentResponse;
@@ -16,6 +18,10 @@ import com.development.mycolive.model.viewCommunityModel.ViewCommunityResponse;
 import com.development.mycolive.networking.RetrofitService;
 import com.development.mycolive.networking.ShipmentApi;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -44,10 +50,19 @@ public class CommunityRepository {
         shipmentApi.getCommunityResponse(headers,id).enqueue(new Callback<ViewCommunityResponse>() {
             @Override
             public void onResponse(Call<ViewCommunityResponse> call, Response<ViewCommunityResponse> response) {
-                if(response.code() == 401){
-                    loginResponseLiveData.setValue(new ViewCommunityApiResponse(response.code()));
-                }else if(response.code() == 400){
-                    loginResponseLiveData.setValue(new ViewCommunityApiResponse(response.code()));
+                if(response.code() == 401 || response.code() == 400 || response.code() == 500){
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        String message = jObjError.getString("message");
+                        int status = jObjError.getInt("status");
+                        loginResponseLiveData.setValue(new ViewCommunityApiResponse(message,status,response.code()));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                 }
                 else {
                     if(response.isSuccessful()){
@@ -73,10 +88,19 @@ public class CommunityRepository {
         shipmentApi.getCommentReply(headers,commentPost).enqueue(new Callback<CommentResponse>() {
             @Override
             public void onResponse(Call<CommentResponse> call, Response<CommentResponse> response) {
-                if(response.code() == 401){
-                    loginResponseLiveData.setValue(new CommentApiResponse(response.code()));
-                }else if(response.code() == 400){
-                    loginResponseLiveData.setValue(new CommentApiResponse(response.code()));
+                if(response.code() == 401 || response.code() == 400 || response.code() == 500){
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        String message = jObjError.getString("message");
+                        int status = jObjError.getInt("status");
+                        loginResponseLiveData.setValue(new CommentApiResponse(message,status,response.code()));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                 }
                 else {
                     if(response.isSuccessful()){
@@ -102,10 +126,19 @@ public class CommunityRepository {
         shipmentApi.getLikeUnlike(headers,likeUnlike).enqueue(new Callback<CommentResponse>() {
             @Override
             public void onResponse(Call<CommentResponse> call, Response<CommentResponse> response) {
-                if(response.code() == 401){
-                    loginResponseLiveData.setValue(new CommentApiResponse(response.code()));
-                }else if(response.code() == 400){
-                    loginResponseLiveData.setValue(new CommentApiResponse(response.code()));
+                if(response.code() == 401 || response.code() == 400 || response.code() == 500){
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        String message = jObjError.getString("message");
+                        int status = jObjError.getInt("status");
+                        loginResponseLiveData.setValue(new CommentApiResponse(message,status,response.code()));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                 }
                 else {
                     if(response.isSuccessful()){
@@ -122,4 +155,40 @@ public class CommunityRepository {
 
         return  loginResponseLiveData;
     }
+
+    public MutableLiveData<ViewCommunityApiResponse> sendComplain(Context context, Map<String,String> headers, AlertRequest alertRequest){
+        final MutableLiveData<ViewCommunityApiResponse> loginResponseLiveData =new MutableLiveData<>();
+        String token = String.valueOf(R.string.token);
+
+        shipmentApi.sendComplain(headers,alertRequest).enqueue(new Callback<ViewCommunityResponse>() {
+            @Override
+            public void onResponse(Call<ViewCommunityResponse> call, Response<ViewCommunityResponse> response) {
+                if(response.code() == 401 || response.code() == 400 || response.code() == 500){
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        String message = jObjError.getString("message");
+                        int status = jObjError.getInt("status");
+                        loginResponseLiveData.setValue(new ViewCommunityApiResponse(message,status,response.code()));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    if(response.isSuccessful()){
+                        loginResponseLiveData.setValue(new ViewCommunityApiResponse(response.body()));
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ViewCommunityResponse> call, Throwable t) {
+                loginResponseLiveData.setValue(new ViewCommunityApiResponse(t));
+            }
+        });
+
+        return  loginResponseLiveData;
+    }
+
 }
