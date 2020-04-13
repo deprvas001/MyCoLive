@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.development.mycolive.model.communityModel.CommunityApiResponse;
 import com.development.mycolive.model.myCommunityModel.MyCommunityApiResponse;
+import com.development.mycolive.model.myCommunityModel.PostDeleteRequest;
 import com.development.mycolive.views.fragment.communities.CommunitiesRepository;
 
 import java.util.Map;
@@ -21,5 +22,9 @@ public class MyCommunityViewModel extends AndroidViewModel {
 
     public MutableLiveData<MyCommunityApiResponse> getCommunityData(Context context, Map<String,String> headers, String type) {
         return MyCommunityRepository.getInstance().getCommunityData(context,headers, type);
+    }
+
+    public MutableLiveData<MyCommunityApiResponse> deletePost(Context context, Map<String,String> headers, PostDeleteRequest request) {
+        return MyCommunityRepository.getInstance().deletePost(context,headers, request);
     }
 }

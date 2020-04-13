@@ -54,6 +54,7 @@ public class NewPost extends BaseActivity implements View.OnClickListener, Adapt
     private String city="";
     private String university="";
     SessionManager session;
+    String image1="",image2="",image3="",image4="",image5="";
     String token="";
     private HashMap<Integer,String> image_option =new HashMap<>();
 
@@ -154,7 +155,7 @@ public class NewPost extends BaseActivity implements View.OnClickListener, Adapt
                 }else if(university.isEmpty()){
                     Toast.makeText(this, "Please select university", Toast.LENGTH_SHORT).show();
                     return;
-                }else if(images.size()==0){
+                }else if(image_option.size()==0){
                     Toast.makeText(this, "Please select upload one image", Toast.LENGTH_SHORT).show();
                     return;
                 }else if(postBinding.comment.getText().toString().isEmpty()){
@@ -241,42 +242,45 @@ public class NewPost extends BaseActivity implements View.OnClickListener, Adapt
         switch (code){
             case 100:
                 postBinding.uploadImage.setImageBitmap(bitmap);
-                convetBitmapString(bitmap);
+                convetBitmapString(bitmap,code);
                 break;
 
             case 101:
                 postBinding.uploadImage1.setImageBitmap(bitmap);
-                convetBitmapString(bitmap);
+                convetBitmapString(bitmap,code);
                 break;
 
             case 102:
                 postBinding.uploadImage2.setImageBitmap(bitmap);
-                convetBitmapString(bitmap);
+                convetBitmapString(bitmap,code);
                 break;
 
             case 103:
                 postBinding.uploadImage3.setImageBitmap(bitmap);
-                convetBitmapString(bitmap);
+                convetBitmapString(bitmap,code);
                 break;
 
             case 104:
                 postBinding.uploadImage4.setImageBitmap(bitmap);
-                convetBitmapString(bitmap);
+                convetBitmapString(bitmap,code);
                 break;
         }
 
     }
 
-    private void convetBitmapString(Bitmap bitmap){
+    private void convetBitmapString(Bitmap bitmap,int requestCode){
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 40, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream .toByteArray();
         String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
-        images.add(encoded);
+      images.add(encoded);
+
+        image_option.put(requestCode,encoded);
     }
 
 
     private void setPost(){
+        images.clear();
        showProgressDialog(getResources().getString(R.string.loading));
 
         Map<String,String> headers = new HashMap<>();
@@ -287,10 +291,14 @@ public class NewPost extends BaseActivity implements View.OnClickListener, Adapt
         headers.put(ApiConstant.USER_DEVICE_TOKEN,ApiConstant.USER_DEVICE_TOKEN_VALUE);
         headers.put(ApiConstant.AUTHENTICAT_TOKEN,token);
 
+        for (Map.Entry<Integer, String> entry : image_option.entrySet()) {
+            images.add(entry.getValue());
+        }
+
         PostCommunity postCommunity = new PostCommunity();
         postCommunity.setCity(city);
-        postCommunity.setComment("sdfsdf");
-        postCommunity.setPost_type("2");
+        postCommunity.setComment(postBinding.comment.getText().toString());
+        postCommunity.setPost_type(type);
         postCommunity.setUniversity(university);
         postCommunity.setImage(images);
 

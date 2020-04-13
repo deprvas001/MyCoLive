@@ -23,6 +23,7 @@ import com.development.mycolive.model.loginModel.LoginResponse;
 import com.development.mycolive.model.logout.LogoutRequestModel;
 import com.development.mycolive.model.logout.LogoutResponse;
 import com.development.mycolive.model.myCommunityModel.MyCommunityResponse;
+import com.development.mycolive.model.myCommunityModel.PostDeleteRequest;
 import com.development.mycolive.model.notificationModel.NotificationBodyRequest;
 import com.development.mycolive.model.notificationModel.NotificationResponse;
 import com.development.mycolive.model.paymentModel.PaymentModeRequest;
@@ -154,6 +155,11 @@ public interface ShipmentApi {
     Call<MyCommunityResponse> getMyCommunityData(
             @HeaderMap Map<String,String> headers,
             @Query("type") String  type);
+
+    @POST("deleteComment")
+    Call<MyCommunityResponse> deletePost(
+            @HeaderMap Map<String,String> headers,
+            @Body PostDeleteRequest request);
 
     @Headers({
             "Content-Type: application/json",

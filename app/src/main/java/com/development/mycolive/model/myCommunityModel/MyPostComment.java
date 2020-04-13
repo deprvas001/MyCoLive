@@ -28,7 +28,7 @@ public class MyPostComment implements Parcelable {
     private String total_likes;
     private int user_like_this_comment;
     private int total_reply_comment;
-    private Object comment_reply;
+
 
     
     public String getId() {
@@ -175,13 +175,6 @@ public class MyPostComment implements Parcelable {
         this.total_reply_comment = total_reply_comment;
     }
 
-    public Object getComment_reply() {
-        return comment_reply;
-    }
-
-    public void setComment_reply(Object comment_reply) {
-        this.comment_reply = comment_reply;
-    }
 
     public static Creator<MyPostComment> getCREATOR() {
         return CREATOR;

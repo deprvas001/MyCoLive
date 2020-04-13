@@ -1,5 +1,6 @@
 package com.development.mycolive.adapter;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -8,26 +9,41 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.development.mycolive.R;
+import com.development.mycolive.constant.ApiConstant;
 import com.development.mycolive.model.communityModel.AllPost;
+import com.development.mycolive.model.myCommunityModel.MyCommunityApiResponse;
 import com.development.mycolive.model.myCommunityModel.MyPostComment;
+import com.development.mycolive.model.myCommunityModel.PostDeleteRequest;
+import com.development.mycolive.views.activity.myCommunity.MyCommunity;
+import com.development.mycolive.views.activity.myCommunity.MyCommunityViewModel;
 import com.development.mycolive.views.activity.viewCommunity.ViewCommunity;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MyCommunityAdapter extends RecyclerView.Adapter<MyCommunityAdapter.MyViewHolder>  {
 
     List<MyPostComment> postCommentList;
     private Context context;
     private ViewGroup group;
+    public MyCommunityViewModel viewModel;
+    boolean myCommunity ;
+    ProgressDialog progressDialog;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView viewDetail,name,type,city,university,comment,date,like,comment_count;
+        public TextView viewDetail,name,type,city,university,comment,date,like,comment_count,know_more;
         public ImageView imageView,user_image,post_image;
         public LinearLayout postLayout;
 
@@ -46,12 +62,14 @@ public class MyCommunityAdapter extends RecyclerView.Adapter<MyCommunityAdapter.
             comment_count = (TextView)view.findViewById(R.id.comment_count);
             post_image = (ImageView)view.findViewById(R.id.post_image);
             postLayout = (LinearLayout)view.findViewById(R.id.post_layout);
+            know_more = (TextView)view.findViewById(R.id.know_more);
         }
     }
 
-    public MyCommunityAdapter(Context context,List<MyPostComment> postCommentList) {
+    public MyCommunityAdapter(Context context,List<MyPostComment> postCommentList,boolean myCommunity ) {
         this.context = context;
         this.postCommentList = postCommentList;
+        this.myCommunity = myCommunity;
     }
 
     @Override
@@ -76,7 +94,14 @@ public class MyCommunityAdapter extends RecyclerView.Adapter<MyCommunityAdapter.
         holder.like.setText(post.getTotal_likes());
         holder.comment_count.setText(String.valueOf(post.getTotal_reply_comment()));
 
-        holder.postLayout.setOnClickListener(new View.OnClickListener() {
+        if(myCommunity){
+            holder.imageView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_delete_black_24dp));
+        }else{
+            holder.imageView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_alert));
+
+        }
+
+        holder.know_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, ViewCommunity.class);
@@ -84,6 +109,15 @@ public class MyCommunityAdapter extends RecyclerView.Adapter<MyCommunityAdapter.
                 context.startActivity(intent);
             }
         });
+
+      /*  holder.postLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, ViewCommunity.class);
+                intent.putExtra("Id",post.getId());
+                context.startActivity(intent);
+            }
+        });*/
 
         Picasso.get()
                 .load(post.getProfile_image())
@@ -102,7 +136,8 @@ public class MyCommunityAdapter extends RecyclerView.Adapter<MyCommunityAdapter.
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showCustomDialog(context);
+              //  showCustomDialog(context);
+                deleteItem(post.getId(),position);
             }
         });
     }
@@ -131,4 +166,61 @@ public class MyCommunityAdapter extends RecyclerView.Adapter<MyCommunityAdapter.
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
+
+
+    private void deleteItem(String id,int position){
+    showProgressDialog(context.getResources().getString(R.string.loading));
+        PostDeleteRequest request = new PostDeleteRequest();
+        request.setComment_id(id);
+
+        Map<String,String> headers = new HashMap<>();
+        headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);
+        headers.put(ApiConstant.SOURCES,ApiConstant.SOURCES_VALUE);
+        headers.put(ApiConstant.USER_TYPE,ApiConstant. USER_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TYPE,ApiConstant.USER_DEVICE_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TOKEN,ApiConstant.USER_DEVICE_TOKEN_VALUE);
+        headers.put(ApiConstant.METHOD,ApiConstant.METHOD_GET);
+        headers.put(ApiConstant.AUTHENTICAT_TOKEN,"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ3ZWJmdW1lYXBwLmNvbSIsImF1ZCI6IldlYmZ1bWUgSmFzb24gQXBwIiwiaWF0IjoxNTg2NzY4Njc3LCJuYmYiOjE1ODY3Njg2NzcsImV4cCI6MTU4Nzk3ODI3NywiZGF0YSI6eyJ1c2VyX3R5cGUiOiJVU0VSIiwidXNlcl9kZXZpY2VfdHlwZSI6IkFETlJPSUQiLCJ1c2VyX2RldmljZV90b2tlbiI6ImYtdXlwcUMzMmtOWmpQYjBJeWUzWWM6QVBBOTFiRlhSQ1lSWFdhRktnZ2NaZVFOQXkxNTRCY093ZzJqVWpqVktoYWZlUEZVdExLRmJRVklJMy1yRjByUndrS1U0RXIxX1RoTDcxd2k4SXpLczBnZ3ptTkwyOXpCLVQtVW5WdEN5V3VhcGNUYkhsNmRvbXhIZHRDTXhydHd1b2dmVmxKQ2FKV0EiLCJTb3VyY2VzIjoiQVBQIiwidXNlcl9uYW1lIjoiYWJjIHRlc3QgIiwidXNlcl9pZCI6IjMwIiwibG9naW5fdHlwZSI6Ik5PUk1BTCIsInVzZXJfbG9nX2lkIjoxMjk1fX0.SKmMuU12rNiDKovkc_Fji823aCUJ9emMcIy-pL4u0No");
+
+        viewModel = ViewModelProviders.of((FragmentActivity) context).get(MyCommunityViewModel.class);
+
+        viewModel.deletePost(context,headers,request).observe((LifecycleOwner) context, new Observer<MyCommunityApiResponse>() {
+            @Override
+            public void onChanged(MyCommunityApiResponse communityApiResponse) {
+                hideProgressDialog();
+                if(communityApiResponse.response !=null){
+
+                    if(communityApiResponse.getResponse().getStatus() == 1){
+                        postCommentList.remove(position);
+                        notifyDataSetChanged();
+
+
+                    }else{
+                        Toast.makeText(context, communityApiResponse.getResponse().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                }else{
+                    Toast.makeText(context, communityApiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    public void showProgressDialog(String message) {
+        if(progressDialog == null)
+            progressDialog = new ProgressDialog(context);
+
+        if (!progressDialog.isShowing()) {
+            progressDialog.setMessage(message);
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
+        }
+    }
+
+    public void hideProgressDialog() {
+        if (progressDialog !=null && progressDialog.isShowing())
+            progressDialog.dismiss();
+    }
+
+
 }
