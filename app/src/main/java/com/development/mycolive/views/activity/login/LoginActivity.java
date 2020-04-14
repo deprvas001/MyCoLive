@@ -146,7 +146,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 break;
 
             case R.id.sign_up:
-                startActivity(new Intent(this, SignupScreen.class));
+                Intent i =new Intent(LoginActivity.this,SignupScreen.class);
+                i.putExtra("login_type",ApiConstant.NORMAL);
+                i.putExtra("socail_id","abc1111");
+                startActivity(i);
                 break;
         }
     }
@@ -171,24 +174,33 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
                     if (loginApiResponse.getResponse().getStatus() == 1) {
 
-                        String token = loginApiResponse.getResponse().getData().getAuthenticateToken();
-                        String userID = loginApiResponse.getResponse().getData().getUserId();
-                        String userType = loginApiResponse.getResponse().getData().getUserType();
-                        String name = loginApiResponse.getResponse().getData().getName();
-                        String email = loginApiResponse.getResponse().getData().getEmail();
-                        String image = loginApiResponse.getResponse().getData().getImage();
+                     if(loginApiResponse.getResponse().getIsEmailExist() ==1){
+                         String token = loginApiResponse.getResponse().getData().getAuthenticateToken();
+                         String userID = loginApiResponse.getResponse().getData().getUserId();
+                         String userType = loginApiResponse.getResponse().getData().getUserType();
+                         String name = loginApiResponse.getResponse().getData().getName();
+                         String email = loginApiResponse.getResponse().getData().getEmail();
+                         String image = loginApiResponse.getResponse().getData().getImage();
 
-                        session.createLoginSession(name,
-                                email,userID,userType,token,image,type);
-                        //  LoginActivity.this.showAlertDialog(LoginActivity.this, LoginActivity.this.getString(R.string.success));
+                         session.createLoginSession(name,
+                                 email,userID,userType,token,image,type);
+                         //  LoginActivity.this.showAlertDialog(LoginActivity.this, LoginActivity.this.getString(R.string.success));
 
-                        Intent i = new Intent(LoginActivity.this, ShowHomeScreen.class);
-                        // Closing all the Activities
-                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                                Intent.FLAG_ACTIVITY_CLEAR_TASK |
-                                Intent.FLAG_ACTIVITY_NEW_TASK);
-                        // Staring Login Activity
-                        startActivity(i);
+                         Intent i = new Intent(LoginActivity.this, ShowHomeScreen.class);
+                         // Closing all the Activities
+                         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                 Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                                 Intent.FLAG_ACTIVITY_NEW_TASK);
+                         // Staring Login Activity
+                         startActivity(i);
+                     }else{
+                         signOut();
+                         Intent i =new Intent(LoginActivity.this,SignupScreen.class);
+                         i.putExtra("login_type",type);
+                         i.putExtra("socail_id",social_id);
+                         startActivity(i);
+
+                     }
                     }
 
             } else {
@@ -307,7 +319,8 @@ private void initailzeView(){
 
           //  updateUI(true);
         } else {
-             // Signed out, show unauthenticated UI.
+            Toast.makeText(getApplicationContext(),"Sign in cancel",Toast.LENGTH_LONG).show();
+            // Signed out, show unauthenticated UI.
              // updateUI(false);
         }
     }

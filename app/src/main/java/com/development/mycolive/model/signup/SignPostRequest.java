@@ -7,8 +7,17 @@ public class SignPostRequest {
     private String gender;
     private String password;
     private String dob;
-    private String termCondition;
+    private String term_condition;
     private String login_type;
+    private String social_id;
+
+    public String getSocial_id() {
+        return social_id;
+    }
+
+    public void setSocial_id(String social_id) {
+        this.social_id = social_id;
+    }
 
     public String getName() {
         return name;
@@ -59,11 +68,11 @@ public class SignPostRequest {
     }
 
     public String getTermCondition() {
-        return termCondition;
+        return term_condition;
     }
 
-    public void setTermCondition(String termCondition) {
-        this.termCondition = termCondition;
+    public void setTermCondition(String term_condition) {
+        this.term_condition = term_condition;
     }
 
     public String getLogin_type() {

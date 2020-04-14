@@ -101,6 +101,7 @@ public class SessionManager {
         user.put(KEY_USERTYPE, sharedPreferences.getString(KEY_USERTYPE, null));
         user.put(KEY_TOKEN, sharedPreferences.getString(KEY_TOKEN, null));
         user.put(KEY_IMAGE, sharedPreferences.getString(KEY_IMAGE, null));
+        user.put(KEY_LOGIN_TYPE,sharedPreferences.getString(KEY_LOGIN_TYPE,null));
 
         // return user
         return user;

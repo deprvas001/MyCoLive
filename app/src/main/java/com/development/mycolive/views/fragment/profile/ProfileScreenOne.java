@@ -466,12 +466,13 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener, 
         cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         oneBinding.fieldLayout.citySpinner.setAdapter(cityAdapter);
 
+        if(city_spinner_id!=null){
+            if(!city_spinner_id.equalsIgnoreCase("N/A") && !city_spinner_id.equalsIgnoreCase("") ){
+                for(int i=0;i<cityModelList.size();i++){
+                    if (city_spinner_id.equals(cityModelList.get(i).getId())){
 
-        if(!city_spinner_id.equalsIgnoreCase("N/A") && !city_spinner_id.equalsIgnoreCase("") ){
-            for(int i=0;i<cityModelList.size();i++){
-                if (city_spinner_id.equals(cityModelList.get(i).getId())){
-
-                    oneBinding.fieldLayout.citySpinner.setSelection(i);
+                        oneBinding.fieldLayout.citySpinner.setSelection(i);
+                    }
                 }
             }
         }
@@ -479,13 +480,14 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener, 
         ArrayAdapter<DistrictModel> districtAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, districtModelList);
         districtAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         oneBinding.fieldLayout.districtSpinner.setAdapter(districtAdapter);
-        oneBinding.fieldLayout.districtSpinner.setSelection(Integer.parseInt(district_spiner),false);
+    //    oneBinding.fieldLayout.districtSpinner.setSelection(Integer.parseInt(district_spiner),false);
+        if(district_spiner!=null){
+            if(!district_spiner.equalsIgnoreCase("N/A") && !district_spiner.equalsIgnoreCase("") ){
+                for(int i=0;i<districtModelList.size();i++){
+                    if (district_spiner.equals(districtModelList.get(i).getId())){
 
-        if(!district_spiner.equalsIgnoreCase("N/A") && !district_spiner.equalsIgnoreCase("") ){
-            for(int i=0;i<districtModelList.size();i++){
-                if (district_spiner.equals(districtModelList.get(i).getId())){
-
-                    oneBinding.fieldLayout.districtSpinner.setSelection(i);
+                        oneBinding.fieldLayout.districtSpinner.setSelection(i);
+                    }
                 }
             }
         }
@@ -495,11 +497,13 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener, 
         universityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         oneBinding.fieldLayout.universitySpinner.setAdapter(universityAdapter);
 
-        if(!university_id.equalsIgnoreCase("N/A") && !university_id.equalsIgnoreCase("") ){
-            for(int i=0;i<universityModelList.size();i++){
-                if (university_id.equals(universityModelList.get(i).getId())){
+        if(university_id!=null){
+            if(!university_id.equalsIgnoreCase("N/A") && !university_id.equalsIgnoreCase("") ){
+                for(int i=0;i<universityModelList.size();i++){
+                    if (university_id.equals(universityModelList.get(i).getId())){
 
-                    oneBinding.fieldLayout.universitySpinner.setSelection(i);
+                        oneBinding.fieldLayout.universitySpinner.setSelection(i);
+                    }
                 }
             }
         }

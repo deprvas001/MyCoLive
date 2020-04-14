@@ -1,6 +1,7 @@
 package com.development.mycolive.views.activity;
 
 import android.content.Intent;
+import android.media.MediaCas;
 import android.os.Bundle;
 
 import com.development.mycolive.R;
@@ -21,6 +22,12 @@ import com.development.mycolive.views.fragment.communities.Communities;
 import com.development.mycolive.views.fragment.homeFragment.Home;
 import com.development.mycolive.views.fragment.profile.ProfileScreenOne;
 import com.development.mycolive.views.fragment.filterSearch.Search;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.squareup.picasso.Picasso;
 
@@ -49,13 +56,15 @@ import android.widget.Toast;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
+public class ShowHomeScreen extends BaseActivity implements View.OnClickListener , GoogleApiClient.OnConnectionFailedListener
         /*implements NavigationView.OnNavigationItemSelectedListener*/ {
     public ActivityShowHomeScreenBinding screenBinding;
     ChangePasswordViewModel viewModel;
-    String user_id, token;
+    String user_id, token,type;
     // Session Manager Class
     SessionManager session;
+    private GoogleApiClient googleApiClient;
+    private GoogleSignInOptions gso;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -120,6 +129,17 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
         session = new SessionManager(getApplicationContext());
         session.checkLogin();
         setSupportActionBar(screenBinding.appBar.toolbar);
+
+        gso =  new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        googleApiClient=new GoogleApiClient.Builder(this)
+                .enableAutoManage(this,this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API,gso)
+                .build();
+
+
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, screenBinding.drawerLayout, screenBinding.appBar.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -279,6 +299,7 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
         String email = user.get(SessionManager.KEY_EMAIL);
         String image = user.get(SessionManager.KEY_IMAGE);
         user_id = user.get(SessionManager.KEY_USERID);
+        type = user.get(SessionManager.KEY_USERTYPE);
         token = user.get(SessionManager.KEY_TOKEN);
 
 
@@ -293,7 +314,10 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
 
 
     private void checkLogout() {
-        showProgressDialog(getResources().getString(R.string.loading));
+
+
+       /* showProgressDialog(getResources().getString(R.string.loading));
+
         Map<String, String> headers = new HashMap<>();
         headers.put(ApiConstant.CONTENT_TYPE, ApiConstant.CONTENT_TYPE_VALUE);
         headers.put(ApiConstant.AUTHENTICAT_TOKEN, token);
@@ -321,10 +345,27 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
                     Toast.makeText(ShowHomeScreen.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
-             /*  bookingBinding.shimmerViewContainer.stopShimmer();
-                bookingBinding.shimmerViewContainer.setVisibility(View.GONE);*/
+             *//*  bookingBinding.shimmerViewContainer.stopShimmer();
+                bookingBinding.shimmerViewContainer.setVisibility(View.GONE);*//*
             }
-        });
+        });*/
+
+        Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        if (status.isSuccess()){
+                            session.logoutUser();
+                        }else{
+                            Toast.makeText(getApplicationContext(),"Session not close",Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 }
 

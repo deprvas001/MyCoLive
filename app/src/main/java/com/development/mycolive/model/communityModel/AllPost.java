@@ -23,7 +23,7 @@ public class AllPost implements Parcelable {
     private String total_likes;
     private String user_like_this_comment;
     private String total_reply_comment;
-    private String comment_reply;
+   // private String comment_reply;
 
     protected AllPost(Parcel in) {
         id = in.readString();
@@ -43,7 +43,7 @@ public class AllPost implements Parcelable {
         total_likes = in.readString();
         user_like_this_comment = in.readString();
         total_reply_comment = in.readString();
-        comment_reply = in.readString();
+       // comment_reply = in.readString();
     }
 
     public static final Creator<AllPost> CREATOR = new Creator<AllPost>() {
@@ -194,13 +194,6 @@ public class AllPost implements Parcelable {
         this.total_reply_comment = total_reply_comment;
     }
 
-    public String getComment_reply() {
-        return comment_reply;
-    }
-
-    public void setComment_reply(String comment_reply) {
-        this.comment_reply = comment_reply;
-    }
 
     @Override
     public int describeContents() {
@@ -226,6 +219,6 @@ public class AllPost implements Parcelable {
         parcel.writeString(total_likes);
         parcel.writeString(user_like_this_comment);
         parcel.writeString(total_reply_comment);
-        parcel.writeString(comment_reply);
+     //   parcel.writeString(comment_reply);
     }
 }

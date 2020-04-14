@@ -14,10 +14,15 @@ import com.development.mycolive.views.fragment.signUp.SignUpOne;
 
 public class SignupScreen extends BaseActivity {
 ActivitySignupScreenBinding screenBinding;
+public String type="",social_id="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         screenBinding = DataBindingUtil.setContentView(this,R.layout.activity_signup_screen);
+       if(getIntent()!=null ){
+             type = getIntent().getExtras().getString("login_type");
+             social_id = getIntent().getExtras().getString("socail_id");
+        }
         loadFragment(new SignUpOne());
     }
 

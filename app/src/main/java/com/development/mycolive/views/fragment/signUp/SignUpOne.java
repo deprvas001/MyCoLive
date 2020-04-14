@@ -47,6 +47,7 @@ View view;
 FragmentSignUpOneBinding oneBinding;
 SignUpViewModel viewModel;
 private String gender="";
+    String login_type,socail_id;
 private DatePickerDialog mDatePickerDialog;
     SessionManager session;
     public SignUpOne() {
@@ -75,7 +76,15 @@ private DatePickerDialog mDatePickerDialog;
         fragmentTransaction.commit(); // save the changes
     }
 
+
     private void setOnClickListener(){
+        login_type = ((SignupScreen) getActivity()).type;
+        socail_id = ((SignupScreen) getActivity()).social_id;
+
+        if(!login_type.equalsIgnoreCase("NORMAL")){
+            oneBinding.fieldLayout.password.setVisibility(View.GONE);
+        }
+
         setDateTimeField();
         oneBinding.fieldLayout.btnNext.setOnClickListener(this);
         oneBinding.fieldLayout.signIn.setOnClickListener(this);
@@ -114,17 +123,25 @@ private DatePickerDialog mDatePickerDialog;
                 }else if(oneBinding.fieldLayout.inputDob.getText().toString().isEmpty()){
                     Toast.makeText(getActivity(), "Please enter dob", Toast.LENGTH_SHORT).show();
                     return;
-                }else if(oneBinding.fieldLayout.password.getText().toString().isEmpty()){
-                    Toast.makeText(getActivity(), "Please enter password", Toast.LENGTH_SHORT).show();
-                    return;
-                }else if(!oneBinding.fieldLayout.policyCheck.isChecked()){
+
+                } else if (!oneBinding.fieldLayout.policyCheck.isChecked()) {
                     Toast.makeText(getActivity(), "Please accept the privacy policy.a", Toast.LENGTH_SHORT).show();
                     return;
-                }
-                else{
-                    if( ((SignupScreen) getActivity()).isNetworkAvailable(getActivity())){
-                        setSignUp();
-                    }else{
+                } else {
+                    if (((SignupScreen) getActivity()).isNetworkAvailable(getActivity())) {
+                        if (((SignupScreen) getActivity()).type.equalsIgnoreCase("NORMAL")) {
+                            if (oneBinding.fieldLayout.password.getText().toString().isEmpty()) {
+                                Toast.makeText(getActivity(), "Please enter password", Toast.LENGTH_SHORT).show();
+                                return;
+                            }else{
+                                setSignUp();
+                            }
+                            }else{
+                            setSignUp();
+                        }
+
+
+                    } else {
                         Toast.makeText(getActivity(), getString(R.string.check_network), Toast.LENGTH_SHORT).show();
                     }
 
@@ -151,8 +168,20 @@ private DatePickerDialog mDatePickerDialog;
        }else{
            gender = "F";
        }
+
+      if(login_type != null  && !login_type.isEmpty()){
+         signPostRequest.setLogin_type(login_type);
+       }else{
+          signPostRequest.setLogin_type("NORMAL");
+      }
+
+      if(socail_id !=null && !socail_id.isEmpty()){
+          signPostRequest.setSocial_id(socail_id);
+      }else{
+          signPostRequest.setSocial_id("abc1111");
+      }
        signPostRequest.setGender(gender);
-       signPostRequest.setLogin_type("NORMAL");
+
        signPostRequest.setTermCondition("1");
 
        viewModel = ViewModelProviders.of(getActivity()).get(SignUpViewModel.class);
@@ -165,7 +194,8 @@ private DatePickerDialog mDatePickerDialog;
 
                    if(apiResponse.getResponse().getStatus() == 0){
                        Toast.makeText(getActivity(), apiResponse.getResponse().getMessage(), Toast.LENGTH_SHORT).show();
-                   }else{
+                   }
+                   else{
                        // loadFragment(new NewAccount());
                        //  getActivity().finish();
 
