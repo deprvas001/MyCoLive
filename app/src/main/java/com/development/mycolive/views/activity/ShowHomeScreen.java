@@ -22,6 +22,8 @@ import com.development.mycolive.views.fragment.communities.Communities;
 import com.development.mycolive.views.fragment.homeFragment.Home;
 import com.development.mycolive.views.fragment.profile.ProfileScreenOne;
 import com.development.mycolive.views.fragment.filterSearch.Search;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
@@ -60,11 +62,12 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
         /*implements NavigationView.OnNavigationItemSelectedListener*/ {
     public ActivityShowHomeScreenBinding screenBinding;
     ChangePasswordViewModel viewModel;
-    String user_id, token,type;
+    String user_id, token,type,login_type;
     // Session Manager Class
     SessionManager session;
     private GoogleApiClient googleApiClient;
     private GoogleSignInOptions gso;
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -125,6 +128,8 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
     }
 
     private void initializeView() {
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
         // Session class instance
         session = new SessionManager(getApplicationContext());
         session.checkLogin();
@@ -301,6 +306,7 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
         user_id = user.get(SessionManager.KEY_USERID);
         type = user.get(SessionManager.KEY_USERTYPE);
         token = user.get(SessionManager.KEY_TOKEN);
+        login_type = user.get(SessionManager.KEY_LOGIN_TYPE);
 
 
         screenBinding.headerLayout.name.setText(name);
@@ -315,52 +321,59 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
 
     private void checkLogout() {
 
+        if(login_type.equalsIgnoreCase(ApiConstant.NORMAL)){
+            showProgressDialog(getResources().getString(R.string.loading));
 
-       /* showProgressDialog(getResources().getString(R.string.loading));
+            Map<String, String> headers = new HashMap<>();
+            headers.put(ApiConstant.CONTENT_TYPE, ApiConstant.CONTENT_TYPE_VALUE);
+            headers.put(ApiConstant.AUTHENTICAT_TOKEN, token);
 
-        Map<String, String> headers = new HashMap<>();
-        headers.put(ApiConstant.CONTENT_TYPE, ApiConstant.CONTENT_TYPE_VALUE);
-        headers.put(ApiConstant.AUTHENTICAT_TOKEN, token);
+            LogoutRequestModel requestModel = new LogoutRequestModel();
+            requestModel.setUser_id(user_id);
 
-        LogoutRequestModel requestModel = new LogoutRequestModel();
-        requestModel.setUser_id(user_id);
+            //   passwordModel.setUser_name(email);
 
-        //   passwordModel.setUser_name(email);
+            viewModel = ViewModelProviders.of(this).get(ChangePasswordViewModel.class);
 
-        viewModel = ViewModelProviders.of(this).get(ChangePasswordViewModel.class);
+            viewModel.logout(this, headers, requestModel).observe(this, new Observer<LogoutApiResponse>() {
+                @Override
+                public void onChanged(LogoutApiResponse apiResponse) {
+                    hideProgressDialog();
+                    if (apiResponse.response != null) {
+                        Toast.makeText(ShowHomeScreen.this, apiResponse.getResponse().getMessage(), Toast.LENGTH_SHORT).show();
 
-        viewModel.logout(this, headers, requestModel).observe(this, new Observer<LogoutApiResponse>() {
-            @Override
-            public void onChanged(LogoutApiResponse apiResponse) {
-                hideProgressDialog();
-                if (apiResponse.response != null) {
-                    Toast.makeText(ShowHomeScreen.this, apiResponse.getResponse().getMessage(), Toast.LENGTH_SHORT).show();
-
-                    if (apiResponse.getResponse().getStatus() == 1) {
-                        //finish();
-                        session.logoutUser();
-                    }
-
-                } else {
-                    Toast.makeText(ShowHomeScreen.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-
-             *//*  bookingBinding.shimmerViewContainer.stopShimmer();
-                bookingBinding.shimmerViewContainer.setVisibility(View.GONE);*//*
-            }
-        });*/
-
-        Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status) {
-                        if (status.isSuccess()){
+                        if (apiResponse.getResponse().getStatus() == 1) {
+                            //finish();
                             session.logoutUser();
-                        }else{
-                            Toast.makeText(getApplicationContext(),"Session not close",Toast.LENGTH_LONG).show();
                         }
+
+                    } else {
+                        Toast.makeText(ShowHomeScreen.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                });
+
+                }
+            });
+        }else if(login_type.equalsIgnoreCase(ApiConstant.GOOGLE)){
+            Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(
+                    new ResultCallback<Status>() {
+                        @Override
+                        public void onResult(Status status) {
+                            if (status.isSuccess()){
+                                session.logoutUser();
+                            }else{
+                                Toast.makeText(getApplicationContext(),"Session not close",Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+        }else if(login_type.equalsIgnoreCase(ApiConstant.FACEBOOK)){
+            LoginManager.getInstance().logOut();
+            session.logoutUser();
+        }
+
+
+       /* */
+
+
     }
 
     @Override

@@ -138,7 +138,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 break;
 
             case R.id.facebook_login:
-                facebookSignIn();
+               // facebookSignIn();
+                loginBinding.facebookButton.setVisibility(View.VISIBLE);
                 break;
 
             case R.id.forgot_password:
@@ -240,7 +241,7 @@ private void initailzeView(){
         Log.d("TAG", "Username is: " + Profile.getCurrentProfile().getName());
 
         //Using Graph API
-        getUserProfile(AccessToken.getCurrentAccessToken());
+     //   getUserProfile(AccessToken.getCurrentAccessToken());
     }
      callbackManager = CallbackManager.Factory.create();
 
@@ -255,13 +256,14 @@ private void initailzeView(){
             .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
             .build();
 
-    loginBinding.facebookButton.setReadPermissions(Arrays.asList("eamil","public_profile"));
+    loginBinding.facebookButton.setReadPermissions(Arrays.asList("email","public_profile"));
 
     loginBinding.facebookButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
         @Override
         public void onSuccess(LoginResult loginResult) {
             boolean loggedIn = AccessToken.getCurrentAccessToken() == null;
             Log.d("API123", loggedIn + " ??");
+            getUserProfile(AccessToken.getCurrentAccessToken());
         }
 
         @Override
@@ -362,10 +364,11 @@ private void initailzeView(){
                         try {
                             String first_name = object.getString("first_name");
                             String last_name = object.getString("last_name");
-                            String email = object.getString("email");
+                         //   String email = object.getString("email");
                             String id = object.getString("id");
-                            String image_url = "https://graph.facebook.com/" + id + "/picture?type=normal";
+                       //     String image_url = "https://graph.facebook.com/" + id + "/picture?type=normal";
 
+                            userLogin("","",ApiConstant.FACEBOOK,id);
                            /* txtUsername.setText("First Name: " + first_name + "\nLast Name: " + last_name);
                             txtEmail.setText(email);
                             Picasso.with(MainActivity.this).load(image_url).into(imageView);*/
