@@ -171,7 +171,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 // handle error here
                 Toast.makeText(LoginActivity.this,loginApiResponse.getMessage(), Toast.LENGTH_SHORT).show();
             } else if (loginApiResponse.response !=null) {
-                     Toast.makeText(LoginActivity.this,loginApiResponse.getResponse().getMessage(), Toast.LENGTH_SHORT).show();
+                  //   Toast.makeText(LoginActivity.this,loginApiResponse.getResponse().getMessage(), Toast.LENGTH_SHORT).show();
 
                     if (loginApiResponse.getResponse().getStatus() == 1) {
 

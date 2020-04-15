@@ -68,7 +68,7 @@ public class FindRoomateAdapter extends RecyclerView.Adapter<FindRoomateAdapter.
         holder.city.setText(roomateModel.getCity_name());
         holder.university.setText(roomateModel.getUniversity_name());
 
-        if(roomateModel.getFavourites() ==0 ){
+        if(roomateModel.getFavourites() .equals("0") ){
             holder.fav_icon.setColorFilter(ContextCompat.getColor(context,
                     R.color.text_color_hint), android.graphics.PorterDuff.Mode.MULTIPLY);
         }else{

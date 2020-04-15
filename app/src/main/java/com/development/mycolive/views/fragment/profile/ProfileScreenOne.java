@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,6 +27,7 @@ import com.development.mycolive.R;
 import com.development.mycolive.constant.ApiConstant;
 import com.development.mycolive.databinding.FragmentProfileScreenOneBinding;
 import com.development.mycolive.model.editProfile.Data;
+import com.development.mycolive.model.editProfile.FacebookLinked;
 import com.development.mycolive.model.editProfile.PostProfileModel;
 import com.development.mycolive.model.editProfile.ProfilePostApiResponse;
 import com.development.mycolive.model.searchFilterModel.FilterApiResponse;
@@ -39,16 +41,35 @@ import com.development.mycolive.model.editProfile.ProfileApiResponse;
 import com.development.mycolive.model.editProfile.ProfileData;
 import com.development.mycolive.views.activity.SignupScreen;
 import com.development.mycolive.views.activity.changePassword.ChangePassword;
+import com.development.mycolive.views.activity.login.LoginActivity;
 import com.development.mycolive.views.fragment.filterSearch.SearchViewModel;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.Api;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.nguyenhoanglam.imagepicker.model.Config;
 import com.nguyenhoanglam.imagepicker.model.Image;
 import com.nguyenhoanglam.imagepicker.ui.imagepicker.ImagePicker;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -58,6 +79,7 @@ import java.util.Map;
 import retrofit2.http.Headers;
 
 import static android.app.Activity.RESULT_OK;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 /**
@@ -67,6 +89,7 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener, 
     FragmentProfileScreenOneBinding oneBinding;
     ProfileViewModel profileViewModel;
     SessionManager session;
+    String connected;
     private boolean isDistrcitAvailable = false;
     private int REQUEST_CODE = 100;
     String university_id="",duration_period="";
@@ -80,6 +103,7 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener, 
     private String image_string = "";
     private DatePickerDialog mDatePickerDialog;
     private String token="",name="",email="",user_type="",type="";
+    private CallbackManager callbackManager;
     public ProfileScreenOne() {
         // Required empty public constructor
     }
@@ -95,10 +119,43 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener, 
     }
 
     private void initializeView() {
+        boolean loggedOut = AccessToken.getCurrentAccessToken() == null;
+
+        if (!loggedOut) {
+            //    Picasso.with(this).load(Profile.getCurrentProfile().getProfilePictureUri(200, 200)).into(imageView);
+            Log.d("TAG", "Username is: " + Profile.getCurrentProfile().getName());
+
+            //Using Graph API
+            //   getUserProfile(AccessToken.getCurrentAccessToken());
+        }
+        callbackManager = CallbackManager.Factory.create();
+        oneBinding.fieldLayout.facebookButton.setFragment(this);
+        oneBinding.fieldLayout.facebookButton.setReadPermissions(Arrays.asList("email","public_profile"));
+
+        oneBinding.fieldLayout.facebookButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                boolean loggedIn = AccessToken.getCurrentAccessToken() == null;
+                Log.d("API123", loggedIn + " ??");
+                getUserProfile(AccessToken.getCurrentAccessToken());
+            }
+
+            @Override
+            public void onCancel() {
+                Log.d("API123", "Cancel");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Log.d("API123", "error");
+            }
+        });
+
         setDateTimeField();
         ((ShowHomeScreen) getActivity()).screenBinding.appBar.titleTxt.setText("My Profile");
         oneBinding.profileImage.setOnClickListener(this);
         oneBinding.fieldLayout.btnSave.setOnClickListener(this);
+        oneBinding.fieldLayout.facebookLink.setOnClickListener(this);
 
         oneBinding.fieldLayout.citySpinner.setOnItemSelectedListener(this);
         oneBinding.fieldLayout.districtSpinner.setOnItemSelectedListener(this);
@@ -134,15 +191,6 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener, 
             @Override
             public void onChanged(ProfileApiResponse apiResponse) {
                   ((ShowHomeScreen) getActivity()).hideProgressDialog();
-               /* if (apiResponse.response != null) {
-                    setView(apiResponse);
-                } else if (apiResponse.getStatus() == 401) {
-                    ((ShowHomeScreen) getActivity()).hideProgressDialog();
-                    Toast.makeText(getActivity(), "Authentication Failed", Toast.LENGTH_SHORT).show();
-                } else {
-                    ((ShowHomeScreen) getActivity()).hideProgressDialog();
-                    Toast.makeText(getActivity(), "Try Later", Toast.LENGTH_SHORT).show();
-                }*/
 
                 ((ShowHomeScreen) getActivity()).hideProgressDialog();
                 if (apiResponse.response != null) {
@@ -166,6 +214,14 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener, 
         city_spinner_id = profileData.getCity_id();
         district_spiner = profileData.getDistrict_id();
         university_id = profileData.getUniversity_id();
+        connected =  profileData.getFacebook_connected_yn();
+
+        if(connected.equals("0")){
+
+            oneBinding.fieldLayout.facebookLink.setText(getString(R.string.link_facebook));
+        }else{
+            oneBinding.fieldLayout.facebookLink.setText(getString(R.string.linked_facebook));
+        }
 
         oneBinding.fieldLayout.inputName.setText(profileData.getName());
         oneBinding.fieldLayout.inputEmail.setText(profileData.getEmail());
@@ -304,6 +360,13 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener, 
                 pickImage(REQUEST_CODE);
                 break;
 
+            case R.id.facebook_link:
+                if(connected.equals("0")){
+                    oneBinding.fieldLayout.facebookButton.setVisibility(View.VISIBLE);
+                }
+
+                break;
+
             case R.id.btn_save:
                 if(oneBinding.fieldLayout.inputName.getText().toString().isEmpty()){
                     Toast.makeText(getActivity(), "Name field empty.", Toast.LENGTH_SHORT).show();
@@ -342,6 +405,8 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener, 
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             ArrayList<Image> images = data.getParcelableArrayListExtra(Config.EXTRA_IMAGES);
             // do your logic here...
@@ -357,8 +422,12 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener, 
             oneBinding.profileImage.setImageBitmap(bitmap);
 
             convetBitmapString(bitmap);
+        }else{
+            callbackManager.onActivityResult(requestCode,resultCode,data);
+
         }
-        super.onActivityResult(requestCode, resultCode, data);  // You MUST have this line to be here
+        super.onActivityResult(requestCode, resultCode, data);
+       // You MUST have this line to be here
         // so ImagePicker can work with fragment mode
     }
 
@@ -569,4 +638,77 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener, 
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+
+
+
+
+    private void getUserProfile(AccessToken currentAccessToken) {
+        GraphRequest request = GraphRequest.newMeRequest(
+                currentAccessToken, new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        Log.d("TAG", object.toString());
+                        try {
+                            String first_name = object.getString("first_name");
+                            String last_name = object.getString("last_name");
+                            //   String email = object.getString("email");
+                            String id = object.getString("id");
+                            //     String image_url = "https://graph.facebook.com/" + id + "/picture?type=normal";
+
+                            linkFacebook(id);
+                          //  userLogin("","",ApiConstant.FACEBOOK,id);
+                           /* txtUsername.setText("First Name: " + first_name + "\nLast Name: " + last_name);
+                            txtEmail.setText(email);
+                            Picasso.with(MainActivity.this).load(image_url).into(imageView);*/
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
+
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "first_name,last_name,email,id");
+        request.setParameters(parameters);
+        request.executeAsync();
+
+    }
+
+    private void linkFacebook(String id){
+        ((ShowHomeScreen) getActivity()).showProgressDialog(getResources().getString(R.string.loading));
+
+        oneBinding.fieldLayout.facebookButton.setVisibility(View.GONE);
+        FacebookLinked facebookLinked =new FacebookLinked();
+        facebookLinked.setEmail(oneBinding.fieldLayout.inputEmail.getText().toString());
+        facebookLinked.setSocial_id(id);
+
+        Map<String,String> headers = new HashMap<>();
+        headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);
+        headers.put(ApiConstant.SOURCES,ApiConstant.SOURCES_VALUE);
+        headers.put(ApiConstant.USER_TYPE,ApiConstant. USER_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TYPE,ApiConstant.USER_DEVICE_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TOKEN,ApiConstant.USER_DEVICE_TOKEN_VALUE);
+        headers.put(ApiConstant.AUTHENTICAT_TOKEN,token);
+
+
+        profileViewModel = ViewModelProviders.of(getActivity()).get(ProfileViewModel.class);
+
+        profileViewModel.linkedFacebook(getActivity(),headers, facebookLinked).observe(getActivity(), new Observer<ProfileApiResponse>() {
+            @Override
+            public void onChanged(ProfileApiResponse apiResponse) {
+                ((ShowHomeScreen) getActivity()).hideProgressDialog();
+                if (apiResponse.response != null) {
+
+                    FacebookSdk.sdkInitialize(getApplicationContext());
+                    LoginManager.getInstance().logOut();
+                    Toast.makeText(getActivity(), apiResponse.response.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
 }

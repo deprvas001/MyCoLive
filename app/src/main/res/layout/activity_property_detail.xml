@@ -292,6 +292,14 @@
                     android:textColor="@color/colorPrimary"/>
 
                 <ImageView
+                    android:id="@+id/message_icon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/messanger_icon"/>
+
+                <ImageView
+                    android:id="@+id/facebook_icon"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/facebook_icon"/>

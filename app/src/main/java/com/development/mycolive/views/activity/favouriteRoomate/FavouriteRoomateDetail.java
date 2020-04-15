@@ -137,14 +137,17 @@ PropertiesAdapter propertiesAdapter;
                     setView(roomateData);
                     setReyclerView(homeFeaturePropertyList);
 
-                    if(roomateData.getFavourites() == 0){
+                    if(roomateData.getFavourites().equals("0")){
                             roomateDetailBinding.favIcon.setColorFilter(ContextCompat.getColor(FavouriteRoomateDetail.this,
                                     R.color.text_color_hint), android.graphics.PorterDuff.Mode.MULTIPLY);
                     }else{
-                        if(apiResponse.getResponse().getStatus() == 1){
+                        roomateDetailBinding.favIcon.setColorFilter(ContextCompat.getColor(FavouriteRoomateDetail.this,
+                                R.color.colorPrimaryDark), android.graphics.PorterDuff.Mode.MULTIPLY);
+
+                        /*if(apiResponse.getResponse().getStatus() == 1){
                             roomateDetailBinding.favIcon.setColorFilter(ContextCompat.getColor(FavouriteRoomateDetail.this,
                                     R.color.colorPrimaryDark), android.graphics.PorterDuff.Mode.MULTIPLY);
-                        }
+                        }*/
                     }
 
                 }

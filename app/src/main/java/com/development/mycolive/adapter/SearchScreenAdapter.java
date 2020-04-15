@@ -9,11 +9,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.development.mycolive.R;
 import com.development.mycolive.model.home.HomeFeatureProperty;
 import com.development.mycolive.model.home.HomeSlider;
+import com.development.mycolive.views.activity.favouriteRoomate.FavouriteRoomateDetail;
 import com.development.mycolive.views.activity.propertyDetail.PropertyDetail;
 import com.squareup.picasso.Picasso;
 
@@ -25,7 +27,7 @@ private Context context;
 
 public class MyViewHolder extends RecyclerView.ViewHolder {
     public TextView title,adddress,noOfBathroom,noOfRoom,price;
-    public ImageView imageView;
+    public ImageView imageView,fav_icon;
     public LinearLayout propertyLayout;
 
     public MyViewHolder(View view) {
@@ -36,6 +38,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
         noOfBathroom = (TextView)view.findViewById(R.id.no_of_bathroom);
         noOfRoom = (TextView)view.findViewById(R.id.no_of_room);
         price = (TextView)view.findViewById(R.id.price);
+        fav_icon = (ImageView)view.findViewById(R.id.fav_icon);
         propertyLayout = (LinearLayout)view.findViewById(R.id.property_layout);
     }
 }
@@ -65,6 +68,14 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
         holder.noOfBathroom.setText(search_room.getNo_of_bathroom());
         holder.noOfRoom.setText(search_room.getNumber_of_room());
         holder.price.setText("€ "+search_room.getPrice());
+
+        if(search_room.getFavourites().equals("0")){
+            holder.fav_icon.setColorFilter(ContextCompat.getColor(context,
+                    R.color.text_color_hint), android.graphics.PorterDuff.Mode.MULTIPLY);
+        }else{
+            holder.fav_icon.setColorFilter(ContextCompat.getColor(context,
+                    R.color.colorPrimaryDark), android.graphics.PorterDuff.Mode.MULTIPLY);
+        }
 
         holder.propertyLayout.setOnClickListener(new View.OnClickListener() {
             @Override

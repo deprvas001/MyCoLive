@@ -185,7 +185,7 @@ public class Communities extends Fragment implements View.OnClickListener {
     }
 
     private void setRecyclerview(List<AllPost> allPostList){
-        communityAdapter = new AllCommunityAdapter(getActivity(), allPostList);
+        communityAdapter = new AllCommunityAdapter(getActivity(), allPostList,token);
         mLayoutManager = new LinearLayoutManager(getActivity());
         fragmentCommunityBinding.recyclerView.setLayoutManager(mLayoutManager);
         fragmentCommunityBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());

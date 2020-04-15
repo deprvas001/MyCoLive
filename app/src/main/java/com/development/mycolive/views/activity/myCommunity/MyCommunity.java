@@ -80,7 +80,7 @@ ActivityMyCommunityBinding communityBinding;
         headers.put(ApiConstant.USER_DEVICE_TYPE,ApiConstant.USER_DEVICE_TYPE_VALUE);
         headers.put(ApiConstant.USER_DEVICE_TOKEN,ApiConstant.USER_DEVICE_TOKEN_VALUE);
         headers.put(ApiConstant.METHOD,ApiConstant.METHOD_GET);
-        headers.put(ApiConstant.AUTHENTICAT_TOKEN,"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ3ZWJmdW1lYXBwLmNvbSIsImF1ZCI6IldlYmZ1bWUgSmFzb24gQXBwIiwiaWF0IjoxNTg2NzY4Njc3LCJuYmYiOjE1ODY3Njg2NzcsImV4cCI6MTU4Nzk3ODI3NywiZGF0YSI6eyJ1c2VyX3R5cGUiOiJVU0VSIiwidXNlcl9kZXZpY2VfdHlwZSI6IkFETlJPSUQiLCJ1c2VyX2RldmljZV90b2tlbiI6ImYtdXlwcUMzMmtOWmpQYjBJeWUzWWM6QVBBOTFiRlhSQ1lSWFdhRktnZ2NaZVFOQXkxNTRCY093ZzJqVWpqVktoYWZlUEZVdExLRmJRVklJMy1yRjByUndrS1U0RXIxX1RoTDcxd2k4SXpLczBnZ3ptTkwyOXpCLVQtVW5WdEN5V3VhcGNUYkhsNmRvbXhIZHRDTXhydHd1b2dmVmxKQ2FKV0EiLCJTb3VyY2VzIjoiQVBQIiwidXNlcl9uYW1lIjoiYWJjIHRlc3QgIiwidXNlcl9pZCI6IjMwIiwibG9naW5fdHlwZSI6Ik5PUk1BTCIsInVzZXJfbG9nX2lkIjoxMjk1fX0.SKmMuU12rNiDKovkc_Fji823aCUJ9emMcIy-pL4u0No");
+        headers.put(ApiConstant.AUTHENTICAT_TOKEN,token);
 
         viewModel = ViewModelProviders.of(this).get(MyCommunityViewModel.class);
 
@@ -189,7 +189,7 @@ ActivityMyCommunityBinding communityBinding;
 
     private void setRecyclerview(List<MyPostComment> postCommentList){
         boolean myCoomunity = true;
-        communityAdapter = new MyCommunityAdapter(this, postCommentList,true);
+        communityAdapter = new MyCommunityAdapter(this, postCommentList,true,token);
         mLayoutManager = new LinearLayoutManager(this);
         communityBinding.recyclerView.setLayoutManager(mLayoutManager);
         communityBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());

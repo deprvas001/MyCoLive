@@ -72,11 +72,11 @@ FragmentGeneralCommunityBinding generalBinding;
     }
 
     private void setRecyclerview(List<AllPost> allPostList){
-        communityAdapter = new AllCommunityAdapter(getActivity(), allPostList);
+        /*communityAdapter = new AllCommunityAdapter(getActivity(), allPostList);
         mLayoutManager = new LinearLayoutManager(getActivity());
         generalBinding.recyclerView.setLayoutManager(mLayoutManager);
         generalBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());
-        generalBinding.recyclerView.setAdapter(communityAdapter);
+        generalBinding.recyclerView.setAdapter(communityAdapter);*/
     }
 
 }

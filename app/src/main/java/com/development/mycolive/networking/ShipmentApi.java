@@ -6,6 +6,7 @@ import com.development.mycolive.model.booking.BookingResponse;
 import com.development.mycolive.model.bookingHistory.BookingHistoryResponse;
 import com.development.mycolive.model.communityModel.CommunityResponse;
 import com.development.mycolive.model.communityModel.SearchCommunityResponse;
+import com.development.mycolive.model.editProfile.FacebookLinked;
 import com.development.mycolive.model.editProfile.PostProfileModel;
 import com.development.mycolive.model.editProfile.PostProfileResponse;
 import com.development.mycolive.model.editProfile.ProfileResponse;
@@ -213,6 +214,11 @@ public interface ShipmentApi {
     Call<ProfileResponse> updateProfile(
             @HeaderMap Map<String,String> headers,
             @Body PostProfileModel postProfileModel);
+
+    @POST("connectWithFb")
+    Call<ProfileResponse> linkedFacebook(
+            @HeaderMap Map<String,String> headers,
+            @Body FacebookLinked postProfileModel);
 
 
 

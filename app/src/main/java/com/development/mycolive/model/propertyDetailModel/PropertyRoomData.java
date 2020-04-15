@@ -29,7 +29,7 @@ public class PropertyRoomData  implements Parcelable {
     private List<HomeSlider> image_slider;
     private List<FacilityData> facility;
     private List<PriceLevel> price_levels;
-
+    private String favourites;
 
     protected PropertyRoomData(Parcel in) {
         id = in.readString();
@@ -52,6 +52,7 @@ public class PropertyRoomData  implements Parcelable {
         image_slider =  (List<HomeSlider>) in.readValue(HomeSlider.class.getClassLoader());
         facility =  (List<FacilityData>) in.readValue(FacilityData.class.getClassLoader());
         price_levels =  (List<PriceLevel>) in.readValue(PriceLevel.class.getClassLoader());
+        favourites = in.readString();
     }
 
     public static final Creator<PropertyRoomData> CREATOR = new Creator<PropertyRoomData>() {
@@ -206,6 +207,14 @@ public class PropertyRoomData  implements Parcelable {
         return facility;
     }
 
+    public String getFavourites() {
+        return favourites;
+    }
+
+    public void setFavourites(String favourites) {
+        this.favourites = favourites;
+    }
+
     public void setFacility(List<FacilityData> facility) {
         this.facility = facility;
     }
@@ -244,5 +253,6 @@ public class PropertyRoomData  implements Parcelable {
         parcel.writeValue(image_slider);
         parcel.writeValue(facility);
         parcel.writeValue(price_levels);
+        parcel.writeString(favourites);
     }
 }

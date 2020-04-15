@@ -86,7 +86,7 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
     boolean isTextViewClicked = false;
     String period,from,to,lat,lng,title;
     BankAccount bankAccount;
-
+    String fbLink="",chatLink="";
     List<PropertyRoomData> roomList = new ArrayList<>();
 
     @Override
@@ -175,6 +175,16 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
         lat = apiResponse.getResponse().getData().get(0).getLatitude();
         lng = apiResponse.getResponse().getData().get(0).getLongitude();
         title = apiResponse.getResponse().getData().get(0).getApartment_name();
+
+        chatLink =apiResponse.getResponse().getData().get(0).getFb_chating_link();
+        fbLink = apiResponse.getResponse().getData().get(0).getFb_page_link();
+        if(chatLink.isEmpty()){
+            propertyDetailBinding.messageIcon.setVisibility(View.GONE);
+        }
+        if(fbLink.isEmpty()){
+            propertyDetailBinding.facebookIcon.setVisibility(View.GONE);
+        }
+
         propertyDetailBinding.apartmentName.setText(apiResponse.getResponse().getData().get(0).getApartment_name());
         propertyDetailBinding.addressApartment.setText(apiResponse.getResponse().getData().get(0).getAddress());
         propertyDetailBinding.description.setText(apiResponse.getResponse().getData().get(0).getDescription());
@@ -215,6 +225,8 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
         propertyDetailBinding.readMore.setOnClickListener(this);
         propertyDetailBinding.policyLink.setOnClickListener(this);
         propertyDetailBinding.locationImage.setOnClickListener(this);
+        propertyDetailBinding.facebookIcon.setOnClickListener(this);
+        propertyDetailBinding.messageIcon.setOnClickListener(this);
 
 
         propertyDetailBinding.recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),  propertyDetailBinding.recyclerView, new RecyclerTouchListener.ClickListener() {
@@ -346,6 +358,19 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
                     propertyDetailBinding.earlyCheckIn.setImageDrawable(getResources().getDrawable(R.drawable.ic_keyboard_arrow_down_black_24dp));
                     early_check =0;
                 }
+                break;
+
+
+            case R.id.facebook_icon:
+                intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(fbLink));
+                startActivity(intent);
+                break;
+
+            case R.id.message_icon:
+                intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(chatLink));
+                startActivity(intent);
                 break;
         }
     }

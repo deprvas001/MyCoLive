@@ -102,6 +102,12 @@ ActivityChangePasswordBinding passwordBinding;
         String image = user.get(SessionManager.KEY_IMAGE);
         //    id = user.get(SessionManager.KEY_USERID);
         token = user.get(SessionManager.KEY_TOKEN);
+        String type = user.get(SessionManager.KEY_LOGIN_TYPE);
+
+        if(!type.equalsIgnoreCase(ApiConstant.NORMAL)){
+            finish();
+        }
+
 
 
         //getCommunity("TESTIMONIAL",token);

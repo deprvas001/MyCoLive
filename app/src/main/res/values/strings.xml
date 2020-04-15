@@ -214,5 +214,7 @@
     <string name="check_network">Check your network</string>
     <string name="password_empty">Please enter password</string>
     <string name="view_community">View Community</string>
+    <string name="link_facebook">Link with Facebook</string>
+    <string name="linked_facebook">Linked with Facebook</string>
 
 </resources>

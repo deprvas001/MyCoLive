@@ -73,10 +73,10 @@ public class AccodmationCommunity extends Fragment {
     }
 
     private void setRecyclerview(List<AllPost> allPostList) {
-        communityAdapter = new AllCommunityAdapter(getActivity(), allPostList);
+        /*communityAdapter = new AllCommunityAdapter(getActivity(), allPostList);
         mLayoutManager = new LinearLayoutManager(getActivity());
         accodmationBinding.recyclerView.setLayoutManager(mLayoutManager);
         accodmationBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());
-        accodmationBinding.recyclerView.setAdapter(communityAdapter);
+        accodmationBinding.recyclerView.setAdapter(communityAdapter);*/
     }
 }

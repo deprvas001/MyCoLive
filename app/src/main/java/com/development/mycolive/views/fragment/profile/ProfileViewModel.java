@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.development.mycolive.model.editProfile.FacebookLinked;
 import com.development.mycolive.model.editProfile.PostProfileModel;
 import com.development.mycolive.model.editProfile.ProfileApiResponse;
 import com.development.mycolive.model.editProfile.ProfilePostApiResponse;
@@ -25,5 +26,9 @@ public class ProfileViewModel extends AndroidViewModel {
 
     public MutableLiveData<ProfileApiResponse> updateProfile(Context context,  Map<String,String> headers,PostProfileModel postProfileModel) {
         return ProfileReporsitory.getInstance().updateProfile(context,headers, postProfileModel);
+    }
+
+    public MutableLiveData<ProfileApiResponse> linkedFacebook(Context context, Map<String,String> headers, FacebookLinked postProfileModel) {
+        return ProfileReporsitory.getInstance().linkedFacebook(context,headers, postProfileModel);
     }
 }

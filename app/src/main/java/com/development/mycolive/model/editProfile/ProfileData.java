@@ -15,7 +15,7 @@ public class ProfileData {
   private String university_name;
   private String status;
   private String term_condition;
-  private String facebook_connected;
+  private String facebook_connected_yn;
   private String facebook_id;
   private String google_id;
   private String instagram_id;
@@ -172,12 +172,12 @@ public class ProfileData {
         this.term_condition = term_condition;
     }
 
-    public String getFacebook_connected() {
-        return facebook_connected;
+    public String getFacebook_connected_yn() {
+        return facebook_connected_yn;
     }
 
-    public void setFacebook_connected(String facebook_connected) {
-        this.facebook_connected = facebook_connected;
+    public void setFacebook_connected_yn(String facebook_connected_yn) {
+        this.facebook_connected_yn = facebook_connected_yn;
     }
 
     public String getFacebook_id() {
