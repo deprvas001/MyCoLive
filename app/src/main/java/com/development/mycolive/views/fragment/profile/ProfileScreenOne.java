@@ -588,7 +588,7 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener, 
                 if(position>0){
                     CityModel cityModel = (CityModel)adapterView.getSelectedItem();
                     city_spinner_id = cityModel.getId();
-                    Toast.makeText(getActivity(), cityModel.getCity_name(), Toast.LENGTH_SHORT).show();
+                //    Toast.makeText(getActivity(), cityModel.getCity_name(), Toast.LENGTH_SHORT).show();
                 }else{
                     city_spinner_id="";
                 }
@@ -605,7 +605,7 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener, 
                             if(universityModel.getDistrict_id().equals(districtModel.getId())){
                                 university.add(universityModel);
                                 DistrictModel district = (DistrictModel)adapterView.getSelectedItem();
-                                Toast.makeText(getActivity(), district.getDistrict_name(), Toast.LENGTH_SHORT).show();
+                            //    Toast.makeText(getActivity(), district.getDistrict_name(), Toast.LENGTH_SHORT).show();
                                 district_spiner = district.getId();
                                 ArrayAdapter<UniversityModel> universityAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, university);
                                 universityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -624,7 +624,7 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener, 
                 if(position>0){
                     UniversityModel universityModel = (UniversityModel)adapterView.getSelectedItem();
                     university_id = universityModel.getId();
-                    Toast.makeText(getActivity(), universityModel.getUniversity_name(), Toast.LENGTH_SHORT).show();
+                  //  Toast.makeText(getActivity(), universityModel.getUniversity_name(), Toast.LENGTH_SHORT).show();
                 }else{
                     university_id="";
                 }

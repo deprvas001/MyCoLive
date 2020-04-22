@@ -35,7 +35,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/sr_no"
-                    android:text="01"
                     android:textStyle="bold"
                     android:layout_weight="1"
                     android:textColor="#4B4B4B" />
@@ -46,13 +45,13 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/sr_value"
                     android:text="Order Number "
+                    android:visibility="gone"
                     android:textColor="#8C8C8C" />
 
                     <TextView
                         android:id="@+id/order_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="#322"
                         android:textStyle="bold"
                         android:textColor="#4B4B4B" />
 
@@ -73,7 +72,6 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/sr_layout"
                     android:layout_toRightOf="@id/booking_view"
-                    android:text="27-11-2019"
                     android:textStyle="bold"
                     android:textColor="#4B4B4B" />
 
@@ -91,7 +89,6 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/booking_value"
                     android:layout_toRightOf="@id/booking_for_view"
-                    android:text="Dec 2019 - Jan 2020"
                     android:textStyle="bold"
                     android:textColor="#4B4B4B" />
 
@@ -124,7 +121,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@id/amount_view"
-                        android:text="$1200"
                         android:layout_weight="1"
                         android:textStyle="bold"
                         android:textColor="#4B4B4B" />

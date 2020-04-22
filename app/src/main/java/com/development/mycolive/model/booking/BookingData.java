@@ -6,7 +6,7 @@ public class BookingData {
     @SerializedName("sr_no")
    private int srNo;
     private String id;
-    @SerializedName("book   ing_for")
+    @SerializedName("booking_for")
     private String bookingFor;
     private String amount;
     @SerializedName("booking_date")

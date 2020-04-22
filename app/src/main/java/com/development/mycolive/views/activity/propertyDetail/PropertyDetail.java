@@ -27,6 +27,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -451,6 +452,7 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
       //then we will inflate the custom alert dialog xml that we created
       View dialogView = LayoutInflater.from(this).inflate(R.layout.custom_terms_condition, viewGroup, false);
 
+
       //Now we need an AlertDialog.Builder object
       AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -465,9 +467,18 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
       TextView contract = (TextView)dialogView.findViewById(R.id.contract);
       contract.setText(htmlAsSpanned);
 
+      ImageView close = (ImageView)dialogView.findViewById(R.id.close);
+
       CheckBox check = (CheckBox)dialogView.findViewById(R.id.terms_condition);
 
       Button button_ok = (Button)dialogView.findViewById(R.id.buttonOk);
+
+      close.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+              alertDialog.dismiss();
+          }
+      });
       button_ok.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View view) {

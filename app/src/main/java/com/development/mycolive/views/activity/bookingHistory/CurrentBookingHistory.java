@@ -91,7 +91,7 @@ BookingHistoryViewModel viewModel;
 
 
         TextView view = (TextView)dialogView.findViewById(R.id.payment_id) ;
-        view.setText("123456");
+        view.setText("");
         //Now we need an AlertDialog.Builder object
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 

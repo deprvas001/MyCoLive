@@ -340,7 +340,7 @@ public class PaymentActivity extends BaseActivity {
                         stripePublishableKey = apiResponse.getResponse().getData().getPublishableKey();
                         paymentIntentClientSecret = apiResponse.getResponse().getData().getClient_secret();
                       //  String message = apiResponse.getResponse().
-                        Toast.makeText(PaymentActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                //        Toast.makeText(PaymentActivity.this, "Success", Toast.LENGTH_SHORT).show();
                         startCheckout();
                     }else if(apiResponse.getStatus()== 401){
                          Toast.makeText(PaymentActivity.this, "Authentication", Toast.LENGTH_SHORT).show();

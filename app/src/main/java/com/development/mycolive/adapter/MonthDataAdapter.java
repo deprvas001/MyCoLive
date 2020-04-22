@@ -89,8 +89,10 @@ public class MonthDataAdapter  extends RecyclerView.Adapter<MonthDataAdapter.MyV
         TextView month = (TextView)dialogView.findViewById(R.id.month);
         month.setText(": "+monthHistory.getMonthName());
 
+        ImageView close = (ImageView)dialogView.findViewById(R.id.close);
+
         TextView amount = (TextView)dialogView.findViewById(R.id.amount);
-        amount.setText(": "+monthHistory.getPayment());
+        amount.setText(": €"+monthHistory.getPayment());
 
         TextView approval = (TextView)dialogView.findViewById(R.id.approval);
         approval.setText(": "+monthHistory.getApproval());
@@ -103,6 +105,16 @@ public class MonthDataAdapter  extends RecyclerView.Adapter<MonthDataAdapter.MyV
             ok.setText("Ok");
         }
 
+        //Now we need an AlertDialog.Builder object
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+        //setting the view of the builder to our custom view that we already inflated
+        builder.setView(dialogView);
+
+        //finally creating the alert dialog and displaying it
+        alertDialog = builder.create();
+        alertDialog.show();
+
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -112,24 +124,20 @@ public class MonthDataAdapter  extends RecyclerView.Adapter<MonthDataAdapter.MyV
                    intent.putExtra("month_id",monthHistory.getDues_month_id());
                    intent.putExtra("due_amount",monthHistory.getDues_amount());
                    context.startActivity(intent);
-
                }
                else{
-
                }
-
             }
         });
 
-        //Now we need an AlertDialog.Builder object
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+       close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                     alertDialog.dismiss();
+            }
+        });
 
-        //setting the view of the builder to our custom view that we already inflated
-        builder.setView(dialogView);
 
-        //finally creating the alert dialog and displaying it
-         alertDialog = builder.create();
-         alertDialog.show();
     }
 
     @Override
