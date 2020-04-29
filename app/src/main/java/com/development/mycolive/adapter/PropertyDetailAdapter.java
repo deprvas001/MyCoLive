@@ -101,23 +101,22 @@ public class PropertyDetailAdapter  extends RecyclerView.Adapter<PropertyDetailA
         }
 
         holder.name.setText(roomData.getApartment_name());
-        holder.price.setText("€"+roomData.getTotal_price()+"/Month");
+        holder.price.setText("€ "+roomData.getTotal_price()+"/Month");
 
         holder.more_facility.setText("+"+roomData.getImage_slider().size());
 
-        total = Float.parseFloat(apartment_price);
+       // total = Float.parseFloat(apartment_price);
         holder.select.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (holder.select.isChecked()){
-                     total_list_price.add(roomData);
-                    roomDataList.add(roomData);
+                     roomDataList.add(roomData);
                      getTotalPrice(roomData);
                 }else{
-                    if(roomDataList.contains(roomData)){
                         roomDataList.remove(roomData);
-                    }
-                    getTotalSubtractPrice(roomData);
+                        getTotalSubtractPrice(roomData);
+
+
                 }
             }
         });
@@ -167,25 +166,21 @@ public class PropertyDetailAdapter  extends RecyclerView.Adapter<PropertyDetailA
 
  public float getTotalPrice(PropertyRoomData roomData){
 
-
          float room_price = Float.parseFloat(roomData.getTotal_price());
-         total = total+room_price;
+         PropertyDetail.apartment_price = PropertyDetail.apartment_price + room_price;
 
 
-      ((PropertyDetail)context).propertyDetailBinding.totalPrice.setText("€"+String.valueOf(total));
+         ((PropertyDetail)context).propertyDetailBinding.totalPrice.setText("€"+String.valueOf(PropertyDetail.apartment_price));
 
      return total;
  }
 
     public float getTotalSubtractPrice(PropertyRoomData roomData){
 
-     if(total_list_price.contains(roomData)){
-         float room_price = Float.parseFloat(roomData.getTotal_price());
-         total = total-room_price;
-     }
+        float room_price = Float.parseFloat(roomData.getTotal_price());
+        PropertyDetail.apartment_price = PropertyDetail.apartment_price -room_price;
 
-      total_list_price.remove(roomData);
-        ((PropertyDetail)context).propertyDetailBinding.totalPrice.setText("€"+String.valueOf(total));
+        ((PropertyDetail)context).propertyDetailBinding.totalPrice.setText("€"+String.valueOf(PropertyDetail.apartment_price ));
 
         return total;
     }

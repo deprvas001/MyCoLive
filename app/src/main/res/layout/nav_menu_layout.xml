@@ -237,24 +237,41 @@
         android:background="#FFFFFF"
         android:alpha="0.1"/>
 
-    <TextView
-        android:id="@+id/logout"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="40dp"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:background="#199E8A"
-        android:text="Logout"
-        android:gravity="center"
-        android:drawableRight="@drawable/nav_menu_log"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:drawablePadding="10dp"
-        android:textColor="@android:color/white"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_height="40dp">
 
-        />
+
+
+        <TextView
+            android:id="@+id/logout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:text="Logout"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="100dp"
+            android:padding="8dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/nav_menu_log"/>
+
+    </RelativeLayout>
+
+
+
+
 </LinearLayout>
 
 </layout>

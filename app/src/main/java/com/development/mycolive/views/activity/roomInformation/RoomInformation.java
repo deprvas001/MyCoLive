@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -87,10 +88,22 @@ String token="";
     private void initializeView(List<FacilityData> facilityData){
         id = roomData.getId();
         List<PriceLevel> priceLevel = roomData.getPrice_levels();
-        int subtotal = Integer.parseInt(priceLevel.get(0).getPrice())+Integer.parseInt(priceLevel.get(1).getPrice());
+        float subtotal = Float.parseFloat(priceLevel.get(0).getPrice())+Float.parseFloat(priceLevel.get(1).getPrice());
+
         informationBinding.addressApartment.setText(roomData.getAddress());
-        informationBinding.monthRentPrice.setText("€ "+priceLevel.get(0).getPrice()+"/Month");
-        informationBinding.securityPrice.setText("€ "+priceLevel.get(1).getPrice()+"/Month");
+        if(priceLevel.size()>0){
+            informationBinding.monthRentPrice.setText("€ "+priceLevel.get(0).getPrice()+"/Month");
+           if(priceLevel.size()>1)
+            informationBinding.securityPrice.setText("€ "+priceLevel.get(1).getPrice()+"/Month");
+           if(priceLevel.size()>2){
+               subtotal = subtotal +Float.parseFloat(priceLevel.get(2).getPrice());
+               informationBinding.otherPrice.setText("€ " + priceLevel.get(2).getPrice()+"/Month");
+               informationBinding.otherLayout.setVisibility(View.VISIBLE);
+           }
+
+        }
+
+
         informationBinding.subTotal.setText("€ "+String.valueOf(subtotal)+"/Month");
         informationBinding.descriptionTxt.setText(roomData.getDescription());
 

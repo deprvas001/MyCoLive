@@ -65,16 +65,18 @@
 
         <CheckBox
             android:id="@+id/polic_accept"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@string/policies"/>
 
             <TextView
                 android:id="@+id/policy_link"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left"
+                android:layout_weight="1"
+                android:layout_marginLeft="5dp"
+                android:textStyle="bold"
+                android:layout_gravity="left|center_vertical"
                 android:text="@string/policy"/>
 
 

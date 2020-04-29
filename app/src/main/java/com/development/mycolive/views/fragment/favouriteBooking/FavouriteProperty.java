@@ -117,7 +117,7 @@ public class FavouriteProperty extends Fragment implements View.OnClickListener 
        headers.put(ApiConstant.USER_TYPE,ApiConstant. USER_TYPE_VALUE);
        headers.put(ApiConstant.USER_DEVICE_TYPE,ApiConstant.USER_DEVICE_TYPE_VALUE);
        headers.put(ApiConstant.USER_DEVICE_TOKEN,ApiConstant.USER_DEVICE_TOKEN_VALUE);
-       headers.put(ApiConstant.AUTHENTICAT_TOKEN,"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ3ZWJmdW1lYXBwLmNvbSIsImF1ZCI6IldlYmZ1bWUgSmFzb24gQXBwIiwiaWF0IjoxNTg2NDMwMzI2LCJuYmYiOjE1ODY0MzAzMjYsImV4cCI6MTU4NzYzOTkyNiwiZGF0YSI6eyJ1c2VyX3R5cGUiOiJVU0VSIiwidXNlcl9kZXZpY2VfdHlwZSI6IkFETlJPSUQiLCJ1c2VyX2RldmljZV90b2tlbiI6ImYtdXlwcUMzMmtOWmpQYjBJeWUzWWM6QVBBOTFiRlhSQ1lSWFdhRktnZ2NaZVFOQXkxNTRCY093ZzJqVWpqVktoYWZlUEZVdExLRmJRVklJMy1yRjByUndrS1U0RXIxX1RoTDcxd2k4SXpLczBnZ3ptTkwyOXpCLVQtVW5WdEN5V3VhcGNUYkhsNmRvbXhIZHRDTXhydHd1b2dmVmxKQ2FKV0EiLCJTb3VyY2VzIjoiQVBQIiwidXNlcl9uYW1lIjoiYWJjIHRlc3QgIiwidXNlcl9pZCI6IjMwIiwibG9naW5fdHlwZSI6Ik5PUk1BTCIsInVzZXJfbG9nX2lkIjoxMjc4fX0.IKMbOe_D7mf573OKvROgLs0VWtqLZl_9eaJ2v-3z4bU");
+       headers.put(ApiConstant.AUTHENTICAT_TOKEN,token);
 
 
         String type = "PROPERTY";

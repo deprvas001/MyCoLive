@@ -187,7 +187,7 @@
     <string name="title_activity_favourite_roomate_detail">FavouriteRoomateDetail</string>
     <string name="RoomateDetail">Roommate Detail</string>
     <string name="PropertyDetail">Property Detail</string>
-    <string name="RoomDetail">RoomDetail</string>
+    <string name="RoomDetail">Room Detail</string>
     <string name="mycommunity">My Community</string>
     <string name="old_password">Old Password</string>
     <string name="year">year</string>
@@ -216,5 +216,7 @@
     <string name="view_community">View Community</string>
     <string name="link_facebook">Link with Facebook</string>
     <string name="linked_facebook">Linked with Facebook</string>
+    <string name="payable">Payable Amount:</string>
+    <string name="wifi_other"><![CDATA[Wifi & Other Bill]]></string>
 
 </resources>

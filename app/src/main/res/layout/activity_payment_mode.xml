@@ -9,7 +9,32 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.google.android.material.appbar.AppBarLayout
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/close_activity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:src="@drawable/ic_close_black_24dp"
+                android:layout_gravity="right"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:layout_marginTop="-25dp"
+                android:textColor="#ffffff"
+                android:text="@string/payment_mode"/>
+
+        </LinearLayout>
+
+       <!-- <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/AppTheme.AppBarOverlay">
@@ -24,9 +49,33 @@
 
             </androidx.appcompat.widget.Toolbar>
 
-        </com.google.android.material.appbar.AppBarLayout>
+        </com.google.android.material.appbar.AppBarLayout>-->
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/edit_text_color"
+                android:text="@string/payable"/>
+
+            <TextView
+                android:id="@+id/amount"
+                android:layout_width="match_parent"
+                android:textColor="@color/edit_text_color"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                />
+
+        </LinearLayout>
 
         <RadioGroup
             android:id="@+id/radio_group"
@@ -216,6 +265,14 @@
 
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/edit_text_color"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_proceed"

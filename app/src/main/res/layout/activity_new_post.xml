@@ -128,12 +128,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
                     <androidx.appcompat.widget.AppCompatSpinner
                         android:id="@+id/post_type"
                         style="@style/Widget.AppCompat.Spinner.Underlined"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:padding="10dp"
                         android:entries="@array/community_type"
@@ -143,19 +143,25 @@
                     <androidx.appcompat.widget.AppCompatSpinner
                         android:id="@+id/city_spinner"
                         style="@style/Widget.AppCompat.Spinner.Underlined"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:padding="10dp"
-                        android:layout_weight="1"
+                        android:layout_marginBottom="0dp"
+                        android:layout_marginRight="-5dp"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:paddingLeft="-5dp"
                         android:singleLine="true" />
 
                     <androidx.appcompat.widget.AppCompatSpinner
                        android:id="@+id/university"
                         style="@style/Widget.AppCompat.Spinner.Underlined"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:padding="10dp"
-                        android:layout_weight="1"
+                        android:layout_marginBottom="0dp"
+                        android:layout_marginRight="-5dp"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:paddingLeft="-5dp"
                         android:singleLine="true" />
                 </LinearLayout>
 

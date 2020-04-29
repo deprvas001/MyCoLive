@@ -24,7 +24,7 @@ public class MonthDataAdapter  extends RecyclerView.Adapter<MonthDataAdapter.MyV
     private ViewGroup group;
     private AlertDialog alertDialog;
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView month,status,payment_mode,receipt,approval;
+        public TextView month,status,payment_mode,receipt,approval,month_txt;
         public ImageView imageView;
         public Button view_detail;
 
@@ -36,6 +36,7 @@ public class MonthDataAdapter  extends RecyclerView.Adapter<MonthDataAdapter.MyV
             receipt = (TextView)view.findViewById(R.id.receipt);
             approval = (TextView)view.findViewById(R.id.approval);
             view_detail = (Button)view.findViewById(R.id.view_detail);
+            month_txt = (TextView)view.findViewById(R.id.month_text);
 
            // imageView = (ImageView)view.findViewById(R.id.alert);
         }
@@ -58,12 +59,17 @@ public class MonthDataAdapter  extends RecyclerView.Adapter<MonthDataAdapter.MyV
     @Override
     public void onBindViewHolder(MonthDataAdapter.MyViewHolder holder, int position) {
         MonthHistory  monthHistory  = monthList.get(position);
-
+        holder.month_txt.setText(monthHistory.getMonth());
         holder.month.setText(monthHistory.getMonthName());
         holder.status.setText(monthHistory.getStatus());
         holder.payment_mode.setText(monthHistory.getPayment_method());
         holder.receipt.setText(monthHistory.getReceipt());
         holder.approval.setText(monthHistory.getApproval());
+
+        if(monthHistory.getPayment().equals("1")){
+            holder.view_detail.setText("Pay");
+        }
+
         holder.view_detail.setOnClickListener(view ->
                 showCustomDialog(context,monthHistory));
     }
@@ -80,6 +86,9 @@ public class MonthDataAdapter  extends RecyclerView.Adapter<MonthDataAdapter.MyV
         //then we will inflate the custom alert dialog xml that we created
         View dialogView = LayoutInflater.from(context).inflate(R.layout.custom_dialog, group, false);
 
+        TextView month_name = (TextView)dialogView.findViewById(R.id.month_name);
+        month_name.setText(monthHistory.getMonth());
+
         TextView payment_id = (TextView)dialogView.findViewById(R.id.payment_id);
         payment_id.setText(": "+monthHistory.getPayment_id());
 
@@ -92,7 +101,7 @@ public class MonthDataAdapter  extends RecyclerView.Adapter<MonthDataAdapter.MyV
         ImageView close = (ImageView)dialogView.findViewById(R.id.close);
 
         TextView amount = (TextView)dialogView.findViewById(R.id.amount);
-        amount.setText(": €"+monthHistory.getPayment());
+        amount.setText(": € "+monthHistory.getDues_amount());
 
         TextView approval = (TextView)dialogView.findViewById(R.id.approval);
         approval.setText(": "+monthHistory.getApproval());
@@ -103,6 +112,7 @@ public class MonthDataAdapter  extends RecyclerView.Adapter<MonthDataAdapter.MyV
             ok.setText("Pay Now");
         }else {
             ok.setText("Ok");
+
         }
 
         //Now we need an AlertDialog.Builder object
@@ -124,8 +134,10 @@ public class MonthDataAdapter  extends RecyclerView.Adapter<MonthDataAdapter.MyV
                    intent.putExtra("month_id",monthHistory.getDues_month_id());
                    intent.putExtra("due_amount",monthHistory.getDues_amount());
                    context.startActivity(intent);
+                   alertDialog.dismiss();
                }
                else{
+                   alertDialog.dismiss();
                }
             }
         });

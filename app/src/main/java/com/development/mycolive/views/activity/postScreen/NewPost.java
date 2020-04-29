@@ -5,6 +5,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -310,13 +311,12 @@ public class NewPost extends BaseActivity implements View.OnClickListener, Adapt
             public void onChanged(PostApiResponse apiResponse) {
                 hideProgressDialog();
                 if(apiResponse.response !=null){
-                    Toast.makeText(NewPost.this, "Success", Toast.LENGTH_SHORT).show();
-                    finish();
-                }else if(apiResponse.getStatus()== 401){
-                    Toast.makeText(NewPost.this, "Authentication", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    Toast.makeText(NewPost.this, "Try Later", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NewPost.this,apiResponse.getResponse().getMessage() , Toast.LENGTH_SHORT).show();
+                    Intent intent=new Intent();
+                    setResult(Activity.RESULT_OK, intent);
+                    finish();//finishing activity
+                } else{
+                    Toast.makeText(NewPost.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });

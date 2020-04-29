@@ -54,14 +54,15 @@ public class PaymentMode extends BaseActivity implements RadioGroup.OnCheckedCha
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         modeBinding = DataBindingUtil.setContentView(this, R.layout.activity_payment_mode);
-        modeBinding.toolbar.setTitle(getString(R.string.select_payment));
-        setSupportActionBar(modeBinding.toolbar);
+       // modeBinding.toolbar.setTitle(getString(R.string.select_payment));
+        /*setSupportActionBar(modeBinding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);*/
 
         if (getIntent() != null) {
             month_id = getIntent().getExtras().getString("month_id");
             payment_amount = getIntent().getExtras().getFloat("due_amount");
+            modeBinding.amount.setText("€"+String.valueOf(payment_amount));
         }
         setClickListener();
     }
@@ -70,6 +71,7 @@ public class PaymentMode extends BaseActivity implements RadioGroup.OnCheckedCha
         modeBinding.radioGroup.setOnCheckedChangeListener(this);
         modeBinding.btnProceed.setOnClickListener(this);
         modeBinding.uploadReceipt.setOnClickListener(this);
+        modeBinding.closeActivity.setOnClickListener(this);
     }
 
     @Override
@@ -141,6 +143,8 @@ public class PaymentMode extends BaseActivity implements RadioGroup.OnCheckedCha
 
         } else if (view.getId() == R.id.upload_receipt) {
             pickImage(REQUEST_CODE);
+        }else if (view.getId() == R.id.close_activity) {
+            finish();
         }
     }
 
@@ -197,9 +201,6 @@ public class PaymentMode extends BaseActivity implements RadioGroup.OnCheckedCha
         headers.put(ApiConstant.USER_DEVICE_TOKEN,ApiConstant.USER_DEVICE_TOKEN_VALUE);
         headers.put(ApiConstant.AUTHENTICAT_TOKEN,token);
 
-
-
-
         viewModel = ViewModelProviders.of(this).get(PaymentModeViewModel.class);
 
         viewModel.payAmount(this,headers,modeRequest).observe(this, new Observer<PaymentApiResponse>() {
@@ -244,8 +245,6 @@ public class PaymentMode extends BaseActivity implements RadioGroup.OnCheckedCha
                 startActivity(i);
             }
         });
-
-
 
         //finally creating the alert dialog and displaying it
         AlertDialog alertDialog = builder.create();

@@ -82,8 +82,8 @@ public class BookingDetails extends AppCompatActivity implements View.OnClickLis
         }
 
           final_price = total_price+early_check;
-          bookingDetailsBinding.totalPrice.setText("€"+String.valueOf(total_price)+" + "+early_check+" (Early_Check_In_Price)");
-          bookingDetailsBinding.finalPrice.setText("€"+final_price);
+          bookingDetailsBinding.totalPrice.setText("€ "+String.valueOf(total_price)+" + "+early_check+" (Early_Check_In_Price)");
+          bookingDetailsBinding.finalPrice.setText("€ "+final_price);
         setRecyclerView(roomDataList);
     }
 

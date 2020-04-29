@@ -21,6 +21,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:fullBackupContent="false"
         android:usesCleartextTraffic="true">
         <activity android:name=".views.activity.FilterResultProperty"
             android:theme="@style/AppTheme.NoActionBar"></activity>
@@ -67,7 +68,8 @@
         </activity>
         <activity
             android:name=".views.activity.paymentMode.PaymentMode"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/CustomAlertDialogStyle"
+            />
         <activity
             android:name=".views.activity.paymentScreen.SelectPayment"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -76,7 +78,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".views.activity.bookingDetail.BookingDetails"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme1" />
         <activity
             android:name=".views.activity.myCommunity.MyCommunity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -86,7 +88,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".views.activity.roomInformation.RoomInformation"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme1"
+            />
 
         <service
             android:name=".service.MyFirebaseMessagingService"
@@ -98,7 +101,7 @@
 
         <activity
             android:name=".views.activity.propertyDetail.PropertyDetail"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme1" />
         <activity android:name=".views.activity.viewCommunity.ViewCommunity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
@@ -106,7 +109,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".views.activity.AboutUs"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme1" />
         <activity
             android:name=".views.activity.NotificationDetails"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -122,17 +125,17 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".views.activity.MyFavourite"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme1" />
         <activity
             android:name=".views.activity.notification.Notification"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".views.activity.ContactUs"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme1"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".views.activity.changePassword.ChangePassword"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme1"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".views.activity.TestimonialScreen" />
         <activity
@@ -140,7 +143,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".views.activity.postScreen.NewPost"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme1"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".views.activity.CommentListScreen"
@@ -152,7 +155,7 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".views.activity.bookingHistory.CurrentBookingHistory"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme1" />
         <activity
             android:name=".views.activity.MyBookingScreen"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -165,7 +168,7 @@
         <activity
             android:name=".views.activity.BookingDetailFill"
             android:label="@string/title_activity_search_result"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".views.activity.searchDetailPage.RoomDetail"
             android:label="@string/title_activity_search_result"
@@ -188,7 +191,7 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".views.activity.forgotPassword.ForgotPassword"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme1"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".views.activity.LoginScreen"
@@ -197,7 +200,6 @@
         <activity android:name=".views.activity.MainActivity" />
         <activity
             android:name=".views.activity.SplashScreen"
-            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

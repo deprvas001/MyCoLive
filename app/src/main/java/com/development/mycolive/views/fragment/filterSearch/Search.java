@@ -188,6 +188,7 @@ FragmentSearchBinding searchBinding;
 
             case R.id.district:
                 if(position>0){
+                    searchBinding.university.setVisibility(View.VISIBLE);
                     university.clear();
                     UniversityModel universityMode = new UniversityModel();
                     universityMode.setUniversity_name(getString(R.string.university));
@@ -233,6 +234,7 @@ FragmentSearchBinding searchBinding;
     }
 
     private void getDefaultData(){
+        ((ShowHomeScreen) getActivity()).showProgressDialog(getString(R.string.loading));
             String type = "ALL";
 
             searchViewModel = ViewModelProviders.of(getActivity()).get(SearchViewModel.class);
@@ -240,6 +242,7 @@ FragmentSearchBinding searchBinding;
             searchViewModel.getDefaultData(getActivity(),type).observe(getActivity(), new Observer<FilterApiResponse>() {
                 @Override
                 public void onChanged(FilterApiResponse filterApiResponse) {
+                    ((ShowHomeScreen) getActivity()).hideProgressDialog();
                     if(filterApiResponse.filterResponse !=null){
                         districtModelList.clear();
                         university.clear();

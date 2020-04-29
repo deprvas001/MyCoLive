@@ -2,6 +2,7 @@ package com.development.mycolive.views.activity.propertyDetail;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.text.HtmlCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -17,6 +18,7 @@ import android.media.MediaCas;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.util.Property;
 import android.view.LayoutInflater;
@@ -72,7 +74,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PropertyDetail extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+import static androidx.core.util.Preconditions.checkNotNull;
+
+public class PropertyDetail extends BaseActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
    public ActivityPropertyDetailBinding propertyDetailBinding;
     private PropertyDetailAdapter roomAdapter;
     private FacilityAdapter facilityAdapter;
@@ -84,6 +88,7 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
     float total_cost;
     String id="";
     String token="";
+    public static float apartment_price =0;
     boolean isTextViewClicked = false;
     String period,from,to,lat,lng,title;
     BankAccount bankAccount;
@@ -121,8 +126,9 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
     }
 
 
-    private void setRecycleView(List<PropertyRoomData> detailList, List<FacilityData> facilityData,String apartment_price){
-        roomAdapter = new PropertyDetailAdapter(this, detailList,apartment_price);
+    private void setRecycleView(List<PropertyRoomData> detailList, List<FacilityData> facilityData,String apartment_total){
+        apartment_price = Float.parseFloat(apartment_total);
+        roomAdapter = new PropertyDetailAdapter(this, detailList,apartment_total);
         mLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false);
         propertyDetailBinding.recyclerView.setLayoutManager(mLayoutManager);
         propertyDetailBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -137,7 +143,7 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
 
 
     private void getDefaultData(String token) {
-       /* String id = "6";*/
+      showProgressDialog(getString(R.string.loading));
         Map<String,String> headers = new HashMap<>();
         headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);
         headers.put(ApiConstant.SOURCES,ApiConstant.SOURCES_VALUE);
@@ -150,6 +156,7 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
         detailViewModel.getPropertyDetail(this, headers,id).observe(this, new Observer<PropertyDetailApiResponse>() {
             @Override
             public void onChanged(PropertyDetailApiResponse apiResponse) {
+                hideProgressDialog();
                 if (apiResponse.response != null) {
 
                     if(apiResponse.getResponse().getData().size()>0 &&
@@ -165,7 +172,6 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
                         Toast.makeText(PropertyDetail.this, apiResponse.getResponse().getMessage(), Toast.LENGTH_SHORT).show();
                         finish();
                      }
-
                 }
             }
         });
@@ -189,7 +195,7 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
         propertyDetailBinding.apartmentName.setText(apiResponse.getResponse().getData().get(0).getApartment_name());
         propertyDetailBinding.addressApartment.setText(apiResponse.getResponse().getData().get(0).getAddress());
         propertyDetailBinding.description.setText(apiResponse.getResponse().getData().get(0).getDescription());
-        propertyDetailBinding.totalPrice.setText("€"+apiResponse.getResponse().getData().get(0).getTotal_price());
+        propertyDetailBinding.totalPrice.setText("€ "+apiResponse.getResponse().getData().get(0).getTotal_price());
 
         total_cost = Float.parseFloat(apiResponse.getResponse().getData().get(0).getTotal_price());
      }
@@ -212,11 +218,17 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        getDefaultData(token);
+        if(isNetworkAvailable(PropertyDetail.this)){
+            getDefaultData(token);
+        }else{
+            Toast.makeText(this, getString(R.string.check_network), Toast.LENGTH_SHORT).show();
+            finish();
+        }
+
     }
 
     private void setClickListener(){
-        setDateTimeField();
+        setDateTime();
         propertyDetailBinding.type.setOnItemSelectedListener(this);
         propertyDetailBinding.fromEdit.setOnClickListener(this);
         propertyDetailBinding.toEdit.setOnClickListener(this);
@@ -376,7 +388,7 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    private void setDateTimeField() {
+    private void setDateTime() {
         Calendar newCalendar = Calendar.getInstance();
         mDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
 
@@ -462,16 +474,20 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
       AlertDialog alertDialog = builder.create();
       alertDialog.show();
 
-      Spanned htmlAsSpanned = Html.fromHtml(contractResponse.getContractDetails());
+  //    Spanned htmlAsSpanned = Html.fromHtml(contractResponse.getContractDetails());
 
       TextView contract = (TextView)dialogView.findViewById(R.id.contract);
-      contract.setText(htmlAsSpanned);
+
+      SpannableStringBuilder spanned = (SpannableStringBuilder) Html.fromHtml(contractResponse.getContractDetails());
+      spanned = trimSpannable(spanned);
+      contract.setText(spanned,TextView.BufferType.SPANNABLE);
 
       ImageView close = (ImageView)dialogView.findViewById(R.id.close);
 
       CheckBox check = (CheckBox)dialogView.findViewById(R.id.terms_condition);
 
       Button button_ok = (Button)dialogView.findViewById(R.id.buttonOk);
+
 
       close.setOnClickListener(new View.OnClickListener() {
           @Override
@@ -507,14 +523,12 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
 
     private void getContract(String token, float total_cost, PaymentRequestBody requestBody, BankAccount bankAccount) {
         /* String id = "6";*/
-
+       showProgressDialog(getString(R.string.loading));
         TermRequest request = new TermRequest();
         request.setDuration(period);
         request.setEarly_check(requestBody.getEarly_check());
         request.setDaterange(requestBody.getDaterange());
         request.setRoom_id(requestBody.getRoom_id());
-
-
 
         Map<String,String> headers = new HashMap<>();
         headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);
@@ -528,6 +542,7 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
         detailViewModel.getTermsCondition(this, headers,request).observe(this, new Observer<TermCondApiResponse>() {
             @Override
             public void onChanged(TermCondApiResponse apiResponse) {
+                hideProgressDialog();
                 if (apiResponse.response != null) {
                     if(apiResponse.getResponse().getStatus() ==1){
                         if(apiResponse.getResponse().getData().getIs_available() == 1){
@@ -536,16 +551,33 @@ public class PropertyDetail extends AppCompatActivity implements View.OnClickLis
                             Toast.makeText(PropertyDetail.this, apiResponse.getResponse().getData().getMsg()
                                     , Toast.LENGTH_SHORT).show();
                         }
-
                     }
 
                     }else{
                         Toast.makeText(PropertyDetail.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
-
                     }
-
                 }
-
         });
+    }
+
+
+    private SpannableStringBuilder trimSpannable(SpannableStringBuilder spannable) {
+     //   checkNotNull(spannable);
+        int trimStart = 0;
+        int trimEnd = 0;
+
+        String text = spannable.toString();
+
+        while (text.length() > 0 && text.startsWith("\n")) {
+            text = text.substring(1);
+            trimStart += 1;
+        }
+
+        while (text.length() > 0 && text.endsWith("\n")) {
+            text = text.substring(0, text.length() - 1);
+            trimEnd += 1;
+        }
+
+        return spannable.delete(0, trimStart).delete(spannable.length() - trimEnd, spannable.length());
     }
 }

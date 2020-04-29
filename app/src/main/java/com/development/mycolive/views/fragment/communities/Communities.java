@@ -1,6 +1,7 @@
 package com.development.mycolive.views.fragment.communities;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -45,7 +46,7 @@ public class Communities extends Fragment implements View.OnClickListener {
     private AllCommunityAdapter communityAdapter;
     RecyclerView.LayoutManager mLayoutManager;
     SessionManager session;
-
+    public static final int REQUEST_CODE = 101;
     String token="";
     public Communities() {
         // Required empty public constructor
@@ -89,7 +90,10 @@ public class Communities extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fab:
-                startActivity(new Intent(getActivity(), NewPost.class));
+
+                Intent intent = new Intent(getActivity(),NewPost.class);
+
+                startActivityForResult(intent,REQUEST_CODE);
                 break;
 
             case R.id.all_community:
@@ -239,5 +243,21 @@ public class Communities extends Fragment implements View.OnClickListener {
         getCommunity("ALL");
 
      //   getBooking(token);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        // check if the request code is same as what is passed  here it is 2
+
+        if (requestCode == REQUEST_CODE) {
+
+            if (resultCode == Activity.RESULT_OK) {
+               getSession();
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                // some stuff that will happen if there's no result
+            }
+        }
     }
 }

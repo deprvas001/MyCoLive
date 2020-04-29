@@ -148,7 +148,9 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="Name"/>
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:textColor="@color/edit_text_color"/>
 
             <com.smarteist.autoimageslider.SliderView
                 android:id="@+id/imageSlider"
@@ -204,6 +206,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:textColor="@color/edit_text_color"
                 android:text="@string/feature_facility"/>
 
            <View
@@ -359,8 +364,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textStyle="bold"
+            android:textSize="18dp"
+            android:textColor="@color/edit_text_color"
             android:layout_marginLeft="10dp"
-            android:text="$1200/Month"/>
+            />
 
 
         <androidx.appcompat.widget.AppCompatButton

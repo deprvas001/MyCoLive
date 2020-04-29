@@ -36,7 +36,7 @@ public class BookingDetailAdapter extends RecyclerView.Adapter<BookingDetailAdap
     private float total = 0;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView price, name, month_rent, security, sub_total;
+        public TextView price, name, month_rent, security, sub_total,other_bill;
         public CheckBox select;
         public ImageView imageView, user_image, post_image, facility_image;
         public LinearLayout room_info;
@@ -49,6 +49,7 @@ public class BookingDetailAdapter extends RecyclerView.Adapter<BookingDetailAdap
             month_rent = (TextView) view.findViewById(R.id.monthly_rent);
             security = (TextView) view.findViewById(R.id.security);
             sub_total = (TextView) view.findViewById(R.id.sub_total);
+            other_bill = (TextView)view.findViewById(R.id.other_price);
 
         }
     }
@@ -74,11 +75,16 @@ public class BookingDetailAdapter extends RecyclerView.Adapter<BookingDetailAdap
         List<HomeSlider> sliderList = roomData.getImage_slider();
         List<PriceLevel> priceLevels = roomData.getPrice_levels();
         holder.name.setText(roomData.getApartment_name());
-        holder.security.setText("€"+priceLevels.get(1).getPrice());
-        holder.month_rent.setText("€"+priceLevels.get(0).getPrice());
+        holder.security.setText("€ "+priceLevels.get(1).getPrice()+"/Month");
+        holder.month_rent.setText("€ "+priceLevels.get(0).getPrice()+"/Month");
 
         total = Float.parseFloat(priceLevels.get(0).getPrice())+Float.parseFloat(priceLevels.get(1).getPrice());
-        holder.sub_total.setText("€"+String.valueOf(total));
+        if(priceLevels.size()>1){
+            holder.other_bill.setText("€ "+priceLevels.get(2).getPrice()+"/Month");
+            total = total + Float.parseFloat(priceLevels.get(2).getPrice());
+        }
+
+        holder.sub_total.setText("€ "+String.valueOf(total)+"/Month");
         Picasso.get()
                 .load(sliderList.get(0).getImage())
                 // *//*  .placeholder(R.drawable.image1)

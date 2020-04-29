@@ -198,42 +198,42 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
         switch (view.getId()) {
             case R.id.favourite_layout:
                 startActivity(new Intent(ShowHomeScreen.this, MyFavourite.class));
-                // checkDrawer();
+                 checkDrawer();
                 break;
 
             case R.id.testimonial_layout:
                 startActivity(new Intent(this, Testimonials.class));
-                // checkDrawer();
+                 checkDrawer();
                 break;
 
             case R.id.password_layout:
                 startActivity(new Intent(this, ChangePassword.class));
-                //  checkDrawer();
+                  checkDrawer();
                 break;
 
             case R.id.contact_layout:
                 startActivity(new Intent(this, ContactUs.class));
-                // checkDrawer();
+                 checkDrawer();
                 break;
 
             case R.id.about_us:
                 startActivity(new Intent(this, AboutUs.class));
-                // checkDrawer();
+                 checkDrawer();
                 break;
 
             case R.id.notification:
                 startActivity(new Intent(this, Notification.class));
-                // checkDrawer();
+                 checkDrawer();
                 break;
 
             case R.id.myCommunity_layout:
                 startActivity(new Intent(this, MyCommunity.class));
-                // checkDrawer();
+                checkDrawer();
                 break;
 
             case R.id.logout:
                 showCustomDialog();
-                // checkDrawer();
+                 checkDrawer();
                 break;
         }
     }
@@ -258,7 +258,7 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
         button_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                    alertDialog.dismiss();
                 checkLogout();
 
               //  session.logoutUser();
