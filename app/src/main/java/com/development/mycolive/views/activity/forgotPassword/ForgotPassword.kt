@@ -30,10 +30,10 @@ class ForgotPassword :BaseActivity() , View.OnClickListener {
     }
 
     private fun intitializeView(){
-        passwordBinding.toolbar.title = getString(R.string.forgot_password_title)
-        setSupportActionBar(passwordBinding.toolbar)
+      //  passwordBinding.toolbar.title = getString(R.string.forgot_password_title)
+       /* setSupportActionBar(passwordBinding.toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        supportActionBar!!.setDisplayShowHomeEnabled(true)
+        supportActionBar!!.setDisplayShowHomeEnabled(true)*/
      //   passwordBinding.toolbar.navigationIcon = resources.getDrawable(R.drawable.back_arrow)
     }
 
@@ -46,6 +46,7 @@ class ForgotPassword :BaseActivity() , View.OnClickListener {
 
     private fun setClickListener(){
         passwordBinding.btnReset.setOnClickListener(this)
+        passwordBinding.back.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -63,6 +64,11 @@ class ForgotPassword :BaseActivity() , View.OnClickListener {
                }
 
             }
+
+            R.id.back -> {
+                finish()
+            }
+
         }
     }
 

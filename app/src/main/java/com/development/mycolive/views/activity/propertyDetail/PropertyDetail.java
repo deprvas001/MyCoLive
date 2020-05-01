@@ -213,10 +213,10 @@ public class PropertyDetail extends BaseActivity implements View.OnClickListener
         String image = user.get(SessionManager.KEY_IMAGE);
          token = user.get(SessionManager.KEY_TOKEN);
 
-        propertyDetailBinding.toolbar.setTitle(getResources().getString(R.string.PropertyDetail));
+        /*propertyDetailBinding.toolbar.setTitle(getResources().getString(R.string.PropertyDetail));
         setSupportActionBar(propertyDetailBinding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);*/
 
         if(isNetworkAvailable(PropertyDetail.this)){
             getDefaultData(token);
@@ -240,6 +240,7 @@ public class PropertyDetail extends BaseActivity implements View.OnClickListener
         propertyDetailBinding.locationImage.setOnClickListener(this);
         propertyDetailBinding.facebookIcon.setOnClickListener(this);
         propertyDetailBinding.messageIcon.setOnClickListener(this);
+        propertyDetailBinding.back.setOnClickListener(this);
 
 
         propertyDetailBinding.recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),  propertyDetailBinding.recyclerView, new RecyclerTouchListener.ClickListener() {
@@ -358,6 +359,10 @@ public class PropertyDetail extends BaseActivity implements View.OnClickListener
             case R.id.arrival_date:
                 edit_position=3;
                 mDatePickerDialog.show();
+                break;
+
+            case R.id.back:
+                finish();
                 break;
 
             case R.id.early_check_in:

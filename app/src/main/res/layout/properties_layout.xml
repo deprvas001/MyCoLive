@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:paddingRight="10dp"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="#199E8A"
             android:textStyle="bold"
             android:textSize="13sp" />
 
@@ -57,8 +57,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
+                android:layout_marginLeft="5dp"
+                android:textColor="#C1C1C1"
                 android:visibility="gone"
-                android:textColor="@color/text_color_hint"
                 android:textSize="10sp" />
 
         </LinearLayout>
@@ -67,13 +68,25 @@
             android:id="@+id/price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="10sp" />
+            android:textSize="10sp"
+            android:textColor="#4B4B4B"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/text_color_hint"
+            android:textColor="#4B4B4B"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/count_property"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#4B4B4B"
+            android:visibility="gone"
+            android:drawablePadding="5dp"
+            android:drawableLeft="@drawable/ic_location_searching_black_24dp"
             android:textSize="10sp" />
 
 

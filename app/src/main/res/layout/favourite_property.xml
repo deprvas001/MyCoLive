@@ -20,6 +20,16 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/images" />
 
+            <ImageView
+                android:id="@+id/fav_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="10dp"
+                android:tint="#249889"
+                android:src="@drawable/favourite_icon"/>
 
         </RelativeLayout>
 
@@ -35,9 +45,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:paddingRight="10dp"
-                android:text="South Yara"
                 android:layout_marginTop="10dp"
-                android:textColor="@color/edit_text_color"
+                android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
                 android:textSize="14sp" />
 
@@ -45,22 +54,10 @@
                 android:id="@+id/price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="$1200/Month"
                 android:layout_marginTop="10dp"
                 android:textColor="@color/edit_text_color"
                 android:textStyle="bold"
                 android:textSize="14sp" />
-
-            <ImageView
-                android:id="@+id/fav_icon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:tint="#249889"
-                android:src="@drawable/favourite_icon"/>
-
         </LinearLayout>
 
         <TextView
@@ -68,13 +65,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/address_color"
-            android:text="9/55 Caraline Street,South Yara VIC, Austria"
             android:layout_marginTop="5dp"
             android:drawablePadding="10dp"
             android:layout_marginLeft="5dp"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
-            android:drawableLeft="@drawable/marker_icon"
+            android:drawableTint="@android:color/black"
+            android:drawableLeft="@drawable/ic_location_on_black_24dp"
             android:textSize="12sp" />
 
         <LinearLayout
@@ -87,7 +84,7 @@
                 android:id="@+id/no_of_bathroom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="3"
+                android:textStyle="bold"
                 android:drawablePadding="10dp"
                 android:drawableLeft="@drawable/bath_icon"
                 android:textColor="@color/text_color_hint"/>
@@ -96,7 +93,7 @@
                 android:id="@+id/no_of_room"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="3"
+                android:textStyle="bold"
                 android:layout_weight="1"
                 android:layout_marginLeft="20dp"
                 android:drawableLeft="@drawable/bed_icon"
@@ -107,8 +104,8 @@
                 android:id="@+id/book_now"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/view"
-                android:background="@drawable/text_view_background"
+                android:text="@string/book_now"
+                android:background="@drawable/button_background"
                 android:layout_marginTop="5dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"

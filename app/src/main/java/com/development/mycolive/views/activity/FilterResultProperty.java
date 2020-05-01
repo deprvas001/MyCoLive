@@ -35,6 +35,7 @@ ActivityFilterResultPropertyBinding  propertyBinding;
         if(getIntent()!=null){
 
             propertyList = getIntent().getParcelableArrayListExtra("property");
+            propertyBinding.contentSearch.count.setText(String.valueOf(propertyList.size()) +" "+getString(R.string.search_result));
             setReyclerView(propertyList);
         }
     }

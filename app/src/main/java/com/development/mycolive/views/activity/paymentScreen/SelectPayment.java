@@ -62,10 +62,10 @@ ActivitySelectPaymentBinding paymentBinding;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         paymentBinding = DataBindingUtil.setContentView(this,R.layout.activity_select_payment);
-        paymentBinding.toolbar.setTitle(getString(R.string.select_payment));
+        /*paymentBinding.toolbar.setTitle(getString(R.string.select_payment));
         setSupportActionBar(paymentBinding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);*/
 
         if (getIntent() != null) {
             total_price = getIntent().getExtras().getFloat("total_price");
@@ -87,6 +87,7 @@ ActivitySelectPaymentBinding paymentBinding;
         paymentBinding.ibanNo.setText(bankAccount.getIban());
         paymentBinding.shortName.setText(bankAccount.getSortName());
         paymentBinding.description.setText(bankAccount.getDesc());
+        paymentBinding.back.setOnClickListener(this);
 
 
         paymentBinding.radioGroup.setOnCheckedChangeListener(this);
@@ -117,7 +118,7 @@ ActivitySelectPaymentBinding paymentBinding;
 
     private void convetBitmapString(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 40, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.PNG, 10, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream.toByteArray();
         image_string = Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
@@ -167,6 +168,8 @@ ActivitySelectPaymentBinding paymentBinding;
 
         }else if(view.getId() == R.id.upload_receipt){
             pickImage(REQUEST_CODE );
+        }else if(view.getId() == R.id.back){
+            finish();
         }
     }
 

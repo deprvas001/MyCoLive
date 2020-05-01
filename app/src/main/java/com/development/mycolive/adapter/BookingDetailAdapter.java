@@ -15,9 +15,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.development.mycolive.R;
 import com.development.mycolive.model.home.HomeSlider;
+import com.development.mycolive.model.paymentModel.PaymentRequestBody;
 import com.development.mycolive.model.propertyDetailModel.FacilityData;
 import com.development.mycolive.model.propertyDetailModel.PropertyRoomData;
 import com.development.mycolive.model.searchDetailPage.PriceLevel;
+import com.development.mycolive.model.termscondition.ContractResponse;
 import com.development.mycolive.views.activity.propertyDetail.PropertyDetail;
 import com.development.mycolive.views.activity.roomInformation.RoomInformation;
 import com.squareup.picasso.Picasso;
@@ -34,9 +36,11 @@ public class BookingDetailAdapter extends RecyclerView.Adapter<BookingDetailAdap
     private Context context;
     private ViewGroup group;
     private float total = 0;
+    ContractResponse response;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView price, name, month_rent, security, sub_total,other_bill;
+        public TextView price, name, month_rent, security, sub_total,other_bill,
+                room_name,period,room_name_text;
         public CheckBox select;
         public ImageView imageView, user_image, post_image, facility_image;
         public LinearLayout room_info;
@@ -50,14 +54,18 @@ public class BookingDetailAdapter extends RecyclerView.Adapter<BookingDetailAdap
             security = (TextView) view.findViewById(R.id.security);
             sub_total = (TextView) view.findViewById(R.id.sub_total);
             other_bill = (TextView)view.findViewById(R.id.other_price);
+            room_name = (TextView)view.findViewById(R.id.room_name);
+            period = (TextView)view.findViewById(R.id.period);
+            room_name_text = (TextView)view.findViewById(R.id.room_name_text);
 
         }
     }
 
-    public BookingDetailAdapter(Context context, ArrayList<PropertyRoomData> roomDataList) {
+    public BookingDetailAdapter(Context context, ArrayList<PropertyRoomData> roomDataList,ContractResponse response) {
 
         this.context = context;
         this.roomDataList = roomDataList;
+        this.response =response;
     }
 
     @Override
@@ -77,6 +85,12 @@ public class BookingDetailAdapter extends RecyclerView.Adapter<BookingDetailAdap
         holder.name.setText(roomData.getApartment_name());
         holder.security.setText("€ "+priceLevels.get(1).getPrice()+"/Month");
         holder.month_rent.setText("€ "+priceLevels.get(0).getPrice()+"/Month");
+        holder.room_name.setText(roomData.getApartment_name());
+        holder.room_name_text.setText(roomData.getApartment_name());
+        if(!response.getDuration().isEmpty() && response.getDuration()!=null) {
+            holder.period.setText(response.getDuration());
+        }
+
 
         total = Float.parseFloat(priceLevels.get(0).getPrice())+Float.parseFloat(priceLevels.get(1).getPrice());
         if(priceLevels.size()>1){

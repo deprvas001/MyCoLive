@@ -91,7 +91,7 @@ public class Testimonials extends BaseActivity implements View.OnClickListener {
                 }else{
                     Toast.makeText(Testimonials.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                 }
-             /*  bookingBinding.shimmerViewContainer.stopShimmer();
+             /*  bookingBinding .shimmerViewContainer.stopShimmer();
                 bookingBinding.shimmerViewContainer.setVisibility(View.GONE);*/
             }
         });
@@ -108,7 +108,7 @@ public class Testimonials extends BaseActivity implements View.OnClickListener {
 
   private void setClickListener(){
       testimonialsBinding.back.setOnClickListener(this);
-      testimonialsBinding.notification.setOnClickListener(this);
+   //   testimonialsBinding.notification.setOnClickListener(this);
   }
 
     @Override

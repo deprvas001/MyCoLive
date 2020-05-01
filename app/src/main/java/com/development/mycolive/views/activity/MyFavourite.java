@@ -23,8 +23,8 @@ ActivityMyFavouriteBinding favouriteBinding;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         favouriteBinding = DataBindingUtil.setContentView(this,R.layout.activity_my_favourite);
-        favouriteBinding.toolbar.setTitle(getString(R.string.my_favourite));
-        setSupportActionBar( favouriteBinding.toolbar);
+       /* favouriteBinding.toolbar.setTitle(getString(R.string.my_favourite));
+        setSupportActionBar( favouriteBinding.toolbar);*/
         loadFragment(new FavouriteProperty());
         setClickListener();
     }

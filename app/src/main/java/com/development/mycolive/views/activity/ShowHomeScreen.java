@@ -181,6 +181,7 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
         screenBinding.customNavigationDrawer.aboutUs.setOnClickListener(this);
         screenBinding.appBar.notification.setOnClickListener(this);
         screenBinding.customNavigationDrawer.logout.setOnClickListener(this);
+        screenBinding.headerLayout.back.setOnClickListener(this);
     }
 
     @Override
@@ -234,6 +235,10 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
             case R.id.logout:
                 showCustomDialog();
                  checkDrawer();
+                break;
+
+            case R.id.back:
+                checkDrawer();
                 break;
         }
     }

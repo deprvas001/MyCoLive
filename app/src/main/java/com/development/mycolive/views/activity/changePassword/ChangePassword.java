@@ -5,10 +5,12 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.development.mycolive.R;
@@ -67,6 +69,9 @@ ActivityChangePasswordBinding passwordBinding;
                 break;
 
             case R.id.btn_reset:
+                InputMethodManager inputManager =(InputMethodManager) ChangePassword.this. getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
                 if(passwordBinding.inputOld.getText().toString().isEmpty()){
                     Toast.makeText(this, "Please enter Old Password", Toast.LENGTH_SHORT).show();
                     return;
@@ -81,6 +86,8 @@ ActivityChangePasswordBinding passwordBinding;
                     Toast.makeText(this, "Please New Password And ReConfirm should be match.", Toast.LENGTH_SHORT).show();
                     return;
                 }else{
+
+
                     changePassword();
                 }
 

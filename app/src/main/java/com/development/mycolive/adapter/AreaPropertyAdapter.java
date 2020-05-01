@@ -18,6 +18,7 @@ import com.development.mycolive.views.activity.searchDetailPage.RoomDetail;
 import com.development.mycolive.views.activity.searchResult.SearchResult;
 import com.squareup.picasso.Picasso;
 
+import java.time.format.TextStyle;
 import java.util.List;
 
 public class AreaPropertyAdapter extends RecyclerView.Adapter<AreaPropertyAdapter.MyViewHolder> {
@@ -26,7 +27,7 @@ public class AreaPropertyAdapter extends RecyclerView.Adapter<AreaPropertyAdapte
     private Context context;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView title,price,address,name,rating,created_date;
+        public TextView title,price,address,name,rating,created_date,count;
         public ImageView imageView;
         public LinearLayout viewLayout;
 
@@ -40,6 +41,7 @@ public class AreaPropertyAdapter extends RecyclerView.Adapter<AreaPropertyAdapte
             rating = (TextView)view.findViewById(R.id.rating);
             created_date = (TextView)view.findViewById(R.id.created_date);
             viewLayout = (LinearLayout)view.findViewById(R.id.property_view);
+            count = (TextView)view.findViewById(R.id.count_property);
 
         }
     }
@@ -61,10 +63,14 @@ public class AreaPropertyAdapter extends RecyclerView.Adapter<AreaPropertyAdapte
     @Override
     public void onBindViewHolder(AreaPropertyAdapter.MyViewHolder holder, int position) {
         HomePropertyArea  featureProperty = propertiesList.get(position);
-        holder.address.setText(featureProperty.getCount()+" "+featureProperty.getCity());
+        holder.address.setText(/*featureProperty.getCount()+" "+*/featureProperty.getCity());
         holder.price.setVisibility(View.GONE);
         holder.name.setVisibility(View.GONE);
         holder.rating.setVisibility(View.GONE);
+        holder.count.setText(featureProperty.getCount() + " Properties");
+        holder.count.setVisibility(View.VISIBLE);
+        holder.address.setTextSize(13);
+        holder.address.setTextColor(context.getResources().getColor(R.color.city_area));
 
         holder.viewLayout.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -27,6 +27,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="#4B4B4B"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:textSize="10sp" />
@@ -54,6 +56,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="#4B4B4B"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:textSize="10sp" />
@@ -79,6 +83,8 @@
                 android:id="@+id/room_mate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="#4B4B4B"
                 android:gravity="center"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"

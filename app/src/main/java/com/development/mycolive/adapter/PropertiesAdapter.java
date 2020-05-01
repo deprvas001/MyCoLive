@@ -40,7 +40,6 @@ public class PropertiesAdapter extends RecyclerView.Adapter<PropertiesAdapter.My
             rating = (TextView)view.findViewById(R.id.rating);
             created_date = (TextView)view.findViewById(R.id.created_date);
             viewLayout = (LinearLayout)view.findViewById(R.id.property_view);
-
         }
     }
 
@@ -62,10 +61,11 @@ public class PropertiesAdapter extends RecyclerView.Adapter<PropertiesAdapter.My
     public void onBindViewHolder(PropertiesAdapter.MyViewHolder holder, int position) {
         HomeFeatureProperty  featureProperty = propertiesList.get(position);
        List<HomeSlider> homeSliderList = featureProperty.getImage_slider();
-        holder.price.setText("€"+featureProperty.getPrice());
+        holder.price.setText("€ "+featureProperty.getPrice());
         holder.address.setText(featureProperty.getAddress());
         holder.name.setText(featureProperty.getName());
         holder.created_date.setText(featureProperty.getCreated_date());
+        holder.rating.setText(featureProperty.getRating());
 
 
 

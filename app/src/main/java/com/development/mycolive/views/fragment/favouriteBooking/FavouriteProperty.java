@@ -61,11 +61,13 @@ public class FavouriteProperty extends Fragment implements View.OnClickListener 
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         propertyBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_favourite_property, container, false);
+       // setClickListener();
         getSession();
         return propertyBinding.getRoot();
     }
 
     private void setClickListener(){
+        //propertyBinding.contentSearch
         propertyBinding.fab.setOnClickListener(this);
     }
 

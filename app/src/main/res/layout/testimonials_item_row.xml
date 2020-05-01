@@ -26,6 +26,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="10dp"
+                    android:background="#fcfcfc"
                     android:layout_height="wrap_content">
 
 
@@ -69,8 +70,8 @@
                             android:id="@+id/description"
                             android:layout_width="match_parent"
                             android:layout_marginLeft="10dp"
-                            android:textColor="#959595"
-                            android:textStyle="bold"
+                            android:textColor="#555555"
+                            android:textStyle="italic"
                             android:layout_marginTop="10dp"
                             android:layout_height="wrap_content" />
 

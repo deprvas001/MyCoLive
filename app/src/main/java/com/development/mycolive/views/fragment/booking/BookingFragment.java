@@ -74,7 +74,7 @@ public class BookingFragment extends Fragment implements View.OnClickListener {
         }
     }
     private void initializeView(){
-        ((ShowHomeScreen)getActivity()).screenBinding.appBar.titleTxt.setText("My BookingData");
+        ((ShowHomeScreen)getActivity()).screenBinding.appBar.titleTxt.setText(getString(R.string.mybooking));
     }
 
 }

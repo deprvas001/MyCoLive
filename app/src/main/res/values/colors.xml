@@ -17,5 +17,6 @@
     <color name="chef">#777</color>
     <color name="timestamp">#777</color>
     <color name = "like_color">#3369FF</color>
+    <color name ="city_area">#199E8A</color>
 
 </resources>

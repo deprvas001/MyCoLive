@@ -40,10 +40,10 @@ public class BookingDetails extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bookingDetailsBinding = DataBindingUtil.setContentView(this, R.layout.activity_booking_details);
-        bookingDetailsBinding.toolbar.setTitle(getString(R.string.booking_detail));
+       /* bookingDetailsBinding.toolbar.setTitle(getString(R.string.booking_detail));
         setSupportActionBar(bookingDetailsBinding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);*/
         if (getIntent() != null) {
 
         roomDataList = getIntent().getParcelableArrayListExtra("data");
@@ -54,7 +54,6 @@ public class BookingDetails extends AppCompatActivity implements View.OnClickLis
 
          early_check  = contractResponse.getEarly_checkin_rent();
          requestBody.setEarly_check_price(String.valueOf(early_check));
-
 
         for(int i=0;i<roomDataList.size();i++){
             id_list.add(roomDataList.get(i).getId());
@@ -84,11 +83,11 @@ public class BookingDetails extends AppCompatActivity implements View.OnClickLis
           final_price = total_price+early_check;
           bookingDetailsBinding.totalPrice.setText("€ "+String.valueOf(total_price)+" + "+early_check+" (Early_Check_In_Price)");
           bookingDetailsBinding.finalPrice.setText("€ "+final_price);
-        setRecyclerView(roomDataList);
+        setRecyclerView(roomDataList,contractResponse);
     }
 
-    private void setRecyclerView(ArrayList<PropertyRoomData> roomDataList){
-        bookingDetailAdapter = new BookingDetailAdapter(this, roomDataList);
+    private void setRecyclerView(ArrayList<PropertyRoomData> roomDataList, ContractResponse contractResponse){
+        bookingDetailAdapter = new BookingDetailAdapter(this, roomDataList,contractResponse);
         mLayoutManager = new LinearLayoutManager(this);
         bookingDetailsBinding.recyclerView.setLayoutManager(mLayoutManager);
         bookingDetailsBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -98,6 +97,7 @@ public class BookingDetails extends AppCompatActivity implements View.OnClickLis
     private void setClickListener(){
         bookingDetailsBinding.btnProceed.setOnClickListener(this);
         bookingDetailsBinding.policyLink.setOnClickListener(this);
+        bookingDetailsBinding.back.setOnClickListener(this);
     }
 
     @Override
@@ -140,6 +140,10 @@ public class BookingDetails extends AppCompatActivity implements View.OnClickLis
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
                 startActivity(i);
+                break;
+
+            case R.id.back:
+                finish();
                 break;
         }
     }

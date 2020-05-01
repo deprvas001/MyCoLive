@@ -10,6 +10,15 @@ public class SignPostRequest {
     private String term_condition;
     private String login_type;
     private String social_id;
+    private String image;
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     public String getSocial_id() {
         return social_id;

@@ -218,5 +218,6 @@
     <string name="linked_facebook">Linked with Facebook</string>
     <string name="payable">Payable Amount:</string>
     <string name="wifi_other"><![CDATA[Wifi & Other Bill]]></string>
+    <string name="book_now">Book Now</string>
 
 </resources>

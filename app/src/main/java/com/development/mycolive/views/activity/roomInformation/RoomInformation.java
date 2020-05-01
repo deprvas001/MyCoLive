@@ -54,13 +54,13 @@ String token="";
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         informationBinding = DataBindingUtil.setContentView(this,R.layout.activity_room_information);
-        informationBinding.toolbar.setTitle(getResources().getString(R.string.RoomDetail));
+       /* informationBinding.toolbar.setTitle(getResources().getString(R.string.RoomDetail));
         setSupportActionBar(informationBinding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);*/
          roomData = (PropertyRoomData) getIntent().getParcelableExtra("room");
          setSliderAndView(roomData.getImage_slider());
-
+         informationBinding.back.setOnClickListener(this);
          getSession();
 
     }
@@ -201,6 +201,10 @@ String token="";
         switch (view.getId()){
             case R.id.fav_icon:
                 addFav();
+                break;
+
+            case R.id.back:
+                finish();
                 break;
         }
     }

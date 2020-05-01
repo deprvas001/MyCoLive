@@ -36,6 +36,8 @@ public class HomeFeatureProperty implements Parcelable {
    private List<FacilityData> facilityList;
    private List<HomeSlider> image_slider;
    private String favourites;
+   private String rating;
+
 
    public HomeFeatureProperty(){
 
@@ -68,7 +70,8 @@ public class HomeFeatureProperty implements Parcelable {
         image = in.readString();
         facilityList = in.createTypedArrayList(FacilityData.CREATOR);
         image_slider = in.createTypedArrayList(HomeSlider.CREATOR);
-        favourites = in.readString();;
+        favourites = in.readString();
+        rating = in.readString();
     }
 
     public static final Creator<HomeFeatureProperty> CREATOR = new Creator<HomeFeatureProperty>() {
@@ -287,6 +290,14 @@ public class HomeFeatureProperty implements Parcelable {
         return facilityList;
     }
 
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
+
     public void setFacilityList(List<FacilityData> facilityList) {
         this.facilityList = facilityList;
     }
@@ -333,5 +344,6 @@ public class HomeFeatureProperty implements Parcelable {
         parcel.writeTypedList(facilityList);
         parcel.writeTypedList(image_slider);
         parcel.writeString(favourites);
+        parcel.writeString(rating);
     }
 }

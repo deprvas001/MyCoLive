@@ -63,7 +63,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
         FavouritePropertyModel bookingModel = propertiesList.get(position);
 
         holder.name.setText(bookingModel.getName());
-        holder.price.setText(bookingModel.getPrice());
+        holder.price.setText("€ " +bookingModel.getPrice() +"/Month");
         holder.address.setText(bookingModel.getAddress());
         holder.no_of_bathroom.setText(bookingModel.getNo_of_bathroom());
         holder.no_of_room.setText(bookingModel.getNumber_of_room());

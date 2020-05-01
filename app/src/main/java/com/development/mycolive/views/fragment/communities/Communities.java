@@ -83,6 +83,8 @@ public class Communities extends Fragment implements View.OnClickListener {
         fragmentCommunityBinding.general.setOnClickListener(this);
         fragmentCommunityBinding.accodmation.setOnClickListener(this);
         fragmentCommunityBinding.searchEdit.setOnClickListener(this);
+
+            ((ShowHomeScreen)getActivity()).screenBinding.appBar.titleTxt.setText(getString(R.string.community));
     }
 
 
