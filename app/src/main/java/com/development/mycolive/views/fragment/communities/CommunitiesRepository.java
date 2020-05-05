@@ -84,10 +84,19 @@ public class CommunitiesRepository {
         shipmentApi.getSearchData(type).enqueue(new Callback<SearchCommunityResponse>() {
             @Override
             public void onResponse(Call<SearchCommunityResponse> call, Response<SearchCommunityResponse> response) {
-                if(response.code() == 401){
-                    loginResponseLiveData.setValue(new SearchCommunityApiResponse(response.code()));
-                }else if(response.code() == 400){
-                    loginResponseLiveData.setValue(new SearchCommunityApiResponse(response.code()));
+                if(response.code() == 401 || response.code() == 400 || response.code() == 500){
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        String message = jObjError.getString("message");
+                        int status = jObjError.getInt("status");
+                        loginResponseLiveData.setValue(new SearchCommunityApiResponse(message,status,response.code()));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                 }
                 else {
                     if(response.isSuccessful()){

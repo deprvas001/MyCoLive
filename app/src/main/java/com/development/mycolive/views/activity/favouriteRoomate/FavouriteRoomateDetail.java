@@ -19,6 +19,7 @@ import com.development.mycolive.views.activity.BaseActivity;
 import com.development.mycolive.views.activity.bookingHistory.BookingHistoryViewModel;
 import com.development.mycolive.views.activity.bookingHistory.CurrentBookingHistory;
 import com.development.mycolive.views.activity.paymentScreen.SelectPayment;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -52,6 +53,7 @@ PropertiesAdapter propertiesAdapter;
     RecyclerView.LayoutManager mLayoutManager;
     String id;
     SessionManager session;
+    private GoogleMap mMap;
     String token="";
     FavRoomateViewModel viewModel;
     @Override
@@ -69,15 +71,15 @@ PropertiesAdapter propertiesAdapter;
     }
 
     private void initializeView(){
-        roomateDetailBinding.toolbar.setTitle(getResources().getString(R.string.RoomateDetail));
+       /* roomateDetailBinding.toolbar.setTitle(getResources().getString(R.string.RoomateDetail));
         setSupportActionBar(roomateDetailBinding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);*/
 
         roomateDetailBinding.favIcon.setOnClickListener(this);
+        roomateDetailBinding.back.setOnClickListener(this);
 
         getSession();
-
 
     }
 
@@ -193,6 +195,10 @@ PropertiesAdapter propertiesAdapter;
         switch (view.getId()){
             case R.id.fav_icon:
                addFav();
+                break;
+
+            case R.id.back:
+                finish();
                 break;
         }
     }

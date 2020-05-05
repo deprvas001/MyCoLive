@@ -4,6 +4,7 @@ import android.content.Context;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.development.mycolive.model.communityModel.SearchCommunityApiResponse;
 import com.development.mycolive.model.homeProperty.FeatureApiResponse;
 import com.development.mycolive.model.homeProperty.FeatureResponse;
 import com.development.mycolive.networking.RetrofitService;
@@ -11,6 +12,10 @@ import com.development.mycolive.networking.ShipmentApi;
 import com.development.mycolive.model.home.HomeApiResponse;
 import com.development.mycolive.model.home.HomeResponse;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -38,10 +43,19 @@ public class SearchResultRepository {
         shipmentApi.getRoomList(params,offset,per_page).enqueue(new Callback<FeatureResponse>() {
             @Override
             public void onResponse(Call<FeatureResponse> call, Response<FeatureResponse> response) {
-                if(response.code() == 401){
-                    homeResponseLiveData.setValue(null);
-                }else if(response.code() == 400){
-                    homeResponseLiveData.setValue(new FeatureApiResponse(response.code()));
+                if(response.code() == 401 || response.code() == 400 || response.code() == 500){
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        String message = jObjError.getString("message");
+                        int status = jObjError.getInt("status");
+                        homeResponseLiveData.setValue(new FeatureApiResponse(message,status,response.code()));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                 }
                 else {
                     if(response.isSuccessful()){

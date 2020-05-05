@@ -24,6 +24,7 @@ import com.development.mycolive.databinding.FragmentHomeBinding;
 import com.development.mycolive.model.favourite.RoomateData;
 import com.development.mycolive.model.home.RoomateApiResponse;
 import com.development.mycolive.session.SessionManager;
+import com.development.mycolive.views.activity.notification.Notification;
 import com.development.mycolive.views.activity.roomate.RoommateList;
 import com.development.mycolive.views.activity.searchResult.SearchResult;
 import com.development.mycolive.views.activity.ShowHomeScreen;
@@ -107,6 +108,7 @@ public class Home extends Fragment implements View.OnClickListener {
 
     private void initializeView() {
         ((ShowHomeScreen) getActivity()).screenBinding.appBar.titleTxt.setText("Home Screen");
+        ((ShowHomeScreen) getActivity()).screenBinding.appBar.notification.setOnClickListener(this);
         homeBinding.btnFeature.setOnClickListener(this);
         homeBinding.hotPropertyBtn.setOnClickListener(this);
         homeBinding.btnPropertyArea.setOnClickListener(this);
@@ -155,6 +157,10 @@ public class Home extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.notification:
+                startActivity(new Intent(getActivity(), Notification.class));
+                break;
+
             case R.id.btn_feature:
                 if( ((ShowHomeScreen) getActivity()).isNetworkAvailable(getActivity())){
                     intent = new Intent(getActivity(),SearchResult.class);

@@ -43,7 +43,7 @@
                 android:id="@+id/date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#8C8C8C"
+                android:textColor="#C1C1C1"
                 android:padding="5dp"
                 android:textSize="12sp" />
 
@@ -64,6 +64,7 @@
                 android:textColor="#8C8C8C"
                 android:paddingLeft="5dp"
                 android:textSize="12sp"
+                android:textStyle="bold"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/imageView"
                 android:layout_below="@id/name_layout" />
@@ -75,6 +76,7 @@
                 android:textColor="#8C8C8C"
                 android:paddingLeft="5dp"
                 android:textSize="12sp"
+                android:textStyle="bold"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/imageView"
                 android:layout_below="@id/type"
@@ -87,6 +89,7 @@
                 android:textColor="#8C8C8C"
                 android:paddingLeft="5dp"
                 android:textSize="12sp"
+                android:textStyle="bold"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/imageView"
                 android:layout_below="@id/city"
@@ -110,15 +113,32 @@
             android:padding="10dp"
             android:layout_weight="1"
             android:maxLength="100"
+            android:textStyle="bold"
             android:layout_gravity="center_vertical" />
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/know_more"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#199E8A"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="-20dp"
+            android:layout_gravity="center_vertical"
+            android:text="@string/know_more"
+            android:textStyle="bold"
+            android:gravity="right"/>
+
     <com.smarteist.autoimageslider.SliderView
         android:id="@+id/imageSlider"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         app:sliderAnimationDuration="600"
         app:sliderAutoCycleDirection="back_and_forth"
         app:sliderAutoCycleEnabled="true"
@@ -132,27 +152,15 @@
         app:sliderIndicatorSelectedColor="#5A5A5A"
         app:sliderIndicatorUnselectedColor="#FFF"
         app:sliderScrollTimeInSec="1"
-        android:visibility="gone"
         app:sliderStartAutoCycle="true" />
 
-        <TextView
-            android:id="@+id/know_more"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#199E8A"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="-20dp"
-            android:layout_gravity="center_vertical"
-            android:text="Know More"
-            android:gravity="right"/>
 
-
-        <ImageView
+    <ImageView
             android:id="@+id/post_image"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:scaleType="fitCenter" />
+            android:layout_margin="10dp"
+            android:scaleType="fitXY" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -167,6 +175,8 @@
                 android:textColor="#8C8C8C"
                 android:layout_weight="1"
                 android:paddingLeft="10dp"
+                android:textStyle="bold"
+                android:drawableTint="#8C8C8C"
                 android:drawableLeft="@drawable/ic_like"
                 android:drawablePadding="10dp" />
 
@@ -176,6 +186,8 @@
                 android:layout_height="wrap_content"
                 android:textColor="#8C8C8C"
                 android:gravity="center"
+                android:drawableTint="#8C8C8C"
+                android:textStyle="bold"
                 android:drawablePadding="10dp"
                 android:drawableLeft="@drawable/ic_comment" />
 
@@ -185,6 +197,7 @@
                 android:textColor="#8C8C8C"
                 android:layout_weight="1"
                 android:gravity="right"
+                android:drawableTint="#8C8C8C"
                 android:paddingRight="10dp"
                 android:drawableRight="@drawable/ic_share"
                 />

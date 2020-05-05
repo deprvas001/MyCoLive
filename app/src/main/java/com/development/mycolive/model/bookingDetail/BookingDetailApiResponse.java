@@ -1,11 +1,13 @@
-package com.development.mycolive.model.communityModel;
+package com.development.mycolive.model.bookingDetail;
 
-public class SearchCommunityApiResponse {
-    public SearchCommunityResponse communityResponse;
+import com.development.mycolive.model.booking.BookingResponse;
+
+public class BookingDetailApiResponse {
+
+    public UploadIdResponse response;
     private Throwable error;
     private String message;
     private int status;
-
     private int status_code;
 
     public int getStatus_code() {
@@ -16,34 +18,31 @@ public class SearchCommunityApiResponse {
         this.status_code = status_code;
     }
 
-    public SearchCommunityApiResponse(String message,int status,int status_code) {
+    public BookingDetailApiResponse(String message,int status,int status_code) {
         this.message = message;
         this.status = status;
         this.status_code = status_code;
     }
 
-    public SearchCommunityApiResponse(SearchCommunityResponse communityResponse) {
-        this.communityResponse = communityResponse;
+
+    public BookingDetailApiResponse(UploadIdResponse response) {
+        this.response = response;
     }
 
-    public SearchCommunityApiResponse(Throwable error) {
+    public BookingDetailApiResponse(Throwable error) {
         this.error = error;
     }
 
-    public SearchCommunityApiResponse(String message) {
-        this.message = message;
-    }
-
-    public SearchCommunityApiResponse(int status) {
+    public BookingDetailApiResponse(int status) {
         this.status = status;
     }
 
-    public SearchCommunityResponse getCommunityResponse() {
-        return communityResponse;
+    public UploadIdResponse getResponse() {
+        return response;
     }
 
-    public void setCommunityResponse(SearchCommunityResponse communityResponse) {
-        this.communityResponse = communityResponse;
+    public void setResponse(UploadIdResponse response) {
+        this.response = response;
     }
 
     public Throwable getError() {

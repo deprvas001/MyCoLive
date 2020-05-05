@@ -57,15 +57,12 @@ ActivitySelectPaymentBinding paymentBinding;
     float total_price;
     PaymentRequestBody requestBody;
     BankAccount bankAccount;
+    String upload_id="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         paymentBinding = DataBindingUtil.setContentView(this,R.layout.activity_select_payment);
-        /*paymentBinding.toolbar.setTitle(getString(R.string.select_payment));
-        setSupportActionBar(paymentBinding.toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);*/
 
         if (getIntent() != null) {
             total_price = getIntent().getExtras().getFloat("total_price");
@@ -74,7 +71,13 @@ ActivitySelectPaymentBinding paymentBinding;
             bankAccount = getIntent().getParcelableExtra("bank_account");
             email = getIntent().getStringArrayListExtra("email");
 
+            if(getIntent().getExtras().containsKey("upload_image")){
+                upload_id = getIntent().getExtras().getString("upload_image");
+            }
+
             requestBody.setEmail_id(email);
+
+            requestBody.setId_proof(upload_id);
 
         }
         setClickListener();
@@ -207,16 +210,7 @@ ActivitySelectPaymentBinding paymentBinding;
             headers.put(ApiConstant.USER_DEVICE_TOKEN,ApiConstant.USER_DEVICE_TOKEN_VALUE);
             headers.put(ApiConstant.AUTHENTICAT_TOKEN,token);
 
-          /* PaymentRequestBody requestBody = new PaymentRequestBody();
-           requestBody.setRoom_id(roomIdList);
-           requestBody.setDuration("4");
-           requestBody.setPayment_method("BANK");
-           requestBody.setContract("1");
-           requestBody.setEarly_check("23-03-2020");
-           requestBody.setReceipt(image_string);
-           requestBody.setDaterange("Apr 2020 - Jun 2020");*/
-
-          requestBody.setReceipt(image_string);
+            requestBody.setReceipt(image_string);
 
 
           viewModel = ViewModelProviders.of(this).get(PaymentViewModel.class);

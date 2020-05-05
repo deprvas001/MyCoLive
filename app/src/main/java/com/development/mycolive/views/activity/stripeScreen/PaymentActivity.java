@@ -87,10 +87,16 @@ public class PaymentActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         paymentBinding = DataBindingUtil.setContentView(this,R.layout.activity_payment);
-        paymentBinding.toolbar.setTitle(getString(R.string.stripe));
+        /*paymentBinding.toolbar.setTitle(getString(R.string.stripe));
         setSupportActionBar(paymentBinding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);*/
+        paymentBinding.back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         if(getIntent()!=null){
              total_price = getIntent().getExtras().getFloat("total_price");

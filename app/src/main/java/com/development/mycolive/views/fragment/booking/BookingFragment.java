@@ -1,6 +1,7 @@
 package com.development.mycolive.views.fragment.booking;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import com.development.mycolive.R;
 import com.development.mycolive.databinding.FragmentBookingBinding;
 import com.development.mycolive.views.activity.ShowHomeScreen;
+import com.development.mycolive.views.activity.notification.Notification;
 import com.development.mycolive.views.fragment.booking.CurrentBooking;
 
 /**
@@ -51,11 +53,17 @@ public class BookingFragment extends Fragment implements View.OnClickListener {
     private void setClickListener(){
         bookingBinding.currentBooking.setOnClickListener(this);
         bookingBinding.pastBooking.setOnClickListener(this);
+        ((ShowHomeScreen)getActivity()).screenBinding.appBar.notification.setOnClickListener(this);
+
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()){
+            case R.id.notification:
+                startActivity(new Intent(getActivity(), Notification.class));
+                break;
+
             case R.id.current_booking:
                 bookingBinding.currentBooking.setBackground(getResources().getDrawable(R.drawable.booking_background_selected));
                 bookingBinding.pastBooking.setBackground(null);

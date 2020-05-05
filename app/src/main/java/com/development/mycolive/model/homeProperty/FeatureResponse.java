@@ -9,7 +9,16 @@ import java.util.List;
 public class FeatureResponse {
     private String message;
     private int status;
+    private String city_fb_link;
     private ArrayList<HomeFeatureProperty> data;
+
+    public String getCity_fb_link() {
+        return city_fb_link;
+    }
+
+    public void setCity_fb_link(String city_fb_link) {
+        this.city_fb_link = city_fb_link;
+    }
 
     public String getMessage() {
         return message;

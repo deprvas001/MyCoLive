@@ -341,7 +341,7 @@ public class NewPost extends BaseActivity implements View.OnClickListener, Adapt
                 if(position>0){
                     UniversityModel universityModel = (UniversityModel)adapterView.getSelectedItem();
                     university = universityModel.getId();
-                    Toast.makeText(this, university, Toast.LENGTH_SHORT).show();
+               //     Toast.makeText(this, university, Toast.LENGTH_SHORT).show();
                 }else{
                     university = "";
                 }
@@ -351,7 +351,7 @@ public class NewPost extends BaseActivity implements View.OnClickListener, Adapt
                 if(position>0){
                     CityModel cityModel = (CityModel)adapterView.getSelectedItem();
                     city = cityModel.getId();
-                    Toast.makeText(this, city, Toast.LENGTH_SHORT).show();
+                 //   Toast.makeText(this, city, Toast.LENGTH_SHORT).show();
                 }else{
                     city = "";
                 }

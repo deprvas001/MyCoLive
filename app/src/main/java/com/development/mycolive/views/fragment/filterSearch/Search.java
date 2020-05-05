@@ -26,6 +26,7 @@ import com.development.mycolive.model.home.HomeFeatureProperty;
 import com.development.mycolive.model.searchScreen.Period;
 import com.development.mycolive.session.SessionManager;
 import com.development.mycolive.views.activity.FilterResultProperty;
+import com.development.mycolive.views.activity.notification.Notification;
 import com.development.mycolive.views.activity.roomate.RoommateList;
 import com.development.mycolive.views.activity.searchResult.SearchResult;
 import com.development.mycolive.views.activity.ShowHomeScreen;
@@ -127,6 +128,7 @@ FragmentSearchBinding searchBinding;
         searchBinding.university.setOnItemSelectedListener(this);
         searchBinding.type.setOnItemSelectedListener(this);
         searchBinding.duration.setOnItemSelectedListener(this);
+        ((ShowHomeScreen)getActivity()).screenBinding.appBar.notification.setOnClickListener(this);
 
         if( ((ShowHomeScreen) getActivity()).isNetworkAvailable(getActivity())){
             getDefaultData();
@@ -141,9 +143,33 @@ FragmentSearchBinding searchBinding;
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_search:
-                getSerchData();
+                if(category_type.isEmpty()){
+                    Toast.makeText(getActivity(), "Please Select Category", Toast.LENGTH_SHORT).show();
+                   return;
+                }else if(city_spinner.isEmpty()){
+                    Toast.makeText(getActivity(), "Please Select City", Toast.LENGTH_SHORT).show();
+                    return;
+                }else if(district_spiner.isEmpty()){
+                    Toast.makeText(getActivity(), "Please Select District", Toast.LENGTH_SHORT).show();
+                  return;
+                }else if(university_id.isEmpty()){
+                    Toast.makeText(getActivity(), "Please Select University", Toast.LENGTH_SHORT).show();
+                    return;
+                }else if(duration_period.isEmpty()){
+                    Toast.makeText(getActivity(), "Please Select Duration", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                else{
+                    getSerchData();
+                }
+
                //  startActivity(new Intent(getActivity(), SearchResult.class));
                  break;
+
+            case R.id.notification:
+                startActivity(new Intent(getActivity(), Notification.class));
+                break;
         }
     }
 

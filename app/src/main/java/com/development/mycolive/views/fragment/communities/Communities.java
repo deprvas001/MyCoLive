@@ -29,6 +29,7 @@ import com.development.mycolive.model.communityModel.CommunityApiResponse;
 import com.development.mycolive.model.communityModel.SearchCommunityApiResponse;
 import com.development.mycolive.session.SessionManager;
 import com.development.mycolive.views.activity.ShowHomeScreen;
+import com.development.mycolive.views.activity.notification.Notification;
 import com.development.mycolive.views.activity.postScreen.NewPost;
 
 import java.util.HashMap;
@@ -83,6 +84,7 @@ public class Communities extends Fragment implements View.OnClickListener {
         fragmentCommunityBinding.general.setOnClickListener(this);
         fragmentCommunityBinding.accodmation.setOnClickListener(this);
         fragmentCommunityBinding.searchEdit.setOnClickListener(this);
+        ((ShowHomeScreen)getActivity()).screenBinding.appBar.notification.setOnClickListener(this);
 
             ((ShowHomeScreen)getActivity()).screenBinding.appBar.titleTxt.setText(getString(R.string.community));
     }
@@ -91,6 +93,10 @@ public class Communities extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.notification:
+                startActivity(new Intent(getActivity(), Notification.class));
+                break;
+
             case R.id.fab:
 
                 Intent intent = new Intent(getActivity(),NewPost.class);
@@ -119,7 +125,7 @@ public class Communities extends Fragment implements View.OnClickListener {
             case R.id.search_edit:
                 if(!fragmentCommunityBinding.searchEdit.getText().toString().isEmpty()){
                     setViewBackground(view);
-                    getSearchCommunity("General");
+                    getSearchCommunity(fragmentCommunityBinding.searchEdit.getText().toString());
                 }
                 
                 break;
@@ -177,12 +183,16 @@ public class Communities extends Fragment implements View.OnClickListener {
             public void onChanged(SearchCommunityApiResponse apiResponse) {
                 ((ShowHomeScreen) getActivity()).hideProgressDialog();
                 if(apiResponse.communityResponse !=null){
-                    List<AllPost> allPostList  = apiResponse.communityResponse.getData().getAllpost();
-                      setRecyclerview(allPostList);
-                }else if(apiResponse.getStatus()== 401){
-                      Toast.makeText(getActivity(), "Try Later", Toast.LENGTH_SHORT).show();
+
+                     List<AllPost> allPostList  = apiResponse.communityResponse.getData().getAllpost();
+                     if(allPostList.size()>0){
+                         setRecyclerview(allPostList);
+                     }else{
+                         Toast.makeText(getActivity(), apiResponse.communityResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                     }
+
                 }else{
-                     Toast.makeText(getActivity(), "Try Later", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                 }
              /*   bookingBinding.shimmerViewContainer.stopShimmer();
                 bookingBinding.shimmerViewContainer.setVisibility(View.GONE);*/

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -66,7 +67,7 @@ public class MonthDataAdapter  extends RecyclerView.Adapter<MonthDataAdapter.MyV
         holder.receipt.setText(monthHistory.getReceipt());
         holder.approval.setText(monthHistory.getApproval());
 
-        if(monthHistory.getPayment().equals("1")){
+        if(monthHistory.getPayment().equals("0")){
             holder.view_detail.setText("Pay");
         }
 
@@ -89,6 +90,13 @@ public class MonthDataAdapter  extends RecyclerView.Adapter<MonthDataAdapter.MyV
         TextView month_name = (TextView)dialogView.findViewById(R.id.month_name);
         month_name.setText(monthHistory.getMonth());
 
+        LinearLayout payment_layout = (LinearLayout)dialogView.findViewById(R.id.payment_layout);
+        View view = (View)dialogView.findViewById(R.id.view1);
+        if(monthHistory.getPayment().equals("0")){
+         payment_layout.setVisibility(View.GONE);
+         view.setVisibility(View.GONE);
+        }
+
         TextView payment_id = (TextView)dialogView.findViewById(R.id.payment_id);
         payment_id.setText(": "+monthHistory.getPayment_id());
 
@@ -108,11 +116,11 @@ public class MonthDataAdapter  extends RecyclerView.Adapter<MonthDataAdapter.MyV
 
         Button ok = (Button)dialogView.findViewById(R.id.buttonOk);
 
-        if(monthHistory.getPayment().equals("1")){
+        if(monthHistory.getPayment().equals("0")){
             ok.setText("Pay Now");
         }else {
-            ok.setText("Ok");
 
+            ok.setText("Ok");
         }
 
         //Now we need an AlertDialog.Builder object
@@ -128,7 +136,7 @@ public class MonthDataAdapter  extends RecyclerView.Adapter<MonthDataAdapter.MyV
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               if(monthHistory.getPayment().equals("1")){
+               if(monthHistory.getPayment().equals("0")){
 
                    Intent intent = new Intent(context, PaymentMode.class);
                    intent.putExtra("month_id",monthHistory.getDues_month_id());

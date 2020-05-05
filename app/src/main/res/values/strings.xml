@@ -219,5 +219,7 @@
     <string name="payable">Payable Amount:</string>
     <string name="wifi_other"><![CDATA[Wifi & Other Bill]]></string>
     <string name="book_now">Book Now</string>
+    <string name="clear">Clear</string>
+    <string name="know_more"><u>Know More</u></string>
 
 </resources>

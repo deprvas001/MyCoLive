@@ -123,7 +123,7 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
         //load fragment
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_container, fragment);
-        // transaction.addToBackStack(null);
+       // transaction.addToBackStack(null);
         transaction.commit();
     }
 
@@ -179,7 +179,7 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
         screenBinding.customNavigationDrawer.contactLayout.setOnClickListener(this);
         screenBinding.customNavigationDrawer.logout.setOnClickListener(this);
         screenBinding.customNavigationDrawer.aboutUs.setOnClickListener(this);
-        screenBinding.appBar.notification.setOnClickListener(this);
+       // screenBinding.appBar.notification.setOnClickListener(this);
         screenBinding.customNavigationDrawer.logout.setOnClickListener(this);
         screenBinding.headerLayout.back.setOnClickListener(this);
     }
@@ -223,8 +223,8 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
                 break;
 
             case R.id.notification:
-                startActivity(new Intent(this, Notification.class));
-                 checkDrawer();
+               /* startActivity(new Intent(this, Notification.class));
+                 checkDrawer();*/
                 break;
 
             case R.id.myCommunity_layout:

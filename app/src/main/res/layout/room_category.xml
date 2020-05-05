@@ -26,12 +26,18 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Name"/>
+                android:textColor="#199E8A"
+                android:textStyle="bold"
+                android:textSize="13sp"/>
 
             <TextView
                 android:id="@+id/price"
                 android:layout_width="0dp"
                 android:layout_weight="1"
+                android:textSize="13sp"
+                android:gravity="right"
+                android:textColor="#4B4B4B"
+                android:textStyle="bold"
                 android:layout_height="wrap_content" />
 
         </LinearLayout>

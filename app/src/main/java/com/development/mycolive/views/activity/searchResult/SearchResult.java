@@ -1,6 +1,7 @@
 package com.development.mycolive.views.activity.searchResult;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.development.mycolive.adapter.AreaPropertyAdapter;
@@ -26,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.development.mycolive.R;
 
@@ -43,6 +45,7 @@ ActivitySearchResultBinding resultBinding;
     SearchViewModel searchViewModel;
     String type="";
     String post_code="";
+    String facebook_url_link="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +67,7 @@ ActivitySearchResultBinding resultBinding;
         resultBinding.fab.setOnClickListener(this);
         resultBinding.back.setOnClickListener(this);
         resultBinding.notification.setOnClickListener(this);
+        resultBinding.contentSearch.facebookLink.setOnClickListener(this);
     }
 
     @Override
@@ -81,6 +85,15 @@ ActivitySearchResultBinding resultBinding;
 
             case R.id.notification:
                 startActivity(new Intent(this, Notification.class));
+                break;
+
+            case R.id.facebook_link:
+                if(!facebook_url_link.isEmpty() && facebook_url_link!=null){
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(facebook_url_link));
+                    startActivity(i);
+                }
+
                 break;
 
         }
@@ -135,8 +148,15 @@ ActivitySearchResultBinding resultBinding;
                    homeApiResponse.getResponse().getData();
                    searchList = homeFeaturePropertyList;
 
+                   facebook_url_link = homeApiResponse.getResponse().getCity_fb_link();
+                  // resultBinding.contentSearch.count.setText(searchList.size());
                  /*  List<HomeFeatureProperty> featurePropertyList =   homeApiResponse.getResponse().getData().getFeaturedPropertyList();
                    searchList = featurePropertyList;*/
+                   resultBinding.contentSearch.count.setText(String.valueOf(searchList.size())+" Result Found");
+
+                 if(type.equals("PROPERTYBYAREA") && !facebook_url_link.isEmpty()){
+                     resultBinding.contentSearch.facebookLink.setVisibility(View.VISIBLE);
+                 }
 
                  if(type.equals("PROPERTYBYAREA") && post_code.isEmpty()){
                      setRecyclereAdapter(homeFeaturePropertyList);
@@ -144,6 +164,8 @@ ActivitySearchResultBinding resultBinding;
                      setReyclerView(homeFeaturePropertyList);
                  }
 
+               }else{
+                   Toast.makeText(SearchResult.this, homeApiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                }
                resultBinding.contentSearch.shimmerViewContainer.stopShimmer();
                resultBinding.contentSearch.shimmerViewContainer.setVisibility(View.GONE);

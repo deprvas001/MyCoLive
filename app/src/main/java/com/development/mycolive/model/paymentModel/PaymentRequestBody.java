@@ -15,7 +15,7 @@ public class PaymentRequestBody implements Parcelable {
     private String daterange;
     private List<String> friend_email;
     private String early_check_price;
-
+    private String id_proof="";
 
     public PaymentRequestBody(){
 
@@ -31,6 +31,7 @@ public class PaymentRequestBody implements Parcelable {
         daterange = in.readString();
         early_check_price = in.readString();
         friend_email = in.createStringArrayList();
+        id_proof = in.readString();
     }
 
     public static final Creator<PaymentRequestBody> CREATOR = new Creator<PaymentRequestBody>() {
@@ -44,6 +45,14 @@ public class PaymentRequestBody implements Parcelable {
             return new PaymentRequestBody[size];
         }
     };
+
+    public String getId_proof() {
+        return id_proof;
+    }
+
+    public void setId_proof(String id_proof) {
+        this.id_proof = id_proof;
+    }
 
     public List<String> getRoom_id() {
         return room_id;
@@ -133,5 +142,6 @@ public class PaymentRequestBody implements Parcelable {
         parcel.writeString(daterange);
         parcel.writeString(early_check_price);
         parcel.writeStringList(friend_email);
+        parcel.writeString(id_proof);
     }
 }

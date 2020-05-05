@@ -6,22 +6,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.development.mycolive.R;
+import com.development.mycolive.model.home.HomeSlider;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 
 import java.util.List;
 
-public class ViewCommunitySlider extends
-        SliderViewAdapter< ViewCommunitySlider.ViewCommunitySliderVH> {
+public class CommunitySliderAdapter extends
+        SliderViewAdapter< CommunitySliderAdapter.CommunitySliderAdapterVH> {
 
     private Context context;
     private int mCount;
     private List<String> sliderList;
 
-    public ViewCommunitySlider(Context context, List<String> sliderList) {
+    public CommunitySliderAdapter(Context context, List<String> sliderList) {
         this.context = context;
         this.sliderList = sliderList;
     }
@@ -31,25 +31,25 @@ public class ViewCommunitySlider extends
     }
 
     @Override
-    public ViewCommunitySlider.ViewCommunitySliderVH onCreateViewHolder(ViewGroup parent) {
+    public CommunitySliderAdapter.CommunitySliderAdapterVH onCreateViewHolder(ViewGroup parent) {
         View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.image_slider_layout, null);
-        return new ViewCommunitySlider.ViewCommunitySliderVH(inflate);
+        return new CommunitySliderAdapter.CommunitySliderAdapterVH(inflate);
     }
 
     @Override
-    public void onBindViewHolder(ViewCommunitySlider.ViewCommunitySliderVH viewHolder, final int position) {
+    public void onBindViewHolder(CommunitySliderAdapter.CommunitySliderAdapterVH viewHolder, final int position) {
 
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // Toast.makeText(context, "This is item in position " + position, Toast.LENGTH_SHORT).show();
+                //      Toast.makeText(context, "This is item in position " + position, Toast.LENGTH_SHORT).show();
             }
         });
 
-
+        String slider = sliderList.get(position);
         Glide.with(viewHolder.itemView)
-                .load(sliderList.get(0))
+                .load(slider)
                 //.load(R.drawable.image1)
                 .fitCenter()
                 .into(viewHolder.imageViewBackground);
@@ -62,14 +62,14 @@ public class ViewCommunitySlider extends
         return mCount;
     }
 
-    class ViewCommunitySliderVH extends SliderViewAdapter.ViewHolder {
+    class CommunitySliderAdapterVH extends SliderViewAdapter.ViewHolder {
 
         View itemView;
         ImageView imageViewBackground;
         ImageView imageGifContainer;
         TextView textViewDescription;
 
-        public ViewCommunitySliderVH(View itemView) {
+        public CommunitySliderAdapterVH(View itemView) {
             super(itemView);
             imageViewBackground = itemView.findViewById(R.id.iv_auto_image_slider);
             imageGifContainer = itemView.findViewById(R.id.iv_gif_container);
@@ -77,4 +77,5 @@ public class ViewCommunitySlider extends
             this.itemView = itemView;
         }
     }
+
 }

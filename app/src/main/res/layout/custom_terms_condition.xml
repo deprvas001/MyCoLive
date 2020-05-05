@@ -73,14 +73,16 @@
                 android:layout_height="1dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
+                android:visibility="gone"
                 android:background="#C0C0C0"/>
 
             <CheckBox
                 android:id="@+id/terms_condition"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
                 android:textColor="#555555"
+                android:layout_marginTop="-30dp"
+                android:visibility="invisible"
                 android:gravity="center_vertical"
                 android:text="@string/accept_terms"/>
 
@@ -89,7 +91,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:layout_marginTop="-30dp">
 
 
                 <Button
@@ -100,6 +102,7 @@
                     android:layout_marginBottom="15dp"
                     android:background="@drawable/button_background"
                     android:text="@string/accept"
+                    android:visibility="invisible"
                     android:textColor="@android:color/white" />
 
             </LinearLayout>

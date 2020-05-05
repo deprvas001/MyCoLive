@@ -42,6 +42,7 @@ import com.development.mycolive.model.editProfile.ProfileData;
 import com.development.mycolive.views.activity.SignupScreen;
 import com.development.mycolive.views.activity.changePassword.ChangePassword;
 import com.development.mycolive.views.activity.login.LoginActivity;
+import com.development.mycolive.views.activity.notification.Notification;
 import com.development.mycolive.views.fragment.filterSearch.SearchViewModel;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -160,6 +161,8 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener, 
         oneBinding.fieldLayout.citySpinner.setOnItemSelectedListener(this);
         oneBinding.fieldLayout.districtSpinner.setOnItemSelectedListener(this);
         oneBinding.fieldLayout.universitySpinner.setOnItemSelectedListener(this);
+        ((ShowHomeScreen)getActivity()).screenBinding.appBar.notification.setOnClickListener(this);
+
 
 
         oneBinding.fieldLayout.inputDob.setOnClickListener(new View.OnClickListener() {
@@ -356,6 +359,11 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener, 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+
+            case R.id.notification:
+                startActivity(new Intent(getActivity(), Notification.class));
+                break;
+
             case R.id.profile_image:
                 pickImage(REQUEST_CODE);
                 break;

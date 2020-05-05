@@ -241,6 +241,7 @@ public class PropertyDetail extends BaseActivity implements View.OnClickListener
         propertyDetailBinding.facebookIcon.setOnClickListener(this);
         propertyDetailBinding.messageIcon.setOnClickListener(this);
         propertyDetailBinding.back.setOnClickListener(this);
+        propertyDetailBinding.clear.setOnClickListener(this);
 
 
         propertyDetailBinding.recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),  propertyDetailBinding.recyclerView, new RecyclerTouchListener.ClickListener() {
@@ -292,6 +293,10 @@ public class PropertyDetail extends BaseActivity implements View.OnClickListener
     @Override
     public void onClick(View view) {
         switch (view.getId()){
+            case R.id.clear:
+                propertyDetailBinding.arrivalDate.setText("");
+                break;
+
             case R.id.btn_proceed:
                 if(period.isEmpty()){
                     Toast.makeText(this, "Please Select Period.", Toast.LENGTH_SHORT).show();
@@ -305,7 +310,7 @@ public class PropertyDetail extends BaseActivity implements View.OnClickListener
                         Toast.makeText(this, "Please select from and to date.", Toast.LENGTH_SHORT).show();
                     }else{
                        from = propertyDetailBinding.fromEdit.getText().toString();
-                       to = propertyDetailBinding.fromEdit.getText().toString();
+                       to = propertyDetailBinding.toEdit.getText().toString();
                       //  Toast.makeText(this, "success", Toast.LENGTH_SHORT).show();
                       bookingDetail();
                     }
@@ -551,11 +556,16 @@ public class PropertyDetail extends BaseActivity implements View.OnClickListener
                 if (apiResponse.response != null) {
                     if(apiResponse.getResponse().getStatus() ==1){
                         if(apiResponse.getResponse().getData().getIs_available() == 1){
-                            showCustomDialog(apiResponse.response.getData(),requestBody);
+                    //       showCustomDialog(apiResponse.response.getData(),requestBody);
+                         nextScreen(apiResponse.response.getData(),requestBody);
+
                         }else{
                             Toast.makeText(PropertyDetail.this, apiResponse.getResponse().getData().getMsg()
                                     , Toast.LENGTH_SHORT).show();
                         }
+                    }else{
+                        Toast.makeText(PropertyDetail.this, apiResponse.getResponse().getMessage()
+                                , Toast.LENGTH_SHORT).show();
                     }
 
                     }else{
@@ -584,5 +594,20 @@ public class PropertyDetail extends BaseActivity implements View.OnClickListener
         }
 
         return spannable.delete(0, trimStart).delete(spannable.length() - trimEnd, spannable.length());
+    }
+
+    private void nextScreen(ContractResponse contractResponse ,PaymentRequestBody requestBody){
+        if(contractResponse.getIs_available() == 1 ){
+            Intent intent = new Intent(PropertyDetail.this,BookingDetails.class);
+            intent.putExtra("contract_response",contractResponse);
+            intent.putExtra("bank_info",bankAccount);
+            intent.putExtra("total_price",total_cost);
+            intent.putExtra("booking_info",requestBody);
+            intent.putExtra("bank_account",bankAccount);
+            intent.putParcelableArrayListExtra("data", PropertyDetailAdapter.roomDataList);
+            startActivity(intent);
+        }else{
+            Toast.makeText(PropertyDetail.this, contractResponse.getMsg(), Toast.LENGTH_SHORT).show();
+        }
     }
 }

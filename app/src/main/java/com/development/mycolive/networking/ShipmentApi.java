@@ -3,6 +3,8 @@ package com.development.mycolive.networking;
 import com.development.mycolive.model.ChangePasswordModel;
 import com.development.mycolive.model.alert.AlertRequest;
 import com.development.mycolive.model.booking.BookingResponse;
+import com.development.mycolive.model.bookingDetail.UploadIdRequest;
+import com.development.mycolive.model.bookingDetail.UploadIdResponse;
 import com.development.mycolive.model.bookingHistory.BookingHistoryResponse;
 import com.development.mycolive.model.communityModel.CommunityResponse;
 import com.development.mycolive.model.communityModel.SearchCommunityResponse;
@@ -123,6 +125,11 @@ public interface ShipmentApi {
     Call<PostResponse> changePassword(
             @HeaderMap Map<String,String> headers,
             @Body ChangePasswordModel passwordModel);
+
+    @POST("upload_id_Proof")
+    Call<UploadIdResponse> uploadIdProof(
+            @HeaderMap Map<String,String> headers,
+            @Body UploadIdRequest request);
 
     @POST("userLogout")
     Call<LogoutResponse> logout(

@@ -10,6 +10,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
@@ -22,6 +25,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:fullBackupContent="false"
+        android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">
         <activity android:name=".views.activity.FilterResultProperty"
             android:theme="@style/AppTheme1"></activity>
@@ -41,7 +45,7 @@
         <activity
             android:name=".views.activity.PropertyMap"
             android:label="@string/title_activity_property_map"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme1" />
         <activity
             android:name=".views.activity.roomate.RoommateList"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -75,7 +79,7 @@
             android:theme="@style/AppTheme1" />
         <activity
             android:name=".views.activity.stripeScreen.PaymentActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme1" />
         <activity
             android:name=".views.activity.bookingDetail.BookingDetails"
             android:theme="@style/AppTheme1" />
@@ -85,7 +89,7 @@
         <activity
             android:name=".views.activity.favouriteRoomate.FavouriteRoomateDetail"
             android:label="@string/title_activity_favourite_roomate_detail"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme1" />
         <activity
             android:name=".views.activity.roomInformation.RoomInformation"
             android:theme="@style/AppTheme1"
@@ -103,7 +107,7 @@
             android:name=".views.activity.propertyDetail.PropertyDetail"
             android:theme="@style/AppTheme1" />
         <activity android:name=".views.activity.viewCommunity.ViewCommunity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme1"/>
         <activity
             android:name=".views.activity.BaseActivity"
             android:theme="@style/AppTheme.NoActionBar" />

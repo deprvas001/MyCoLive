@@ -104,7 +104,12 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
             public void onChanged(ViewCommunityApiResponse communityApiResponse) {
                 hideProgressDialog();
                 if(communityApiResponse.response !=null){
-                      setView(communityApiResponse.getResponse().getData());
+                       if(communityApiResponse.getResponse().getData().size()>0){
+                           setView(communityApiResponse.getResponse().getData());
+                       }else{
+                           Toast.makeText(ViewCommunity.this, "No Result Found.", Toast.LENGTH_SHORT).show();
+                           finish();
+                       }
                 }
                 else if(communityApiResponse.getStatus()== 401){
                 }
@@ -118,6 +123,7 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
 
     private void setView(List<ViewCommunityModel> communityModelList){
         communityBinding.communityViewLayout.imageSlider.setVisibility(View.VISIBLE);
+        communityBinding.communityViewLayout.postImage.setVisibility(View.GONE);
         communityBinding.communityViewLayout.knowMore.setVisibility(View.GONE);
         communityBinding.communityViewLayout.date.setText(communityModelList.get(0).getDate());
         communityBinding.communityViewLayout.name.setText(communityModelList.get(0).getUser_name());
@@ -168,11 +174,11 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
     }
 
     private void setClickListener(){
-        communityBinding.toolbar.setTitle(getResources().getString(R.string.view_community));
+       /* communityBinding.toolbar.setTitle(getResources().getString(R.string.view_community));
         setSupportActionBar(communityBinding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
+        getSupportActionBar().setDisplayShowHomeEnabled(true);*/
+        communityBinding.back.setOnClickListener(this);
         communityBinding.postButton.setOnClickListener(this);
         communityBinding.communityViewLayout.like.setOnClickListener(this);
         communityBinding.commentEdit.setOnClickListener(this);
@@ -193,6 +199,11 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
             case R.id.like:
                 likeUnlike();
                 break;
+
+            case R.id.back:
+                finish();
+                break;
+
 
             case R.id.alert:
                 getDefaultData();

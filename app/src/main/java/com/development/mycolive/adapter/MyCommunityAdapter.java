@@ -67,7 +67,7 @@ public class MyCommunityAdapter extends RecyclerView.Adapter<MyCommunityAdapter.
         }
     }
 
-    public MyCommunityAdapter(Context context,List<MyPostComment> postCommentList,boolean myCommunity ,String toke) {
+    public MyCommunityAdapter(Context context,List<MyPostComment> postCommentList,boolean myCommunity ,String token) {
         this.context = context;
         this.postCommentList = postCommentList;
         this.myCommunity = myCommunity;
@@ -171,7 +171,7 @@ public class MyCommunityAdapter extends RecyclerView.Adapter<MyCommunityAdapter.
 
 
     private void deleteItem(String id,int position){
-    showProgressDialog(context.getResources().getString(R.string.loading));
+     showProgressDialog(context.getResources().getString(R.string.loading));
         PostDeleteRequest request = new PostDeleteRequest();
         request.setComment_id(id);
 
