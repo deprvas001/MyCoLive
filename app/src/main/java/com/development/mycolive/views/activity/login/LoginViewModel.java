@@ -10,6 +10,8 @@ import androidx.lifecycle.ViewModel;
 import com.development.mycolive.model.loginModel.LoginApiResponse;
 import com.development.mycolive.model.loginModel.LoginRequestModel;
 
+import java.util.Map;
+
 public class LoginViewModel extends ViewModel {
     private MediatorLiveData<LoginApiResponse> mutableLiveData;
     private LoginRepository loginRepository;
@@ -19,8 +21,8 @@ public class LoginViewModel extends ViewModel {
            loginRepository =new LoginRepository();
     }
 
-    public LiveData<LoginApiResponse> getLoginUser(Context context, LoginRequestModel requestModel ){
-              mutableLiveData.addSource(loginRepository.loginUser(context,requestModel), new Observer<LoginApiResponse>() {
+    public LiveData<LoginApiResponse> getLoginUser(Context context, LoginRequestModel requestModel, Map<String,String> headers ){
+              mutableLiveData.addSource(loginRepository.loginUser(context,requestModel,headers), new Observer<LoginApiResponse>() {
                   @Override
                   public void onChanged(LoginApiResponse loginApiResponse) {
 

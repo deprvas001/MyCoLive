@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.development.mycolive.R;
@@ -37,6 +39,8 @@ public class BookingDetailAdapter extends RecyclerView.Adapter<BookingDetailAdap
     private ViewGroup group;
     private float total = 0;
     ContractResponse response;
+    PriceLevelAdapter priceLevelAdapter;
+    RecyclerView.LayoutManager mLayoutManager;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView price, name, month_rent, security, sub_total,other_bill,
@@ -44,6 +48,7 @@ public class BookingDetailAdapter extends RecyclerView.Adapter<BookingDetailAdap
         public CheckBox select;
         public ImageView imageView, user_image, post_image, facility_image;
         public LinearLayout room_info;
+        public RecyclerView recyclerView;
 
         public MyViewHolder(View view) {
             super(view);
@@ -57,6 +62,7 @@ public class BookingDetailAdapter extends RecyclerView.Adapter<BookingDetailAdap
             room_name = (TextView)view.findViewById(R.id.room_name);
             period = (TextView)view.findViewById(R.id.period);
             room_name_text = (TextView)view.findViewById(R.id.room_name_text);
+            recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
 
         }
     }
@@ -83,24 +89,28 @@ public class BookingDetailAdapter extends RecyclerView.Adapter<BookingDetailAdap
         List<HomeSlider> sliderList = roomData.getImage_slider();
         List<PriceLevel> priceLevels = roomData.getPrice_levels();
         holder.name.setText(roomData.getApartment_name());
-        holder.security.setText("€ "+priceLevels.get(1).getPrice()+"/Month");
-        holder.month_rent.setText("€ "+priceLevels.get(0).getPrice()+"/Month");
         holder.room_name.setText(roomData.getApartment_name());
         holder.room_name_text.setText(roomData.getApartment_name());
         if(!response.getDuration().isEmpty() && response.getDuration()!=null) {
             holder.period.setText(response.getDuration());
         }
 
+        priceLevelAdapter = new PriceLevelAdapter(context, priceLevels);
+        mLayoutManager = new LinearLayoutManager(context);
+        holder.recyclerView.setLayoutManager(mLayoutManager);
+        holder.recyclerView.setItemAnimator(new DefaultItemAnimator());
+        holder.recyclerView.setAdapter(priceLevelAdapter);
 
-        total = Float.parseFloat(priceLevels.get(0).getPrice())+Float.parseFloat(priceLevels.get(1).getPrice());
-        if(priceLevels.size()>1){
-            holder.other_bill.setText("€ "+priceLevels.get(2).getPrice()+"/Month");
-            total = total + Float.parseFloat(priceLevels.get(2).getPrice());
+
+        for(int i=0;i<priceLevels.size();i++){
+            total = total + Float.parseFloat(priceLevels.get(i).getPrice());
         }
+
 
         holder.sub_total.setText("€ "+String.valueOf(total)+"/Month");
         Picasso.get()
                 .load(sliderList.get(0).getImage())
+                .placeholder(R.drawable.no_image_found)
                 // *//*  .placeholder(R.drawable.image1)
                 //  .error(R.drawable.err)*//*
                 .into(holder.imageView);

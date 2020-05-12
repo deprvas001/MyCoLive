@@ -71,7 +71,9 @@ public interface ShipmentApi {
             "Method: POST"
     })
     @POST("userLogin")
-    Call<LoginResponse> loginUser(@Body LoginRequestModel requestModel);
+    Call<LoginResponse> loginUser(
+            @HeaderMap Map<String,String> headers,
+            @Body LoginRequestModel requestModel);
 
     @Headers({
             "Content-Type: application/json",

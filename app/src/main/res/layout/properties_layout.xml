@@ -50,7 +50,7 @@
             android:paddingRight="10dp"
             android:textColor="#199E8A"
             android:textStyle="bold"
-            android:textSize="13sp" />
+            android:textSize="11sp" />
 
             <TextView
                 android:id="@+id/created_date"

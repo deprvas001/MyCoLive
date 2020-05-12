@@ -192,6 +192,7 @@
                 android:drawableLeft="@drawable/ic_comment" />
 
             <TextView
+                android:id="@+id/share"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textColor="#8C8C8C"

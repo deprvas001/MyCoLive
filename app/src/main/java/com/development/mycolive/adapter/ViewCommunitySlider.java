@@ -50,6 +50,7 @@ public class ViewCommunitySlider extends
 
         Glide.with(viewHolder.itemView)
                 .load(sliderList.get(0))
+                .placeholder(R.drawable.no_image_found)
                 //.load(R.drawable.image1)
                 .fitCenter()
                 .into(viewHolder.imageViewBackground);

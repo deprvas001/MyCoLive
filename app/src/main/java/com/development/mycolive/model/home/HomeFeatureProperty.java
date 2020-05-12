@@ -37,6 +37,8 @@ public class HomeFeatureProperty implements Parcelable {
    private List<HomeSlider> image_slider;
    private String favourites;
    private String rating;
+   private String created;
+   private String booking_shared_btn;
 
 
    public HomeFeatureProperty(){
@@ -72,6 +74,8 @@ public class HomeFeatureProperty implements Parcelable {
         image_slider = in.createTypedArrayList(HomeSlider.CREATOR);
         favourites = in.readString();
         rating = in.readString();
+        created = in.readString();
+        booking_shared_btn = in.readString();
     }
 
     public static final Creator<HomeFeatureProperty> CREATOR = new Creator<HomeFeatureProperty>() {
@@ -302,6 +306,22 @@ public class HomeFeatureProperty implements Parcelable {
         this.facilityList = facilityList;
     }
 
+    public String getBooking_shared_btn() {
+        return booking_shared_btn;
+    }
+
+    public void setBooking_shared_btn(String booking_shared_btn) {
+        this.booking_shared_btn = booking_shared_btn;
+    }
+
+    public String getCreated() {
+        return created;
+    }
+
+    public void setCreated(String created) {
+        this.created = created;
+    }
+
     public List<HomeSlider> getImage_slider() {
         return image_slider;
     }
@@ -345,5 +365,7 @@ public class HomeFeatureProperty implements Parcelable {
         parcel.writeTypedList(image_slider);
         parcel.writeString(favourites);
         parcel.writeString(rating);
+        parcel.writeString(created);
+        parcel.writeString(booking_shared_btn);
     }
 }

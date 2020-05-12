@@ -221,5 +221,6 @@
     <string name="book_now">Book Now</string>
     <string name="clear">Clear</string>
     <string name="know_more"><u>Know More</u></string>
+    <string name="card_detail">Card Detail</string>
 
 </resources>

@@ -15,15 +15,19 @@ import com.development.mycolive.R;
 import com.development.mycolive.adapter.SearchScreenAdapter;
 import com.development.mycolive.databinding.ActivityFilterResultPropertyBinding;
 import com.development.mycolive.model.home.HomeFeatureProperty;
+import com.development.mycolive.session.SessionManager;
 import com.development.mycolive.views.activity.notification.Notification;
 import com.development.mycolive.views.activity.searchResult.SearchResult;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class FilterResultProperty extends AppCompatActivity implements View.OnClickListener {
 ActivityFilterResultPropertyBinding  propertyBinding;
     private SearchScreenAdapter searchAdapter;
+    String token = "";
+    SessionManager session;
     RecyclerView.LayoutManager mLayoutManager;
     ArrayList<HomeFeatureProperty> propertyList =new ArrayList<>();
     @Override
@@ -44,6 +48,8 @@ ActivityFilterResultPropertyBinding  propertyBinding;
         propertyBinding.fab.setOnClickListener(this);
         propertyBinding.back.setOnClickListener(this);
         propertyBinding.notification.setOnClickListener(this);
+
+        getSession();
     }
 
     @Override
@@ -78,7 +84,7 @@ ActivityFilterResultPropertyBinding  propertyBinding;
         propertyBinding.contentSearch.shimmerViewContainer.stopShimmer();
         propertyBinding.contentSearch.shimmerViewContainer.setVisibility(View.GONE);
 
-        searchAdapter = new SearchScreenAdapter(FilterResultProperty.this, featurePropertyList);
+        searchAdapter = new SearchScreenAdapter(FilterResultProperty.this, featurePropertyList,token);
         mLayoutManager = new LinearLayoutManager(this);
         propertyBinding.contentSearch.recyclerView.setLayoutManager(mLayoutManager);
         propertyBinding.contentSearch.recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -95,5 +101,19 @@ ActivityFilterResultPropertyBinding  propertyBinding;
     public void onPause() {
         propertyBinding.contentSearch.shimmerViewContainer.stopShimmer();
         super.onPause();
+    }
+
+    private void getSession() {
+        session = new SessionManager(getApplicationContext());
+        // get user data from session
+        HashMap<String, String> user = session.getUserDetails();
+
+        // name
+        String name = user.get(SessionManager.KEY_NAME);
+
+        // email
+        String email = user.get(SessionManager.KEY_EMAIL);
+        String image = user.get(SessionManager.KEY_IMAGE);
+        token = user.get(SessionManager.KEY_TOKEN);
     }
 }

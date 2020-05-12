@@ -347,11 +347,11 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener, 
                 .setDoneTitle("Done")               //  Done button title
                 .setLimitMessage("You have reached selection limit")    // Selection limit message
                 .setMaxSize(5)                     //  Max images can be selected
-                .setSavePath("ImagePicker")         //  Image capture folder name
+               // .setSavePath("ImagePicker")         //  Image capture folder name
                 //.setSelectedImages(images)          //  Selected images
                 .setAlwaysShowDoneButton(true)      //  Set always show done button in multiple mode
                 .setRequestCode(REQUEST_CODE)                //  Set request code, default Config.RC_PICK_IMAGES
-                .setKeepScreenOn(true)              //  Keep screen on when selecting images
+               // .setKeepScreenOn(true)              //  Keep screen on when selecting images
                 .start();
     }
 

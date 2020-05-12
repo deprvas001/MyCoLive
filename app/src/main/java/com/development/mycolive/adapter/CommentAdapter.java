@@ -57,6 +57,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
 
         Picasso.get()
                 .load(commentReply.getProfile_image())
+                .placeholder(R.drawable.no_image_found)
                 /*  .placeholder(R.drawable.image1)
                   .error(R.drawable.err)*/
                 .into(holder.imageView);

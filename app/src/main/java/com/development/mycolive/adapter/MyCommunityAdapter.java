@@ -123,6 +123,7 @@ public class MyCommunityAdapter extends RecyclerView.Adapter<MyCommunityAdapter.
 
         Picasso.get()
                 .load(post.getProfile_image())
+                .placeholder(R.drawable.no_image_found)
                 /*  .placeholder(R.drawable.image1)
                   .error(R.drawable.err)*/
                 .into(holder.user_image);
@@ -130,6 +131,7 @@ public class MyCommunityAdapter extends RecyclerView.Adapter<MyCommunityAdapter.
         if(post.getImage().size()>0){
             Picasso.get()
                     .load(imageList.get(0))
+                    .placeholder(R.drawable.no_image_found)
                     /*  .placeholder(R.drawable.image1)
                       .error(R.drawable.err)*/
                     .into(holder.post_image);

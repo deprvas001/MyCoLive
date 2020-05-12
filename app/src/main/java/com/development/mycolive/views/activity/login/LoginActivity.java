@@ -52,6 +52,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener,GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = LoginActivity.class.getSimpleName();
@@ -62,6 +64,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     private GoogleApiClient mGoogleApiClient;
     private CallbackManager callbackManager;
     private boolean isVisible= false;
+    String device_token="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,11 +161,19 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     private void userLogin(String user_email, String password, String type, String social_id) {
         showProgressDialog(getString(R.string.loading));
 
-    LoginRequestModel requestModel = new LoginRequestModel(user_email,
+        Map<String,String> headers = new HashMap<>();
+        headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);
+        headers.put(ApiConstant.SOURCES,ApiConstant.SOURCES_VALUE);
+        headers.put(ApiConstant.USER_TYPE,ApiConstant. USER_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TYPE,device_token);
+        headers.put(ApiConstant.USER_DEVICE_TOKEN,"");
+
+
+        LoginRequestModel requestModel = new LoginRequestModel(user_email,
             password,type,social_id);
 
-    loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
-        loginViewModel.getLoginUser(this,requestModel).observe(this, new Observer<LoginApiResponse>() {
+        loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
+        loginViewModel.getLoginUser(this,requestModel,  headers).observe(this, new Observer<LoginApiResponse>() {
         @Override
         public void onChanged(LoginApiResponse loginApiResponse) {
             hideProgressDialog();
@@ -211,28 +222,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             }
         }
     });
-
-     /*   FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w("mco", "getInstanceId failed", task.getException());
-                            return;
-                        }
-
-                        // Get new Instance ID token
-                        String token = task.getResult().getToken();
-
-                        // Log and toast
-                        String msg = getString(R.string.fcm_token, token);
-                        Log.d("mco", msg);
-                        Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
-                    }
-                });*/
 }
 
 private void initailzeView(){
+
 
     boolean loggedOut = AccessToken.getCurrentAccessToken() == null;
 
@@ -276,6 +269,8 @@ private void initailzeView(){
 
         }
     });
+
+    getDeviceToken();
 }
 
     private void signIn() {
@@ -311,19 +306,8 @@ private void initailzeView(){
 
             userLogin(email,"",ApiConstant.GOOGLE,socail_id);
 
-          /*  txtName.setText(personName);
-            txtEmail.setText(email);*/
-            /*Glide.with(getApplicationContext()).load(personPhotoUrl)
-                    .thumbnail(0.5f)
-                    .crossFade()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(imgProfilePic);*/
-
-          //  updateUI(true);
         } else {
             Toast.makeText(getApplicationContext(),"Sign in cancel",Toast.LENGTH_LONG).show();
-            // Signed out, show unauthenticated UI.
-             // updateUI(false);
         }
     }
 
@@ -350,10 +334,6 @@ private void initailzeView(){
                 });
     }
 
-
-    private void facebookSignIn(){
-
-    }
 
     private void getUserProfile(AccessToken currentAccessToken) {
         GraphRequest request = GraphRequest.newMeRequest(
@@ -384,7 +364,30 @@ private void initailzeView(){
         parameters.putString("fields", "first_name,last_name,email,id");
         request.setParameters(parameters);
         request.executeAsync();
+    }
 
+    private void getDeviceToken(){
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("mco", "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+                        if(token!=null){
+                            device_token = token;
+                        }
+
+                        // Log and toast
+                        String msg = getString(R.string.fcm_token, token);
+                        Log.d("mco", msg);
+                        // Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
 }

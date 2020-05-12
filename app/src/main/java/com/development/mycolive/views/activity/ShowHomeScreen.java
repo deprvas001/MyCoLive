@@ -14,6 +14,7 @@ import com.development.mycolive.model.postCommunity.PostApiResponse;
 import com.development.mycolive.session.SessionManager;
 import com.development.mycolive.views.activity.changePassword.ChangePassword;
 import com.development.mycolive.views.activity.changePassword.ChangePasswordViewModel;
+import com.development.mycolive.views.activity.login.LoginActivity;
 import com.development.mycolive.views.activity.myCommunity.MyCommunity;
 import com.development.mycolive.views.activity.notification.Notification;
 import com.development.mycolive.views.activity.testimonial.Testimonials;
@@ -30,9 +31,14 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.squareup.picasso.Picasso;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -114,6 +120,7 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         screenBinding = DataBindingUtil.setContentView(this, R.layout.activity_show_home_screen);
         screenBinding.appBar.titleTxt.setText(getResources().getString(R.string.home_screen));
+
         initializeView();
         loadFragment(new Home());
     }
@@ -264,7 +271,7 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
             @Override
             public void onClick(View view) {
                     alertDialog.dismiss();
-                checkLogout();
+                    checkLogout();
 
               //  session.logoutUser();
                 // Toast.makeText(ShowHomeScreen.this, "Done", Toast.LENGTH_SHORT).show();
@@ -385,5 +392,7 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
+
+
 }
 

@@ -78,6 +78,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
         if (bookingModel.getImage().size() > 0) {
             Picasso.get()
                     .load(imageList.get(0).getImage())
+                    .placeholder(R.drawable.no_image_found)
                     // .placeholder(R.drawable.image1)
                     //   .error(R.drawable.err)
                     .into(holder.imageView);

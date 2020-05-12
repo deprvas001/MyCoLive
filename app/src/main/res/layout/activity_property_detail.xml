@@ -321,8 +321,6 @@
                 android:id="@+id/description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/dummy_lorem"
-                android:maxLines="2"
                 android:layout_margin="10dp"/>
 
             <LinearLayout
@@ -337,6 +335,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:visibility="invisible"
                     android:text="@string/read_more"
                     android:textColor="@color/colorPrimary"/>
 

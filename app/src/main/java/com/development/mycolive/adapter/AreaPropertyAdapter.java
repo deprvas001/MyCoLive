@@ -2,6 +2,7 @@ package com.development.mycolive.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,6 +72,8 @@ public class AreaPropertyAdapter extends RecyclerView.Adapter<AreaPropertyAdapte
         holder.count.setVisibility(View.VISIBLE);
         holder.address.setTextSize(13);
         holder.address.setTextColor(context.getResources().getColor(R.color.city_area));
+        holder.address.setTypeface(null, Typeface.BOLD);
+        holder.address.setTextSize(11);
 
         holder.viewLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +87,7 @@ public class AreaPropertyAdapter extends RecyclerView.Adapter<AreaPropertyAdapte
         });
         Picasso.get()
                 .load(featureProperty.getImage())
+                .placeholder(R.drawable.no_image_found)
                 /*  .placeholder(R.drawable.image1)
                   .error(R.drawable.err)*/
                 .into(holder.imageView);

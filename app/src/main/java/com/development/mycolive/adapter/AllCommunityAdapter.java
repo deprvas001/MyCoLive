@@ -126,6 +126,7 @@ public class AllCommunityAdapter  extends RecyclerView.Adapter<AllCommunityAdapt
 
         Picasso.get()
                 .load(post.getProfile_image())
+                 .placeholder(R.drawable.no_image_found)
                 /*  .placeholder(R.drawable.image1)
                   .error(R.drawable.err)*/
                 .into(holder.user_image);
@@ -133,6 +134,7 @@ public class AllCommunityAdapter  extends RecyclerView.Adapter<AllCommunityAdapt
         if(post.getImage().size()>0){
             Picasso.get()
                     .load(post.getImage().get(0))
+                    .placeholder(R.drawable.no_image_found)
                     /*  .placeholder(R.drawable.image1)
                       .error(R.drawable.err)*/
                     .into(holder.post_image);
@@ -167,6 +169,7 @@ public class AllCommunityAdapter  extends RecyclerView.Adapter<AllCommunityAdapt
 
         EditText name = (EditText)dialogView.findViewById(R.id.name) ;
         EditText email = (EditText)dialogView.findViewById(R.id.email);
+
         Button ok = (Button)dialogView.findViewById(R.id.buttonOk);
         ImageView close_dialog = (ImageView)dialogView.findViewById(R.id.close);
 

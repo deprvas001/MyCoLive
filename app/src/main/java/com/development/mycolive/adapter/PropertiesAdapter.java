@@ -64,8 +64,10 @@ public class PropertiesAdapter extends RecyclerView.Adapter<PropertiesAdapter.My
         holder.price.setText("€ "+featureProperty.getPrice());
         holder.address.setText(featureProperty.getAddress());
         holder.name.setText(featureProperty.getName());
-        holder.created_date.setText(featureProperty.getCreated_date());
+        holder.created_date.setText(featureProperty.getCreated());
         holder.rating.setText(featureProperty.getRating());
+
+        holder.created_date.setVisibility(View.VISIBLE);
 
 
 
@@ -84,6 +86,7 @@ public class PropertiesAdapter extends RecyclerView.Adapter<PropertiesAdapter.My
         });
         Picasso.get()
                 .load(homeSliderList.get(0).getImage())
+                .placeholder(R.drawable.no_image_found)
               /*  .placeholder(R.drawable.image1)
                 .error(R.drawable.err)*/
                 .into(holder.imageView);

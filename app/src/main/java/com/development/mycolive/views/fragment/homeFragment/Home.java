@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +41,10 @@ import com.development.mycolive.model.home.HomeFeatureProperty;
 import com.development.mycolive.model.home.HomeHotProperty;
 import com.development.mycolive.model.home.HomePropertyArea;
 import com.development.mycolive.model.home.HomeSlider;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.smarteist.autoimageslider.IndicatorAnimations;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
@@ -103,6 +109,8 @@ public class Home extends Fragment implements View.OnClickListener {
         homeBinding.recyclerViewArea.setAdapter(areaPropertyAdapter);
 
         setSliderAndView(sliderList,countData);
+
+        //showNotification();
     }
 
 
@@ -306,5 +314,6 @@ public class Home extends Fragment implements View.OnClickListener {
 
         getRoommateData();
     }
+
 
 }

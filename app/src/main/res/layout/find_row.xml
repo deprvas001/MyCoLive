@@ -18,7 +18,7 @@
         <ImageView
             android:id="@+id/room_layout"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="60dp"
             android:scaleType="fitXY"
             android:src="@drawable/find_room" />
 
@@ -47,7 +47,7 @@
             <ImageView
                 android:id="@+id/apartment_layout"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:layout_height="60dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/images" />
 
@@ -75,7 +75,7 @@
             <ImageView
                 android:id="@+id/roomate_layout"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:layout_height="60dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/roomate" />
 

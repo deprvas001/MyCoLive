@@ -9,6 +9,7 @@ import com.development.mycolive.adapter.AreaPropertyListAdapter;
 import com.development.mycolive.databinding.ActivitySearchResultBinding;
 import com.development.mycolive.model.home.HomePropertyArea;
 import com.development.mycolive.model.homeProperty.FeatureApiResponse;
+import com.development.mycolive.session.SessionManager;
 import com.development.mycolive.views.activity.PropertyMap;
 import com.development.mycolive.views.activity.notification.Notification;
 import com.development.mycolive.adapter.SearchScreenAdapter;
@@ -45,6 +46,8 @@ ActivitySearchResultBinding resultBinding;
     SearchViewModel searchViewModel;
     String type="";
     String post_code="";
+    SessionManager session;
+    String token="";
     String facebook_url_link="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +71,8 @@ ActivitySearchResultBinding resultBinding;
         resultBinding.back.setOnClickListener(this);
         resultBinding.notification.setOnClickListener(this);
         resultBinding.contentSearch.facebookLink.setOnClickListener(this);
+
+        getSession();
     }
 
     @Override
@@ -108,7 +113,7 @@ ActivitySearchResultBinding resultBinding;
     }
 
     private void setReyclerView(List<HomeFeatureProperty> featurePropertyList){
-        searchAdapter = new SearchScreenAdapter(SearchResult.this, featurePropertyList);
+        searchAdapter = new SearchScreenAdapter(SearchResult.this, featurePropertyList,token);
         mLayoutManager = new LinearLayoutManager(this);
         resultBinding.contentSearch.recyclerView.setLayoutManager(mLayoutManager);
         resultBinding.contentSearch.recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -206,7 +211,19 @@ ActivitySearchResultBinding resultBinding;
             resultBinding.contentSearch.recyclerView.setItemAnimator(new DefaultItemAnimator());
             resultBinding.contentSearch.recyclerView.setAdapter(areaPropertyAdapter);
         }
+    }
 
+    private void getSession() {
+        session = new SessionManager(getApplicationContext());
+        // get user data from session
+        HashMap<String, String> user = session.getUserDetails();
 
+        // name
+        String name = user.get(SessionManager.KEY_NAME);
+
+        // email
+        String email = user.get(SessionManager.KEY_EMAIL);
+        String image = user.get(SessionManager.KEY_IMAGE);
+        token = user.get(SessionManager.KEY_TOKEN);
     }
 }

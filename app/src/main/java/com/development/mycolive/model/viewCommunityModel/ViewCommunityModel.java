@@ -21,6 +21,7 @@ public class ViewCommunityModel {
     private String user_like_this_comment;
     private String total_reply_comment;
     private List<CommentReply> comment_reply;
+    private String url_for_share;
 
 
     public String getId() {
@@ -109,6 +110,14 @@ public class ViewCommunityModel {
 
     public void setCity_name(String city_name) {
         this.city_name = city_name;
+    }
+
+    public String getUrl_for_share() {
+        return url_for_share;
+    }
+
+    public void setUrl_for_share(String url_for_share) {
+        this.url_for_share = url_for_share;
     }
 
     public String getUniversity_name() {

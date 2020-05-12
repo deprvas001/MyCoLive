@@ -95,6 +95,7 @@ public class PropertyDetailAdapter  extends RecyclerView.Adapter<PropertyDetailA
             holder.facility_txt.setText(facilityData.getFacilityString());
             Picasso.get()
                     .load(facilityData.getIcon_url())
+                    .placeholder(R.drawable.no_image_found)
                     /*  .placeholder(R.drawable.image1)
                       .error(R.drawable.err)*/
                     .into(holder.facility_image);

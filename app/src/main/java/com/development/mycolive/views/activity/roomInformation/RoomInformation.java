@@ -7,6 +7,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.pm.ActivityInfo;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import com.development.mycolive.R;
 import com.development.mycolive.adapter.FacilityAdapter;
 import com.development.mycolive.adapter.HomeSlideAdapter;
+import com.development.mycolive.adapter.PriceLevelAdapter;
 import com.development.mycolive.constant.ApiConstant;
 import com.development.mycolive.databinding.ActivityRoomInformationBinding;
 import com.development.mycolive.model.favouriteRoomate.FavouriteRequest;
@@ -42,26 +44,29 @@ import java.util.List;
 import java.util.Map;
 
 public class RoomInformation extends BaseActivity implements View.OnClickListener {
-ActivityRoomInformationBinding informationBinding;
-List<HomeSlider> homeSliderList=new ArrayList<>();
-SessionManager session;
-String token="";
+    ActivityRoomInformationBinding informationBinding;
+    List<HomeSlider> homeSliderList = new ArrayList<>();
+    SessionManager session;
+    String token = "";
+    PriceLevelAdapter priceLevelAdapter;
+    float subtotal = 0;
     PropertyRoomData roomData;
     private FacilityAdapter facilityAdapter;
     RecyclerView.LayoutManager mLayoutManager;
-    String id="";
+    String id = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        informationBinding = DataBindingUtil.setContentView(this,R.layout.activity_room_information);
+        informationBinding = DataBindingUtil.setContentView(this, R.layout.activity_room_information);
        /* informationBinding.toolbar.setTitle(getResources().getString(R.string.RoomDetail));
         setSupportActionBar(informationBinding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);*/
-         roomData = (PropertyRoomData) getIntent().getParcelableExtra("room");
-         setSliderAndView(roomData.getImage_slider());
-         informationBinding.back.setOnClickListener(this);
-         getSession();
+        roomData = (PropertyRoomData) getIntent().getParcelableExtra("room");
+        setSliderAndView(roomData.getImage_slider());
+        informationBinding.back.setOnClickListener(this);
+        getSession();
 
     }
 
@@ -85,39 +90,49 @@ String token="";
 
     }
 
-    private void initializeView(List<FacilityData> facilityData){
+    private void initializeView(List<FacilityData> facilityData) {
         id = roomData.getId();
         List<PriceLevel> priceLevel = roomData.getPrice_levels();
-        float subtotal = Float.parseFloat(priceLevel.get(0).getPrice())+Float.parseFloat(priceLevel.get(1).getPrice());
+
+        for (int i = 0; i < priceLevel.size(); i++) {
+            subtotal = subtotal + Float.parseFloat(priceLevel.get(i).getPrice());
+        }
 
         informationBinding.addressApartment.setText(roomData.getAddress());
-        if(priceLevel.size()>0){
-            informationBinding.monthRentPrice.setText("€ "+priceLevel.get(0).getPrice()+"/Month");
+      /*  if(priceLevel.size()>0){
+          //  informationBinding.monthRentPrice.setText("€ "+priceLevel.get(0).getPrice()+"/Month");
            if(priceLevel.size()>1)
-            informationBinding.securityPrice.setText("€ "+priceLevel.get(1).getPrice()+"/Month");
+           // informationBinding.securityPrice.setText("€ "+priceLevel.get(1).getPrice()+"/Month");
            if(priceLevel.size()>2){
                subtotal = subtotal +Float.parseFloat(priceLevel.get(2).getPrice());
                informationBinding.otherPrice.setText("€ " + priceLevel.get(2).getPrice()+"/Month");
                informationBinding.otherLayout.setVisibility(View.VISIBLE);
            }
 
-        }
+        }*/
 
 
-        informationBinding.subTotal.setText("€ "+String.valueOf(subtotal)+"/Month");
+        priceLevelAdapter = new PriceLevelAdapter(this, priceLevel);
+        mLayoutManager = new LinearLayoutManager(this);
+        informationBinding.recyclerView.setLayoutManager(mLayoutManager);
+        informationBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());
+        informationBinding.recyclerView.setAdapter(priceLevelAdapter);
+
+
+        informationBinding.subTotal.setText("€ " + String.valueOf(subtotal) + "/Month");
         informationBinding.descriptionTxt.setText(roomData.getDescription());
 
-        if(roomData.getFavourites().equals("0")){
+        if (roomData.getFavourites().equals("0")) {
             informationBinding.favIcon.setColorFilter(ContextCompat.getColor(RoomInformation.this,
                     R.color.text_color_hint), android.graphics.PorterDuff.Mode.MULTIPLY);
-        }else{
+        } else {
             informationBinding.favIcon.setColorFilter(ContextCompat.getColor(RoomInformation.this,
                     R.color.colorPrimaryDark), android.graphics.PorterDuff.Mode.MULTIPLY);
         }
 
 
         facilityAdapter = new FacilityAdapter(this, facilityData);
-        mLayoutManager =new GridLayoutManager(this, 2);
+        mLayoutManager = new GridLayoutManager(this, 2);
         informationBinding.recyclerViewFacility.setLayoutManager(mLayoutManager);
         informationBinding.recyclerViewFacility.setItemAnimator(new DefaultItemAnimator());
         informationBinding.recyclerViewFacility.setAdapter(facilityAdapter);
@@ -132,7 +147,7 @@ String token="";
     }
 
 
-    private void addFav(){
+    private void addFav() {
         showProgressDialog(getString(R.string.loading));
         String type = "PROPERTY";
 
@@ -140,42 +155,43 @@ String token="";
         request.setType(type);
         request.setId(id);
 
-        Map<String,String> headers = new HashMap<>();
-        headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);
-        headers.put(ApiConstant.SOURCES,ApiConstant.SOURCES_VALUE);
-        headers.put(ApiConstant.USER_TYPE,ApiConstant. USER_TYPE_DRIVER);
-        headers.put(ApiConstant.USER_DEVICE_TYPE,ApiConstant.USER_DEVICE_TYPE_VALUE);
-        headers.put(ApiConstant.USER_DEVICE_TOKEN,ApiConstant.USER_DEVICE_TOKEN_VALUE);
-        headers.put(ApiConstant.AUTHENTICAT_TOKEN,token);
+        Map<String, String> headers = new HashMap<>();
+        headers.put(ApiConstant.CONTENT_TYPE, ApiConstant.CONTENT_TYPE_VALUE);
+        headers.put(ApiConstant.SOURCES, ApiConstant.SOURCES_VALUE);
+        headers.put(ApiConstant.USER_TYPE, ApiConstant.USER_TYPE_DRIVER);
+        headers.put(ApiConstant.USER_DEVICE_TYPE, ApiConstant.USER_DEVICE_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TOKEN, ApiConstant.USER_DEVICE_TOKEN_VALUE);
+        headers.put(ApiConstant.AUTHENTICAT_TOKEN, token);
 
-      FavRoomateViewModel  viewModel = ViewModelProviders.of(this).get(FavRoomateViewModel.class);
-        viewModel.setFav(this,headers,request).observe(this, new Observer<RoomateFavApiResponse>() {
+        FavRoomateViewModel viewModel = ViewModelProviders.of(this).get(FavRoomateViewModel.class);
+        viewModel.setFav(this, headers, request).observe(this, new Observer<RoomateFavApiResponse>() {
             @Override
             public void onChanged(RoomateFavApiResponse apiResponse) {
                 hideProgressDialog();
-                if(apiResponse.response !=null){
+                if (apiResponse.response != null) {
 
-                    if(apiResponse.getResponse().getStatus() == 1){
-                        if(apiResponse.getResponse().getIs_fav() == 1){
+                    if (apiResponse.getResponse().getStatus() == 1) {
+                        Toast.makeText(RoomInformation.this, apiResponse.getResponse().getMessage(), Toast.LENGTH_SHORT).show();
+
+                        if (apiResponse.getResponse().getIs_fav() == 1) {
                             informationBinding.favIcon.setColorFilter(ContextCompat.getColor(RoomInformation.this,
                                     R.color.colorPrimaryDark), android.graphics.PorterDuff.Mode.MULTIPLY);
-                        }else{
+                        } else {
                             informationBinding.favIcon.setColorFilter(ContextCompat.getColor(RoomInformation.this,
                                     R.color.text_color_hint), android.graphics.PorterDuff.Mode.MULTIPLY);
                         }
 
-                    }else {
+                    } else {
                         Toast.makeText(RoomInformation.this, apiResponse.getResponse().getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                }
-                else{
+                } else {
                     Toast.makeText(RoomInformation.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
-    private void getSession(){
+    private void getSession() {
         session = new SessionManager(getApplicationContext());
         // get user data from session
         HashMap<String, String> user = session.getUserDetails();
@@ -192,13 +208,13 @@ String token="";
 
     }
 
-    private void setClickListener(){
+    private void setClickListener() {
         informationBinding.favIcon.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.fav_icon:
                 addFav();
                 break;

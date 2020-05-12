@@ -8,11 +8,16 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +31,7 @@ import com.development.mycolive.adapter.MonthDataAdapter;
 import com.development.mycolive.model.bookingHistory.BookingHistoryApiResponse;
 import com.development.mycolive.model.bookingHistory.BookingHistoryData;
 import com.development.mycolive.model.bookingHistory.MonthHistory;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,6 +46,8 @@ BookingHistoryViewModel viewModel;
     List<MonthHistory> bookingList = new ArrayList<>();
     SessionManager session;
     String token="";
+    Dialog dialog;
+    String proof_image="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +64,8 @@ BookingHistoryViewModel viewModel;
         setSupportActionBar(historyBinding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        historyBinding.proof.setOnClickListener(this);
 
 
 
@@ -78,6 +88,13 @@ BookingHistoryViewModel viewModel;
         switch (view.getId()){
             case R.id.view_detail:
                  showCustomDialog();
+                break;
+
+            case R.id.proof:
+                 if(proof_image!=null){
+                     showDialog(proof_image);
+                 }
+
                 break;
         }
     }
@@ -155,6 +172,7 @@ BookingHistoryViewModel viewModel;
         historyBinding.address.setText(historyData.get(0).getAddress());
         historyBinding.nearBy.setText(historyData.get(0).getNear_by_area());
         historyBinding.proof.setText(historyData.get(0).getId_proof());
+        proof_image = historyData.get(0).getId_proof();
 
         List<MonthHistory> monthHistoryList = historyData.get(0).getMonth();
         if(monthHistoryList.size()>0){
@@ -184,5 +202,35 @@ BookingHistoryViewModel viewModel;
         token = user.get(SessionManager.KEY_TOKEN);
 
         getHistory(bookingType,orderId);
+    }
+
+    private void showDialog(String image) {
+        // custom dialog
+        dialog = new Dialog(CurrentBookingHistory.this);
+        dialog.setContentView(R.layout.custom_dialog_image);
+
+        // set the custom dialog components - text, image and button
+        ImageButton close = (ImageButton) dialog.findViewById(R.id.btnClose);
+        ImageView imageView = (ImageView)dialog.findViewById(R.id.receipt_image);
+
+        Picasso.get()
+                .load(image)
+                .placeholder(R.drawable.loading)
+                .error(R.drawable.no_image_found)
+                .into(imageView);
+
+        // Close Button
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                //TODO Close button action
+            }
+        });
+
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        dialog.show();
     }
 }

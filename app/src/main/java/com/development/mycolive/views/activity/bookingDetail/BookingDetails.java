@@ -1,5 +1,6 @@
 package com.development.mycolive.views.activity.bookingDetail;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -9,11 +10,15 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.util.Base64;
@@ -27,6 +32,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.RequestOptions;
 import com.development.mycolive.R;
 import com.development.mycolive.adapter.BookingDetailAdapter;
 import com.development.mycolive.adapter.PropertyDetailAdapter;
@@ -42,6 +50,7 @@ import com.development.mycolive.model.searchDetailPage.BankAccount;
 import com.development.mycolive.model.termscondition.ContractResponse;
 import com.development.mycolive.session.SessionManager;
 import com.development.mycolive.views.activity.BaseActivity;
+import com.development.mycolive.views.activity.ImagePickerScreen;
 import com.development.mycolive.views.activity.notification.Notification;
 import com.development.mycolive.views.activity.notification.NotificationViewModel;
 import com.development.mycolive.views.activity.paymentScreen.SelectPayment;
@@ -51,6 +60,8 @@ import com.nguyenhoanglam.imagepicker.model.Image;
 import com.nguyenhoanglam.imagepicker.ui.imagepicker.ImagePicker;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -201,7 +212,9 @@ public class BookingDetails extends BaseActivity implements View.OnClickListener
                 break;
 
             case R.id.upload_receipt:
-                pickImage(REQUEST_CODE);
+           //     pickImage(REQUEST_CODE);
+                Intent intent = new Intent(BookingDetails.this, ImagePickerScreen.class);
+                startActivityForResult(intent, 102);//
                 break;
         }
     }
@@ -312,8 +325,11 @@ public class BookingDetails extends BaseActivity implements View.OnClickListener
         image_string = Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
-    private void pickImage(int REQUEST_CODE) {
-        ImagePicker.with(this)                         //  Initialize ImagePicker with activity or fragment context
+  /*  private void pickImage(int REQUEST_CODE) {
+        String root = Environment.getExternalStorageDirectory().toString();
+        File myDir = new File(root + "/ImagePicker");
+
+        ImagePicker.with(this)                       //  Initialize ImagePicker with activity or fragment context
                 .setToolbarColor("#212121")         //  Toolbar color
                 .setStatusBarColor("#000000")       //  StatusBar color (works with SDK >= 21  )
                 .setToolbarTextColor("#FFFFFF")     //  Toolbar text color (Title and Done button)
@@ -334,12 +350,12 @@ public class BookingDetails extends BaseActivity implements View.OnClickListener
                 .setAlwaysShowDoneButton(true)      //  Set always show done button in multiple mode
                 .setRequestCode(REQUEST_CODE)                //  Set request code, default Config.RC_PICK_IMAGES
                 .setKeepScreenOn(true)              //  Keep screen on when selecting images
+
                 .start();
     }
-
-    @Override
+*/
+   /* @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
 
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             ArrayList<Image> images = data.getParcelableArrayListExtra(Config.EXTRA_IMAGES);
@@ -360,7 +376,7 @@ public class BookingDetails extends BaseActivity implements View.OnClickListener
         super.onActivityResult(requestCode, resultCode, data);
         // You MUST have this line to be here
         // so ImagePicker can work with fragment mode
-    }
+    }*/
 
     private void uploadIdProof(String friend_email){
         showProgressDialog(getString(R.string.loading));
@@ -400,6 +416,7 @@ public class BookingDetails extends BaseActivity implements View.OnClickListener
 
             }
 
+
         });
     }
 
@@ -421,4 +438,56 @@ public class BookingDetails extends BaseActivity implements View.OnClickListener
         uploadIdProof(friend_email);
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // check if the request code is same as what is passed  here it is 2
+        if (requestCode == 102) {
+            if (resultCode == Activity.RESULT_OK && data != null) {
+                ArrayList<Image> images = data.getParcelableArrayListExtra(ApiConstant.IMAGE_PICK);
+
+                if (images.size() > 0) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        Uri uri = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, String.valueOf(images.get(0).getId()));
+                        RequestOptions options = new RequestOptions().placeholder(R.drawable.noimage)
+                                .error(R.drawable.noimage);
+
+                        Glide.with(this)
+                                .load(uri)
+                                .apply(options)
+                                .transition(DrawableTransitionOptions.withCrossFade())
+                                .into(bookingDetailsBinding.uploadReceipt);
+
+                        try {
+                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                            convetBitmapString(bitmap);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                    } else {
+
+                        // do your logic here...
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+
+                        // downsizing image as it throws OutOfMemory Exception for larger
+                        // images
+                        //  options.inSampleSize = calculteInSampleSize(option,500,500)
+                        options.inSampleSize = 2;
+
+                        String path = images.get(0).getPath();
+                        //   Toast.makeText(BookingDetails.this, path, Toast.LENGTH_SHORT).show();
+                        Bitmap bitmap = BitmapFactory.decodeFile(path, options);
+                        bookingDetailsBinding.uploadReceipt.setImageBitmap(bitmap);
+
+                        convetBitmapString(bitmap);
+
+                    }
+                }
+            }
+
+        }
+    }
 }

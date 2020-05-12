@@ -66,12 +66,14 @@ import com.smarteist.autoimageslider.IndicatorAnimations;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import static androidx.core.util.Preconditions.checkNotNull;
@@ -185,12 +187,14 @@ public class PropertyDetail extends BaseActivity implements View.OnClickListener
 
         chatLink =apiResponse.getResponse().getData().get(0).getFb_chating_link();
         fbLink = apiResponse.getResponse().getData().get(0).getFb_page_link();
-        if(chatLink.isEmpty()){
-            propertyDetailBinding.messageIcon.setVisibility(View.GONE);
-        }
-        if(fbLink.isEmpty()){
-            propertyDetailBinding.facebookIcon.setVisibility(View.GONE);
-        }
+       if(chatLink!=null){
+           if(chatLink.isEmpty()){
+               propertyDetailBinding.messageIcon.setVisibility(View.GONE);
+           }
+           if(fbLink.isEmpty()){
+               propertyDetailBinding.facebookIcon.setVisibility(View.GONE);
+           }
+       }
 
         propertyDetailBinding.apartmentName.setText(apiResponse.getResponse().getData().get(0).getApartment_name());
         propertyDetailBinding.addressApartment.setText(apiResponse.getResponse().getData().get(0).getAddress());
@@ -309,9 +313,10 @@ public class PropertyDetail extends BaseActivity implements View.OnClickListener
                             || propertyDetailBinding.toEdit.getText().toString().isEmpty()){
                         Toast.makeText(this, "Please select from and to date.", Toast.LENGTH_SHORT).show();
                     }else{
-                       from = propertyDetailBinding.fromEdit.getText().toString();
-                       to = propertyDetailBinding.toEdit.getText().toString();
+                      from = propertyDetailBinding.fromEdit.getText().toString();
+                      to = propertyDetailBinding.toEdit.getText().toString();
                       //  Toast.makeText(this, "success", Toast.LENGTH_SHORT).show();
+
                       bookingDetail();
                     }
 
@@ -413,9 +418,11 @@ public class PropertyDetail extends BaseActivity implements View.OnClickListener
                 String final_date = sd1.format(startDate);
                // oneBinding.fieldLayout.inputDob.setText(final_date);
                 if(edit_position == 1){
-                    propertyDetailBinding.fromEdit.setText(final_date);
+                    monthYearFormat(final_date);
+                  //  propertyDetailBinding.fromEdit.setText(final_date);
                 }else if (edit_position == 2){
-                    propertyDetailBinding.toEdit.setText(final_date);
+                    monthYearFormat(final_date);
+                   // propertyDetailBinding.toEdit.setText(final_date);
                 }else if(edit_position == 3){
                     propertyDetailBinding.arrivalDate.setText(final_date);
                 }
@@ -609,5 +616,28 @@ public class PropertyDetail extends BaseActivity implements View.OnClickListener
         }else{
             Toast.makeText(PropertyDetail.this, contractResponse.getMsg(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void monthYearFormat(String date_value){
+        SimpleDateFormat month_date = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+
+        Date date = null;
+        try {
+            date = sdf.parse(date_value);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        String month_name = month_date.format(date);
+
+        if(edit_position == 1){
+            propertyDetailBinding.fromEdit.setText(month_name);
+        }else if (edit_position == 2){
+          //  monthYearFormat(final_date,edit_position);
+            propertyDetailBinding.toEdit.setText(month_name);
+        }
+
+//        System.out.println("Month :" + month_name);  //Mar 20
     }
 }

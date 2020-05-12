@@ -60,6 +60,7 @@ public class FacilityAdapter  extends RecyclerView.Adapter<FacilityAdapter.MyVie
         holder.name.setText(facilityData.getFacilityString());
         Picasso.get()
                 .load(facilityData.getIcon_url())
+                .placeholder(R.drawable.no_image_found)
                 /*  .placeholder(R.drawable.image1)
                   .error(R.drawable.err)*/
                 .into(holder.imageView);

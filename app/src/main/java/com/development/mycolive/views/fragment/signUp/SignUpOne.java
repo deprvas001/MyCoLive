@@ -15,6 +15,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,6 +60,7 @@ public class SignUpOne extends Fragment implements View.OnClickListener, RadioGr
     private String gender = "";
     private int REQUEST_CODE = 100;
     String login_type, socail_id;
+    private boolean isVisible= false;
     private String image_string = "";
     private DatePickerDialog mDatePickerDialog;
     SessionManager session;
@@ -100,6 +103,7 @@ public class SignUpOne extends Fragment implements View.OnClickListener, RadioGr
         setDateTimeField();
         oneBinding.fieldLayout.btnNext.setOnClickListener(this);
         oneBinding.fieldLayout.signIn.setOnClickListener(this);
+        oneBinding.fieldLayout.passwordVisibility.setOnClickListener(this);
         oneBinding.profileImage.setOnClickListener(this);
         oneBinding.fieldLayout.radioGroup.setOnCheckedChangeListener(this);
         oneBinding.fieldLayout.privacyPolicy.setOnClickListener(new View.OnClickListener() {
@@ -168,6 +172,19 @@ public class SignUpOne extends Fragment implements View.OnClickListener, RadioGr
 
             case R.id.profile_image:
                 pickImage(REQUEST_CODE);
+                break;
+
+            case R.id.password_visibility:
+                if(!isVisible){
+                    isVisible = true;
+                    oneBinding.fieldLayout.passwordVisibility.setImageDrawable(getResources().getDrawable(R.drawable.ic_visibility_black_24dp));
+                    oneBinding.fieldLayout.password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+
+                }else{
+                    isVisible = false;
+                    oneBinding.fieldLayout.passwordVisibility.setImageDrawable(getResources().getDrawable(R.drawable.ic_visibility_off_black_24dp));
+                    oneBinding.fieldLayout.password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                }
                 break;
         }
     }
@@ -308,11 +325,11 @@ public class SignUpOne extends Fragment implements View.OnClickListener, RadioGr
                 .setDoneTitle("Done")               //  Done button title
                 .setLimitMessage("You have reached selection limit")    // Selection limit message
                 .setMaxSize(5)                     //  Max images can be selected
-                .setSavePath("ImagePicker")         //  Image capture folder name
+               // .setSavePath("ImagePicker")         //  Image capture folder name
                 //.setSelectedImages(images)          //  Selected images
                 .setAlwaysShowDoneButton(true)      //  Set always show done button in multiple mode
                 .setRequestCode(REQUEST_CODE)                //  Set request code, default Config.RC_PICK_IMAGES
-                .setKeepScreenOn(true)              //  Keep screen on when selecting images
+               // .setKeepScreenOn(true)              //  Keep screen on when selecting images
                 .start();
     }
 

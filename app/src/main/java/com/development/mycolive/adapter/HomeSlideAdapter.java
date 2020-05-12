@@ -51,6 +51,7 @@ public class HomeSlideAdapter extends
         HomeSlider slider = sliderList.get(position);
         Glide.with(viewHolder.itemView)
                  .load(slider.getImage())
+                .placeholder(R.drawable.no_image_found)
                 //.load(R.drawable.image1)
                 .fitCenter()
                 .into(viewHolder.imageViewBackground);

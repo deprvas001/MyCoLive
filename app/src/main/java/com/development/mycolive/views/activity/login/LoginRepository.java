@@ -16,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,11 +36,11 @@ public class LoginRepository {
        return loginRepository;
     }
 
-    public LiveData<LoginApiResponse> loginUser(Context context, LoginRequestModel requestModel ){
+    public LiveData<LoginApiResponse> loginUser(Context context, LoginRequestModel requestModel , Map<String,String> headers){
      final MutableLiveData<LoginApiResponse> loginResponseLiveData =new MutableLiveData<>();
 
 
-        shipmentApi.loginUser(requestModel).enqueue(new Callback<LoginResponse>() {
+        shipmentApi.loginUser(headers,requestModel).enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if(response.code() == 401 || response.code() == 400 || response.code() == 500){

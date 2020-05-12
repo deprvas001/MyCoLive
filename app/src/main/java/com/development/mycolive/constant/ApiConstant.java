@@ -27,4 +27,6 @@ public class ApiConstant {
     public static final String FACEBOOK = "FACEBOOK";
 
     public static final String BANK_STRIPE="STRIP";
+
+    public static final String IMAGE_PICK = "image_pick";
 }

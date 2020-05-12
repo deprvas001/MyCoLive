@@ -50,6 +50,7 @@ public class CommunitySliderAdapter extends
         String slider = sliderList.get(position);
         Glide.with(viewHolder.itemView)
                 .load(slider)
+                .placeholder(R.drawable.no_image_found)
                 //.load(R.drawable.image1)
                 .fitCenter()
                 .into(viewHolder.imageViewBackground);

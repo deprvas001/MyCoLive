@@ -11,8 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -76,6 +78,7 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
     String token="",id="";
     String comment_id="";
     int reason_check = 0;
+    String share_url=  "";
     AlertReason alertReason;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,6 +136,7 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
         communityBinding.communityViewLayout.comment.setText(communityModelList.get(0).getComment());
         communityBinding.communityViewLayout.like.setText(communityModelList.get(0).getTotal_likes());
         communityBinding.communityViewLayout.commentCount.setText(communityModelList.get(0).getTotal_reply_comment());
+        share_url = communityModelList.get(0).getUrl_for_share();
 
         Picasso.get()
                 .load(communityModelList.get(0).getProfile_image())
@@ -178,11 +182,12 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
         setSupportActionBar(communityBinding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);*/
-        communityBinding.back.setOnClickListener(this);
         communityBinding.postButton.setOnClickListener(this);
         communityBinding.communityViewLayout.like.setOnClickListener(this);
         communityBinding.commentEdit.setOnClickListener(this);
+        communityBinding.back.setOnClickListener(this);
         communityBinding.communityViewLayout.alert.setOnClickListener(this);
+        communityBinding.communityViewLayout.share.setOnClickListener(this);
     }
 
     @Override
@@ -200,10 +205,17 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
                 likeUnlike();
                 break;
 
+            case R.id.share:
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "MY CoLive");
+                shareIntent.putExtra(Intent.EXTRA_TEXT, share_url);
+                startActivity(Intent.createChooser(shareIntent, "Choose One"));
+                break;
+
             case R.id.back:
                 finish();
                 break;
-
 
             case R.id.alert:
                 getDefaultData();

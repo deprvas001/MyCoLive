@@ -1,11 +1,15 @@
 package com.development.mycolive.adapter;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -16,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.development.mycolive.R;
 import com.development.mycolive.model.bookingHistory.MonthHistory;
 import com.development.mycolive.views.activity.paymentMode.PaymentMode;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -23,6 +28,7 @@ public class MonthDataAdapter  extends RecyclerView.Adapter<MonthDataAdapter.MyV
     private List<MonthHistory> monthList;
     private Context context;
     private ViewGroup group;
+    Dialog dialog;
     private AlertDialog alertDialog;
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView month,status,payment_mode,receipt,approval,month_txt;
@@ -73,6 +79,13 @@ public class MonthDataAdapter  extends RecyclerView.Adapter<MonthDataAdapter.MyV
 
         holder.view_detail.setOnClickListener(view ->
                 showCustomDialog(context,monthHistory));
+
+        holder.receipt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialog(monthHistory.getReceipt());
+            }
+        });
     }
 
     @Override
@@ -133,6 +146,8 @@ public class MonthDataAdapter  extends RecyclerView.Adapter<MonthDataAdapter.MyV
         alertDialog = builder.create();
         alertDialog.show();
 
+
+
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -167,5 +182,37 @@ public class MonthDataAdapter  extends RecyclerView.Adapter<MonthDataAdapter.MyV
                 alertDialog.dismiss();
                 break;
         }
+    }
+
+
+
+    private void showDialog(String image) {
+        // custom dialog
+        dialog = new Dialog(context);
+        dialog.setContentView(R.layout.custom_dialog_image);
+
+        // set the custom dialog components - text, image and button
+        ImageButton close = (ImageButton) dialog.findViewById(R.id.btnClose);
+        ImageView imageView = (ImageView)dialog.findViewById(R.id.receipt_image);
+
+        Picasso.get()
+                .load(image)
+                .placeholder(R.drawable.loading)
+                .error(R.drawable.no_image_found)
+                .into(imageView);
+
+        // Close Button
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                //TODO Close button action
+            }
+        });
+
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        dialog.show();
     }
 }
