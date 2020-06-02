@@ -8,15 +8,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.development.mycolive.R;
 import com.development.mycolive.adapter.FindRoomateAdapter;
 import com.development.mycolive.databinding.ActivityRoommateListBinding;
 import com.development.mycolive.model.favourite.RoomateData;
+import com.development.mycolive.views.activity.BaseActivity;
 
 import java.util.List;
 
-public class RoommateList extends AppCompatActivity {
+public class RoommateList extends BaseActivity implements View.OnClickListener {
 ActivityRoommateListBinding listBinding ;
 FindRoomateAdapter roomateAdapter;
     RecyclerView.LayoutManager mLayoutManager;
@@ -29,12 +31,12 @@ FindRoomateAdapter roomateAdapter;
     }
 
     private void initializeView(){
-        listBinding.toolbar.setTitle(getString(R.string.roommate_list));
+      /*  listBinding.toolbar.setTitle(getString(R.string.roommate_list));
 
         setSupportActionBar(listBinding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
+        getSupportActionBar().setDisplayShowHomeEnabled(true);*/
+          listBinding.back.setOnClickListener(this);
 
         if(getIntent()!=null){
             List<RoomateData> roomateDataList = getIntent().getParcelableArrayListExtra("roommateList");
@@ -58,5 +60,14 @@ FindRoomateAdapter roomateAdapter;
         listBinding.recyclerView.setLayoutManager(mLayoutManager);
         listBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         listBinding.recyclerView.setAdapter(roomateAdapter);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.back:
+                finish();
+                break;
+        }
     }
 }

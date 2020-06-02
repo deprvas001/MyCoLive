@@ -10,8 +10,10 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,7 +55,7 @@ public class RoomInformation extends BaseActivity implements View.OnClickListene
     PropertyRoomData roomData;
     private FacilityAdapter facilityAdapter;
     RecyclerView.LayoutManager mLayoutManager;
-    String id = "";
+    String id = "",String, video_link="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +68,7 @@ public class RoomInformation extends BaseActivity implements View.OnClickListene
         roomData = (PropertyRoomData) getIntent().getParcelableExtra("room");
         setSliderAndView(roomData.getImage_slider());
         informationBinding.back.setOnClickListener(this);
+        informationBinding.youtubeIcon.setOnClickListener(this);
         getSession();
 
     }
@@ -99,6 +102,12 @@ public class RoomInformation extends BaseActivity implements View.OnClickListene
         }
 
         informationBinding.addressApartment.setText(roomData.getAddress());
+        video_link = roomData.getVideo_link();
+        if(video_link !=null){
+            if(video_link.isEmpty()){
+                informationBinding.youtubeIcon.setVisibility(View.GONE);
+            }
+        }
       /*  if(priceLevel.size()>0){
           //  informationBinding.monthRentPrice.setText("€ "+priceLevel.get(0).getPrice()+"/Month");
            if(priceLevel.size()>1)
@@ -221,6 +230,12 @@ public class RoomInformation extends BaseActivity implements View.OnClickListene
 
             case R.id.back:
                 finish();
+                break;
+
+            case R.id.youtube_icon:
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(video_link));
+                startActivity(intent);
                 break;
         }
     }

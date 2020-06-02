@@ -23,7 +23,12 @@ import com.development.mycolive.views.fragment.communities.Communities;
 import com.development.mycolive.views.fragment.homeFragment.Home;
 import com.development.mycolive.views.fragment.profile.ProfileScreenOne;
 import com.development.mycolive.views.fragment.filterSearch.Search;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -378,13 +383,20 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
                         }
                     });
         }else if(login_type.equalsIgnoreCase(ApiConstant.FACEBOOK)){
-            LoginManager.getInstance().logOut();
-            session.logoutUser();
+
+           /* new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest
+                    .Callback() {
+                @Override
+                public void onCompleted(GraphResponse graphResponse) {
+                    AccessToken.setCurrentAccessToken(null);
+                    LoginManager.getInstance().logOut();
+                    session.logoutUser();
+
+                }
+            }).executeAsync();*/
+          //  LoginManager.getInstance().logOut();
+
         }
-
-
-       /* */
-
 
     }
 

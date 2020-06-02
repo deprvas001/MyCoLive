@@ -21,8 +21,9 @@
     <string name="phone">Phone Number</string>
     <string name="dob">DOB(DD-MM-YYYY)</string>
     <string name="next">Next</string>
-    <string name="facebook_app_id">164646528174388</string>
-    <string name="fb_login_protocol_scheme">fb164646528174388</string>
+
+    <string name="facebook_app_id">304085550756074</string>
+    <string name="fb_login_protocol_scheme">fb304085550756074</string>
     <string name="gender">Gender</string>
     <string name="signin">Sign in with facebook</string>
     <string name="already_sign">Already registered ? <u><b><font fgcolor='#008577'>Sign in</font></b></u></string>
@@ -191,7 +192,7 @@
     <string name="mycommunity">My Community</string>
     <string name="old_password">Old Password</string>
     <string name="year">year</string>
-    <string name="refer_friend">Refer Your Friend</string>
+    <string name="refer_friend"> Refer/Book with a friend</string>
     <string name="your_email">Enter Your Friend Email</string>
     <string name="stripe">Stripe</string>
     <string name="bank_transfer">Bank Transfer</string>

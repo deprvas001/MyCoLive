@@ -94,7 +94,7 @@ public class PropertyDetail extends BaseActivity implements View.OnClickListener
     boolean isTextViewClicked = false;
     String period,from,to,lat,lng,title;
     BankAccount bankAccount;
-    String fbLink="",chatLink="";
+    String fbLink="",chatLink="",video_link="";
     List<PropertyRoomData> roomList = new ArrayList<>();
 
     @Override
@@ -187,6 +187,7 @@ public class PropertyDetail extends BaseActivity implements View.OnClickListener
 
         chatLink =apiResponse.getResponse().getData().get(0).getFb_chating_link();
         fbLink = apiResponse.getResponse().getData().get(0).getFb_page_link();
+         video_link = apiResponse.getResponse().getData().get(0).getVideo_link();
        if(chatLink!=null){
            if(chatLink.isEmpty()){
                propertyDetailBinding.messageIcon.setVisibility(View.GONE);
@@ -196,10 +197,18 @@ public class PropertyDetail extends BaseActivity implements View.OnClickListener
            }
        }
 
+
+
         propertyDetailBinding.apartmentName.setText(apiResponse.getResponse().getData().get(0).getApartment_name());
         propertyDetailBinding.addressApartment.setText(apiResponse.getResponse().getData().get(0).getAddress());
         propertyDetailBinding.description.setText(apiResponse.getResponse().getData().get(0).getDescription());
         propertyDetailBinding.totalPrice.setText("€ "+apiResponse.getResponse().getData().get(0).getTotal_price());
+
+       if(video_link !=null ){
+           if(video_link.isEmpty()){
+                propertyDetailBinding.youtubeIcon.setVisibility(View.GONE);
+           }
+       }
 
         total_cost = Float.parseFloat(apiResponse.getResponse().getData().get(0).getTotal_price());
      }
@@ -244,6 +253,7 @@ public class PropertyDetail extends BaseActivity implements View.OnClickListener
         propertyDetailBinding.locationImage.setOnClickListener(this);
         propertyDetailBinding.facebookIcon.setOnClickListener(this);
         propertyDetailBinding.messageIcon.setOnClickListener(this);
+        propertyDetailBinding.youtubeIcon.setOnClickListener(this);
         propertyDetailBinding.back.setOnClickListener(this);
         propertyDetailBinding.clear.setOnClickListener(this);
 
@@ -398,6 +408,12 @@ public class PropertyDetail extends BaseActivity implements View.OnClickListener
             case R.id.message_icon:
                 intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(chatLink));
+                startActivity(intent);
+                break;
+
+            case R.id.youtube_icon:
+                intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(video_link));
                 startActivity(intent);
                 break;
         }

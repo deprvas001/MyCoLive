@@ -31,6 +31,7 @@ public class PropertyDetailData {
     private String favourites;
     private List<PropertyRoomData> room;
     private BankAccount bank_account;
+    private String video_link;
 
     public String getId() {
         return id;
@@ -226,6 +227,14 @@ public class PropertyDetailData {
 
     public BankAccount getBank_account() {
         return bank_account;
+    }
+
+    public String getVideo_link() {
+        return video_link;
+    }
+
+    public void setVideo_link(String video_link) {
+        this.video_link = video_link;
     }
 
     public void setBank_account(BankAccount bank_account) {

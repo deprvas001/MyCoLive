@@ -28,10 +28,13 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.login.Login;
+import com.facebook.login.LoginBehavior;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -76,7 +79,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         initailzeView();
         // session.checkLogin();
         setClickListener();
-       // userLogin();
+        // userLogin();
     }
 
     private void setClickListener(){
@@ -141,7 +144,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 break;
 
             case R.id.facebook_login:
-               // facebookSignIn();
+                // facebookSignIn();
                 loginBinding.facebookButton.setVisibility(View.VISIBLE);
                 break;
 
@@ -166,112 +169,114 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         headers.put(ApiConstant.SOURCES,ApiConstant.SOURCES_VALUE);
         headers.put(ApiConstant.USER_TYPE,ApiConstant. USER_TYPE_VALUE);
         headers.put(ApiConstant.USER_DEVICE_TYPE,device_token);
-        headers.put(ApiConstant.USER_DEVICE_TOKEN,"");
+        headers.put(ApiConstant.USER_DEVICE_TOKEN,ApiConstant.USER_DEVICE_TOKEN_VALUE);
 
 
         LoginRequestModel requestModel = new LoginRequestModel(user_email,
-            password,type,social_id);
+                password,type,social_id);
 
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         loginViewModel.getLoginUser(this,requestModel,  headers).observe(this, new Observer<LoginApiResponse>() {
-        @Override
-        public void onChanged(LoginApiResponse loginApiResponse) {
-            hideProgressDialog();
-            if ( loginApiResponse.getStatus_code() == 400 || loginApiResponse.getStatus_code() ==401
-                    || loginApiResponse.getStatus_code() ==500) {
-                // handle error here
-                Toast.makeText(LoginActivity.this,loginApiResponse.getMessage(), Toast.LENGTH_SHORT).show();
-            } else if (loginApiResponse.response !=null) {
-                  //   Toast.makeText(LoginActivity.this,loginApiResponse.getResponse().getMessage(), Toast.LENGTH_SHORT).show();
+            @Override
+            public void onChanged(LoginApiResponse loginApiResponse) {
+                hideProgressDialog();
+                if ( loginApiResponse.getStatus_code() == 400 || loginApiResponse.getStatus_code() ==401
+                        || loginApiResponse.getStatus_code() ==500) {
+                    // handle error here
+                    Toast.makeText(LoginActivity.this,loginApiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                } else if (loginApiResponse.response !=null) {
+                    //   Toast.makeText(LoginActivity.this,loginApiResponse.getResponse().getMessage(), Toast.LENGTH_SHORT).show();
 
                     if (loginApiResponse.getResponse().getStatus() == 1) {
 
-                     if(loginApiResponse.getResponse().getIsEmailExist() ==1){
-                         String token = loginApiResponse.getResponse().getData().getAuthenticateToken();
-                         String userID = loginApiResponse.getResponse().getData().getUserId();
-                         String userType = loginApiResponse.getResponse().getData().getUserType();
-                         String name = loginApiResponse.getResponse().getData().getName();
-                         String email = loginApiResponse.getResponse().getData().getEmail();
-                         String image = loginApiResponse.getResponse().getData().getImage();
+                        if(loginApiResponse.getResponse().getIsEmailExist() ==1){
+                            String token = loginApiResponse.getResponse().getData().getAuthenticateToken();
+                            String userID = loginApiResponse.getResponse().getData().getUserId();
+                            String userType = loginApiResponse.getResponse().getData().getUserType();
+                            String name = loginApiResponse.getResponse().getData().getName();
+                            String email = loginApiResponse.getResponse().getData().getEmail();
+                            String image = loginApiResponse.getResponse().getData().getImage();
 
-                         session.createLoginSession(name,
-                                 email,userID,userType,token,image,type);
-                         //  LoginActivity.this.showAlertDialog(LoginActivity.this, LoginActivity.this.getString(R.string.success));
+                            session.createLoginSession(name,
+                                    email,userID,userType,token,image,type);
+                            //  LoginActivity.this.showAlertDialog(LoginActivity.this, LoginActivity.this.getString(R.string.success));
 
-                         Intent i = new Intent(LoginActivity.this, ShowHomeScreen.class);
-                         // Closing all the Activities
-                         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                                 Intent.FLAG_ACTIVITY_CLEAR_TASK |
-                                 Intent.FLAG_ACTIVITY_NEW_TASK);
-                         // Staring Login Activity
-                         startActivity(i);
-                     }else{
-                         signOut();
-                         Intent i =new Intent(LoginActivity.this,SignupScreen.class);
-                         i.putExtra("login_type",type);
-                         i.putExtra("socail_id",social_id);
-                         startActivity(i);
+                            Intent i = new Intent(LoginActivity.this, ShowHomeScreen.class);
+                            // Closing all the Activities
+                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                    Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                                    Intent.FLAG_ACTIVITY_NEW_TASK);
+                            // Staring Login Activity
+                            startActivity(i);
+                        }else{
+                            signOut();
+                            Intent i =new Intent(LoginActivity.this,SignupScreen.class);
+                            i.putExtra("login_type",type);
+                            i.putExtra("socail_id",social_id);
+                            startActivity(i);
 
-                     }
+                        }
                     }
 
-            } else {
-                // call failed.
-                Toast.makeText(LoginActivity.this,loginApiResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                // Log.e(TAG, "Error is " + e.getLocalizedMessage());
+                } else {
+                    // call failed.
+                    Toast.makeText(LoginActivity.this,loginApiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    // Log.e(TAG, "Error is " + e.getLocalizedMessage());
+                }
             }
-        }
-    });
-}
-
-private void initailzeView(){
-
-
-    boolean loggedOut = AccessToken.getCurrentAccessToken() == null;
-
-    if (!loggedOut) {
-    //    Picasso.with(this).load(Profile.getCurrentProfile().getProfilePictureUri(200, 200)).into(imageView);
-        Log.d("TAG", "Username is: " + Profile.getCurrentProfile().getName());
-
-        //Using Graph API
-     //   getUserProfile(AccessToken.getCurrentAccessToken());
+        });
     }
-     callbackManager = CallbackManager.Factory.create();
 
-    GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+    private void initailzeView(){
 
-            .requestEmail()
-            .requestId()
-            .build();
 
-    mGoogleApiClient = new GoogleApiClient.Builder(LoginActivity.this)
-            .enableAutoManage(this, this)
-            .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-            .build();
+        boolean loggedOut = AccessToken.getCurrentAccessToken() == null;
 
-    loginBinding.facebookButton.setReadPermissions(Arrays.asList("email","public_profile"));
+        if (!loggedOut) {
+            //    Picasso.with(this).load(Profile.getCurrentProfile().getProfilePictureUri(200, 200)).into(imageView);
+            Log.d("TAG", "Username is: " + Profile.getCurrentProfile().getName());
 
-    loginBinding.facebookButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-        @Override
-        public void onSuccess(LoginResult loginResult) {
-            boolean loggedIn = AccessToken.getCurrentAccessToken() == null;
-            Log.d("API123", loggedIn + " ??");
-            getUserProfile(AccessToken.getCurrentAccessToken());
+            //Using Graph API
+            //   getUserProfile(AccessToken.getCurrentAccessToken());
         }
+        callbackManager = CallbackManager.Factory.create();
 
-        @Override
-        public void onCancel() {
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
 
-        }
+                .requestEmail()
+                .requestId()
+                .build();
 
-        @Override
-        public void onError(FacebookException error) {
+        mGoogleApiClient = new GoogleApiClient.Builder(LoginActivity.this)
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
 
-        }
-    });
+        loginBinding.facebookButton.setReadPermissions("email","public_profile");
 
-    getDeviceToken();
-}
+        loginBinding.facebookButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                boolean loggedIn = AccessToken.getCurrentAccessToken() == null;
+                Log.d("API123", loggedIn + " ??");
+              //  Toast.makeText(LoginActivity.this,String.valueOf(AccessToken.getCurrentAccessToken()), Toast.LENGTH_SHORT).show();
+                getUserProfile(AccessToken.getCurrentAccessToken());
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+
+            }
+        });
+
+        getDeviceToken();
+    }
 
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
@@ -314,7 +319,7 @@ private void initailzeView(){
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+     //   callbackManager.onActivityResult(requestCode,resultCode,data);
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
@@ -329,7 +334,7 @@ private void initailzeView(){
                 new ResultCallback<Status>() {
                     @Override
                     public void onResult(Status status) {
-                  //      updateUI(false);
+                        //      updateUI(false);
                     }
                 });
     }
@@ -344,9 +349,9 @@ private void initailzeView(){
                         try {
                             String first_name = object.getString("first_name");
                             String last_name = object.getString("last_name");
-                         //   String email = object.getString("email");
+                            //   String email = object.getString("email");
                             String id = object.getString("id");
-                       //     String image_url = "https://graph.facebook.com/" + id + "/picture?type=normal";
+                            //     String image_url = "https://graph.facebook.com/" + id + "/picture?type=normal";
 
                             userLogin("","",ApiConstant.FACEBOOK,id);
                            /* txtUsername.setText("First Name: " + first_name + "\nLast Name: " + last_name);

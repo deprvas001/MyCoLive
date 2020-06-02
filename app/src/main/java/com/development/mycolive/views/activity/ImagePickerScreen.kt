@@ -2,8 +2,13 @@ package com.development.mycolive.views.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.development.mycolive.constant.ApiConstant
 import com.nguyenhoanglam.imagepicker.model.Config
 import com.nguyenhoanglam.imagepicker.model.Image
@@ -41,7 +46,7 @@ class ImagePickerScreen : AppCompatActivity() {
             returnIntent.putExtra(ApiConstant.IMAGE_PICK, images)
             setResult(Activity.RESULT_OK, returnIntent)
             finish()
-            /*for (image in images) {
+           /* for (image in images) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     val uri = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, image.id.toString())
                     Glide.with(context)

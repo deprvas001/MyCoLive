@@ -61,7 +61,9 @@ import com.nguyenhoanglam.imagepicker.ui.imagepicker.ImagePicker;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -83,14 +85,12 @@ public class BookingDetails extends BaseActivity implements View.OnClickListener
     List<String> id_list =new ArrayList<>();
     BankAccount bankAccount;
     BookingDetailsViewModel viewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bookingDetailsBinding = DataBindingUtil.setContentView(this, R.layout.activity_booking_details);
-       /* bookingDetailsBinding.toolbar.setTitle(getString(R.string.booking_detail));
-        setSupportActionBar(bookingDetailsBinding.toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);*/
+
         if (getIntent() != null) {
 
         roomDataList = getIntent().getParcelableArrayListExtra("data");
@@ -163,14 +163,18 @@ public class BookingDetails extends BaseActivity implements View.OnClickListener
 
                                 if(bookingDetailsBinding.policAccept.isChecked()){
 
-                                   if(!image_string.isEmpty()) {
+                                    email_id.add(email);
+                                    //   gotoNext(email);
+                                    getSession(email);
+
+                                   /*if(!image_string.isEmpty()) {
                                        email_id.add(email);
                                        //   gotoNext(email);
                                        getSession(email);
                                    }else{
                                        Toast.makeText(this, "Please Upload Id Proof.", Toast.LENGTH_SHORT).show();
                                    }
-
+*/
                                 }else{
                                     Toast.makeText(this, "Please accept policy.", Toast.LENGTH_SHORT).show();
                                 }
@@ -178,18 +182,21 @@ public class BookingDetails extends BaseActivity implements View.OnClickListener
                             }else{
                                 bookingDetailsBinding.referEdit.setError("Enter valid email.");
                             }
-
                         }
                     }else{
                         if(bookingDetailsBinding.policAccept.isChecked()){
 
-                           if(!image_string.isEmpty()){
+                            email_id.add("");
+                            //    gotoNext("");
+                            getSession("");
+
+                          /* if(!image_string.isEmpty()){
                                email_id.add("");
                                //    gotoNext("");
                                getSession("");
                            }else{
                                Toast.makeText(this, "Please Upload Id Proof.", Toast.LENGTH_SHORT).show();
-                           }
+                           }*/
 
                         }else{
                             Toast.makeText(this, "Please accept policy.", Toast.LENGTH_SHORT).show();
@@ -212,7 +219,7 @@ public class BookingDetails extends BaseActivity implements View.OnClickListener
                 break;
 
             case R.id.upload_receipt:
-           //     pickImage(REQUEST_CODE);
+             //  pickImage(REQUEST_CODE);
                 Intent intent = new Intent(BookingDetails.this, ImagePickerScreen.class);
                 startActivityForResult(intent, 102);//
                 break;
@@ -236,7 +243,6 @@ public class BookingDetails extends BaseActivity implements View.OnClickListener
 
         //then we will inflate the custom alert dialog xml that we created
         View dialogView = LayoutInflater.from(this).inflate(R.layout.custom_terms_condition, viewGroup, false);
-
 
         //Now we need an AlertDialog.Builder object
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -325,7 +331,7 @@ public class BookingDetails extends BaseActivity implements View.OnClickListener
         image_string = Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
-  /*  private void pickImage(int REQUEST_CODE) {
+   /* private void pickImage(int REQUEST_CODE) {
         String root = Environment.getExternalStorageDirectory().toString();
         File myDir = new File(root + "/ImagePicker");
 
@@ -352,9 +358,8 @@ public class BookingDetails extends BaseActivity implements View.OnClickListener
                 .setKeepScreenOn(true)              //  Keep screen on when selecting images
 
                 .start();
-    }
-*/
-   /* @Override
+    }*/
+  /*  @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
@@ -434,7 +439,6 @@ public class BookingDetails extends BaseActivity implements View.OnClickListener
         token = user.get(SessionManager.KEY_TOKEN);
         user_id = user.get(SessionManager.KEY_USERID);
 
-
         uploadIdProof(friend_email);
     }
 
@@ -451,21 +455,34 @@ public class BookingDetails extends BaseActivity implements View.OnClickListener
                 if (images.size() > 0) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                         Uri uri = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, String.valueOf(images.get(0).getId()));
-                        RequestOptions options = new RequestOptions().placeholder(R.drawable.noimage)
-                                .error(R.drawable.noimage);
 
-                        Glide.with(this)
-                                .load(uri)
-                                .apply(options)
-                                .transition(DrawableTransitionOptions.withCrossFade())
-                                .into(bookingDetailsBinding.uploadReceipt);
+                        // do your logic here...
+                        BitmapFactory.Options options = new BitmapFactory.Options();
 
+                        // downsizing image as it throws OutOfMemory Exception for larger
+                        // images
+                        //  options.inSampleSize = calculteInSampleSize(option,500,500)
+                        options.inSampleSize = 2;
+
+                        final InputStream imageStream;
                         try {
-                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-                            convetBitmapString(bitmap);
-                        } catch (IOException e) {
+                            imageStream = getContentResolver().openInputStream(uri);
+                            final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                            bookingDetailsBinding.uploadReceipt.setImageBitmap(selectedImage);
+
+                            convetBitmapString(selectedImage);
+                        } catch (FileNotFoundException e) {
                             e.printStackTrace();
                         }
+
+
+/*
+                        String path = uri.getPath();
+                        //   Toast.makeText(BookingDetails.this, path, Toast.LENGTH_SHORT).show();
+                        Bitmap bitmap = BitmapFactory.decodeFile(path, options);
+                        bookingDetailsBind(ing.uploadReceipt.setImageBitmap(bitmap);
+
+                        convetBitmapString(bitmap);*/
 
                     } else {
 
