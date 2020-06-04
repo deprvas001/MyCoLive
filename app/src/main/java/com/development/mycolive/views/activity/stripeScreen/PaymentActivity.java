@@ -355,11 +355,12 @@ public class PaymentActivity extends BaseActivity {
 
     private void getStripeKeys(String email){
 
-            showProgressDialog(getResources().getString(R.string.loading));
+        showProgressDialog(getResources().getString(R.string.loading));
 
         StripeRequestBody requestBody = new StripeRequestBody();
         requestBody.setEmail(email);
         requestBody.setAmount(String.valueOf(total_price));
+        requestBody.setMonth_id(month_id);
 
 
             Map<String,String> headers = new HashMap<>();
@@ -371,6 +372,7 @@ public class PaymentActivity extends BaseActivity {
             headers.put(ApiConstant.AUTHENTICAT_TOKEN,token);
 
             viewModel = ViewModelProviders.of(this).get(StripPaymentViewModel.class);
+
 
             viewModel.getStripeKey(this,headers,requestBody).observe(this, new Observer<StripeApiResponse>() {
                 @Override
@@ -464,6 +466,7 @@ public class PaymentActivity extends BaseActivity {
         modeRequest.setPayment_method("STRIPE");
         modeRequest.setReceipt("");
 
+
         Map<String,String> headers = new HashMap<>();
         headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);
         headers.put(ApiConstant.SOURCES,ApiConstant.SOURCES_VALUE);
@@ -471,8 +474,6 @@ public class PaymentActivity extends BaseActivity {
         headers.put(ApiConstant.USER_DEVICE_TYPE,ApiConstant.USER_DEVICE_TYPE_VALUE);
         headers.put(ApiConstant.USER_DEVICE_TOKEN,ApiConstant.USER_DEVICE_TOKEN_VALUE);
         headers.put(ApiConstant.AUTHENTICAT_TOKEN,token);
-
-
 
 
       PaymentModeViewModel  viewModel1 = ViewModelProviders.of(this).get(PaymentModeViewModel.class);

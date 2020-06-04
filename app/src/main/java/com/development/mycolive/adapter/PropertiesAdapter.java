@@ -87,6 +87,7 @@ public class PropertiesAdapter extends RecyclerView.Adapter<PropertiesAdapter.My
         Picasso.get()
                 .load(homeSliderList.get(0).getImage())
                 .placeholder(R.drawable.no_image_found)
+                .fit()
               /*  .placeholder(R.drawable.image1)
                 .error(R.drawable.err)*/
                 .into(holder.imageView);

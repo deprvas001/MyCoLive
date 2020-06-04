@@ -110,7 +110,7 @@ public class SearchScreenAdapter extends RecyclerView.Adapter<SearchScreenAdapte
                     R.color.colorPrimaryDark), android.graphics.PorterDuff.Mode.MULTIPLY);
         }
 
-        holder.price.setOnClickListener(new View.OnClickListener() {
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -131,6 +131,7 @@ public class SearchScreenAdapter extends RecyclerView.Adapter<SearchScreenAdapte
         Picasso.get()
                 .load(homeSlider.get(0).getImage())
                 .placeholder(R.drawable.no_image_found)
+                .fit()
                 /* .placeholder(R.drawable.image1)
                  .error(R.drawable.err)*/
                 .into(holder.imageView);

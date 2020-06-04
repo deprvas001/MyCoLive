@@ -215,7 +215,7 @@ BookingHistoryViewModel viewModel;
 
         Picasso.get()
                 .load(image)
-                .placeholder(R.drawable.loading)
+                .placeholder(R.drawable.no_image_found)
                 .error(R.drawable.no_image_found)
                 .into(imageView);
 

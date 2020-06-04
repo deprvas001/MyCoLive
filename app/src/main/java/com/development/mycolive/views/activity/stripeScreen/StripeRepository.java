@@ -43,9 +43,10 @@ public class StripeRepository {
     public MutableLiveData<StripeApiResponse> getStripeKey(Context context, Map<String,String> headers, StripeRequestBody requestBody){
         final MutableLiveData<StripeApiResponse> historyResponseLiveData =new MutableLiveData<>();
 
-        shipmentApi.getStripeKey(headers,requestBody).enqueue(new Callback<StripeServerResponse>() {
-            @Override
-            public void onResponse(Call<StripeServerResponse> call, Response<StripeServerResponse> response) {
+        if(requestBody.getMonth_id() == null){
+            shipmentApi.getStripeKey(headers,requestBody).enqueue(new Callback<StripeServerResponse>() {
+                @Override
+                public void onResponse(Call<StripeServerResponse> call, Response<StripeServerResponse> response) {
                     if (response.code() == 401 || response.code() == 400 || response.code() == 500) {
                         try {
                             JSONObject jObjError = new JSONObject(response.errorBody().string());
@@ -59,19 +60,51 @@ public class StripeRepository {
                             e.printStackTrace();
                         }
                     }
-                else {
+                    else {
 
-                    if(response.isSuccessful()){
-                        historyResponseLiveData.setValue(new StripeApiResponse(response.body()));
+                        if(response.isSuccessful()){
+                            historyResponseLiveData.setValue(new StripeApiResponse(response.body()));
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<StripeServerResponse> call, Throwable t) {
-                historyResponseLiveData.setValue(new StripeApiResponse(t));
-            }
-        });
+                @Override
+                public void onFailure(Call<StripeServerResponse> call, Throwable t) {
+                    historyResponseLiveData.setValue(new StripeApiResponse(t));
+                }
+            });
+        }else{
+            shipmentApi.getStripeKey1(headers,requestBody).enqueue(new Callback<StripeServerResponse>() {
+                @Override
+                public void onResponse(Call<StripeServerResponse> call, Response<StripeServerResponse> response) {
+                    if (response.code() == 401 || response.code() == 400 || response.code() == 500) {
+                        try {
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            String message = jObjError.getString("message");
+                            int status = jObjError.getInt("status");
+                            historyResponseLiveData.setValue(new StripeApiResponse(message, status, response.code()));
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else {
+
+                        if(response.isSuccessful()){
+                            historyResponseLiveData.setValue(new StripeApiResponse(response.body()));
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<StripeServerResponse> call, Throwable t) {
+                    historyResponseLiveData.setValue(new StripeApiResponse(t));
+                }
+            });
+        }
+
 
         return   historyResponseLiveData;
     }

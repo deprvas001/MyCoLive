@@ -330,6 +330,7 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
         screenBinding.headerLayout.email.setText(email);
         Picasso.get()
                 .load(image)
+                .placeholder(R.drawable.noimage)
                 /*  .placeholder(R.drawable.image1)
                   .error(R.drawable.err)*/
                 .into(screenBinding.headerLayout.profileImage);

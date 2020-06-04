@@ -1,10 +1,13 @@
 package com.development.mycolive.views.fragment.profile;
 
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
@@ -12,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,6 +40,7 @@ import com.development.mycolive.model.searchScreen.DistrictModel;
 import com.development.mycolive.model.searchScreen.Period;
 import com.development.mycolive.model.searchScreen.UniversityModel;
 import com.development.mycolive.session.SessionManager;
+import com.development.mycolive.views.activity.ImagePickerScreen;
 import com.development.mycolive.views.activity.ShowHomeScreen;
 import com.development.mycolive.model.editProfile.ProfileApiResponse;
 import com.development.mycolive.model.editProfile.ProfileData;
@@ -68,6 +73,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -365,7 +372,9 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener, 
                 break;
 
             case R.id.profile_image:
-                pickImage(REQUEST_CODE);
+              //  pickImage(REQUEST_CODE);
+                Intent intent = new Intent(getActivity(), ImagePickerScreen.class);
+                startActivityForResult(intent, 102);//
                 break;
 
             case R.id.facebook_link:
@@ -415,7 +424,7 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener, 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 
-        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+      /*  if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             ArrayList<Image> images = data.getParcelableArrayListExtra(Config.EXTRA_IMAGES);
             // do your logic here...
             BitmapFactory.Options options = new BitmapFactory.Options();
@@ -434,9 +443,72 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener, 
             callbackManager.onActivityResult(requestCode,resultCode,data);
 
         }
-        super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);*/
        // You MUST have this line to be here
         // so ImagePicker can work with fragment mode
+
+        // check if the request code is same as what is passed  here it is 2
+        if (requestCode == 102) {
+            if (resultCode == Activity.RESULT_OK && data != null) {
+                ArrayList<Image> images = data.getParcelableArrayListExtra(ApiConstant.IMAGE_PICK);
+
+                if (images.size() > 0) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        Uri uri = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, String.valueOf(images.get(0).getId()));
+
+                        // do your logic here...
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+
+                        // downsizing image as it throws OutOfMemory Exception for larger
+                        // images
+                        //  options.inSampleSize = calculteInSampleSize(option,500,500)
+                        options.inSampleSize = 2;
+
+                        final InputStream imageStream;
+                        try {
+                            imageStream = getActivity().getContentResolver().openInputStream(uri);
+                            final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                            oneBinding.profileImage.setImageBitmap(selectedImage);
+
+                            convetBitmapString(selectedImage);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+
+
+/*
+                        String path = uri.getPath();
+                        //   Toast.makeText(BookingDetails.this, path, Toast.LENGTH_SHORT).show();
+                        Bitmap bitmap = BitmapFactory.decodeFile(path, options);
+                        bookingDetailsBind(ing.uploadReceipt.setImageBitmap(bitmap);
+
+                        convetBitmapString(bitmap);*/
+
+                    } else {
+
+                        // do your logic here...
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+
+                        // downsizing image as it throws OutOfMemory Exception for larger
+                        // images
+                        //  options.inSampleSize = calculteInSampleSize(option,500,500)
+                        options.inSampleSize = 2;
+
+                        String path = images.get(0).getPath();
+                        //   Toast.makeText(BookingDetails.this, path, Toast.LENGTH_SHORT).show();
+                        Bitmap bitmap = BitmapFactory.decodeFile(path, options);
+                        oneBinding.profileImage.setImageBitmap(bitmap);
+
+                        convetBitmapString(bitmap);
+
+                    }
+                }
+            }
+
+        }else{
+            callbackManager.onActivityResult(requestCode,resultCode,data);
+
+        }
     }
 
     private void setDateTimeField() {

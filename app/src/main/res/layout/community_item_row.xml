@@ -160,7 +160,7 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_margin="10dp"
-            android:scaleType="fitXY" />
+            android:adjustViewBounds="true" />
 
         <LinearLayout
             android:layout_width="match_parent"

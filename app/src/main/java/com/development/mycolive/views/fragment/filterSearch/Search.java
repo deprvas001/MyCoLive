@@ -329,8 +329,8 @@ FragmentSearchBinding searchBinding;
                                     Toast.makeText(getActivity(), "No Result Found", Toast.LENGTH_SHORT).show();
                                 }
                             }
-
-                        }else if(type.equalsIgnoreCase("APARTMENT")){
+                        }
+                        else if(type.equalsIgnoreCase("APARTMENT")){
                             if(apartmentList!=null){
                                 if(apartmentList.size()>0){
                                     Intent intent = new Intent(getActivity(), FilterResultProperty.class);

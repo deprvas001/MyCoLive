@@ -127,6 +127,7 @@ public class AllCommunityAdapter  extends RecyclerView.Adapter<AllCommunityAdapt
         Picasso.get()
                 .load(post.getProfile_image())
                  .placeholder(R.drawable.no_image_found)
+                 .fit().centerCrop()
                 /*  .placeholder(R.drawable.image1)
                   .error(R.drawable.err)*/
                 .into(holder.user_image);
@@ -135,6 +136,7 @@ public class AllCommunityAdapter  extends RecyclerView.Adapter<AllCommunityAdapt
             Picasso.get()
                     .load(post.getImage().get(0))
                     .placeholder(R.drawable.no_image_found)
+                    .fit()
                     /*  .placeholder(R.drawable.image1)
                       .error(R.drawable.err)*/
                     .into(holder.post_image);

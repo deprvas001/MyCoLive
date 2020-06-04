@@ -283,6 +283,11 @@ public interface ShipmentApi {
             @HeaderMap Map<String,String> headers,
             @Body StripeRequestBody requestBody);
 
+    @POST("sandbox_second_payment")
+    Call<StripeServerResponse> getStripeKey1(
+            @HeaderMap Map<String,String> headers,
+            @Body StripeRequestBody requestBody);
+
     @GET("getProfile")
     Call<RoomateFavResponse> getRoomateDetail(
             @HeaderMap Map<String,String> headers,

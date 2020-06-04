@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.development.mycolive.R;
 import com.development.mycolive.model.home.HomeSlider;
 import com.smarteist.autoimageslider.SliderViewAdapter;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -49,12 +50,22 @@ public class HomeSlideAdapter extends
         });
 
         HomeSlider slider = sliderList.get(position);
-        Glide.with(viewHolder.itemView)
+        Picasso.get()
+                .load(slider.getImage())
+                .placeholder(R.drawable.no_image_found)
+                .fit()
+                /*  .placeholder(R.drawable.image1)
+                  .error(R.drawable.err)*/
+                .into(viewHolder.imageViewBackground);
+
+     /*   Glide.with(viewHolder.itemView)
                  .load(slider.getImage())
                 .placeholder(R.drawable.no_image_found)
+                .centerCrop()
+                .fitCenter()
                 //.load(R.drawable.image1)
                 .fitCenter()
-                .into(viewHolder.imageViewBackground);
+                .into(viewHolder.imageViewBackground);*/
 
     }
 

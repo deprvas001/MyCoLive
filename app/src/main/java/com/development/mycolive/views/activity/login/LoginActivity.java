@@ -58,6 +58,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.development.mycolive.constant.ApiConstant.USER_DEVICE_TYPE_VALUE;
+
 public class LoginActivity extends BaseActivity implements View.OnClickListener,GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = LoginActivity.class.getSimpleName();
     ActivityLoginBinding loginBinding;
@@ -168,7 +170,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);
         headers.put(ApiConstant.SOURCES,ApiConstant.SOURCES_VALUE);
         headers.put(ApiConstant.USER_TYPE,ApiConstant. USER_TYPE_VALUE);
-        headers.put(ApiConstant.USER_DEVICE_TYPE,device_token);
+        headers.put(ApiConstant.USER_DEVICE_TYPE,USER_DEVICE_TYPE_VALUE);
         headers.put(ApiConstant.USER_DEVICE_TOKEN,ApiConstant.USER_DEVICE_TOKEN_VALUE);
 
 
