@@ -256,7 +256,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 .build();
 
         loginBinding.facebookButton.setReadPermissions("email","public_profile");
-
+        loginBinding.facebookButton.setLoginBehavior(LoginBehavior.WEB_ONLY);
         loginBinding.facebookButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -389,10 +389,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                             device_token = token;
                         }
 
+
                         // Log and toast
                         String msg = getString(R.string.fcm_token, token);
                         Log.d("mco", msg);
-                        // Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(LoginActivity.this, device_token,Toast.LENGTH_LONG).show();
                     }
                 });
     }

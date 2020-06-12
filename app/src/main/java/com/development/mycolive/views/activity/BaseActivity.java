@@ -4,13 +4,20 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.DatePicker;
+import android.widget.ImageButton;
 
 import com.development.mycolive.R;
+import com.github.chrisbanes.photoview.PhotoView;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -19,6 +26,7 @@ import java.util.Date;
 public class BaseActivity extends AppCompatActivity {
     private  String date="";
     ProgressDialog progressDialog;
+    Dialog dialog;
 
     public void showProgressDialog(String message) {
         if(progressDialog == null)
@@ -78,5 +86,35 @@ public class BaseActivity extends AppCompatActivity {
         mDatePickerDialog.show();
         return  date;
 
+    }
+
+    public  void showImageDialog(String image) {
+        // custom dialog
+        dialog = new Dialog(BaseActivity.this);
+        dialog.setContentView(R.layout.property_view);
+
+        // set the custom dialog components - text, image and button
+        ImageButton close = (ImageButton) dialog.findViewById(R.id.btnClose);
+        PhotoView imageView = dialog.findViewById(R.id.photo_view);
+
+        Picasso.get()
+                .load(image)
+                .placeholder(R.drawable.no_image_available)
+                .error(R.drawable.no_image_available)
+                .into(imageView);
+
+        // Close Button
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                //TODO Close button action
+            }
+        });
+
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        dialog.show();
     }
 }

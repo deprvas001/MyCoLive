@@ -120,6 +120,7 @@ public class PropertyDetail extends BaseActivity implements View.OnClickListener
         propertyDetailBinding.imageSlider.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH);
         propertyDetailBinding.imageSlider.setIndicatorSelectedColor(Color.WHITE);
         propertyDetailBinding.imageSlider.setIndicatorUnselectedColor(Color.GRAY);
+
         propertyDetailBinding.imageSlider.startAutoCycle();
 
         propertyDetailBinding.imageSlider.setOnIndicatorClickListener(position ->
@@ -197,8 +198,6 @@ public class PropertyDetail extends BaseActivity implements View.OnClickListener
            }
        }
 
-
-
         propertyDetailBinding.apartmentName.setText(apiResponse.getResponse().getData().get(0).getApartment_name());
         propertyDetailBinding.addressApartment.setText(apiResponse.getResponse().getData().get(0).getAddress());
         propertyDetailBinding.description.setText(apiResponse.getResponse().getData().get(0).getDescription());
@@ -225,11 +224,6 @@ public class PropertyDetail extends BaseActivity implements View.OnClickListener
         String email = user.get(SessionManager.KEY_EMAIL);
         String image = user.get(SessionManager.KEY_IMAGE);
          token = user.get(SessionManager.KEY_TOKEN);
-
-        /*propertyDetailBinding.toolbar.setTitle(getResources().getString(R.string.PropertyDetail));
-        setSupportActionBar(propertyDetailBinding.toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);*/
 
         if(isNetworkAvailable(PropertyDetail.this)){
             getDefaultData(token);

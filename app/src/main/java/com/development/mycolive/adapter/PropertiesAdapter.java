@@ -70,11 +70,6 @@ public class PropertiesAdapter extends RecyclerView.Adapter<PropertiesAdapter.My
         holder.created_date.setVisibility(View.VISIBLE);
 
 
-
-       /* holder.name.setText(featureProperty.getPropertyName());
-        holder.rating.setText(featureProperty.getRating());
-        holder.created_date.setText(featureProperty.getCreatedDate());*/
-
         holder.viewLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,7 +81,7 @@ public class PropertiesAdapter extends RecyclerView.Adapter<PropertiesAdapter.My
         });
         Picasso.get()
                 .load(homeSliderList.get(0).getImage())
-                .placeholder(R.drawable.no_image_found)
+                .placeholder(R.drawable.no_image_available)
                 .fit()
               /*  .placeholder(R.drawable.image1)
                 .error(R.drawable.err)*/

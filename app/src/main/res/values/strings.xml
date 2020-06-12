@@ -159,30 +159,12 @@
     <string name="security">Security</string>
     <string name="sub_total">Sub Total</string>
 
-    <string-array name="type_name">
-        <item>Room/Apartment/Roomate</item>
-        <item>ROOM</item>
-        <item>APARTMENT</item>
-        <item>ROOMMATE</item>
-    </string-array>
-
-    <string-array name="duration">
-        <item>Period</item>
-        <item>Sept-Jan</item>
-        <item>Sept-June</item>
-        <item>Feb-June</item>
-        <item>Custom</item>
-    </string-array>
-
-    <string-array name="community_type">
-        <item>Post Type</item>
-        <item>General</item>
-        <item>Accomodation</item>
-    </string-array>
-
     <string name="fcm_token">FCM Token: %s</string>
+
     <string name="description_txt">Description</string>
+
     <string name="from">From</string>
+
     <string name="to">To</string>
     <string name="view">View</string>
     <string name="title_activity_favourite_roomate_detail">FavouriteRoomateDetail</string>
@@ -223,5 +205,25 @@
     <string name="clear">Clear</string>
     <string name="know_more"><u>Know More</u></string>
     <string name="card_detail">Card Detail</string>
+    <string name="loading_error">An error occured while loading data.</string>
+    <string name="no_data">No Data Found.</string>
+    <string-array name="type_name">
+        <item>Room/Apartment/Roomate</item>
+        <item>ROOM</item>
+        <item>APARTMENT</item>
+        <item>ROOMMATE</item>
+    </string-array>
+    <string-array name="duration">
+        <item>Period</item>
+        <item>Sept-Jan</item>
+        <item>Sept-June</item>
+        <item>Feb-June</item>
+        <item>Custom</item>
+    </string-array>
+    <string-array name="community_type">
+        <item>Post Type</item>
+        <item>General</item>
+        <item>Accomodation</item>
+    </string-array>
 
 </resources>

@@ -80,7 +80,7 @@ public class HotPropertyAdapter extends RecyclerView.Adapter<HotPropertyAdapter.
 
         Picasso.get()
                 .load(homeSliderList.get(0).getImage())
-                .placeholder(R.drawable.no_image_found)
+                .placeholder(R.drawable.no_image_available)
                 .fit()
                 /*  .placeholder(R.drawable.image1)
                   .error(R.drawable.err)*/

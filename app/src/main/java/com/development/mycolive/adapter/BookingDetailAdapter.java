@@ -110,7 +110,7 @@ public class BookingDetailAdapter extends RecyclerView.Adapter<BookingDetailAdap
         holder.sub_total.setText("€ "+String.valueOf(total)+"/Month");
         Picasso.get()
                 .load(sliderList.get(0).getImage())
-                .placeholder(R.drawable.no_image_found)
+                .placeholder(R.drawable.no_image_available)
                 // *//*  .placeholder(R.drawable.image1)
                 //  .error(R.drawable.err)*//*
                 .into(holder.imageView);

@@ -12,22 +12,41 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.google.android.material.appbar.AppBarLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:theme="@style/AppTheme.AppBarOverlay">
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/colorPrimary"
+                android:orientation="horizontal">
 
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="?attr/colorPrimary"
-                    app:popupTheme="@style/AppTheme.PopupOverlay" >
+                <ImageView
+                    android:id="@+id/back"
+                    android:layout_width="24dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="center_vertical"
+                    android:tint="@android:color/white"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/ic_back"/>
 
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="@string/mycommunity"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@android:color/white"
+                    android:textSize="20dp"
+                    android:gravity="center"/>
 
-                </androidx.appcompat.widget.Toolbar>
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="center_vertical"
+                    android:tint="@android:color/white"
+                    android:layout_marginRight="10dp"
+                    android:visibility="invisible"
+                    android:src="@drawable/ic_back"/>
 
-            </com.google.android.material.appbar.AppBarLayout>
+            </LinearLayout>
 
 
             <androidx.appcompat.widget.AppCompatEditText
@@ -76,7 +95,7 @@
                 <TextView
                     android:id="@+id/general"
                     android:layout_width="0dp"
-                    android:layout_weight="0.7"
+                    android:layout_weight="1"
                     android:gravity="center_horizontal"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
@@ -97,6 +116,10 @@
 
             </LinearLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
             <!-- TODO: Update blank fragment layout -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
@@ -106,27 +129,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp" />
 
-            <FrameLayout
-                android:visibility="gone"
-                android:id="@+id/frameLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="15dp"/>
+                <TextView
+                    android:id="@+id/loadError"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/loading_error"
+                    android:visibility="gone"
+                    android:layout_centerInParent="true" />
+
+
+            </RelativeLayout>
 
 
         </LinearLayout>
 
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:visibility="gone"
-            android:layout_margin="@dimen/fab_margin"
-            app:srcCompat="@drawable/ic_add_black_24dp" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

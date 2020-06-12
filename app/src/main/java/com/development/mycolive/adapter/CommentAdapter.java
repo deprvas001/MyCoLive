@@ -1,9 +1,13 @@
 package com.development.mycolive.adapter;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,6 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.development.mycolive.R;
 import com.development.mycolive.model.viewCommunityModel.CommentReply;
+import com.development.mycolive.views.activity.BaseActivity;
+import com.development.mycolive.views.activity.viewCommunity.ViewCommunity;
+import com.github.chrisbanes.photoview.PhotoView;
 import com.squareup.picasso.Picasso;
 
 
@@ -20,6 +27,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
 
     private List<CommentReply> commentList;
     private Context context;
+    Dialog dialog;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView name,chat,date;
@@ -62,10 +70,18 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
                   .error(R.drawable.err)*/
                 .into(holder.imageView);
 
+         holder.imageView.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 ((ViewCommunity)context).showImageDialog(commentReply.getProfile_image());
+             }
+         });
+
     }
 
     @Override
     public int getItemCount() {
         return commentList.size();
     }
+
 }

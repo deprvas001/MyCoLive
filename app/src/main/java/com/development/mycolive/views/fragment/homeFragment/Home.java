@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -24,6 +25,7 @@ import com.development.mycolive.R;
 import com.development.mycolive.constant.ApiConstant;
 import com.development.mycolive.databinding.FragmentHomeBinding;
 import com.development.mycolive.model.favourite.RoomateData;
+import com.development.mycolive.model.home.HomeResponse;
 import com.development.mycolive.model.home.RoomateApiResponse;
 import com.development.mycolive.session.SessionManager;
 import com.development.mycolive.views.activity.notification.Notification;
@@ -130,8 +132,12 @@ public class Home extends Fragment implements View.OnClickListener {
         String type = "";
 
         homeViewModel = ViewModelProviders.of(getActivity()).get(HomeViewModel.class);
+        homeViewModel.refresh();
 
-        homeViewModel.getData(getActivity(), type).observe(getActivity(), new Observer<HomeApiResponse>() {
+
+        observeViewModel();
+
+       /* homeViewModel.getData(getActivity(), type).observe(getActivity(), new Observer<HomeApiResponse>() {
             @Override
             public void onChanged(HomeApiResponse homeApiResponse) {
                 if (homeApiResponse.response != null) {
@@ -147,7 +153,46 @@ public class Home extends Fragment implements View.OnClickListener {
                 homeBinding.shimmerViewContainer.stopShimmer();
                 homeBinding.shimmerViewContainer.setVisibility(View.GONE);
             }
+        });*/
+
+
+    }
+
+    private void observeViewModel(){
+        homeViewModel.homeResponse.observe(getActivity(), response -> {
+            if(response !=null ){
+                List<HomeFeatureProperty> featurePropertyList = response.getData().getFeaturedPropertyList();
+                List<HomeFeatureProperty> hotPropertyList = response.getData().getHotProperty();
+                List<HomePropertyArea> homePropertyAreaList = response.getData().getPropertyAreaList();
+                List<HomeSlider> sliderList = response.getData().getSliderList();
+                CountData countData =response.getData().getCountData();
+                setReyclerView(featurePropertyList, hotPropertyList, homePropertyAreaList, sliderList,countData);
+                homeBinding.shimmerViewContainer.stopShimmer();
+                /*homeBinding.shimmerViewContainer.setVisibility(View.GONE);*/
+                homeBinding.layout.setVisibility(View.VISIBLE);
+            }
         });
+
+        homeViewModel.error.observe(getActivity(), isError -> {
+            if(isError !=null && isError instanceof Boolean){
+                homeBinding.loadError.setVisibility(isError ? View.VISIBLE : View.GONE);
+                if(isError){
+                    homeBinding.layout.setVisibility(View.GONE);
+                }
+            }
+        });
+
+       homeViewModel.loading.observe(getActivity(), isLoading -> {
+            if(isLoading !=null && isLoading instanceof Boolean){
+                homeBinding.shimmerViewContainer.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+                if(isLoading){
+                    homeBinding.loadError.setVisibility(View.GONE);
+                    homeBinding.layout.setVisibility(View.GONE);
+                }
+            }
+        });
+
+
     }
 
     @Override

@@ -9,7 +9,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.View;
 import android.widget.AdapterView;
@@ -28,7 +31,9 @@ import com.development.mycolive.model.viewCommunityModel.CommentApiResponse;
 import com.development.mycolive.model.viewCommunityModel.CommentPost;
 import com.development.mycolive.session.SessionManager;
 import com.development.mycolive.views.activity.BaseActivity;
+import com.development.mycolive.views.activity.ImagePickerScreen;
 import com.development.mycolive.views.activity.ShowHomeScreen;
+import com.development.mycolive.views.activity.bookingDetail.BookingDetails;
 import com.development.mycolive.views.activity.viewCommunity.CommunityViewModel;
 import com.development.mycolive.views.fragment.filterSearch.SearchViewModel;
 import com.nguyenhoanglam.imagepicker.model.Config;
@@ -37,6 +42,8 @@ import com.nguyenhoanglam.imagepicker.ui.imagepicker.ImagePicker;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,7 +53,6 @@ import retrofit2.http.Headers;
 
 public class NewPost extends BaseActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
     ActivityNewPostBinding postBinding;
-    List<String> post_type = new ArrayList<String>();
     List<String> images = new ArrayList<>();
     private int REQUEST_CODE = 0;
     SearchViewModel searchViewModel;
@@ -55,10 +61,8 @@ public class NewPost extends BaseActivity implements View.OnClickListener, Adapt
     private String city="";
     private String university="";
     SessionManager session;
-    String image1="",image2="",image3="",image4="",image5="";
     String token="";
     private HashMap<Integer,String> image_option =new HashMap<>();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,27 +127,32 @@ public class NewPost extends BaseActivity implements View.OnClickListener, Adapt
 
             case R.id.upload_image:
                 REQUEST_CODE = 100;
-                pickImage(REQUEST_CODE);
+                Intent intent = new Intent(NewPost.this, ImagePickerScreen.class);
+                startActivityForResult(intent,  REQUEST_CODE);//
                 break;
 
             case R.id.upload_image1:
                 REQUEST_CODE = 101;
-                pickImage(REQUEST_CODE);
+                intent = new Intent(NewPost.this, ImagePickerScreen.class);
+                startActivityForResult(intent,  REQUEST_CODE);
                 break;
 
             case R.id.upload_image2:
                 REQUEST_CODE = 102;
-                pickImage(REQUEST_CODE);
+                intent = new Intent(NewPost.this, ImagePickerScreen.class);
+                startActivityForResult(intent,  REQUEST_CODE);
                 break;
 
             case R.id.upload_image3:
                 REQUEST_CODE = 103;
-                pickImage(REQUEST_CODE);
+                intent = new Intent(NewPost.this, ImagePickerScreen.class);
+                startActivityForResult(intent,  REQUEST_CODE);
                 break;
 
             case R.id.upload_image4:
                 REQUEST_CODE = 104;
-                pickImage(REQUEST_CODE);
+                intent = new Intent(NewPost.this, ImagePickerScreen.class);
+                startActivityForResult(intent,  REQUEST_CODE);
                 break;
 
             case R.id.btn_post:
@@ -218,7 +227,7 @@ public class NewPost extends BaseActivity implements View.OnClickListener, Adapt
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
-            ArrayList<Image> images = data.getParcelableArrayListExtra(Config.EXTRA_IMAGES);
+          /*  ArrayList<Image> images = data.getParcelableArrayListExtra(Config.EXTRA_IMAGES);
             // do your logic here...
             BitmapFactory.Options options = new BitmapFactory.Options();
 
@@ -232,7 +241,46 @@ public class NewPost extends BaseActivity implements View.OnClickListener, Adapt
 
             setImageView(REQUEST_CODE,bitmap);
 
-          //  postBinding.uploadImage1.setImageBitmap(bitmap);
+          //  postBinding.uploadImage1.setImageBitmap(bitmap);*/
+
+                    ArrayList<Image> images = data.getParcelableArrayListExtra(ApiConstant.IMAGE_PICK);
+
+                    if (images.size() > 0) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            Uri uri = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, String.valueOf(images.get(0).getId()));
+
+                            // do your logic here...
+                            BitmapFactory.Options options = new BitmapFactory.Options();
+
+                            // downsizing image as it throws OutOfMemory Exception for larger
+                            // images
+                            //  options.inSampleSize = calculteInSampleSize(option,500,500)
+                            options.inSampleSize = 2;
+
+                            final InputStream imageStream;
+                            try {
+                                imageStream = getContentResolver().openInputStream(uri);
+                                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                                setImageView(REQUEST_CODE,selectedImage);
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            }
+
+                        } else {
+                            // do your logic here...
+                            BitmapFactory.Options options = new BitmapFactory.Options();
+
+                            // downsizing image as it throws OutOfMemory Exception for larger
+                            // images
+                            options.inSampleSize = 2;
+
+                            String path = images.get(0).getPath();
+                            Toast.makeText(this, path, Toast.LENGTH_SHORT).show();
+                            Bitmap bitmap = BitmapFactory.decodeFile(path, options);
+
+                            setImageView(REQUEST_CODE,bitmap);
+                        }
+            }
         }
         super.onActivityResult(requestCode, resultCode, data);  // You MUST have this line to be here
         // so ImagePicker can work with fragment mode
@@ -274,7 +322,7 @@ public class NewPost extends BaseActivity implements View.OnClickListener, Adapt
         bitmap.compress(Bitmap.CompressFormat.JPEG, 40, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream .toByteArray();
         String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
-      images.add(encoded);
+        images.add(encoded);
 
         image_option.put(requestCode,encoded);
     }

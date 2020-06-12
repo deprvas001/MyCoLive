@@ -10,10 +10,12 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -58,6 +61,7 @@ import com.development.mycolive.session.SessionManager;
 import com.development.mycolive.views.activity.BaseActivity;
 import com.development.mycolive.views.fragment.communities.CommunitiesViewModel;
 import com.development.mycolive.views.fragment.filterSearch.SearchViewModel;
+import com.github.chrisbanes.photoview.PhotoView;
 import com.smarteist.autoimageslider.IndicatorAnimations;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
@@ -78,8 +82,9 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
     String token="",id="";
     String comment_id="";
     int reason_check = 0;
-    String share_url=  "";
+    String share_url=  "",user_image="";
     AlertReason alertReason;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,13 +141,20 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
         communityBinding.communityViewLayout.comment.setText(communityModelList.get(0).getComment());
         communityBinding.communityViewLayout.like.setText(communityModelList.get(0).getTotal_likes());
         communityBinding.communityViewLayout.commentCount.setText(communityModelList.get(0).getTotal_reply_comment());
+        user_image = communityModelList.get(0).getProfile_image();
         share_url = communityModelList.get(0).getUrl_for_share();
 
         Picasso.get()
                 .load(communityModelList.get(0).getProfile_image())
-                /*  .placeholder(R.drawable.image1)
-                  .error(R.drawable.err)*/
+                .placeholder(R.drawable.no_image_available)
+                .error(R.drawable.no_image_available)
                 .into(communityBinding.communityViewLayout.imageView);
+
+        Picasso.get()
+                .load(communityModelList.get(0).getProfile_image())
+                .placeholder(R.drawable.no_image_available)
+                .error(R.drawable.no_image_available)
+                .into(communityBinding.postUser);
 
                 setSliderAndView(communityModelList.get(0).getImage());
 
@@ -188,6 +200,7 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
         communityBinding.back.setOnClickListener(this);
         communityBinding.communityViewLayout.alert.setOnClickListener(this);
         communityBinding.communityViewLayout.share.setOnClickListener(this);
+        communityBinding.communityViewLayout.imageView.setOnClickListener(this);
     }
 
     @Override
@@ -203,6 +216,10 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
 
             case R.id.like:
                 likeUnlike();
+                break;
+
+            case R.id.imageView:
+                showImageDialog(user_image);
                 break;
 
             case R.id.share:
@@ -484,4 +501,6 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }

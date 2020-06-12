@@ -20,6 +20,7 @@ import com.development.mycolive.model.home.HomeSlider;
 import com.development.mycolive.model.propertyDetailModel.FacilityData;
 import com.development.mycolive.model.propertyDetailModel.PropertyRoomData;
 import com.development.mycolive.model.searchDetailPage.RoomData;
+import com.development.mycolive.util.Util;
 import com.development.mycolive.views.activity.propertyDetail.PropertyDetail;
 import com.development.mycolive.views.activity.roomInformation.RoomInformation;
 import com.squareup.picasso.Picasso;
@@ -83,22 +84,16 @@ public class PropertyDetailAdapter  extends RecyclerView.Adapter<PropertyDetailA
         PropertyRoomData roomData = detailList.get(position);
         if(roomData.getImage_slider().size()>0){
             HomeSlider imageSlider =  roomData.getImage_slider().get(0);
-            Picasso.get()
-                    .load(imageSlider.getImage())
-                    /*  .placeholder(R.drawable.image1)
-                      .error(R.drawable.err)*/
-                    .into(holder.imageView);
+            Util.loadImage(holder.imageView,imageSlider.getImage() , Util.getCircularDrawable(context));
         }
 
         if(roomData.getFacility().size()>0){
             FacilityData facilityData = roomData.getFacility().get(0);
             holder.facility_txt.setText(facilityData.getFacilityString());
-            Picasso.get()
-                    .load(facilityData.getIcon_url())
-                    .placeholder(R.drawable.no_image_found)
-                    /*  .placeholder(R.drawable.image1)
-                      .error(R.drawable.err)*/
-                    .into(holder.facility_image);
+
+
+            Util.loadImage(holder.facility_image,facilityData.getIcon_url() , Util.getCircularDrawable(context));
+
         }
 
         holder.name.setText(roomData.getApartment_name());
@@ -114,26 +109,12 @@ public class PropertyDetailAdapter  extends RecyclerView.Adapter<PropertyDetailA
                      roomDataList.add(roomData);
                      getTotalPrice(roomData);
                 }else{
-                        roomDataList.remove(roomData);
-                        getTotalSubtractPrice(roomData);
-
+                    roomDataList.remove(roomData);
+                    getTotalSubtractPrice(roomData);
 
                 }
             }
         });
-
-        /*if(holder.select.isChecked()){
-
-          String total =  ((PropertyDetail)context).propertyDetailBinding.totalPrice.getText().toString();
-          int price_total = Integer.parseInt(total);
-          int room_price = Integer.parseInt(roomData.getTotal_price());
-          int final_total = price_total+room_price;
-            ((PropertyDetail)context).propertyDetailBinding.totalPrice.setText(String.valueOf(final_total));
-        }*/
-
-
-
-
 
                 holder.room_info.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -149,21 +130,6 @@ public class PropertyDetailAdapter  extends RecyclerView.Adapter<PropertyDetailA
     public int getItemCount() {
         return detailList.size();
     }
-
-   /* public void setData(List<PropertyRoomData> items) {
-        this.detailList = items;
-        notifyDataSetChanged();
-    }*/
-
- /*   public float grandTotal() {
-        float totalPrice = 0;
-        for (int i = 0; i < detailList.size(); i++) {
-
-            totalPrice += Float.parseFloat(detailList.get(i).getTotal_price());
-        }
-        return totalPrice;
-    }*/
-
 
  public float getTotalPrice(PropertyRoomData roomData){
 

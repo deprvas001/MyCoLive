@@ -90,7 +90,7 @@ public class FindRoomateAdapter extends RecyclerView.Adapter<FindRoomateAdapter.
 
         Picasso.get()
                 .load(roomateModel.getProfile_image())
-                 .placeholder(R.drawable.no_image_found)
+                 .placeholder(R.drawable.no_image_available)
                 //   .error(R.drawable.err)
                 .into(holder.roomate_image);
 

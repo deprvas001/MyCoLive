@@ -86,15 +86,16 @@ public class PastBooking extends Fragment {
                         bookingList = bookingApiResponse.response.getBookingDataList();
                         setRecycleView();
                     }else{
-                        Toast.makeText(getActivity(), bookingApiResponse.getResponse().getMessage(), Toast.LENGTH_SHORT).show();
+                        bookingBinding.loadError.setVisibility(View.VISIBLE);
+                      //  Toast.makeText(getActivity(), bookingApiResponse.getResponse().getMessage(), Toast.LENGTH_SHORT).show();
 
                     }
-
-
                 }else {
                     Toast.makeText(getActivity(), bookingApiResponse.getMessage(), Toast.LENGTH_SHORT).show();
-
                 }
+
+                bookingBinding.shimmerViewContainer.stopShimmer();
+                bookingBinding.shimmerViewContainer.setVisibility(View.GONE);
             }
         });
     }

@@ -93,11 +93,18 @@ ActivityMyCommunityBinding communityBinding;
                     if(communityApiResponse.getResponse().getStatus() == 1){
                         commentList.clear();
                         likeList.clear();
+
                         likeList = communityApiResponse.getResponse().getData().getMy_liked();
                         commentList = communityApiResponse.getResponse().getData().getMy_comments();
                         List<MyPostComment> postCommentList  =communityApiResponse.getResponse().getData().getMy_post();
                         //   List<AllPost> allPostList  = communityApiResponse.getResponse().getData();
-                        setRecyclerview(postCommentList);
+
+                        if(postCommentList.size()>0){
+                            setRecyclerview(postCommentList);
+                        }else{
+                            Toast.makeText(MyCommunity.this, getString(R.string.no_data), Toast.LENGTH_SHORT).show();
+                        }
+
                     }else{
                         Toast.makeText(MyCommunity.this, communityApiResponse.getResponse().getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -138,6 +145,8 @@ ActivityMyCommunityBinding communityBinding;
                 communityBinding.general.setBackground(null);
                 break;
 
+
+
             default:
                 communityBinding.allCommunity.setBackground(getResources().getDrawable(R.drawable.booking_background_selected));
                 communityBinding.allCommunity.setTextColor(getResources().getColor(R.color.white));
@@ -154,6 +163,10 @@ ActivityMyCommunityBinding communityBinding;
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+
+            case R.id.back:
+                finish();
+                break;
 
             case R.id.all_community:
                 setViewBackground(view);
@@ -180,11 +193,12 @@ ActivityMyCommunityBinding communityBinding;
         communityBinding.allCommunity.setOnClickListener(this);
         communityBinding.general.setOnClickListener(this);
         communityBinding.accodmation.setOnClickListener(this);
+        communityBinding.back.setOnClickListener(this);
 
-        communityBinding.toolbar.setTitle(getString(R.string.mycommunity));
+        /*communityBinding.toolbar.setTitle(getString(R.string.mycommunity));
         setSupportActionBar(communityBinding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);*/
     }
 
     private void setRecyclerview(List<MyPostComment> postCommentList){
@@ -197,11 +211,5 @@ ActivityMyCommunityBinding communityBinding;
 
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
-    }
+
 }

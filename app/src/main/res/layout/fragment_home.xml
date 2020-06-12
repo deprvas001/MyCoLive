@@ -5,11 +5,16 @@
 
     <!-- TODO: Update blank fragment layout -->
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -40,13 +45,46 @@
 
         </LinearLayout>
 
-        <LinearLayout
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_view_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                app:shimmer_duration="800">
+
+                <!-- Adding 3 rows of placeholders -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <include layout="@layout/placeholder_item" />
+
+                    <include layout="@layout/placeholder_item" />
+
+                    <include layout="@layout/placeholder_item" />
+
+                    <include layout="@layout/placeholder_item" />
+
+                    <include layout="@layout/placeholder_item" />
+
+                </LinearLayout>
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+
+            <LinearLayout
+                android:id="@+id/layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginTop="10dp"
             android:orientation="vertical">
+
+
 
 
             <com.smarteist.autoimageslider.SliderView
@@ -89,33 +127,6 @@
                 android:background="@android:color/white">
 
 
-                <com.facebook.shimmer.ShimmerFrameLayout
-                    android:id="@+id/shimmer_view_container"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:orientation="vertical"
-                    app:shimmer_duration="800">
-
-                    <!-- Adding 3 rows of placeholders -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <include layout="@layout/placeholder_item" />
-
-                        <include layout="@layout/placeholder_item" />
-
-                        <include layout="@layout/placeholder_item" />
-
-                        <include layout="@layout/placeholder_item" />
-
-                        <include layout="@layout/placeholder_item" />
-
-                    </LinearLayout>
-
-                </com.facebook.shimmer.ShimmerFrameLayout>
 
 
                 <!-- TODO: Update blank fragment layout -->
@@ -214,4 +225,12 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
+        <TextView
+            android:id="@+id/loadError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loading_error"
+            android:layout_centerInParent="true" />
+
+    </RelativeLayout>
 </layout>

@@ -1,9 +1,12 @@
 package com.development.mycolive.networking;
 
 import com.development.mycolive.constant.ApiConstant;
+import com.development.mycolive.model.home.HomeResponse;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Single;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -13,6 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitService {
     private static Retrofit retrofit =null;
      private static final String URL = ApiConstant.BASE_URL;
+    private ShipmentApi shipmentApi;
 
     public  static Retrofit getRetrofitInstance(){
       if(retrofit == null){
@@ -36,5 +40,9 @@ public class RetrofitService {
 
       return  retrofit;
 
+    }
+
+    public Single<HomeResponse> getData(){
+        return shipmentApi.getHomeData();
     }
 }

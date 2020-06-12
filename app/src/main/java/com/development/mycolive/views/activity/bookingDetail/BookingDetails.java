@@ -167,14 +167,6 @@ public class BookingDetails extends BaseActivity implements View.OnClickListener
                                     //   gotoNext(email);
                                     getSession(email);
 
-                                   /*if(!image_string.isEmpty()) {
-                                       email_id.add(email);
-                                       //   gotoNext(email);
-                                       getSession(email);
-                                   }else{
-                                       Toast.makeText(this, "Please Upload Id Proof.", Toast.LENGTH_SHORT).show();
-                                   }
-*/
                                 }else{
                                     Toast.makeText(this, "Please accept policy.", Toast.LENGTH_SHORT).show();
                                 }
@@ -190,13 +182,6 @@ public class BookingDetails extends BaseActivity implements View.OnClickListener
                             //    gotoNext("");
                             getSession("");
 
-                          /* if(!image_string.isEmpty()){
-                               email_id.add("");
-                               //    gotoNext("");
-                               getSession("");
-                           }else{
-                               Toast.makeText(this, "Please Upload Id Proof.", Toast.LENGTH_SHORT).show();
-                           }*/
 
                         }else{
                             Toast.makeText(this, "Please accept policy.", Toast.LENGTH_SHORT).show();
@@ -207,10 +192,6 @@ public class BookingDetails extends BaseActivity implements View.OnClickListener
                 break;
 
             case R.id.policy_link:
-            /*    String url = "https://webfume.in/mani-budapest/landing/privacyPolicy";
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);*/
                showCustomDialog();
                 break;
 
@@ -253,8 +234,6 @@ public class BookingDetails extends BaseActivity implements View.OnClickListener
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
 
-        //    Spanned htmlAsSpanned = Html.fromHtml(contractResponse.getContractDetails());
-
         TextView contract = (TextView)dialogView.findViewById(R.id.contract);
 
         SpannableStringBuilder spanned = (SpannableStringBuilder) Html.fromHtml(contractResponse.getContractDetails());
@@ -263,44 +242,8 @@ public class BookingDetails extends BaseActivity implements View.OnClickListener
 
         ImageView close = (ImageView)dialogView.findViewById(R.id.close);
 
-      //  close.setVisibility(View.GONE);
 
-        CheckBox check = (CheckBox)dialogView.findViewById(R.id.terms_condition);
-
-        Button button_ok = (Button)dialogView.findViewById(R.id.buttonOk);
-
-      //  button_ok.setVisibility(View.GONE);
-
-   //     check.setVisibility(View.GONE);
-
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                alertDialog.dismiss();
-            }
-        });
-       /* button_ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(check.isChecked()){
-                    if(contractResponse.getIs_available() == 1 ){
-                        Intent intent = new Intent(PropertyDetail.this,BookingDetails.class);
-                        intent.putExtra("contract_response",contractResponse);
-                        intent.putExtra("bank_info",bankAccount);
-                        intent.putExtra("total_price",total_cost);
-                        intent.putExtra("booking_info",requestBody);
-                        intent.putExtra("bank_account",bankAccount);
-                        intent.putParcelableArrayListExtra("data", PropertyDetailAdapter.roomDataList);
-                        startActivity(intent);
-                    }else{
-                        Toast.makeText(PropertyDetail.this, contractResponse.getMsg(), Toast.LENGTH_SHORT).show();
-                    }
-
-                }else{
-                    Toast.makeText(PropertyDetail.this, "Please accept terms And condition", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });*/
+        close.setOnClickListener(view -> alertDialog.dismiss());
 
     }
 
@@ -474,15 +417,6 @@ public class BookingDetails extends BaseActivity implements View.OnClickListener
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
                         }
-
-
-/*
-                        String path = uri.getPath();
-                        //   Toast.makeText(BookingDetails.this, path, Toast.LENGTH_SHORT).show();
-                        Bitmap bitmap = BitmapFactory.decodeFile(path, options);
-                        bookingDetailsBind(ing.uploadReceipt.setImageBitmap(bitmap);
-
-                        convetBitmapString(bitmap);*/
 
                     } else {
 

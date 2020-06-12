@@ -502,10 +502,12 @@ public class PaymentActivity extends BaseActivity {
 
         //Now we need an AlertDialog.Builder object
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
 
         Button ok =(Button)dialogView.findViewById(R.id.buttonOk);
         //setting the view of the builder to our custom view that we already inflated
         builder.setView(dialogView);
+
 
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -526,5 +528,11 @@ public class PaymentActivity extends BaseActivity {
         //finally creating the alert dialog and displaying it
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+
+    @Override
+    public void onBackPressed() {
+     //   super.onBackPressed();
     }
 }

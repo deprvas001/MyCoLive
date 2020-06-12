@@ -385,7 +385,7 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
                     });
         }else if(login_type.equalsIgnoreCase(ApiConstant.FACEBOOK)){
 
-           /* new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest
+            new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest
                     .Callback() {
                 @Override
                 public void onCompleted(GraphResponse graphResponse) {
@@ -394,7 +394,7 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
                     session.logoutUser();
 
                 }
-            }).executeAsync();*/
+            }).executeAsync();
           //  LoginManager.getInstance().logOut();
 
         }

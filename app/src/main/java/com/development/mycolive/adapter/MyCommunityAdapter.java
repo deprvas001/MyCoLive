@@ -1,11 +1,15 @@
 package com.development.mycolive.adapter;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,9 +28,11 @@ import com.development.mycolive.model.communityModel.AllPost;
 import com.development.mycolive.model.myCommunityModel.MyCommunityApiResponse;
 import com.development.mycolive.model.myCommunityModel.MyPostComment;
 import com.development.mycolive.model.myCommunityModel.PostDeleteRequest;
+import com.development.mycolive.util.Util;
 import com.development.mycolive.views.activity.myCommunity.MyCommunity;
 import com.development.mycolive.views.activity.myCommunity.MyCommunityViewModel;
 import com.development.mycolive.views.activity.viewCommunity.ViewCommunity;
+import com.github.chrisbanes.photoview.PhotoView;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
@@ -41,6 +47,7 @@ public class MyCommunityAdapter extends RecyclerView.Adapter<MyCommunityAdapter.
     public MyCommunityViewModel viewModel;
     boolean myCommunity ;
     public String token;
+    Dialog dialog;
     ProgressDialog progressDialog;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -112,37 +119,27 @@ public class MyCommunityAdapter extends RecyclerView.Adapter<MyCommunityAdapter.
             }
         });
 
-      /*  holder.postLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, ViewCommunity.class);
-                intent.putExtra("Id",post.getId());
-                context.startActivity(intent);
-            }
-        });*/
 
         Picasso.get()
                 .load(post.getProfile_image())
-                .placeholder(R.drawable.no_image_found)
-                /*  .placeholder(R.drawable.image1)
-                  .error(R.drawable.err)*/
+                  .placeholder(R.drawable.no_image_available)
+                  .error(R.drawable.no_image_available)
                 .into(holder.user_image);
 
         if(post.getImage().size()>0){
             Picasso.get()
                     .load(imageList.get(0))
-                    .placeholder(R.drawable.no_image_found)
-                    /*  .placeholder(R.drawable.image1)
-                      .error(R.drawable.err)*/
+                    .placeholder(R.drawable.no_image_available)
+                    .error(R.drawable.no_image_available)
                     .into(holder.post_image);
         }
 
-        holder.imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-              //  showCustomDialog(context);
-                deleteItem(post.getId(),position);
-            }
+        holder.post_image.setOnClickListener(view -> {
+            showDialog(imageList.get(0));
+        });
+
+        holder.imageView.setOnClickListener(view -> {
+            deleteItem(post.getId(),position);
         });
     }
 
@@ -224,6 +221,34 @@ public class MyCommunityAdapter extends RecyclerView.Adapter<MyCommunityAdapter.
     public void hideProgressDialog() {
         if (progressDialog !=null && progressDialog.isShowing())
             progressDialog.dismiss();
+    }
+
+    private void showDialog(String image) {
+        // custom dialog
+        dialog = new Dialog(context);
+        dialog.setContentView(R.layout.property_view);
+
+        // set the custom dialog components - text, image and button
+        ImageButton close = (ImageButton) dialog.findViewById(R.id.btnClose);
+        PhotoView imageView = dialog.findViewById(R.id.photo_view);
+
+        Util.loadImage(imageView,image ,
+                Util.getCircularDrawable(context));
+
+
+        // Close Button
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                //TODO Close button action
+            }
+        });
+
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        dialog.show();
     }
 
 

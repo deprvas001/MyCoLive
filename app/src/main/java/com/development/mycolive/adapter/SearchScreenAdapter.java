@@ -121,21 +121,14 @@ public class SearchScreenAdapter extends RecyclerView.Adapter<SearchScreenAdapte
             }
         });
 
-      /*  Picasso.get()
-                .load(image)
-                .placeholder(R.drawable.loading)
-                .error(R.drawable.no_image_found)
-                .into(imageView);*/
-
 
         Picasso.get()
                 .load(homeSlider.get(0).getImage())
-                .placeholder(R.drawable.no_image_found)
+                .placeholder(R.drawable.no_image_available)
                 .fit()
                 /* .placeholder(R.drawable.image1)
                  .error(R.drawable.err)*/
                 .into(holder.imageView);
-        /* holder.title.setText(find_room.getType());*/
     }
 
     @Override

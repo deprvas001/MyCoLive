@@ -52,7 +52,6 @@ FragmentCurrentBookingBinding bookingBinding ;
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         bookingBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_current_booking,container,false);
-
        getSession();
         return bookingBinding.getRoot();
     }
@@ -102,7 +101,8 @@ FragmentCurrentBookingBinding bookingBinding ;
                         bookingList = bookingApiResponse.response.getBookingDataList();
                         setRecycleView();
                     }else{
-                        Toast.makeText(getActivity(), bookingApiResponse.getResponse().getMessage(), Toast.LENGTH_SHORT).show();
+                        bookingBinding.loadError.setVisibility(View.VISIBLE);
+                      //  Toast.makeText(getActivity(), bookingApiResponse.getResponse().getMessage(), Toast.LENGTH_SHORT).show();
 
                     }
 
@@ -115,25 +115,6 @@ FragmentCurrentBookingBinding bookingBinding ;
                 bookingBinding.shimmerViewContainer.setVisibility(View.GONE);
             }
         });
-       /* loginViewModel.getLoginUser(this,requestModel).observe(this, loginApiResponse -> {
-            if (loginApiResponse.getError()== null && loginApiResponse.getStatus()==400) {
-                // handle error here
-                hideProgressDialog();
-                showAlertDialog(this, getString(R.string.invalid_credentails));
-                //   Toast.makeText(this, getString(R.string.invalid_credentails), Toast.LENGTH_SHORT).show();
-            }else if (loginApiResponse.getError() == null) {
-                hideProgressDialog();
-                if(loginApiResponse.getResponse().getStatus() ==1 ){
-                    showAlertDialog(this, getString(R.string.success));
-                }
-            } else {
-                // call failed.
-                hideProgressDialog();
-                Throwable e = loginApiResponse.getError();
-                Toast.makeText(LoginActivity.this, "Error is " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                // Log.e(TAG, "Error is " + e.getLocalizedMessage());
-            }
-        });*/
     }
 
     @Override

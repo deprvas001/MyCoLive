@@ -3,6 +3,7 @@ package com.development.mycolive.views.fragment.signUp;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -67,6 +68,7 @@ public class SignUpOne extends Fragment implements View.OnClickListener, RadioGr
     SignUpViewModel viewModel;
     private String gender = "";
     private int REQUEST_CODE = 100;
+    ProgressDialog progressDialog;
     String login_type, socail_id;
     private boolean isVisible= false;
     private String image_string = "";
@@ -87,18 +89,6 @@ public class SignUpOne extends Fragment implements View.OnClickListener, RadioGr
         setOnClickListener();
         return view;
     }
-
-    private void loadFragment(Fragment fragment) {
-// create a FragmentManager
-        FragmentManager fm = getFragmentManager();
-// create a FragmentTransaction to begin the transaction and replace the Fragment
-        FragmentTransaction fragmentTransaction = fm.beginTransaction();
-// replace the FrameLayout with new Fragment
-        fragmentTransaction.replace(R.id.frameLayout, fragment);
-        //   fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit(); // save the changes
-    }
-
 
     private void setOnClickListener() {
         login_type = ((SignupScreen) getActivity()).type;
@@ -201,7 +191,7 @@ public class SignUpOne extends Fragment implements View.OnClickListener, RadioGr
 
     private void setSignUp() {
 
-        ((SignupScreen) getActivity()).showProgressDialog(getString(R.string.loading));
+        showProgressDialog(getString(R.string.loading));
         SignPostRequest signPostRequest = new SignPostRequest();
         signPostRequest.setName(oneBinding.fieldLayout.inputName.getText().toString());
         signPostRequest.setEmail(oneBinding.fieldLayout.inputEmail.getText().toString());
@@ -236,7 +226,7 @@ public class SignUpOne extends Fragment implements View.OnClickListener, RadioGr
         viewModel.setSignUp(getActivity(), signPostRequest).observe(getActivity(), new Observer<SignUpApiResponse>() {
             @Override
             public void onChanged(SignUpApiResponse apiResponse) {
-                ((SignupScreen) getActivity()).hideProgressDialog();
+               hideProgressDialog();
                 if (apiResponse.response != null) {
                     if (apiResponse.getResponse().getStatus() == 0) {
 
@@ -317,55 +307,6 @@ public class SignUpOne extends Fragment implements View.OnClickListener, RadioGr
         image_string = Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
-    private void pickImage(int REQUEST_CODE) {
-        ImagePicker.with(this)                         //  Initialize ImagePicker with activity or fragment context
-                .setToolbarColor("#212121")         //  Toolbar color
-                .setStatusBarColor("#000000")       //  StatusBar color (works with SDK >= 21  )
-                .setToolbarTextColor("#FFFFFF")     //  Toolbar text color (Title and Done button)
-                .setToolbarIconColor("#FFFFFF")     //  Toolbar icon color (Back and Camera button)
-                .setProgressBarColor("#4CAF50")     //  ProgressBar color
-                .setBackgroundColor("#212121")      //  Background color
-                .setCameraOnly(false)               //  Camera mode
-                .setMultipleMode(false)              //  Select multiple images or single image
-                .setFolderMode(true)                //  Folder mode
-                .setShowCamera(true)                //  Show camera button
-                .setFolderTitle("Albums")           //  Folder title (works with FolderMode = true)
-                .setImageTitle("Galleries")         //  Image title (works with FolderMode = false)
-                .setDoneTitle("Done")               //  Done button title
-                .setLimitMessage("You have reached selection limit")    // Selection limit message
-                .setMaxSize(5)                     //  Max images can be selected
-               // .setSavePath("ImagePicker")         //  Image capture folder name
-                //.setSelectedImages(images)          //  Selected images
-                .setAlwaysShowDoneButton(true)      //  Set always show done button in multiple mode
-                .setRequestCode(REQUEST_CODE)                //  Set request code, default Config.RC_PICK_IMAGES
-               // .setKeepScreenOn(true)              //  Keep screen on when selecting images
-                .start();
-    }
-
-   /* @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-
-        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
-            ArrayList<Image> images = data.getParcelableArrayListExtra(Config.EXTRA_IMAGES);
-            // do your logic here...
-            BitmapFactory.Options options = new BitmapFactory.Options();
-
-            // downsizing image as it throws OutOfMemory Exception for larger
-            // images
-            options.inSampleSize = 2;
-
-            String path = images.get(0).getPath();
-            Toast.makeText(getActivity(), path, Toast.LENGTH_SHORT).show();
-            Bitmap bitmap = BitmapFactory.decodeFile(path, options);
-            oneBinding.profileImage.setImageBitmap(bitmap);
-
-            convetBitmapString(bitmap);
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-        // You MUST have this line to be here
-        // so ImagePicker can work with fragment mode
-    }*/
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -400,14 +341,6 @@ public class SignUpOne extends Fragment implements View.OnClickListener, RadioGr
                         }
 
 
-/*
-                        String path = uri.getPath();
-                        //   Toast.makeText(BookingDetails.this, path, Toast.LENGTH_SHORT).show();
-                        Bitmap bitmap = BitmapFactory.decodeFile(path, options);
-                        bookingDetailsBind(ing.uploadReceipt.setImageBitmap(bitmap);
-
-                        convetBitmapString(bitmap);*/
-
                     } else {
 
                         // do your logic here...
@@ -430,5 +363,21 @@ public class SignUpOne extends Fragment implements View.OnClickListener, RadioGr
             }
 
         }
+    }
+
+    public void showProgressDialog(String message) {
+        if(progressDialog == null)
+            progressDialog = new ProgressDialog(getActivity());
+
+        if (!progressDialog.isShowing()) {
+            progressDialog.setMessage(message);
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
+        }
+    }
+
+    public void hideProgressDialog() {
+        if (progressDialog !=null && progressDialog.isShowing())
+            progressDialog.dismiss();
     }
 }

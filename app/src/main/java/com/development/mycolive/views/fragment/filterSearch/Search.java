@@ -1,6 +1,8 @@
 package com.development.mycolive.views.fragment.filterSearch;
 
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -49,7 +51,8 @@ FragmentSearchBinding searchBinding;
     List<CityModel> city = new ArrayList<>();
     List<DistrictModel> district = new ArrayList<>();
     SessionManager session;
-
+    ProgressDialog progressDialog;
+    Dialog dialog;
     String token="";
     List<DistrictModel> districtModelList =new ArrayList<>();
     List<UniversityModel> universityModelList = new ArrayList<>();
@@ -149,16 +152,16 @@ FragmentSearchBinding searchBinding;
                 }else if(city_spinner.isEmpty()){
                     Toast.makeText(getActivity(), "Please Select City", Toast.LENGTH_SHORT).show();
                     return;
-                }else if(district_spiner.isEmpty()){
+                }/*else if(district_spiner.isEmpty()){
                     Toast.makeText(getActivity(), "Please Select District", Toast.LENGTH_SHORT).show();
                   return;
-                }else if(university_id.isEmpty()){
+                }*/else if(university_id.isEmpty()){
                     Toast.makeText(getActivity(), "Please Select University", Toast.LENGTH_SHORT).show();
                     return;
-                }else if(duration_period.isEmpty()){
+                }/*else if(duration_period.isEmpty()){
                     Toast.makeText(getActivity(), "Please Select Duration", Toast.LENGTH_SHORT).show();
                     return;
-                }
+                }*/
 
                 else{
                     getSerchData();
@@ -260,7 +263,7 @@ FragmentSearchBinding searchBinding;
     }
 
     private void getDefaultData(){
-        ((ShowHomeScreen) getActivity()).showProgressDialog(getString(R.string.loading));
+        showProgressDialog(getString(R.string.loading));
             String type = "ALL";
 
             searchViewModel = ViewModelProviders.of(getActivity()).get(SearchViewModel.class);
@@ -268,7 +271,7 @@ FragmentSearchBinding searchBinding;
             searchViewModel.getDefaultData(getActivity(),type).observe(getActivity(), new Observer<FilterApiResponse>() {
                 @Override
                 public void onChanged(FilterApiResponse filterApiResponse) {
-                    ((ShowHomeScreen) getActivity()).hideProgressDialog();
+                    hideProgressDialog();
                     if(filterApiResponse.filterResponse !=null){
                         districtModelList.clear();
                         university.clear();
@@ -288,7 +291,7 @@ FragmentSearchBinding searchBinding;
 
     private void getSerchData(){
        // https://webfume.in/mani-budapest/api/search?type=ROOM&city=Vaduz&district=2&university=6&duration=3&daterange=
-        ((ShowHomeScreen) getActivity()).showProgressDialog(getResources().getString(R.string.loading));
+       showProgressDialog(getResources().getString(R.string.loading));
 
         String type = category_type;
         String city = city_spinner;
@@ -311,7 +314,7 @@ FragmentSearchBinding searchBinding;
         ,city,district,university,duration,daterange).observe(getActivity(), new Observer<FilterSearchApiResponse>() {
             @Override
             public void onChanged(FilterSearchApiResponse filterApiResponse) {
-                ((ShowHomeScreen) getActivity()).hideProgressDialog();
+               hideProgressDialog();
 
                 if(filterApiResponse.response !=null){
                     if(filterApiResponse.getResponse().getStatus() ==1){
@@ -373,5 +376,23 @@ FragmentSearchBinding searchBinding;
         token = user.get(SessionManager.KEY_TOKEN);
 
         //   getBooking(token);
+    }
+
+
+
+    public void showProgressDialog(String message) {
+        if(progressDialog == null)
+            progressDialog = new ProgressDialog(getActivity());
+
+        if (!progressDialog.isShowing()) {
+            progressDialog.setMessage(message);
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
+        }
+    }
+
+    public void hideProgressDialog() {
+        if (progressDialog !=null && progressDialog.isShowing())
+            progressDialog.dismiss();
     }
 }

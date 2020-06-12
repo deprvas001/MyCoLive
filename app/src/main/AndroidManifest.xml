@@ -6,29 +6,21 @@
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality.
     -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
-
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware`1.camera.autofocus" />
-
     <application
         android:allowBackup="true"
+        android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:fullBackupContent="false"
-        android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">
-        <activity android:name=".views.activity.FilterResultProperty"
+        <activity android:name=".views.activity.ImageShowScreen"
             android:theme="@style/AppTheme1"></activity>
+        <activity
+            android:name=".views.activity.FilterResultProperty"
+            android:theme="@style/AppTheme1" />
         <activity android:name=".views.activity.PropertyByAreaResult" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -38,10 +30,6 @@
              sign the APK for publishing.
              You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
-
         <activity
             android:name=".views.activity.PropertyMap"
             android:label="@string/title_activity_property_map"
@@ -49,29 +37,16 @@
 
         <activity
             android:name=".views.activity.roomate.RoommateList"
-            android:theme="@style/AppTheme1"/>
-
-        <meta-data android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
-
-        <activity android:name="com.facebook.FacebookActivity"
-            android:configChanges=
-                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name" />
+            android:theme="@style/AppTheme1" />
         <activity
-            android:name="com.facebook.CustomTabActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="@string/fb_login_protocol_scheme" />
-            </intent-filter>
-        </activity>
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+
         <activity
             android:name=".views.activity.paymentMode.PaymentMode"
-            android:theme="@style/CustomAlertDialogStyle"
-            />
+            android:theme="@style/CustomAlertDialogStyle" />
+
         <activity
             android:name=".views.activity.paymentScreen.SelectPayment"
             android:theme="@style/AppTheme1" />
@@ -81,10 +56,7 @@
         <activity
             android:name=".views.activity.bookingDetail.BookingDetails"
             android:theme="@style/AppTheme1" />
-
-        <activity
-            android:name=".views.activity.ImagePickerScreen" />
-
+        <activity android:name=".views.activity.ImagePickerScreen" />
         <activity
             android:name=".views.activity.myCommunity.MyCommunity"
             android:theme="@style/AppTheme1" />
@@ -94,25 +66,18 @@
             android:theme="@style/AppTheme1" />
         <activity
             android:name=".views.activity.roomInformation.RoomInformation"
-            android:theme="@style/AppTheme1"
-            />
-
-        <service
-            android:name=".service.MyFirebaseMessagingService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-
+            android:theme="@style/AppTheme1" />
         <activity
             android:name=".views.activity.propertyDetail.PropertyDetail"
             android:theme="@style/AppTheme1" />
-        <activity android:name=".views.activity.viewCommunity.ViewCommunity"
-            android:theme="@style/AppTheme1"/>
+        <activity
+            android:name=".views.activity.viewCommunity.ViewCommunity"
+            android:theme="@style/AppTheme1" />
+
         <activity
             android:name=".views.activity.BaseActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".views.activity.AboutUs"
             android:theme="@style/AppTheme1" />
@@ -204,6 +169,7 @@
             android:theme="@style/AppTheme1"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".views.activity.MainActivity" />
+
         <activity
             android:name=".views.activity.SplashScreen"
             android:theme="@style/AppTheme1">
@@ -213,6 +179,30 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+        <service
+            android:name=".service.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
+    <uses-feature android:name="android.hardware`1.camera.autofocus" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
 </manifest>

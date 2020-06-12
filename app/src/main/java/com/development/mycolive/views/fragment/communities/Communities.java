@@ -2,6 +2,7 @@ package com.development.mycolive.views.fragment.communities;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -47,6 +48,7 @@ public class Communities extends Fragment implements View.OnClickListener {
     private AllCommunityAdapter communityAdapter;
     RecyclerView.LayoutManager mLayoutManager;
     SessionManager session;
+    ProgressDialog progressDialog;
     public static final int REQUEST_CODE = 101;
     String token="";
     public Communities() {
@@ -61,22 +63,8 @@ public class Communities extends Fragment implements View.OnClickListener {
         fragmentCommunityBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_community, container, false);
         setClickListener();
         getSession();
-       // getCommunity("ALL");
-      //  loadFragment(new AllCommunities());
         return fragmentCommunityBinding.getRoot();
     }
-/*
-
-    private void loadFragment(Fragment fragment) {
-// create a FragmentManager
-        FragmentManager fm = getActivity().getSupportFragmentManager();
-// create a FragmentTransaction to begin the transaction and replace the Fragment
-        FragmentTransaction fragmentTransaction = fm.beginTransaction();
-// replace the FrameLayout with new Fragment
-        fragmentTransaction.replace(R.id.frameLayout, fragment);
-        fragmentTransaction.commit(); // save the changes
-    }
-*/
 
     private void setClickListener() {
         fragmentCommunityBinding.fab.setOnClickListener(this);
@@ -174,14 +162,14 @@ public class Communities extends Fragment implements View.OnClickListener {
     }
 
     private void getSearchCommunity(String type){
-        ((ShowHomeScreen) getActivity()).showProgressDialog(getResources().getString(R.string.loading));
+        showProgressDialog(getResources().getString(R.string.loading));
 
         communityViewModel = ViewModelProviders.of(getActivity()).get(CommunitiesViewModel.class);
 
         communityViewModel.getSearchData(getActivity(),type).observe(getActivity(), new Observer<SearchCommunityApiResponse>() {
             @Override
             public void onChanged(SearchCommunityApiResponse apiResponse) {
-                ((ShowHomeScreen) getActivity()).hideProgressDialog();
+                hideProgressDialog();
                 if(apiResponse.communityResponse !=null){
 
                      List<AllPost> allPostList  = apiResponse.communityResponse.getData().getAllpost();
@@ -271,5 +259,21 @@ public class Communities extends Fragment implements View.OnClickListener {
                 // some stuff that will happen if there's no result
             }
         }
+    }
+
+    public void showProgressDialog(String message) {
+        if(progressDialog == null)
+            progressDialog = new ProgressDialog(getActivity());
+
+        if (!progressDialog.isShowing()) {
+            progressDialog.setMessage(message);
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
+        }
+    }
+
+    public void hideProgressDialog() {
+        if (progressDialog !=null && progressDialog.isShowing())
+            progressDialog.dismiss();
     }
 }

@@ -11,13 +11,12 @@
 
         <ImageView
             android:id="@+id/receipt_image"
-            android:layout_width="wrap_content"
-            android:layout_height="150dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:alpha="1"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/no_image_found"
              />
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

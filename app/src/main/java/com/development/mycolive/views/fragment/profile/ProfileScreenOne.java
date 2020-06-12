@@ -3,6 +3,7 @@ package com.development.mycolive.views.fragment.profile;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -98,6 +99,7 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener, 
     ProfileViewModel profileViewModel;
     SessionManager session;
     String connected;
+    ProgressDialog progressDialog;
     private boolean isDistrcitAvailable = false;
     private int REQUEST_CODE = 100;
     String university_id="",duration_period="";
@@ -182,10 +184,8 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener, 
     }
 
     private void getBooking(String token) {
-        ((ShowHomeScreen) getActivity()).showProgressDialog(getResources().getString(R.string.loading));
+        showProgressDialog(getResources().getString(R.string.loading));
         String type = ApiConstant.PROFILE;
-
-
 
         Map<String,String> headers = new HashMap<>();
         headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);
@@ -200,14 +200,10 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener, 
         profileViewModel.getProfile(getActivity(),headers, type).observe(getActivity(), new Observer<ProfileApiResponse>() {
             @Override
             public void onChanged(ProfileApiResponse apiResponse) {
-                  ((ShowHomeScreen) getActivity()).hideProgressDialog();
-
-                ((ShowHomeScreen) getActivity()).hideProgressDialog();
+                           hideProgressDialog();
                 if (apiResponse.response != null) {
-
                     if(apiResponse.getResponse().getStatus() == 1){
                         setView(apiResponse);
-                   //     Toast.makeText(getActivity(), apiResponse.getResponse().getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
                 }else {
@@ -263,7 +259,7 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener, 
     }
 
     private void profileUpdate() {
-        ((ShowHomeScreen) getActivity()).showProgressDialog(getResources().getString(R.string.loading));
+      showProgressDialog(getResources().getString(R.string.loading));
 
         PostProfileModel postProfileModel = new PostProfileModel();
         postProfileModel.setName(oneBinding.fieldLayout.inputName.getText().toString());
@@ -297,7 +293,7 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener, 
         profileViewModel.updateProfile(getActivity(),headers, postProfileModel).observe(getActivity(), new Observer<ProfileApiResponse>() {
             @Override
             public void onChanged(ProfileApiResponse apiResponse) {
-                 ((ShowHomeScreen) getActivity()).hideProgressDialog();
+                 hideProgressDialog();
                 if (apiResponse.response != null) {
                     Toast.makeText(getActivity(), apiResponse.response.getMessage(), Toast.LENGTH_SHORT).show();
 
@@ -550,8 +546,6 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener, 
         String image = user.get(SessionManager.KEY_IMAGE);
          token = user.get(SessionManager.KEY_TOKEN);
 
-
-
         if( ((ShowHomeScreen) getActivity()).isNetworkAvailable(getActivity())){
             getBooking(token);
         }else{
@@ -791,4 +785,20 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener, 
         });
     }
 
+
+    public void showProgressDialog(String message) {
+        if(progressDialog == null)
+            progressDialog = new ProgressDialog(getActivity());
+
+        if (!progressDialog.isShowing()) {
+            progressDialog.setMessage(message);
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
+        }
+    }
+
+    public void hideProgressDialog() {
+        if (progressDialog !=null && progressDialog.isShowing())
+            progressDialog.dismiss();
+    }
 }

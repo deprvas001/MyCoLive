@@ -1,16 +1,22 @@
 package com.development.mycolive.adapter;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.development.mycolive.R;
+import com.github.chrisbanes.photoview.PhotoView;
 import com.smarteist.autoimageslider.SliderViewAdapter;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -20,6 +26,7 @@ public class ViewCommunitySlider extends
     private Context context;
     private int mCount;
     private List<String> sliderList;
+    Dialog dialog;
 
     public ViewCommunitySlider(Context context, List<String> sliderList) {
         this.context = context;
@@ -43,16 +50,16 @@ public class ViewCommunitySlider extends
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // Toast.makeText(context, "This is item in position " + position, Toast.LENGTH_SHORT).show();
+              showDialog(sliderList.get(0));
             }
         });
 
 
         Glide.with(viewHolder.itemView)
                 .load(sliderList.get(0))
-                .placeholder(R.drawable.no_image_found)
+                .placeholder(R.drawable.no_image_available)
                 //.load(R.drawable.image1)
-                .fitCenter()
+                //.fitCenter()
                 .into(viewHolder.imageViewBackground);
 
     }
@@ -77,5 +84,35 @@ public class ViewCommunitySlider extends
             textViewDescription = itemView.findViewById(R.id.tv_auto_image_slider);
             this.itemView = itemView;
         }
+    }
+
+    private void showDialog(String image) {
+        // custom dialog
+        dialog = new Dialog(context);
+        dialog.setContentView(R.layout.property_view);
+
+        // set the custom dialog components - text, image and button
+        ImageButton close = (ImageButton) dialog.findViewById(R.id.btnClose);
+        PhotoView imageView = dialog.findViewById(R.id.photo_view);
+
+        Picasso.get()
+                .load(image)
+                .placeholder(R.drawable.no_image_available)
+                .error(R.drawable.no_image_available)
+                .into(imageView);
+
+        // Close Button
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                //TODO Close button action
+            }
+        });
+
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        dialog.show();
     }
 }

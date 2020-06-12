@@ -50,8 +50,10 @@ import com.development.mycolive.model.viewCommunityModel.CommentResponse;
 import com.development.mycolive.model.viewCommunityModel.LikeUnlike;
 import com.development.mycolive.model.viewCommunityModel.ViewCommunityResponse;
 
+import java.util.List;
 import java.util.Map;
 
+import io.reactivex.Single;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -144,8 +146,17 @@ public interface ShipmentApi {
             @HeaderMap Map<String,String> headers,
             @Query("type") String  type);
 
+    @GET("userProfile")
+    Single<ProfileResponse> getProfileData(@HeaderMap Map<String,String> headers,
+                                       @Query("type") String  type);
+
     @GET("homePage")
     Call<HomeResponse> getData();
+
+    @GET("homePage")
+    Single<HomeResponse> getHomeData();
+
+
 
     @GET("getProperty")
     Call<FeatureResponse> getRoomList(@QueryMap Map<String,String> params,

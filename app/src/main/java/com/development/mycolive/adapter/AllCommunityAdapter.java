@@ -30,6 +30,7 @@ import com.development.mycolive.model.myCommunityModel.PostDeleteRequest;
 import com.development.mycolive.model.searchFilterModel.AlertReason;
 import com.development.mycolive.model.searchFilterModel.FilterApiResponse;
 import com.development.mycolive.model.viewCommunityModel.ViewCommunityApiResponse;
+import com.development.mycolive.util.Util;
 import com.development.mycolive.views.activity.myCommunity.MyCommunityViewModel;
 import com.development.mycolive.views.activity.viewCommunity.CommunityViewModel;
 import com.development.mycolive.views.activity.viewCommunity.ViewCommunity;
@@ -124,23 +125,14 @@ public class AllCommunityAdapter  extends RecyclerView.Adapter<AllCommunityAdapt
             }
         });
 
-        Picasso.get()
-                .load(post.getProfile_image())
-                 .placeholder(R.drawable.no_image_found)
-                 .fit().centerCrop()
-                /*  .placeholder(R.drawable.image1)
-                  .error(R.drawable.err)*/
-                .into(holder.user_image);
+        Util.loadImage(holder.user_image,post.getProfile_image() ,
+                Util.getCircularDrawable(context));
+
 
         if(post.getImage().size()>0){
-            Picasso.get()
-                    .load(post.getImage().get(0))
-                    .placeholder(R.drawable.no_image_found)
-                    .fit()
-                    /*  .placeholder(R.drawable.image1)
-                      .error(R.drawable.err)*/
-                    .into(holder.post_image);
-        }
+            Util.loadImage(holder.post_image,post.getImage().get(0) ,
+                    Util.getCircularDrawable(context));
+                  }
 
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override

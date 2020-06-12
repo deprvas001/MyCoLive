@@ -54,7 +54,7 @@ PropertiesAdapter propertiesAdapter;
     String id;
     SessionManager session;
     private GoogleMap mMap;
-    String token="";
+    String token="",image_url="";
     FavRoomateViewModel viewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +78,7 @@ PropertiesAdapter propertiesAdapter;
 
         roomateDetailBinding.favIcon.setOnClickListener(this);
         roomateDetailBinding.back.setOnClickListener(this);
+        roomateDetailBinding.imageView.setOnClickListener(this);
 
         getSession();
 
@@ -178,6 +179,8 @@ PropertiesAdapter propertiesAdapter;
         roomateDetailBinding.hostCity.setText(roomateModel.getCity_name());
         roomateDetailBinding.university.setText(roomateModel.getUniversity_name());
         roomateDetailBinding.location.setText(roomateModel.getAddress());
+
+        image_url = roomateModel.getProfile_image();
         setWebView(roomateModel.getLate(),roomateModel.getLang());
     }
 
@@ -199,6 +202,10 @@ PropertiesAdapter propertiesAdapter;
 
             case R.id.back:
                 finish();
+                break;
+
+            case R.id.imageView:
+                showImageDialog(image_url);
                 break;
         }
     }
