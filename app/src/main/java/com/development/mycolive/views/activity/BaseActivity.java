@@ -16,6 +16,7 @@ import android.widget.DatePicker;
 import android.widget.ImageButton;
 
 import com.development.mycolive.R;
+import com.development.mycolive.util.Util;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.squareup.picasso.Picasso;
 
@@ -97,11 +98,14 @@ public class BaseActivity extends AppCompatActivity {
         ImageButton close = (ImageButton) dialog.findViewById(R.id.btnClose);
         PhotoView imageView = dialog.findViewById(R.id.photo_view);
 
-        Picasso.get()
+       /* Picasso.get()
                 .load(image)
                 .placeholder(R.drawable.no_image_available)
                 .error(R.drawable.no_image_available)
                 .into(imageView);
+*/
+        Util.loadImage(imageView,image ,
+                Util.getCircularDrawable(this));
 
         // Close Button
         close.setOnClickListener(new View.OnClickListener() {

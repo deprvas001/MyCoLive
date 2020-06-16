@@ -58,7 +58,9 @@ import com.development.mycolive.model.viewCommunityModel.LikeUnlike;
 import com.development.mycolive.model.viewCommunityModel.ViewCommunityApiResponse;
 import com.development.mycolive.model.viewCommunityModel.ViewCommunityModel;
 import com.development.mycolive.session.SessionManager;
+import com.development.mycolive.util.Util;
 import com.development.mycolive.views.activity.BaseActivity;
+import com.development.mycolive.views.activity.favouriteRoomate.FavouriteRoomateDetail;
 import com.development.mycolive.views.fragment.communities.CommunitiesViewModel;
 import com.development.mycolive.views.fragment.filterSearch.SearchViewModel;
 import com.github.chrisbanes.photoview.PhotoView;
@@ -82,8 +84,9 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
     String token="",id="";
     String comment_id="";
     int reason_check = 0;
-    String share_url=  "",user_image="";
+    String share_url=  "",user_image="",created_by="",image="";
     AlertReason alertReason;
+    Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,18 +146,14 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
         communityBinding.communityViewLayout.commentCount.setText(communityModelList.get(0).getTotal_reply_comment());
         user_image = communityModelList.get(0).getProfile_image();
         share_url = communityModelList.get(0).getUrl_for_share();
+        created_by = communityModelList.get(0).getCreated_by();
 
-        Picasso.get()
-                .load(communityModelList.get(0).getProfile_image())
-                .placeholder(R.drawable.no_image_available)
-                .error(R.drawable.no_image_available)
-                .into(communityBinding.communityViewLayout.imageView);
+        Util.loadImage(communityBinding.communityViewLayout.imageView,communityModelList.get(0).getProfile_image() ,
+                Util.getCircularDrawable(ViewCommunity.this));
 
-        Picasso.get()
-                .load(communityModelList.get(0).getProfile_image())
-                .placeholder(R.drawable.no_image_available)
-                .error(R.drawable.no_image_available)
-                .into(communityBinding.postUser);
+        Util.loadImage(communityBinding.postUser,image,
+                Util.getCircularDrawable(ViewCommunity.this));
+
 
                 setSliderAndView(communityModelList.get(0).getImage());
 
@@ -201,6 +200,7 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
         communityBinding.communityViewLayout.alert.setOnClickListener(this);
         communityBinding.communityViewLayout.share.setOnClickListener(this);
         communityBinding.communityViewLayout.imageView.setOnClickListener(this);
+        communityBinding.communityViewLayout.name.setOnClickListener(this);
     }
 
     @Override
@@ -219,7 +219,7 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
                 break;
 
             case R.id.imageView:
-                showImageDialog(user_image);
+                showImageDialog1(user_image);
                 break;
 
             case R.id.share:
@@ -232,6 +232,15 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
 
             case R.id.back:
                 finish();
+                break;
+
+            case R.id.name:
+                if(created_by !=null && !created_by.isEmpty()){
+                    Intent intent = new Intent(ViewCommunity.this, FavouriteRoomateDetail.class);
+                    intent.putExtra(ApiConstant.ROOMMATAE_ID,created_by);
+                    startActivity(intent);
+                }
+
                 break;
 
             case R.id.alert:
@@ -352,7 +361,7 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
 
         // email
         String email = user.get(SessionManager.KEY_EMAIL);
-        String image = user.get(SessionManager.KEY_IMAGE);
+         image = user.get(SessionManager.KEY_IMAGE);
      //    id = user.get(SessionManager.KEY_USERID);
         token = user.get(SessionManager.KEY_TOKEN);
         getCommunity(id,token);
@@ -500,6 +509,39 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public  void showImageDialog1(String image) {
+        // custom dialog
+        dialog = new Dialog(ViewCommunity.this);
+        dialog.setContentView(R.layout.property_view);
+
+        // set the custom dialog components - text, image and button
+        ImageButton close = (ImageButton) dialog.findViewById(R.id.btnClose);
+        PhotoView imageView = dialog.findViewById(R.id.photo_view);
+
+       /* Picasso.get()
+                .load(image)
+                .placeholder(R.drawable.no_image_available)
+                .error(R.drawable.no_image_available)
+                .into(imageView);
+*/
+        Util.loadImage(imageView,image ,
+                Util.getCircularDrawable(this));
+
+        // Close Button
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                //TODO Close button action
+            }
+        });
+
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        dialog.show();
     }
 
 

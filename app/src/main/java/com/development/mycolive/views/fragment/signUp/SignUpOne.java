@@ -96,6 +96,7 @@ public class SignUpOne extends Fragment implements View.OnClickListener, RadioGr
 
         if (!login_type.equalsIgnoreCase("NORMAL")) {
             oneBinding.fieldLayout.password.setVisibility(View.GONE);
+            oneBinding.fieldLayout.passwordVisibility.setVisibility(View.GONE);
         }
 
         setDateTimeField();

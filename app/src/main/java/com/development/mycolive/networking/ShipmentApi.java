@@ -154,7 +154,7 @@ public interface ShipmentApi {
     Call<HomeResponse> getData();
 
     @GET("homePage")
-    Single<HomeResponse> getHomeData();
+    Single<HomeResponse> getHomeData(@HeaderMap Map<String,String> headers);
 
 
 

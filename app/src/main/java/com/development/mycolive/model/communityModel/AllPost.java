@@ -23,6 +23,7 @@ public class AllPost implements Parcelable {
     private String total_likes;
     private String user_like_this_comment;
     private String total_reply_comment;
+
    // private String comment_reply;
 
     protected AllPost(Parcel in) {

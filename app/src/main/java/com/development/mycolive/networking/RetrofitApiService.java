@@ -63,8 +63,8 @@ public class RetrofitApiService {
                 .create(ShipmentApi.class);
     }
 
-    public Single<HomeResponse> getData(){
-        return shipmentApi.getHomeData();
+    public Single<HomeResponse> getData(Map<String,String> headers){
+        return shipmentApi.getHomeData(headers);
     }
 
     public Single<ProfileResponse> getProfileData(Map<String,String> headers , String type){

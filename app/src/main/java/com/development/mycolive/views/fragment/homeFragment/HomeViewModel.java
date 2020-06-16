@@ -42,14 +42,14 @@ public class HomeViewModel extends AndroidViewModel {
         return HomeRepository.getInstance().getRoommateData(context,headers, type);
     }
 
-    public void refresh(){
-        fetchFromRemote();
+    public void refresh(Map<String,String> headers){
+        fetchFromRemote(headers);
     }
 
-    private void fetchFromRemote(){
+    private void fetchFromRemote(Map<String,String> headers){
         loading.setValue(true);
         disposable.add(
-                       retrofitService.getData()
+                       retrofitService.getData(headers)
                         .subscribeOn(Schedulers.newThread())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeWith(new DisposableSingleObserver<HomeResponse>() {

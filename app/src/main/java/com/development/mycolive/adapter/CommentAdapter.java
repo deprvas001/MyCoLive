@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.development.mycolive.R;
 import com.development.mycolive.model.viewCommunityModel.CommentReply;
+import com.development.mycolive.util.Util;
 import com.development.mycolive.views.activity.BaseActivity;
 import com.development.mycolive.views.activity.viewCommunity.ViewCommunity;
 import com.github.chrisbanes.photoview.PhotoView;
@@ -63,17 +64,20 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
         holder.chat.setText(commentReply.getComment());
         holder.date.setText(commentReply.getDate());
 
-        Picasso.get()
+      /*  Picasso.get()
                 .load(commentReply.getProfile_image())
                 .placeholder(R.drawable.no_image_found)
-                /*  .placeholder(R.drawable.image1)
-                  .error(R.drawable.err)*/
-                .into(holder.imageView);
+                *//*  .placeholder(R.drawable.image1)
+                  .error(R.drawable.err)*//*
+                .into(holder.imageView);*/
+
+        Util.loadImage(holder.imageView,commentReply.getProfile_image() ,
+                Util.getCircularDrawable(context));
 
          holder.imageView.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
-                 ((ViewCommunity)context).showImageDialog(commentReply.getProfile_image());
+                 showImageDialog(commentReply.getProfile_image());
              }
          });
 
@@ -82,6 +86,39 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
     @Override
     public int getItemCount() {
         return commentList.size();
+    }
+
+    public  void showImageDialog(String image) {
+        // custom dialog
+        dialog = new Dialog(context);
+        dialog.setContentView(R.layout.property_view);
+
+        // set the custom dialog components - text, image and button
+        ImageButton close = (ImageButton) dialog.findViewById(R.id.btnClose);
+        PhotoView imageView = dialog.findViewById(R.id.photo_view);
+
+       /* Picasso.get()
+                .load(image)
+                .placeholder(R.drawable.no_image_available)
+                .error(R.drawable.no_image_available)
+                .into(imageView);
+*/
+        Util.loadImage(imageView,image ,
+                Util.getCircularDrawable(context));
+
+        // Close Button
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                //TODO Close button action
+            }
+        });
+
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        dialog.show();
     }
 
 }

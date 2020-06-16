@@ -29,6 +29,7 @@ import com.development.mycolive.model.stripe.StripeRequestBody;
 import com.development.mycolive.session.SessionManager;
 import com.development.mycolive.views.activity.BaseActivity;
 import com.development.mycolive.views.activity.ShowHomeScreen;
+import com.development.mycolive.views.activity.SuccessScreen;
 import com.development.mycolive.views.activity.paymentMode.PaymentMode;
 import com.development.mycolive.views.activity.paymentMode.PaymentModeViewModel;
 import com.development.mycolive.views.activity.paymentScreen.PaymentViewModel;
@@ -177,6 +178,7 @@ public class PaymentActivity extends BaseActivity {
         Button ok =(Button)dialogView.findViewById(R.id.buttonOk);
         //setting the view of the builder to our custom view that we already inflated
         builder.setView(dialogView);
+
 
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -445,7 +447,9 @@ public class PaymentActivity extends BaseActivity {
                     String message = apiResponse.getResponse().getMessage();
                     if(apiResponse.getResponse().getStatus()==1){
 
-                        displayAlert("Payment completed",message,true);
+                        showCustomDialog();
+
+                       // displayAlert("Payment completed",message,true);
                     }else{
                         displayAlert("Payment failed",message,false);
                     }
@@ -484,8 +488,6 @@ public class PaymentActivity extends BaseActivity {
                 hideProgressDialog();
                 if(apiResponse.response !=null){
                     if(apiResponse.getResponse().getStatus() ==1){
-                        String message = apiResponse.getResponse().getMessage();
-                      //  Toast.makeText(PaymentMode.this, "Success", Toast.LENGTH_SHORT).show();
                         showCustomDialog();
                     }
                 }
@@ -497,7 +499,18 @@ public class PaymentActivity extends BaseActivity {
     }
 
     private void showCustomDialog(){
-        //then we will inflate the custom alert dialog xml that we created
+
+        Intent i = new Intent(PaymentActivity.this, SuccessScreen.class);
+        // Closing all the Activities
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        // Staring Login Activity
+        startActivity(i);
+
+
+       /* //then we will inflate the custom alert dialog xml that we created
         View dialogView = LayoutInflater.from(this).inflate(R.layout.booking_success_dialog,null);
 
         //Now we need an AlertDialog.Builder object
@@ -527,7 +540,7 @@ public class PaymentActivity extends BaseActivity {
 
         //finally creating the alert dialog and displaying it
         AlertDialog alertDialog = builder.create();
-        alertDialog.show();
+        alertDialog.show();*/
     }
 
 

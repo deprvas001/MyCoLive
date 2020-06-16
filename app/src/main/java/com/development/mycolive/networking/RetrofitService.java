@@ -4,6 +4,7 @@ import com.development.mycolive.constant.ApiConstant;
 import com.development.mycolive.model.home.HomeResponse;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Single;
@@ -42,7 +43,7 @@ public class RetrofitService {
 
     }
 
-    public Single<HomeResponse> getData(){
-        return shipmentApi.getHomeData();
+    public Single<HomeResponse> getData(Map<String,String> headers){
+        return shipmentApi.getHomeData(headers);
     }
 }

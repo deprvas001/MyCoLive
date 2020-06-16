@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.development.mycolive">
-    <!--
-         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
-         Google Maps Android API v2, but you must specify either coarse or fine
-         location permissions for the 'MyLocation' functionality.
-    -->
+
     <application
         android:allowBackup="true"
         android:fullBackupContent="false"
@@ -16,8 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".views.activity.ImageShowScreen"
+        <activity android:name=".views.activity.SuccessScreen"
             android:theme="@style/AppTheme1"></activity>
+        <activity
+            android:name=".views.activity.ImageShowScreen"
+            android:theme="@style/AppTheme1" />
         <activity
             android:name=".views.activity.FilterResultProperty"
             android:theme="@style/AppTheme1" />
@@ -34,7 +33,6 @@
             android:name=".views.activity.PropertyMap"
             android:label="@string/title_activity_property_map"
             android:theme="@style/AppTheme1" />
-
         <activity
             android:name=".views.activity.roomate.RoommateList"
             android:theme="@style/AppTheme1" />
@@ -42,11 +40,9 @@
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
-
         <activity
             android:name=".views.activity.paymentMode.PaymentMode"
             android:theme="@style/CustomAlertDialogStyle" />
-
         <activity
             android:name=".views.activity.paymentScreen.SelectPayment"
             android:theme="@style/AppTheme1" />
@@ -73,11 +69,9 @@
         <activity
             android:name=".views.activity.viewCommunity.ViewCommunity"
             android:theme="@style/AppTheme1" />
-
         <activity
             android:name=".views.activity.BaseActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".views.activity.AboutUs"
             android:theme="@style/AppTheme1" />
@@ -169,7 +163,6 @@
             android:theme="@style/AppTheme1"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".views.activity.MainActivity" />
-
         <activity
             android:name=".views.activity.SplashScreen"
             android:theme="@style/AppTheme1">
@@ -186,6 +179,7 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
+
         <service
             android:name=".service.MyFirebaseMessagingService"
             android:exported="false">
@@ -194,15 +188,15 @@
             </intent-filter>
         </service>
     </application>
-    <uses-feature android:name="android.hardware`1.camera.autofocus" />
     <uses-feature android:name="android.hardware.camera" />
-    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware`1.camera.autofocus" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
 
 </manifest>

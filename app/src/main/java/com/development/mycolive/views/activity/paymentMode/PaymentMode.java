@@ -26,6 +26,7 @@ import com.development.mycolive.model.paymentModel.PaymentModeRequest;
 import com.development.mycolive.session.SessionManager;
 import com.development.mycolive.views.activity.BaseActivity;
 import com.development.mycolive.views.activity.ShowHomeScreen;
+import com.development.mycolive.views.activity.SuccessScreen;
 import com.development.mycolive.views.activity.paymentScreen.PaymentViewModel;
 import com.development.mycolive.views.activity.paymentScreen.SelectPayment;
 import com.development.mycolive.views.activity.stripeScreen.PaymentActivity;
@@ -222,7 +223,17 @@ public class PaymentMode extends BaseActivity implements RadioGroup.OnCheckedCha
     }
 
     private void showCustomDialog(){
-        //then we will inflate the custom alert dialog xml that we created
+
+        Intent i = new Intent(PaymentMode.this, SuccessScreen.class);
+        // Closing all the Activities
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        // Staring Login Activity
+        startActivity(i);
+
+      /*  //then we will inflate the custom alert dialog xml that we created
         View dialogView = LayoutInflater.from(this).inflate(R.layout.booking_success_dialog,null);
 
         //Now we need an AlertDialog.Builder object
@@ -248,7 +259,13 @@ public class PaymentMode extends BaseActivity implements RadioGroup.OnCheckedCha
 
         //finally creating the alert dialog and displaying it
         AlertDialog alertDialog = builder.create();
-        alertDialog.show();
+        alertDialog.show();*/
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
     }
 }
 

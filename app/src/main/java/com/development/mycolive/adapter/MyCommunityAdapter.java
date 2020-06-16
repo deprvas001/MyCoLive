@@ -29,6 +29,7 @@ import com.development.mycolive.model.myCommunityModel.MyCommunityApiResponse;
 import com.development.mycolive.model.myCommunityModel.MyPostComment;
 import com.development.mycolive.model.myCommunityModel.PostDeleteRequest;
 import com.development.mycolive.util.Util;
+import com.development.mycolive.views.activity.favouriteRoomate.FavouriteRoomateDetail;
 import com.development.mycolive.views.activity.myCommunity.MyCommunity;
 import com.development.mycolive.views.activity.myCommunity.MyCommunityViewModel;
 import com.development.mycolive.views.activity.viewCommunity.ViewCommunity;
@@ -109,6 +110,15 @@ public class MyCommunityAdapter extends RecyclerView.Adapter<MyCommunityAdapter.
             holder.imageView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_alert));
 
         }
+
+         holder.name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, FavouriteRoomateDetail.class);
+                intent.putExtra(ApiConstant.ROOMMATAE_ID,post.getCreated_by());
+                context.startActivity(intent);
+            }
+        });
 
         holder.know_more.setOnClickListener(new View.OnClickListener() {
             @Override

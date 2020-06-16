@@ -25,13 +25,16 @@ import com.development.mycolive.R;
 import com.development.mycolive.constant.ApiConstant;
 import com.development.mycolive.model.alert.AlertRequest;
 import com.development.mycolive.model.communityModel.AllPost;
+import com.development.mycolive.model.home.RoommateData;
 import com.development.mycolive.model.myCommunityModel.MyCommunityApiResponse;
 import com.development.mycolive.model.myCommunityModel.PostDeleteRequest;
 import com.development.mycolive.model.searchFilterModel.AlertReason;
 import com.development.mycolive.model.searchFilterModel.FilterApiResponse;
 import com.development.mycolive.model.viewCommunityModel.ViewCommunityApiResponse;
 import com.development.mycolive.util.Util;
+import com.development.mycolive.views.activity.favouriteRoomate.FavouriteRoomateDetail;
 import com.development.mycolive.views.activity.myCommunity.MyCommunityViewModel;
+import com.development.mycolive.views.activity.roomInformation.RoomInformation;
 import com.development.mycolive.views.activity.viewCommunity.CommunityViewModel;
 import com.development.mycolive.views.activity.viewCommunity.ViewCommunity;
 import com.development.mycolive.views.fragment.filterSearch.SearchViewModel;
@@ -66,7 +69,8 @@ public class AllCommunityAdapter  extends RecyclerView.Adapter<AllCommunityAdapt
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView viewDetail,name,type,city,university,comment,date,like,comment_count;
+        public TextView viewDetail,name,type,city,university,comment,
+                date,like,comment_count,know_more;
         public ImageView imageView,user_image,post_image;
         public LinearLayout postLayout;
 
@@ -85,6 +89,7 @@ public class AllCommunityAdapter  extends RecyclerView.Adapter<AllCommunityAdapt
             comment_count = (TextView)view.findViewById(R.id.comment_count);
             post_image = (ImageView)view.findViewById(R.id.post_image);
             postLayout = (LinearLayout)view.findViewById(R.id.post_layout);
+            know_more = (TextView)view.findViewById(R.id.know_more);
         }
     }
 
@@ -116,14 +121,16 @@ public class AllCommunityAdapter  extends RecyclerView.Adapter<AllCommunityAdapt
         holder.like.setText(post.getTotal_likes());
         holder.comment_count.setText(post.getTotal_reply_comment());
 
-        holder.postLayout.setOnClickListener(new View.OnClickListener() {
+
+        holder.name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context,ViewCommunity.class);
-                intent.putExtra("Id",post.getId());
-              context.startActivity(intent);
+                Intent intent = new Intent(context, FavouriteRoomateDetail.class);
+                intent.putExtra(ApiConstant.ROOMMATAE_ID,post.getCreated_by());
+                context.startActivity(intent);
             }
         });
+
 
         Util.loadImage(holder.user_image,post.getProfile_image() ,
                 Util.getCircularDrawable(context));
@@ -139,6 +146,15 @@ public class AllCommunityAdapter  extends RecyclerView.Adapter<AllCommunityAdapt
             public void onClick(View view) {
              //   showCustomDialog(context);
                 getDefaultData(post.getId());
+            }
+        });
+
+        holder.know_more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context,ViewCommunity.class);
+                intent.putExtra("Id",post.getId());
+                context.startActivity(intent);
             }
         });
     }

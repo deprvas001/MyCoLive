@@ -71,7 +71,6 @@ public class Home extends Fragment implements View.OnClickListener {
     private RecyclerView.LayoutManager mLayoutManager;
     private FindAdapter mAdapter;
     private double mSubTotal = 0;
-
     public Home() {
         // Required empty public constructor
     }
@@ -82,7 +81,7 @@ public class Home extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         homeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
         initializeView();
-        getData();
+         getSession();
         // typeRoom();homeApiResponse
         return homeBinding.getRoot();
     }
@@ -132,7 +131,17 @@ public class Home extends Fragment implements View.OnClickListener {
         String type = "";
 
         homeViewModel = ViewModelProviders.of(getActivity()).get(HomeViewModel.class);
-        homeViewModel.refresh();
+
+        Map<String,String> headers = new HashMap<>();
+        headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);
+        headers.put(ApiConstant.SOURCES,ApiConstant.SOURCES_VALUE);
+        headers.put(ApiConstant.USER_TYPE,ApiConstant. USER_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TYPE,ApiConstant.USER_DEVICE_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TOKEN,ApiConstant.USER_DEVICE_TOKEN_VALUE);
+        headers.put(ApiConstant.METHOD,ApiConstant.METHOD_GET);
+        headers.put(ApiConstant.AUTHENTICAT_TOKEN,token);
+
+        homeViewModel.refresh(headers);
 
 
         observeViewModel();
@@ -273,7 +282,7 @@ public class Home extends Fragment implements View.OnClickListener {
 
             case R.id.roomate_layout:
                 if( ((ShowHomeScreen) getActivity()).isNetworkAvailable(getActivity())){
-                    getSession();
+                    getRoommateData();
                 }else{
                     Toast.makeText(getActivity(), getString(R.string.check_network), Toast.LENGTH_SHORT).show();
                 }
@@ -356,9 +365,8 @@ public class Home extends Fragment implements View.OnClickListener {
         String email = user.get(SessionManager.KEY_EMAIL);
         String image = user.get(SessionManager.KEY_IMAGE);
         token = user.get(SessionManager.KEY_TOKEN);
+        getData();
 
-        getRoommateData();
     }
-
 
 }

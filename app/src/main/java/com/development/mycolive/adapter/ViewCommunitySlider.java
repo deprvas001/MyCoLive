@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.development.mycolive.R;
+import com.development.mycolive.util.Util;
+import com.development.mycolive.views.activity.viewCommunity.ViewCommunity;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 import com.squareup.picasso.Picasso;
@@ -55,12 +57,15 @@ public class ViewCommunitySlider extends
         });
 
 
-        Glide.with(viewHolder.itemView)
+      /*  Glide.with(viewHolder.itemView)
                 .load(sliderList.get(0))
                 .placeholder(R.drawable.no_image_available)
                 //.load(R.drawable.image1)
                 //.fitCenter()
-                .into(viewHolder.imageViewBackground);
+                .into(viewHolder.imageViewBackground);*/
+
+        Util.loadImage(viewHolder.imageViewBackground,sliderList.get(0),
+                Util.getCircularDrawable(context));
 
     }
 
@@ -95,11 +100,14 @@ public class ViewCommunitySlider extends
         ImageButton close = (ImageButton) dialog.findViewById(R.id.btnClose);
         PhotoView imageView = dialog.findViewById(R.id.photo_view);
 
-        Picasso.get()
+      /*  Picasso.get()
                 .load(image)
                 .placeholder(R.drawable.no_image_available)
                 .error(R.drawable.no_image_available)
-                .into(imageView);
+                .into(imageView);*/
+
+        Util.loadImage(imageView,image,
+                Util.getCircularDrawable(context));
 
         // Close Button
         close.setOnClickListener(new View.OnClickListener() {

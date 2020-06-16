@@ -394,15 +394,20 @@ public class PropertyDetail extends BaseActivity implements View.OnClickListener
 
 
             case R.id.facebook_icon:
-                intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(fbLink));
-                startActivity(intent);
+                if(fbLink !=null && !fbLink.isEmpty()){
+                    intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(fbLink));
+                    startActivity(intent);
+                }
+
                 break;
 
             case R.id.message_icon:
-                intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(chatLink));
-                startActivity(intent);
+                if(chatLink!=null && !chatLink.isEmpty()){
+                    intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(chatLink));
+                    startActivity(intent);
+                }
                 break;
 
             case R.id.youtube_icon:

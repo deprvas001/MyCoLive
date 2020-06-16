@@ -1,5 +1,6 @@
 package com.development.mycolive.views.activity.paymentScreen;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.ViewUtils;
@@ -7,10 +8,14 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -31,7 +36,11 @@ import com.development.mycolive.model.postCommunity.PostCommunity;
 import com.development.mycolive.model.searchDetailPage.BankAccount;
 import com.development.mycolive.session.SessionManager;
 import com.development.mycolive.views.activity.BaseActivity;
+import com.development.mycolive.views.activity.ImagePickerScreen;
 import com.development.mycolive.views.activity.ShowHomeScreen;
+import com.development.mycolive.views.activity.SuccessScreen;
+import com.development.mycolive.views.activity.bookingDetail.BookingDetails;
+import com.development.mycolive.views.activity.paymentMode.PaymentMode;
 import com.development.mycolive.views.activity.postScreen.NewPost;
 import com.development.mycolive.views.activity.postScreen.PostViewModel;
 import com.development.mycolive.views.activity.stripeScreen.PaymentActivity;
@@ -41,6 +50,8 @@ import com.nguyenhoanglam.imagepicker.ui.imagepicker.ImagePicker;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -170,14 +181,16 @@ ActivitySelectPaymentBinding paymentBinding;
             }
 
         }else if(view.getId() == R.id.upload_receipt){
-            pickImage(REQUEST_CODE );
+          //  pickImage(REQUEST_CODE );
+            Intent intent = new Intent(SelectPayment.this, ImagePickerScreen.class);
+            startActivityForResult(intent, 102);//
         }else if(view.getId() == R.id.back){
             finish();
         }
     }
 
 
-    @Override
+   /* @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             ArrayList<Image> images = data.getParcelableArrayListExtra(Config.EXTRA_IMAGES);
@@ -197,7 +210,7 @@ ActivitySelectPaymentBinding paymentBinding;
         }
         super.onActivityResult(requestCode, resultCode, data);  // You MUST have this line to be here
         // so ImagePicker can work with fragment mode
-    }
+    }*/
 
     private void postBooking(){
             showProgressDialog(getResources().getString(R.string.loading));
@@ -224,9 +237,10 @@ ActivitySelectPaymentBinding paymentBinding;
                       if(apiResponse.getResponse().getStatus() == 1){
                           showCustomDialog("Booking Confirmation",message);
                       }else if(apiResponse.getResponse().getStatus() == 0){
-                          showCustomDialog("MCoLive",message);
+                       //   showCustomDialog("MCoLive",message);
+                          Toast.makeText(SelectPayment.this, message, Toast.LENGTH_SHORT).show();
                       }else {
-                          showCustomDialog("MCoLive","Something went try Later.");
+                          Toast.makeText(SelectPayment.this, "Something went wrong try later.", Toast.LENGTH_SHORT).show();
                       }
 
                     }else {
@@ -254,7 +268,16 @@ ActivitySelectPaymentBinding paymentBinding;
     }
 
     private void showCustomDialog(String title,String message){
-        //then we will inflate the custom alert dialog xml that we created
+
+        Intent i = new Intent(SelectPayment.this, SuccessScreen.class);
+        // Closing all the Activities
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        // Staring Login Activity
+        startActivity(i);
+     /*   //then we will inflate the custom alert dialog xml that we created
         View dialogView = LayoutInflater.from(this).inflate(R.layout.booking_success_dialog,null);
 
         //Now we need an AlertDialog.Builder object
@@ -290,12 +313,68 @@ ActivitySelectPaymentBinding paymentBinding;
         //finally creating the alert dialog and displaying it
         AlertDialog alertDialog = builder.create();
 
-        alertDialog.show();
+        alertDialog.show();*/
     }
 
     @Override
     public void onBackPressed() {
        // super.onBackPressed();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // check if the request code is same as what is passed  here it is 2
+        if (requestCode == 102) {
+            if (resultCode == Activity.RESULT_OK && data != null) {
+                ArrayList<Image> images = data.getParcelableArrayListExtra(ApiConstant.IMAGE_PICK);
+
+                if (images.size() > 0) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        Uri uri = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, String.valueOf(images.get(0).getId()));
+
+                        // do your logic here...
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+
+                        // downsizing image as it throws OutOfMemory Exception for larger
+                        // images
+                        //  options.inSampleSize = calculteInSampleSize(option,500,500)
+                        options.inSampleSize = 2;
+
+                        final InputStream imageStream;
+                        try {
+                            imageStream = getContentResolver().openInputStream(uri);
+                            final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                            paymentBinding.uploadReceipt.setImageBitmap(selectedImage);
+
+                            convetBitmapString(selectedImage);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+
+                    } else {
+
+                        // do your logic here...
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+
+                        // downsizing image as it throws OutOfMemory Exception for larger
+                        // images
+                        //  options.inSampleSize = calculteInSampleSize(option,500,500)
+                        options.inSampleSize = 2;
+
+                        String path = images.get(0).getPath();
+                        //   Toast.makeText(BookingDetails.this, path, Toast.LENGTH_SHORT).show();
+                        Bitmap bitmap = BitmapFactory.decodeFile(path, options);
+                        paymentBinding.uploadReceipt.setImageBitmap(bitmap);
+
+                        convetBitmapString(bitmap);
+
+                    }
+                }
+            }
+
+        }
     }
 }
 

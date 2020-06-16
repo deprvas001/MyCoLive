@@ -358,7 +358,7 @@ public class ShowHomeScreen extends BaseActivity implements View.OnClickListener
                 public void onChanged(LogoutApiResponse apiResponse) {
                     hideProgressDialog();
                     if (apiResponse.response != null) {
-                        Toast.makeText(ShowHomeScreen.this, apiResponse.getResponse().getMessage(), Toast.LENGTH_SHORT).show();
+                   //     Toast.makeText(ShowHomeScreen.this, apiResponse.getResponse().getMessage(), Toast.LENGTH_SHORT).show();
 
                         if (apiResponse.getResponse().getStatus() == 1) {
                             //finish();
