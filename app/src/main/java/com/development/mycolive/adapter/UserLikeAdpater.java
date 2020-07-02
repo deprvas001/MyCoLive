@@ -16,20 +16,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.development.mycolive.R;
 import com.development.mycolive.constant.ApiConstant;
-import com.development.mycolive.model.viewCommunityModel.CommentReply;
+import com.development.mycolive.model.viewCommunityModel.UserLike;
 import com.development.mycolive.util.Util;
-import com.development.mycolive.views.activity.BaseActivity;
 import com.development.mycolive.views.activity.favouriteRoomate.FavouriteRoomateDetail;
-import com.development.mycolive.views.activity.viewCommunity.ViewCommunity;
 import com.github.chrisbanes.photoview.PhotoView;
-import com.squareup.picasso.Picasso;
-
 
 import java.util.List;
 
-public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHolder>  {
-
-    private List<CommentReply> commentList;
+public class UserLikeAdpater extends RecyclerView.Adapter<UserLikeAdpater.MyViewHolder> {
+    private List<UserLike> userLikeList;
     private Context context;
     Dialog dialog;
 
@@ -46,58 +41,56 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
         }
     }
 
-    public CommentAdapter(Context context,List<CommentReply> commentList) {
+    public UserLikeAdpater(Context context,List<UserLike> userLikeList) {
         this.context = context;
-        this.commentList = commentList;
+        this.userLikeList = userLikeList;
     }
 
     @Override
-    public CommentAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public UserLikeAdpater.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.comment_row, parent, false);
+                .inflate(R.layout.user_like_row, parent, false);
 
-        return new CommentAdapter.MyViewHolder(itemView);
+        return new UserLikeAdpater.MyViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(CommentAdapter.MyViewHolder holder, int position) {
-        CommentReply commentReply = commentList.get(position);
+    public void onBindViewHolder(UserLikeAdpater.MyViewHolder holder, int position) {
+        UserLike userLike = userLikeList.get(position);
 
-        holder.name.setText(commentReply.getUser_name());
-        holder.chat.setText(commentReply.getComment());
-        holder.date.setText(commentReply.getDate());
+        holder.name.setText(userLike.getName());
 
       /*  Picasso.get()
-                .load(commentReply.getProfile_image())
+                .load(UserLike.getProfile_image())
                 .placeholder(R.drawable.no_image_found)
                 *//*  .placeholder(R.drawable.image1)
                   .error(R.drawable.err)*//*
                 .into(holder.imageView);*/
 
-        Util.loadImage(holder.imageView,commentReply.getProfile_image() ,
+        Util.loadImage(holder.imageView,userLike.getUser_image() ,
                 Util.getCircularDrawable(context));
 
-         holder.imageView.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View view) {
-                 showImageDialog(commentReply.getProfile_image());
-             }
-         });
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showImageDialog(userLike.getUser_image());
+            }
+        });
 
-         holder.name.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View view) {
-                 Intent intent = new Intent(context, FavouriteRoomateDetail.class);
-                 intent.putExtra(ApiConstant.ROOMMATAE_ID, commentReply.getCreated_by());
-                 context.startActivity(intent);
-             }
-         });
+        holder.name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, FavouriteRoomateDetail.class);
+                intent.putExtra(ApiConstant.ROOMMATAE_ID,userLike.getUser_id());
+                context.startActivity(intent);
+            }
+        });
 
     }
 
     @Override
     public int getItemCount() {
-        return commentList.size();
+        return userLikeList.size();
     }
 
     public  void showImageDialog(String image) {

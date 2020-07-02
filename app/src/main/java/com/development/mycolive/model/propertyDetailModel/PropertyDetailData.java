@@ -32,6 +32,13 @@ public class PropertyDetailData {
     private List<PropertyRoomData> room;
     private BankAccount bank_account;
     private String video_link;
+    private String url_for_share;
+    private String url_for_share_ios;
+    private String fclink;
+    private String fplink;
+    private String whatsapplink;
+    private String instlink;
+    private String tik_tok_link;
 
     public String getId() {
         return id;
@@ -233,11 +240,67 @@ public class PropertyDetailData {
         return video_link;
     }
 
+    public String getUrl_for_share() {
+        return url_for_share;
+    }
+
+    public void setUrl_for_share(String url_for_share) {
+        this.url_for_share = url_for_share;
+    }
+
     public void setVideo_link(String video_link) {
         this.video_link = video_link;
     }
 
+    public String getUrl_for_share_ios() {
+        return url_for_share_ios;
+    }
+
+    public void setUrl_for_share_ios(String url_for_share_ios) {
+        this.url_for_share_ios = url_for_share_ios;
+    }
+
+    public String getFclink() {
+        return fclink;
+    }
+
+    public void setFclink(String fclink) {
+        this.fclink = fclink;
+    }
+
+    public String getFplink() {
+        return fplink;
+    }
+
+    public void setFplink(String fplink) {
+        this.fplink = fplink;
+    }
+
+    public String getWhatsapplink() {
+        return whatsapplink;
+    }
+
+    public void setWhatsapplink(String whatsapplink) {
+        this.whatsapplink = whatsapplink;
+    }
+
     public void setBank_account(BankAccount bank_account) {
         this.bank_account = bank_account;
+    }
+
+    public String getInstlink() {
+        return instlink;
+    }
+
+    public void setInstlink(String instlink) {
+        this.instlink = instlink;
+    }
+
+    public String getTik_tok_link() {
+        return tik_tok_link;
+    }
+
+    public void setTik_tok_link(String tik_tok_link) {
+        this.tik_tok_link = tik_tok_link;
     }
 }

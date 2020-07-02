@@ -163,6 +163,9 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener, 
 
         setDateTimeField();
         ((ShowHomeScreen) getActivity()).screenBinding.appBar.titleTxt.setText("My Profile");
+        ((ShowHomeScreen) getActivity()).screenBinding.appBar.titleTxt.setVisibility(View.VISIBLE);
+        ((ShowHomeScreen) getActivity()).screenBinding.appBar.logo.setVisibility(View.GONE);
+
         oneBinding.profileImage.setOnClickListener(this);
         oneBinding.fieldLayout.btnSave.setOnClickListener(this);
         oneBinding.fieldLayout.facebookLink.setOnClickListener(this);
@@ -328,7 +331,7 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener, 
 
     private void convetBitmapString(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream.toByteArray();
         image_string = Base64.encodeToString(byteArray, Base64.DEFAULT);
     }

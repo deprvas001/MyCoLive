@@ -22,6 +22,7 @@ public class ViewCommunityModel {
     private String total_reply_comment;
     private List<CommentReply> comment_reply;
     private String url_for_share;
+    private List<UserLike> total_liked_user;
 
 
     public String getId() {
@@ -174,5 +175,13 @@ public class ViewCommunityModel {
 
     public void setComment_reply(List<CommentReply> comment_reply) {
         this.comment_reply = comment_reply;
+    }
+
+    public List<UserLike> getTotal_liked_user() {
+        return total_liked_user;
+    }
+
+    public void setTotal_liked_user(List<UserLike> total_liked_user) {
+        this.total_liked_user = total_liked_user;
     }
 }

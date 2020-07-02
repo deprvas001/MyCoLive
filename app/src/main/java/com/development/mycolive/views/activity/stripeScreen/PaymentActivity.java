@@ -104,7 +104,8 @@ public class PaymentActivity extends BaseActivity {
             requestBody = getIntent().getParcelableExtra("booking_info");
             bankAccount = getIntent().getParcelableExtra("bank_account");
          //   email = getIntent().getExtras().getString("refer_email");
-            paymentBinding.payButton.setText("€"+String.valueOf(total_price)+" / Pay Now");
+            int total_price_int = (int)total_price;
+            paymentBinding.payButton.setText("€"+String.valueOf(total_price_int)+" / Pay Now");
 
             Bundle bundle = getIntent().getExtras();
             if(bundle !=null){

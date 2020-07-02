@@ -303,7 +303,7 @@ public class SignUpOne extends Fragment implements View.OnClickListener, RadioGr
 
     private void convetBitmapString(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 10, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 10, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream.toByteArray();
         image_string = Base64.encodeToString(byteArray, Base64.DEFAULT);
     }

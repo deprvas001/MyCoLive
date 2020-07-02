@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.development.mycolive.R;
 import com.development.mycolive.model.bookingHistory.MonthHistory;
+import com.development.mycolive.util.Util;
 import com.development.mycolive.views.activity.paymentMode.PaymentMode;
 import com.squareup.picasso.Picasso;
 
@@ -122,7 +123,8 @@ public class MonthDataAdapter  extends RecyclerView.Adapter<MonthDataAdapter.MyV
         ImageView close = (ImageView)dialogView.findViewById(R.id.close);
 
         TextView amount = (TextView)dialogView.findViewById(R.id.amount);
-        amount.setText(": € "+monthHistory.getDues_amount());
+        int due_amount = (int)monthHistory.getDues_amount();
+        amount.setText(": € "+due_amount);
 
         TextView approval = (TextView)dialogView.findViewById(R.id.approval);
         approval.setText(": "+monthHistory.getApproval());
@@ -184,8 +186,6 @@ public class MonthDataAdapter  extends RecyclerView.Adapter<MonthDataAdapter.MyV
         }
     }
 
-
-
     private void showDialog(String image) {
         // custom dialog
         dialog = new Dialog(context);
@@ -195,10 +195,13 @@ public class MonthDataAdapter  extends RecyclerView.Adapter<MonthDataAdapter.MyV
         ImageButton close = (ImageButton) dialog.findViewById(R.id.btnClose);
         ImageView imageView = (ImageView)dialog.findViewById(R.id.receipt_image);
 
+        /*Util.loadImage(imageView,image ,
+                Util.getCircularDrawable(context));*/
+
         Picasso.get()
                 .load(image)
-                .placeholder(R.drawable.loading)
-                .error(R.drawable.no_image_found)
+                .placeholder(R.drawable.no_image_available)
+                .error(R.drawable.no_image_available)
                 .into(imageView);
 
         // Close Button

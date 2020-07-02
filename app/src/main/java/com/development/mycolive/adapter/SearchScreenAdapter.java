@@ -24,6 +24,7 @@ import com.development.mycolive.model.favouriteRoomate.FavouriteRequest;
 import com.development.mycolive.model.favouriteRoomate.RoomateFavApiResponse;
 import com.development.mycolive.model.home.HomeFeatureProperty;
 import com.development.mycolive.model.home.HomeSlider;
+import com.development.mycolive.util.Util;
 import com.development.mycolive.views.activity.favouriteRoomate.FavRoomateViewModel;
 import com.development.mycolive.views.activity.favouriteRoomate.FavouriteRoomateDetail;
 import com.development.mycolive.views.activity.propertyDetail.PropertyDetail;
@@ -87,9 +88,11 @@ public class SearchScreenAdapter extends RecyclerView.Adapter<SearchScreenAdapte
         holder.noOfBathroom.setText(search_room.getNo_of_bathroom());
         holder.noOfRoom.setText(search_room.getNumber_of_room());
         holder.price.setText("€ " + search_room.getPrice());
+        holder.label.setVisibility(View.GONE);
 
         if (search_room.getBooking_shared_btn() != null) {
             if (!search_room.getBooking_shared_btn().isEmpty()) {
+                holder.label.setVisibility(View.VISIBLE);
                 holder.label.setText(search_room.getBooking_shared_btn());
             }
         }
@@ -121,14 +124,16 @@ public class SearchScreenAdapter extends RecyclerView.Adapter<SearchScreenAdapte
             }
         });
 
+        Util.loadImage(holder.imageView,homeSlider.get(0).getImage() ,
+                Util.getCircularDrawable(context));
 
-        Picasso.get()
+      /*  Picasso.get()
                 .load(homeSlider.get(0).getImage())
                 .placeholder(R.drawable.no_image_available)
                 .fit()
-                /* .placeholder(R.drawable.image1)
-                 .error(R.drawable.err)*/
-                .into(holder.imageView);
+                *//* .placeholder(R.drawable.image1)
+                 .error(R.drawable.err)*//*
+                .into(holder.imageView);*/
     }
 
     @Override

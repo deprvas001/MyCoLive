@@ -1,5 +1,7 @@
 package com.development.mycolive.views.activity.favouriteRoomate;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.development.mycolive.adapter.PropertiesAdapter;
@@ -54,16 +56,28 @@ PropertiesAdapter propertiesAdapter;
     String id;
     SessionManager session;
     private GoogleMap mMap;
-    String token="",image_url="";
+    String token="",image_url="",share_link="";
     FavRoomateViewModel viewModel;
+    Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         roomateDetailBinding = DataBindingUtil.setContentView(this,R.layout.activity_favourite_roomate_detail);
    //     roomateModel = (RoomateData) getIntent().getParcelableExtra(ApiConstant.ROOMMATAE_ID);
 
+        Uri uri = getIntent().getData();
+
+
+        if(uri !=null){
+            List<String> params = uri.getPathSegments();
+            id = uri.getQueryParameter("roommate_id");
+            // id = params.get(params.size()-1);
+        }
+
         if(getIntent()!=null){
-            id = getIntent().getExtras().getString(ApiConstant.ROOMMATAE_ID);
+            if(getIntent().getExtras().containsKey(ApiConstant.ROOMMATAE_ID)) {
+                id = getIntent().getExtras().getString(ApiConstant.ROOMMATAE_ID);
+            }
         }
 
 
@@ -79,6 +93,7 @@ PropertiesAdapter propertiesAdapter;
         roomateDetailBinding.favIcon.setOnClickListener(this);
         roomateDetailBinding.back.setOnClickListener(this);
         roomateDetailBinding.imageView.setOnClickListener(this);
+        roomateDetailBinding.shareIcon.setOnClickListener(this);
 
         getSession();
 
@@ -181,6 +196,7 @@ PropertiesAdapter propertiesAdapter;
         roomateDetailBinding.location.setText(roomateModel.getAddress());
 
         image_url = roomateModel.getProfile_image();
+        share_link = roomateModel.getRoommate_shar_url();
         setWebView(roomateModel.getLate(),roomateModel.getLang());
     }
 
@@ -207,6 +223,14 @@ PropertiesAdapter propertiesAdapter;
             case R.id.imageView:
                 showImageDialog(image_url);
                 break;
+
+            case R.id.share_icon:
+                if(share_link !=null && !share_link.isEmpty()){
+                    intent = new Intent(Intent.ACTION_SEND);
+                    intent.setType("text/plain");
+                    intent.putExtra(Intent.EXTRA_TEXT, share_link); // for text share
+                    startActivity(Intent.createChooser(intent, "Share URL"));
+                }
         }
     }
 

@@ -33,10 +33,14 @@ public class SuccessScreen extends BaseActivity {
         //setting the view of the builder to our custom view that we already inflated
         builder.setView(dialogView);
 
+        //finally creating the alert dialog and displaying it
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
 
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                alertDialog.dismiss();
                 Intent i = new Intent(SuccessScreen.this, ShowHomeScreen.class);
                 // Closing all the Activities
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
@@ -49,9 +53,7 @@ public class SuccessScreen extends BaseActivity {
         });
 
 
-        //finally creating the alert dialog and displaying it
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
+
     }
 
     @Override

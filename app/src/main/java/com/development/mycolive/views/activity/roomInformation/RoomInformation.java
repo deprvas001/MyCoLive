@@ -51,7 +51,7 @@ public class RoomInformation extends BaseActivity implements View.OnClickListene
     SessionManager session;
     String token = "";
     PriceLevelAdapter priceLevelAdapter;
-    float subtotal = 0;
+    int subtotal = 0;
     PropertyRoomData roomData;
     private FacilityAdapter facilityAdapter;
     RecyclerView.LayoutManager mLayoutManager;
@@ -61,10 +61,6 @@ public class RoomInformation extends BaseActivity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         informationBinding = DataBindingUtil.setContentView(this, R.layout.activity_room_information);
-       /* informationBinding.toolbar.setTitle(getResources().getString(R.string.RoomDetail));
-        setSupportActionBar(informationBinding.toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);*/
         roomData = (PropertyRoomData) getIntent().getParcelableExtra("room");
         setSliderAndView(roomData.getImage_slider());
         informationBinding.back.setOnClickListener(this);
@@ -98,8 +94,9 @@ public class RoomInformation extends BaseActivity implements View.OnClickListene
         List<PriceLevel> priceLevel = roomData.getPrice_levels();
 
         for (int i = 0; i < priceLevel.size(); i++) {
-            subtotal = subtotal + Float.parseFloat(priceLevel.get(i).getPrice());
+            subtotal = subtotal + Integer.parseInt(priceLevel.get(i).getPrice());
         }
+        informationBinding.title.setText(roomData.getApartment_name());
 
         informationBinding.addressApartment.setText(roomData.getAddress());
         video_link = roomData.getVideo_link();
@@ -108,18 +105,6 @@ public class RoomInformation extends BaseActivity implements View.OnClickListene
                 informationBinding.youtubeIcon.setVisibility(View.GONE);
             }
         }
-      /*  if(priceLevel.size()>0){
-          //  informationBinding.monthRentPrice.setText("€ "+priceLevel.get(0).getPrice()+"/Month");
-           if(priceLevel.size()>1)
-           // informationBinding.securityPrice.setText("€ "+priceLevel.get(1).getPrice()+"/Month");
-           if(priceLevel.size()>2){
-               subtotal = subtotal +Float.parseFloat(priceLevel.get(2).getPrice());
-               informationBinding.otherPrice.setText("€ " + priceLevel.get(2).getPrice()+"/Month");
-               informationBinding.otherLayout.setVisibility(View.VISIBLE);
-           }
-
-        }*/
-
 
         priceLevelAdapter = new PriceLevelAdapter(this, priceLevel);
         mLayoutManager = new LinearLayoutManager(this);

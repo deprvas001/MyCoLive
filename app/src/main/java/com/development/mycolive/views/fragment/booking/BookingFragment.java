@@ -53,6 +53,9 @@ public class BookingFragment extends Fragment implements View.OnClickListener {
     private void setClickListener(){
         bookingBinding.currentBooking.setOnClickListener(this);
         bookingBinding.pastBooking.setOnClickListener(this);
+        ((ShowHomeScreen) getActivity()).screenBinding.appBar.titleTxt.setVisibility(View.VISIBLE);
+        ((ShowHomeScreen) getActivity()).screenBinding.appBar.logo.setVisibility(View.GONE);
+
         ((ShowHomeScreen)getActivity()).screenBinding.appBar.notification.setOnClickListener(this);
 
     }

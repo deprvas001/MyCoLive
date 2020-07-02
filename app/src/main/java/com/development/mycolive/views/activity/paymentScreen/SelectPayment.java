@@ -95,7 +95,8 @@ ActivitySelectPaymentBinding paymentBinding;
     }
 
     private void setClickListener(){
-        paymentBinding.btnProceed.setText("€"+String.valueOf(total_price)+" / "+"Pay Now");
+        int total_price_int = (int)total_price;
+        paymentBinding.btnProceed.setText("€"+String.valueOf(total_price_int)+" / "+"Pay Now");
         paymentBinding.accountName.setText(bankAccount.getName());
         paymentBinding.accountNumber.setText(bankAccount.getAccountId());
         paymentBinding.ibanNo.setText(bankAccount.getIban());

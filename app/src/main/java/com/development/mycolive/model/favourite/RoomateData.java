@@ -25,6 +25,7 @@ public class RoomateData implements Parcelable {
     private String instagram_id;
     private String profile_image;
     private String favourites;
+    private String roommate_shar_url;
 
     protected RoomateData(Parcel in) {
         id = in.readString();
@@ -48,6 +49,7 @@ public class RoomateData implements Parcelable {
         instagram_id = in.readString();
         profile_image = in.readString();
         favourites = in.readString();
+        roommate_shar_url = in.readString();
     }
 
     public static final Creator<RoomateData> CREATOR = new Creator<RoomateData>() {
@@ -230,6 +232,14 @@ public class RoomateData implements Parcelable {
         this.favourites = favourites;
     }
 
+    public String getRoommate_shar_url() {
+        return roommate_shar_url;
+    }
+
+    public void setRoommate_shar_url(String roommate_shar_url) {
+        this.roommate_shar_url = roommate_shar_url;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -258,5 +268,6 @@ public class RoomateData implements Parcelable {
         parcel.writeString(instagram_id);
         parcel.writeString(profile_image);
         parcel.writeString(favourites);
+        parcel.writeString(roommate_shar_url);
     }
 }

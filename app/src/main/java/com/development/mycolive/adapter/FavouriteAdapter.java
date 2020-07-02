@@ -17,6 +17,7 @@ import com.development.mycolive.R;
 import com.development.mycolive.model.favourite.FavouritePropertyModel;
 import com.development.mycolive.model.favourite.PropertyImage;
 import com.development.mycolive.model.home.HomePropertyArea;
+import com.development.mycolive.util.Util;
 import com.development.mycolive.views.activity.searchDetailPage.RoomDetail;
 import com.squareup.picasso.Picasso;
 
@@ -75,13 +76,16 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.MyVi
 
         List<PropertyImage> imageList = bookingModel.getImage();
 
+
         if (bookingModel.getImage().size() > 0) {
-            Picasso.get()
+            Util.loadImage(holder.imageView,imageList.get(0).getImage() ,
+                    Util.getCircularDrawable(context));
+            /*Picasso.get()
                     .load(imageList.get(0).getImage())
-                    .placeholder(R.drawable.no_image_found)
+                    .placeholder(R.drawable.no_image_available)
                     // .placeholder(R.drawable.image1)
                     //   .error(R.drawable.err)
-                    .into(holder.imageView);
+                    .into(holder.imageView);*/
         }
     }
 

@@ -127,9 +127,15 @@ public class BookingDetails extends BaseActivity implements View.OnClickListener
             total_price = total_price+Float.parseFloat(roomDataList.get(i).getTotal_price());
         }
 
+
           final_price = total_price+early_check;
-          bookingDetailsBinding.totalPrice.setText("€ "+String.valueOf(total_price)+" + "+early_check+" (Early_Check_In_Price)");
-          bookingDetailsBinding.finalPrice.setText("€ "+final_price);
+
+          int final_price_int = (int)final_price;
+          int total_price_int = (int)total_price;
+          int early_check_int = (int)early_check;
+
+          bookingDetailsBinding.totalPrice.setText("€ "+String.valueOf(total_price_int)+" + "+String.valueOf(early_check_int)+" (Early_Check_In_Price)");
+          bookingDetailsBinding.finalPrice.setText("€ "+String.valueOf(final_price_int));
         setRecyclerView(roomDataList,contractResponse);
     }
 
@@ -269,7 +275,7 @@ public class BookingDetails extends BaseActivity implements View.OnClickListener
 
     private void convetBitmapString(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 10, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 10, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream.toByteArray();
         image_string = Base64.encodeToString(byteArray, Base64.DEFAULT);
     }

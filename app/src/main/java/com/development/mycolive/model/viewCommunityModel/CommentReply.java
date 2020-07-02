@@ -2,12 +2,23 @@ package com.development.mycolive.model.viewCommunityModel;
 
 public class CommentReply {
     private String id;
+    private String user_id;
     private String  parent_comment_id;
     private String comment;
     private String created_by;
     private String date;
     private String user_name;
     private String profile_image;
+
+
+
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
+    }
 
     public String getId() {
         return id;

@@ -69,6 +69,7 @@ import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,12 +88,14 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
     String share_url=  "",user_image="",created_by="",image="";
     AlertReason alertReason;
     Dialog dialog;
+    ArrayList<HomeSlider> homeSliders =new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         communityBinding = DataBindingUtil.setContentView(this,R.layout.activity_view_community);
-        getSession();
+       getSession();
         setClickListener();
     }
 
@@ -132,18 +135,29 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
         });
     }
 
-    private void setView(List<ViewCommunityModel> communityModelList){
+    private void setView(List<ViewCommunityModel> communityModelList) {
         communityBinding.communityViewLayout.imageSlider.setVisibility(View.VISIBLE);
         communityBinding.communityViewLayout.postImage.setVisibility(View.GONE);
         communityBinding.communityViewLayout.knowMore.setVisibility(View.GONE);
         communityBinding.communityViewLayout.date.setText(communityModelList.get(0).getDate());
         communityBinding.communityViewLayout.name.setText(communityModelList.get(0).getUser_name());
-        communityBinding.communityViewLayout.type.setText("Type: "+communityModelList.get(0).getPost_type_name());
-        communityBinding.communityViewLayout.city.setText("City: "+communityModelList.get(0).getCity_name());
-        communityBinding.communityViewLayout.university.setText("University: "+communityModelList.get(0).getUniversity_name());
+        communityBinding.communityViewLayout.type.setText("Type: " + communityModelList.get(0).getPost_type_name());
+        communityBinding.communityViewLayout.city.setText("City: " + communityModelList.get(0).getCity_name());
+        communityBinding.communityViewLayout.university.setText("University: " + communityModelList.get(0).getUniversity_name());
         communityBinding.communityViewLayout.comment.setText(communityModelList.get(0).getComment());
         communityBinding.communityViewLayout.like.setText(communityModelList.get(0).getTotal_likes());
         communityBinding.communityViewLayout.commentCount.setText(communityModelList.get(0).getTotal_reply_comment());
+
+        if(communityModelList.get(0).getTotal_likes() !=null && !communityModelList.get(0).getTotal_likes().isEmpty() ){
+
+            if (Integer.parseInt(communityModelList.get(0).getTotal_likes()) >0)
+            {
+                communityBinding.communityViewLayout.likeUser.setText(communityModelList.get(0).getTotal_likes()+" likes");
+                communityBinding.communityViewLayout.likeUser.setVisibility(View.VISIBLE);
+            }
+        }
+
+
         user_image = communityModelList.get(0).getProfile_image();
         share_url = communityModelList.get(0).getUrl_for_share();
         created_by = communityModelList.get(0).getCreated_by();
@@ -155,14 +169,22 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
                 Util.getCircularDrawable(ViewCommunity.this));
 
 
-                setSliderAndView(communityModelList.get(0).getImage());
 
-                setRecycleView(communityModelList.get(0).getComment_reply());
+        for (int i=0; i<communityModelList.get(0).getImage().size(); i++){
+            HomeSlider homeSlider = new HomeSlider();
+            homeSlider.setImage(communityModelList.get(0).getImage().get(i));
+            homeSlider.setId(String.valueOf(i));
+            homeSliders.add(homeSlider);
+        }
+
+        setSliderAndView(communityModelList.get(0).getImage(),homeSliders);
+
+        setRecycleView(communityModelList.get(0).getComment_reply());
 
     }
 
-    private void setSliderAndView(List<String> sliderList) {
-        final ViewCommunitySlider adapter = new ViewCommunitySlider(this, sliderList);
+    private void setSliderAndView(List<String> sliderList, ArrayList<HomeSlider> homeSliders) {
+        final ViewCommunitySlider adapter = new ViewCommunitySlider(this, sliderList,homeSliders);
         adapter.setCount(sliderList.size());
 
         communityBinding.communityViewLayout.imageSlider.setSliderAdapter(adapter);
@@ -193,6 +215,7 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
         setSupportActionBar(communityBinding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);*/
+
         communityBinding.postButton.setOnClickListener(this);
         communityBinding.communityViewLayout.like.setOnClickListener(this);
         communityBinding.commentEdit.setOnClickListener(this);
@@ -201,6 +224,7 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
         communityBinding.communityViewLayout.share.setOnClickListener(this);
         communityBinding.communityViewLayout.imageView.setOnClickListener(this);
         communityBinding.communityViewLayout.name.setOnClickListener(this);
+        communityBinding.communityViewLayout.likeUser.setOnClickListener(this);
     }
 
     @Override
@@ -216,6 +240,15 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
 
             case R.id.like:
                 likeUnlike();
+                break;
+
+            case R.id.likeUser:
+                if(id !=null && !id.isEmpty()){
+                    Intent intent = new Intent(ViewCommunity.this,TotalLikeUser.class);
+                    intent.putExtra("Id",id);
+                    startActivity(intent);
+                }
+
                 break;
 
             case R.id.imageView:
@@ -334,9 +367,21 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
                   communityBinding.communityViewLayout.like.setText(likes);
                   int user_like = apiResponse.getResponse().getData().getLike_unlike();
                   if(user_like != 0){
+
                       communityBinding.communityViewLayout.like.setTextColor(getResources().getColor(R.color.like_color));
                       communityBinding.communityViewLayout.like.setCompoundDrawableTintList(ColorStateList.valueOf(getResources().getColor(R.color.like_color)));
+                      communityBinding.communityViewLayout.likeUser.setText("You and " + likes  +" others");
+                      communityBinding.communityViewLayout.likeUser.setVisibility(View.VISIBLE);
                   }else{
+                      if(likes !=null && !likes.isEmpty()){
+                          if(Integer.parseInt(likes)>0){
+                              communityBinding.communityViewLayout.likeUser.setText( likes +" others");
+                              communityBinding.communityViewLayout.likeUser.setVisibility(View.VISIBLE);
+                          }else{
+                              communityBinding.communityViewLayout.likeUser.setVisibility(View.GONE);
+                          }
+                      }
+
                       communityBinding.communityViewLayout.like.setTextColor(getResources().getColor(R.color.login_subheading));
                       communityBinding.communityViewLayout.like.setCompoundDrawableTintList(ColorStateList.valueOf(getResources().getColor(R.color.login_subheading)));
                   }

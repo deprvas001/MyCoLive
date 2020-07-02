@@ -42,7 +42,7 @@ public class PropertyDetailAdapter  extends RecyclerView.Adapter<PropertyDetailA
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView price,name,type,city,university,comment,date,facility_txt,more_facility,
-                like,comment_count;
+                like,comment_count,label;
         public CheckBox select;
         public ImageView imageView,user_image,post_image,facility_image;
         public LinearLayout room_info;
@@ -58,6 +58,7 @@ public class PropertyDetailAdapter  extends RecyclerView.Adapter<PropertyDetailA
             facility_txt = (TextView)view.findViewById(R.id.facility_txt);
             more_facility = (TextView) view.findViewById(R.id.more_facility);
             select = (CheckBox)view.findViewById(R.id.checkbox_select);
+            label = (TextView)view.findViewById(R.id.label);
 
         }
     }
@@ -85,6 +86,14 @@ public class PropertyDetailAdapter  extends RecyclerView.Adapter<PropertyDetailA
         if(roomData.getImage_slider().size()>0){
             HomeSlider imageSlider =  roomData.getImage_slider().get(0);
             Util.loadImage(holder.imageView,imageSlider.getImage() , Util.getCircularDrawable(context));
+        }
+
+        holder.label.setVisibility(View.GONE);
+        if (roomData.getBooking_shared_btn() != null) {
+            if (!roomData.getBooking_shared_btn().isEmpty()) {
+                holder.label.setVisibility(View.VISIBLE);
+                holder.label.setText(roomData.getBooking_shared_btn());
+            }
         }
 
         if(roomData.getFacility().size()>0){
@@ -133,7 +142,7 @@ public class PropertyDetailAdapter  extends RecyclerView.Adapter<PropertyDetailA
 
  public float getTotalPrice(PropertyRoomData roomData){
 
-         float room_price = Float.parseFloat(roomData.getTotal_price());
+         int room_price = Integer.parseInt(roomData.getTotal_price());
          PropertyDetail.apartment_price = PropertyDetail.apartment_price + room_price;
 
 
@@ -144,7 +153,7 @@ public class PropertyDetailAdapter  extends RecyclerView.Adapter<PropertyDetailA
 
     public float getTotalSubtractPrice(PropertyRoomData roomData){
 
-        float room_price = Float.parseFloat(roomData.getTotal_price());
+        int room_price = Integer.parseInt(roomData.getTotal_price());
         PropertyDetail.apartment_price = PropertyDetail.apartment_price -room_price;
 
         ((PropertyDetail)context).propertyDetailBinding.totalPrice.setText("€"+String.valueOf(PropertyDetail.apartment_price ));

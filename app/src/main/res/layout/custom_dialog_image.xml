@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:alpha="1"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/no_image_found"
+            android:src="@drawable/no_image_available"
              />
         <RelativeLayout
             android:layout_width="match_parent"
@@ -33,7 +33,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:background="@android:color/black"
         android:src="@android:drawable/ic_menu_close_clear_cancel" />
 
 

@@ -33,16 +33,35 @@
                 android:visibility="gone"
                 android:src="@drawable/ic_back"/>
 
-            <TextView
-                android:id="@+id/title_txt"
+            <RelativeLayout
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="-20dp"
-                android:layout_gravity="center_vertical"
-                android:textColor="@android:color/white"
-                android:textSize="20dp"
-                android:gravity="center"/>
+                android:layout_weight="1"
+                android:layout_marginLeft="-20dp">
+
+                <ImageView
+                    android:id="@+id/logo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@android:color/white"
+                    android:textSize="20dp"
+                    android:src="@mipmap/ic_launcher"
+                    android:padding="10dp"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/title_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@android:color/white"
+                    android:textSize="20dp"
+                    android:gravity="center"/>
+
+
+            </RelativeLayout>
+
 
             <ImageView
                 android:id="@+id/notification"

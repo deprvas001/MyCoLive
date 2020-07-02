@@ -12,8 +12,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".views.activity.SuccessScreen"
+        <activity android:name=".views.activity.viewCommunity.TotalLikeUser"
             android:theme="@style/AppTheme1"></activity>
+        <activity android:name=".views.activity.viewCommunity.TotalUserLike" />
+        <activity
+            android:name=".views.activity.ZoomImageScreen"
+            android:theme="@style/Theme.AppCompat.Light.Dialog.Alert" />
+        <activity android:name=".views.activity.DeepLinkingApp" />
+        <activity
+            android:name=".views.activity.SuccessScreen"
+            android:theme="@style/AppTheme1" />
         <activity
             android:name=".views.activity.ImageShowScreen"
             android:theme="@style/AppTheme1" />
@@ -59,13 +67,47 @@
         <activity
             android:name=".views.activity.favouriteRoomate.FavouriteRoomateDetail"
             android:label="@string/title_activity_favourite_roomate_detail"
-            android:theme="@style/AppTheme1" />
+            android:theme="@style/AppTheme1">
+            <intent-filter
+                android:autoVerify="true"
+                android:label="MyCoLive">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="webfume.in"
+                    android:pathPrefix="/mani-budapest/landing/roommateDetails"
+                    android:scheme="https" />
+                <data
+                    android:host="webfume.in"
+                    android:pathPrefix="/mani-budapest/landing/roommateDetails"
+                    android:scheme="http" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".views.activity.roomInformation.RoomInformation"
             android:theme="@style/AppTheme1" />
         <activity
             android:name=".views.activity.propertyDetail.PropertyDetail"
-            android:theme="@style/AppTheme1" />
+            android:theme="@style/AppTheme1">
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="webfume.in"
+                    android:pathPrefix="/mani-budapest/landing/bookings"
+                    android:scheme="https" />
+                <data
+                    android:host="webfume.in"
+                    android:pathPrefix="/mani-budapest/landing/bookings"
+                    android:scheme="http" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".views.activity.viewCommunity.ViewCommunity"
             android:theme="@style/AppTheme1" />
@@ -188,15 +230,15 @@
             </intent-filter>
         </service>
     </application>
-    <uses-feature android:name="android.hardware.camera" />
-
     <uses-feature android:name="android.hardware`1.camera.autofocus" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
-    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
 </manifest>

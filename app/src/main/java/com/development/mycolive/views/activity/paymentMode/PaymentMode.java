@@ -1,15 +1,20 @@
 package com.development.mycolive.views.activity.paymentMode;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -25,8 +30,10 @@ import com.development.mycolive.model.paymentModel.PaymentApiResponse;
 import com.development.mycolive.model.paymentModel.PaymentModeRequest;
 import com.development.mycolive.session.SessionManager;
 import com.development.mycolive.views.activity.BaseActivity;
+import com.development.mycolive.views.activity.ImagePickerScreen;
 import com.development.mycolive.views.activity.ShowHomeScreen;
 import com.development.mycolive.views.activity.SuccessScreen;
+import com.development.mycolive.views.activity.bookingDetail.BookingDetails;
 import com.development.mycolive.views.activity.paymentScreen.PaymentViewModel;
 import com.development.mycolive.views.activity.paymentScreen.SelectPayment;
 import com.development.mycolive.views.activity.stripeScreen.PaymentActivity;
@@ -35,6 +42,8 @@ import com.nguyenhoanglam.imagepicker.model.Image;
 import com.nguyenhoanglam.imagepicker.ui.imagepicker.ImagePicker;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -63,7 +72,8 @@ public class PaymentMode extends BaseActivity implements RadioGroup.OnCheckedCha
         if (getIntent() != null) {
             month_id = getIntent().getExtras().getString("month_id");
             payment_amount = getIntent().getExtras().getFloat("due_amount");
-            modeBinding.amount.setText("€"+String.valueOf(payment_amount));
+            int payment_amount_int = (int)payment_amount;
+            modeBinding.amount.setText("€"+String.valueOf(payment_amount_int));
         }
         setClickListener();
     }
@@ -95,7 +105,7 @@ public class PaymentMode extends BaseActivity implements RadioGroup.OnCheckedCha
 
     private void convetBitmapString(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 40, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 10, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream.toByteArray();
         image_string = Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
@@ -143,14 +153,15 @@ public class PaymentMode extends BaseActivity implements RadioGroup.OnCheckedCha
             }
 
         } else if (view.getId() == R.id.upload_receipt) {
-            pickImage(REQUEST_CODE);
+            Intent intent = new Intent(PaymentMode.this, ImagePickerScreen.class);
+            startActivityForResult(intent, 102);//
         }else if (view.getId() == R.id.close_activity) {
             finish();
         }
     }
 
 
-    @Override
+    /*@Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             ArrayList<Image> images = data.getParcelableArrayListExtra(Config.EXTRA_IMAGES);
@@ -170,6 +181,62 @@ public class PaymentMode extends BaseActivity implements RadioGroup.OnCheckedCha
         }
         super.onActivityResult(requestCode, resultCode, data);  // You MUST have this line to be here
         // so ImagePicker can work with fragment mode
+    }*/
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // check if the request code is same as what is passed  here it is 2
+        if (requestCode == 102) {
+            if (resultCode == Activity.RESULT_OK && data != null) {
+                ArrayList<Image> images = data.getParcelableArrayListExtra(ApiConstant.IMAGE_PICK);
+
+                if (images.size() > 0) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        Uri uri = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, String.valueOf(images.get(0).getId()));
+
+                        // do your logic here...
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+
+                        // downsizing image as it throws OutOfMemory Exception for larger
+                        // images
+                        //  options.inSampleSize = calculteInSampleSize(option,500,500)
+                        options.inSampleSize = 2;
+
+                        final InputStream imageStream;
+                        try {
+                            imageStream = getContentResolver().openInputStream(uri);
+                            final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                            modeBinding.uploadReceipt.setImageBitmap(selectedImage);
+
+                            convetBitmapString(selectedImage);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+
+                    } else {
+
+                        // do your logic here...
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+
+                        // downsizing image as it throws OutOfMemory Exception for larger
+                        // images
+                        //  options.inSampleSize = calculteInSampleSize(option,500,500)
+                        options.inSampleSize = 2;
+
+                        String path = images.get(0).getPath();
+                        //   Toast.makeText(BookingDetails.this, path, Toast.LENGTH_SHORT).show();
+                        Bitmap bitmap = BitmapFactory.decodeFile(path, options);
+                        modeBinding.uploadReceipt.setImageBitmap(bitmap);
+
+                        convetBitmapString(bitmap);
+
+                    }
+                }
+            }
+
+        }
     }
 
     private void getSession() {

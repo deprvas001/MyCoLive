@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.ScaleGestureDetector;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.development.mycolive.R;
 import com.development.mycolive.model.home.HomeSlider;
 import com.development.mycolive.util.Util;
 import com.development.mycolive.views.activity.ImageShowScreen;
+import com.development.mycolive.views.activity.ZoomImageScreen;
 import com.development.mycolive.views.activity.bookingHistory.CurrentBookingHistory;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.smarteist.autoimageslider.SliderViewAdapter;
@@ -65,7 +67,10 @@ public class HomeSlideAdapter extends
             public void onClick(View v) {
           //      Toast.makeText(context, "This is item in position " + position, Toast.LENGTH_SHORT).show();
 
-                            showDialog(slider.getImage());
+                //            showDialog(slider.getImage());
+                Intent intent = new Intent(context , ZoomImageScreen.class);
+                intent.putParcelableArrayListExtra("image_list", (ArrayList<? extends Parcelable>) sliderList);
+                context.startActivity(intent);
             }
         });
 
@@ -117,11 +122,9 @@ public class HomeSlideAdapter extends
             }
         });
 
-
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         dialog.show();
     }
-
 
 }

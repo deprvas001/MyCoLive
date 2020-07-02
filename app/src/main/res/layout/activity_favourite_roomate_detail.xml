@@ -102,8 +102,16 @@
                             android:layout_height="wrap_content"
                             android:textColor="#4B4B4B" />
 
+                            <ImageView
+                                android:id="@+id/share_icon"
+                                android:layout_width="26dp"
+                                android:layout_height="26dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginRight="20dp"
+                                android:src="@drawable/ic_share_black_24dp"/>
 
-                          <ImageView
+
+                            <ImageView
                               android:id="@+id/fav_icon"
                               android:layout_width="24dp"
                               android:layout_height="24dp"

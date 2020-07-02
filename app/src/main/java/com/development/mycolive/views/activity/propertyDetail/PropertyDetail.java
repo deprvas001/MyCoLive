@@ -60,7 +60,11 @@ import com.development.mycolive.model.termscondition.TermCondApiResponse;
 import com.development.mycolive.model.termscondition.TermRequest;
 import com.development.mycolive.session.SessionManager;
 import com.development.mycolive.views.activity.BaseActivity;
+import com.development.mycolive.views.activity.LoginScreen;
+import com.development.mycolive.views.activity.SuccessScreen;
 import com.development.mycolive.views.activity.bookingDetail.BookingDetails;
+import com.development.mycolive.views.activity.login.LoginActivity;
+import com.development.mycolive.views.activity.stripeScreen.PaymentActivity;
 import com.development.mycolive.views.fragment.filterSearch.SearchViewModel;
 import com.smarteist.autoimageslider.IndicatorAnimations;
 import com.smarteist.autoimageslider.SliderAnimations;
@@ -90,19 +94,33 @@ public class PropertyDetail extends BaseActivity implements View.OnClickListener
     float total_cost;
     String id="";
     String token="";
-    public static float apartment_price =0;
+    public static int apartment_price =0;
     boolean isTextViewClicked = false;
     String period,from,to,lat,lng,title;
     BankAccount bankAccount;
-    String fbLink="",chatLink="",video_link="";
+    String fbLink="",chatLink="",video_link="",share_link="",
+            whats_app="",insta_link,tiktok_link;
     List<PropertyRoomData> roomList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         propertyDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_property_detail);
-        if(getIntent()!=null){
-            id= getIntent().getExtras().getString("Property_Id");
+
+        Uri uri = getIntent().getData();
+
+
+        if(uri !=null){
+            List<String> params = uri.getPathSegments();
+            id = uri.getQueryParameter("property_id");
+            // id = params.get(params.size()-1);
+        }
+
+        if(getIntent().getExtras() !=null){
+            if(getIntent().getExtras().containsKey("Property_Id")){
+                id= getIntent().getExtras().getString("Property_Id");
+            }
+
         }
         setClickListener();
         getSession();
@@ -130,7 +148,7 @@ public class PropertyDetail extends BaseActivity implements View.OnClickListener
 
 
     private void setRecycleView(List<PropertyRoomData> detailList, List<FacilityData> facilityData,String apartment_total){
-        apartment_price = Float.parseFloat(apartment_total);
+        apartment_price = Integer.parseInt(apartment_total);
         roomAdapter = new PropertyDetailAdapter(this, detailList,apartment_total);
         mLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false);
         propertyDetailBinding.recyclerView.setLayoutManager(mLayoutManager);
@@ -186,18 +204,68 @@ public class PropertyDetail extends BaseActivity implements View.OnClickListener
         lng = apiResponse.getResponse().getData().get(0).getLongitude();
         title = apiResponse.getResponse().getData().get(0).getApartment_name();
 
-        chatLink =apiResponse.getResponse().getData().get(0).getFb_chating_link();
-        fbLink = apiResponse.getResponse().getData().get(0).getFb_page_link();
-         video_link = apiResponse.getResponse().getData().get(0).getVideo_link();
-       if(chatLink!=null){
-           if(chatLink.isEmpty()){
-               propertyDetailBinding.messageIcon.setVisibility(View.GONE);
-           }
+        chatLink =apiResponse.getResponse().getData().get(0).getFclink();
+        fbLink = apiResponse.getResponse().getData().get(0).getFplink();
+
+        video_link = apiResponse.getResponse().getData().get(0).getVideo_link();
+        share_link = apiResponse.getResponse().getData().get(0).getUrl_for_share_ios();
+
+        whats_app = apiResponse.getResponse().getData().get(0).getWhatsapplink();
+
+        insta_link = apiResponse.getResponse().getData().get(0).getInstlink();
+        tiktok_link = apiResponse.getResponse().getData().get(0).getTik_tok_link();
+
+//       if(chatLink!=null){
+//           if(chatLink.isEmpty()){
+//               propertyDetailBinding.messageIcon.setVisibility(View.GONE);
+//           }else{
+//               propertyDetailBinding.messageIcon.setVisibility(View.VISIBLE);
+//           }
+//       }else{
+//           propertyDetailBinding.messageIcon.setVisibility(View.GONE);
+//       }
+
+        if(insta_link!=null){
+            if(insta_link.isEmpty()){
+                propertyDetailBinding.instaIcon.setVisibility(View.GONE);
+            }else{
+                propertyDetailBinding.instaIcon.setVisibility(View.VISIBLE);
+            }
+        }else{
+            propertyDetailBinding.instaIcon.setVisibility(View.GONE);
+        }
+
+        if(tiktok_link!=null){
+            if(insta_link.isEmpty()){
+                propertyDetailBinding.tiktokIcon.setVisibility(View.GONE);
+            }else{
+                propertyDetailBinding.tiktokIcon.setVisibility(View.VISIBLE);
+            }
+        }else{
+            propertyDetailBinding.tiktokIcon.setVisibility(View.GONE);
+        }
+
+       if(fbLink!=null){
            if(fbLink.isEmpty()){
                propertyDetailBinding.facebookIcon.setVisibility(View.GONE);
+           }else{
+               propertyDetailBinding.facebookIcon.setVisibility(View.VISIBLE);
            }
+       }else{
+           propertyDetailBinding.facebookIcon.setVisibility(View.GONE);
        }
 
+        if(whats_app !=null){
+            if(whats_app.isEmpty()){
+                propertyDetailBinding.whatsupIcon.setVisibility(View.GONE);
+            }else{
+                propertyDetailBinding.whatsupIcon.setVisibility(View.VISIBLE);
+            }
+        }else{
+            propertyDetailBinding.whatsupIcon.setVisibility(View.GONE);
+        }
+
+        propertyDetailBinding.title.setText(apiResponse.getResponse().getData().get(0).getApartment_name());
         propertyDetailBinding.apartmentName.setText(apiResponse.getResponse().getData().get(0).getApartment_name());
         propertyDetailBinding.addressApartment.setText(apiResponse.getResponse().getData().get(0).getAddress());
         propertyDetailBinding.description.setText(apiResponse.getResponse().getData().get(0).getDescription());
@@ -206,7 +274,11 @@ public class PropertyDetail extends BaseActivity implements View.OnClickListener
        if(video_link !=null ){
            if(video_link.isEmpty()){
                 propertyDetailBinding.youtubeIcon.setVisibility(View.GONE);
+           }else{
+               propertyDetailBinding.youtubeIcon.setVisibility(View.VISIBLE);
            }
+       }else{
+           propertyDetailBinding.youtubeIcon.setVisibility(View.GONE);
        }
 
         total_cost = Float.parseFloat(apiResponse.getResponse().getData().get(0).getTotal_price());
@@ -225,12 +297,25 @@ public class PropertyDetail extends BaseActivity implements View.OnClickListener
         String image = user.get(SessionManager.KEY_IMAGE);
          token = user.get(SessionManager.KEY_TOKEN);
 
-        if(isNetworkAvailable(PropertyDetail.this)){
-            getDefaultData(token);
+        if(token !=null){
+            if(isNetworkAvailable(PropertyDetail.this)){
+                getDefaultData(token);
+            }else{
+                Toast.makeText(this, getString(R.string.check_network), Toast.LENGTH_SHORT).show();
+                finish();
+            }
         }else{
-            Toast.makeText(this, getString(R.string.check_network), Toast.LENGTH_SHORT).show();
-            finish();
+            Intent i = new Intent(PropertyDetail.this, LoginActivity.class);
+            // Closing all the Activities
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                    Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                    Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            // Staring Login Activity
+            startActivity(i);
+
         }
+
 
     }
 
@@ -250,6 +335,10 @@ public class PropertyDetail extends BaseActivity implements View.OnClickListener
         propertyDetailBinding.youtubeIcon.setOnClickListener(this);
         propertyDetailBinding.back.setOnClickListener(this);
         propertyDetailBinding.clear.setOnClickListener(this);
+        propertyDetailBinding.shareIcon.setOnClickListener(this);
+        propertyDetailBinding.whatsupIcon.setOnClickListener(this);
+        propertyDetailBinding.tiktokIcon.setOnClickListener(this);
+        propertyDetailBinding.instaIcon.setOnClickListener(this);
 
 
         propertyDetailBinding.recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),  propertyDetailBinding.recyclerView, new RecyclerTouchListener.ClickListener() {
@@ -394,27 +483,96 @@ public class PropertyDetail extends BaseActivity implements View.OnClickListener
 
 
             case R.id.facebook_icon:
+
                 if(fbLink !=null && !fbLink.isEmpty()){
-                    intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse(fbLink));
-                    startActivity(intent);
+                    try {
+                        intent = new Intent(Intent.ACTION_VIEW);
+                        intent.setData(Uri.parse(fbLink));
+                        startActivity(intent);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
                 }
 
                 break;
 
             case R.id.message_icon:
                 if(chatLink!=null && !chatLink.isEmpty()){
-                    intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse(chatLink));
-                    startActivity(intent);
+                    try{
+                        intent = new Intent(Intent.ACTION_VIEW);
+                        intent.setData(Uri.parse(chatLink));
+                        startActivity(intent);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                }
+                break;
+
+            case R.id.whatsup_icon:
+                if(whats_app!=null && !whats_app.isEmpty()){
+                    try{
+                        intent = new Intent(Intent.ACTION_VIEW);
+                        intent.setData(Uri.parse(whats_app));
+                        startActivity(intent);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                }
+                break;
+
+            case R.id.tiktok_icon:
+                if(tiktok_link!=null && !tiktok_link.isEmpty()){
+                    try{
+                        intent = new Intent(Intent.ACTION_VIEW);
+                        intent.setData(Uri.parse(tiktok_link));
+                        startActivity(intent);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                }
+                break;
+
+            case R.id.insta_icon:
+                if(insta_link!=null && !insta_link.isEmpty()){
+                    try{
+                        intent = new Intent(Intent.ACTION_VIEW);
+                        intent.setData(Uri.parse(insta_link));
+                        startActivity(intent);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
                 }
                 break;
 
             case R.id.youtube_icon:
-                intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(video_link));
-                startActivity(intent);
+                if(video_link !=null && !video_link.isEmpty()){
+                    try{
+                        intent = new Intent(Intent.ACTION_VIEW);
+                        intent.setData(Uri.parse(video_link));
+                        startActivity(intent);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                }
+
                 break;
+
+            case R.id.share_icon:
+                if(share_link !=null && !share_link.isEmpty()){
+                    intent = new Intent(Intent.ACTION_SEND);
+                    intent.setType("text/plain");
+                    intent.putExtra(Intent.EXTRA_TEXT, share_link); // for text share
+                    startActivity(Intent.createChooser(intent, "Share URL"));
+                }
+
+                break;
+
         }
     }
 

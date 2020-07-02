@@ -106,8 +106,9 @@ public class BookingDetailAdapter extends RecyclerView.Adapter<BookingDetailAdap
             total = total + Float.parseFloat(priceLevels.get(i).getPrice());
         }
 
+         int total_int = (int)total;
 
-        holder.sub_total.setText("€ "+String.valueOf(total)+"/Month");
+        holder.sub_total.setText("€ "+String.valueOf(total_int)+"/Month");
         Picasso.get()
                 .load(sliderList.get(0).getImage())
                 .placeholder(R.drawable.no_image_available)

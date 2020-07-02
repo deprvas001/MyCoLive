@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="400dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginLeft="10dp"
+    android:background="@null">
+
+
+    <ImageButton
+        android:id="@+id/btnClose"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:tint="@android:color/white"
+        android:visibility="gone"
+        android:background="@null"
+        />
+
+
+    <com.github.chrisbanes.photoview.PhotoView
+        android:id="@+id/photo_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/btnClose"
+        android:adjustViewBounds="true"
+        android:background="@android:color/transparent"
+        android:src="@drawable/no_image_available"/>
+</RelativeLayout>
+
+
+</layout>

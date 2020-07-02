@@ -116,8 +116,12 @@ public class Home extends Fragment implements View.OnClickListener {
 
 
     private void initializeView() {
+        ((ShowHomeScreen) getActivity()).screenBinding.appBar.titleTxt.setVisibility(View.GONE);
+        ((ShowHomeScreen) getActivity()).screenBinding.appBar.logo.setVisibility(View.VISIBLE);
+
         ((ShowHomeScreen) getActivity()).screenBinding.appBar.titleTxt.setText("Home Screen");
         ((ShowHomeScreen) getActivity()).screenBinding.appBar.notification.setOnClickListener(this);
+
         homeBinding.btnFeature.setOnClickListener(this);
         homeBinding.hotPropertyBtn.setOnClickListener(this);
         homeBinding.btnPropertyArea.setOnClickListener(this);
@@ -366,7 +370,6 @@ public class Home extends Fragment implements View.OnClickListener {
         String image = user.get(SessionManager.KEY_IMAGE);
         token = user.get(SessionManager.KEY_TOKEN);
         getData();
-
     }
 
 }

@@ -2,8 +2,10 @@ package com.development.mycolive.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +16,15 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.development.mycolive.R;
+import com.development.mycolive.model.home.HomeSlider;
 import com.development.mycolive.util.Util;
+import com.development.mycolive.views.activity.ZoomImageScreen;
 import com.development.mycolive.views.activity.viewCommunity.ViewCommunity;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ViewCommunitySlider extends
@@ -28,11 +33,14 @@ public class ViewCommunitySlider extends
     private Context context;
     private int mCount;
     private List<String> sliderList;
+    ArrayList<HomeSlider> homeSliders =new ArrayList<>();
     Dialog dialog;
 
-    public ViewCommunitySlider(Context context, List<String> sliderList) {
+    public ViewCommunitySlider(Context context, List<String> sliderList, ArrayList<HomeSlider> homeSliders) {
         this.context = context;
         this.sliderList = sliderList;
+        this.homeSliders = homeSliders;
+
     }
 
     public void setCount(int count) {
@@ -42,29 +50,34 @@ public class ViewCommunitySlider extends
     @Override
     public ViewCommunitySlider.ViewCommunitySliderVH onCreateViewHolder(ViewGroup parent) {
         View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.image_slider_layout, null);
+
+
+
         return new ViewCommunitySlider.ViewCommunitySliderVH(inflate);
     }
 
     @Override
     public void onBindViewHolder(ViewCommunitySlider.ViewCommunitySliderVH viewHolder, final int position) {
-
+        String slider = sliderList.get(position);
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              showDialog(sliderList.get(0));
+
+          //    showDialog(sliderList.get(0));
+
+
+                if(homeSliders.size()>0){
+                    Intent intent = new Intent(context , ZoomImageScreen.class);
+                    intent.putParcelableArrayListExtra("image_list", homeSliders);
+                    context.startActivity(intent);
+                }
+
             }
         });
 
 
-      /*  Glide.with(viewHolder.itemView)
-                .load(sliderList.get(0))
-                .placeholder(R.drawable.no_image_available)
-                //.load(R.drawable.image1)
-                //.fitCenter()
-                .into(viewHolder.imageViewBackground);*/
-
-        Util.loadImage(viewHolder.imageViewBackground,sliderList.get(0),
+        Util.loadImage(viewHolder.imageViewBackground,slider,
                 Util.getCircularDrawable(context));
 
     }

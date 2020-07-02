@@ -31,6 +31,7 @@ public class PropertyRoomData  implements Parcelable {
     private List<PriceLevel> price_levels;
     private String favourites;
     private String video_link;
+    private String booking_shared_btn;
 
     protected PropertyRoomData(Parcel in) {
         id = in.readString();
@@ -55,6 +56,7 @@ public class PropertyRoomData  implements Parcelable {
         price_levels =  (List<PriceLevel>) in.readValue(PriceLevel.class.getClassLoader());
         favourites = in.readString();
         video_link = in.readString();
+        booking_shared_btn = in.readString();
     }
 
     public static final Creator<PropertyRoomData> CREATOR = new Creator<PropertyRoomData>() {
@@ -239,6 +241,14 @@ public class PropertyRoomData  implements Parcelable {
         this.price_levels = price_levels;
     }
 
+    public String getBooking_shared_btn() {
+        return booking_shared_btn;
+    }
+
+    public void setBooking_shared_btn(String booking_shared_btn) {
+        this.booking_shared_btn = booking_shared_btn;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -267,5 +277,6 @@ public class PropertyRoomData  implements Parcelable {
         parcel.writeValue(price_levels);
         parcel.writeString(favourites);
         parcel.writeString(video_link);
+        parcel.writeString(booking_shared_btn);
     }
 }
