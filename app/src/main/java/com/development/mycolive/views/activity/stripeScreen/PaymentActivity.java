@@ -70,7 +70,7 @@ public class PaymentActivity extends BaseActivity {
      * To run this app, follow the steps here: https://github.com/stripe-samples/accept-a-card-payment#how-to-run-locally
      */
     // 10.0.2.2 is the Android emulator's alias to localhost
-    private static final String BACKEND_URL = "https://webfume.in/mani-budapest/api/";
+    private static final String BACKEND_URL = " https://mycolive.com/api/";
     SessionManager session;
     String token,month_id;
     boolean isCurrent = false;

@@ -424,7 +424,7 @@ public class PropertyDetail extends BaseActivity implements View.OnClickListener
                 break;
 
             case R.id.policy_link:
-                String url = "https://webfume.in/mani-budapest/landing/privacyPolicy";
+                String url = " https://mycolive.com/landing/privacyPolicy";
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
                 startActivity(i);

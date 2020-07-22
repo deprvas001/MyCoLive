@@ -4,7 +4,7 @@ public class ApiConstant {
     public static final String ORDER_ID="order_id";
     public static final String ID = "id";
     public static final String BOOKING_TYPE="booking_type";
-    public static final String BASE_URL="https://webfume.in/mani-budapest/api/";
+    public static final String BASE_URL=" https://mycolive.com/api/";
     public static final String CONTENT_TYPE = "Content-Type";
     public static final String CONTENT_TYPE_VALUE="application/json";
     public static final String SOURCES ="Sources";

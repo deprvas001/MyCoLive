@@ -20,7 +20,7 @@ ActivityAboutUsBinding usBinding;
         WebSettings webSettings = usBinding.webview.getSettings();
         webSettings.setJavaScriptEnabled(true);
 
-        usBinding.webview.loadUrl("https://webfume.in/mani-budapest/landing/aboutUs");
+        usBinding.webview.loadUrl(" https://mycolive.com/landing/aboutUs");
 
     }
 

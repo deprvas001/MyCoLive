@@ -141,10 +141,10 @@
     <string name="payment_status">Payment Status</string>
     <string name="room_apartment">Room/Apartment/Roomate</string>
     <string name="district">District</string>
-    <string name="city_name">City Name</string>
+    <string name="city_name">Host City</string>
     <string name="university">University/Professional</string>
     <string name="room">Room</string>
-    <string name="country">Country</string>
+    <string name="country">Country Of Residence</string>
     <string name="favourite_booking">Favourite Property</string>
     <string name="favourite_roomate">Favourite Roomate</string>
     <string name="early_check">Early Check In (Optional)</string>
@@ -207,6 +207,8 @@
     <string name="card_detail">Card Detail</string>
     <string name="loading_error">An error occured while loading data.</string>
     <string name="no_data">No Data Found.</string>
+    <string name="card_payment">Card Payment</string>
+    <string name="host_city">Host City</string>
     <string-array name="type_name">
         <item>Room/Apartment/Roomate</item>
         <item>ROOM</item>

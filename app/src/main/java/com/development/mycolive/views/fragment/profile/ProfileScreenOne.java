@@ -241,7 +241,7 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener, 
         oneBinding.fieldLayout.district.setText(profileData.getDistrict());
         oneBinding.fieldLayout.university.setText(profileData.getUniversity());
         oneBinding.fieldLayout.postCode.setText(profileData.getPost_code());
-
+        oneBinding.fieldLayout.universityText.setText("University/Professional - " +profileData.getUniversity_name());
         Picasso.get()
                 .load(profileData.getProfile_image())
                 /*  .placeholder(R.drawable.image1)
@@ -528,8 +528,8 @@ public class ProfileScreenOne extends Fragment implements View.OnClickListener, 
 
             }
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
-       // mDatePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
-        /*  mDatePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());*/
+        // mDatePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 31556926000L);
+          mDatePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis()-568025136000L);
 
     }
 

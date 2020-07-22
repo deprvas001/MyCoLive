@@ -108,7 +108,7 @@ public class SignUpOne extends Fragment implements View.OnClickListener, RadioGr
         oneBinding.fieldLayout.privacyPolicy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String url = "https://webfume.in/mani-budapest/landing/privacyPolicy";
+                String url = " https://mycolive.com/landing/privacyPolicy";
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
                 startActivity(i);

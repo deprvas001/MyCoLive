@@ -82,52 +82,50 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
     CommentAdapter commentAdapter;
     RecyclerView.LayoutManager mLayoutManager;
     SessionManager session;
-    String token="",id="";
-    String comment_id="";
+    String token = "", id = "";
+    String comment_id = "";
     int reason_check = 0;
-    String share_url=  "",user_image="",created_by="",image="";
+    String share_url = "", user_image = "", created_by = "", image = "";
     AlertReason alertReason;
     Dialog dialog;
-    ArrayList<HomeSlider> homeSliders =new ArrayList<>();
+    ArrayList<HomeSlider> homeSliders = new ArrayList<>();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        communityBinding = DataBindingUtil.setContentView(this,R.layout.activity_view_community);
-       getSession();
+        communityBinding = DataBindingUtil.setContentView(this, R.layout.activity_view_community);
+        getSession();
         setClickListener();
     }
 
-    private void getCommunity(String id,String token){
+    private void getCommunity(String id, String token) {
 
         showProgressDialog(getResources().getString(R.string.loading));
-        Map<String,String> headers = new HashMap<>();
-        headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);
-        headers.put(ApiConstant.SOURCES,ApiConstant.SOURCES_VALUE);
-        headers.put(ApiConstant.USER_TYPE,ApiConstant. USER_TYPE_VALUE);
-        headers.put(ApiConstant.USER_DEVICE_TYPE,ApiConstant.USER_DEVICE_TYPE_VALUE);
-        headers.put(ApiConstant.USER_DEVICE_TOKEN,ApiConstant.USER_DEVICE_TOKEN_VALUE);
-        headers.put(ApiConstant.METHOD,ApiConstant.METHOD_GET);
-        headers.put(ApiConstant.AUTHENTICAT_TOKEN,token);
+        Map<String, String> headers = new HashMap<>();
+        headers.put(ApiConstant.CONTENT_TYPE, ApiConstant.CONTENT_TYPE_VALUE);
+        headers.put(ApiConstant.SOURCES, ApiConstant.SOURCES_VALUE);
+        headers.put(ApiConstant.USER_TYPE, ApiConstant.USER_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TYPE, ApiConstant.USER_DEVICE_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TOKEN, ApiConstant.USER_DEVICE_TOKEN_VALUE);
+        headers.put(ApiConstant.METHOD, ApiConstant.METHOD_GET);
+        headers.put(ApiConstant.AUTHENTICAT_TOKEN, token);
 
         communityViewModel = ViewModelProviders.of(this).get(CommunityViewModel.class);
 
-        communityViewModel.getCommunityData(this,headers,id).observe(this, new Observer<ViewCommunityApiResponse>() {
+        communityViewModel.getCommunityData(this, headers, id).observe(this, new Observer<ViewCommunityApiResponse>() {
             @Override
             public void onChanged(ViewCommunityApiResponse communityApiResponse) {
                 hideProgressDialog();
-                if(communityApiResponse.response !=null){
-                       if(communityApiResponse.getResponse().getData().size()>0){
-                           setView(communityApiResponse.getResponse().getData());
-                       }else{
-                           Toast.makeText(ViewCommunity.this, "No Result Found.", Toast.LENGTH_SHORT).show();
-                           finish();
-                       }
-                }
-                else if(communityApiResponse.getStatus()== 401){
-                }
-                else{
+                if (communityApiResponse.response != null) {
+                    if (communityApiResponse.getResponse().getData().size() > 0) {
+                        setView(communityApiResponse.getResponse().getData());
+                    } else {
+                        Toast.makeText(ViewCommunity.this, "No Result Found.", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                } else if (communityApiResponse.getStatus() == 401) {
+                } else {
                 }
              /*  bookingBinding.shimmerViewContainer.stopShimmer();
                 bookingBinding.shimmerViewContainer.setVisibility(View.GONE);*/
@@ -148,11 +146,10 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
         communityBinding.communityViewLayout.like.setText(communityModelList.get(0).getTotal_likes());
         communityBinding.communityViewLayout.commentCount.setText(communityModelList.get(0).getTotal_reply_comment());
 
-        if(communityModelList.get(0).getTotal_likes() !=null && !communityModelList.get(0).getTotal_likes().isEmpty() ){
+        if (communityModelList.get(0).getTotal_likes() != null && !communityModelList.get(0).getTotal_likes().isEmpty()) {
 
-            if (Integer.parseInt(communityModelList.get(0).getTotal_likes()) >0)
-            {
-                communityBinding.communityViewLayout.likeUser.setText(communityModelList.get(0).getTotal_likes()+" likes");
+            if (Integer.parseInt(communityModelList.get(0).getTotal_likes()) > 0) {
+                communityBinding.communityViewLayout.likeUser.setText(communityModelList.get(0).getTotal_likes() + " likes");
                 communityBinding.communityViewLayout.likeUser.setVisibility(View.VISIBLE);
             }
         }
@@ -162,29 +159,28 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
         share_url = communityModelList.get(0).getUrl_for_share();
         created_by = communityModelList.get(0).getCreated_by();
 
-        Util.loadImage(communityBinding.communityViewLayout.imageView,communityModelList.get(0).getProfile_image() ,
+        Util.loadImage(communityBinding.communityViewLayout.imageView, communityModelList.get(0).getProfile_image(),
                 Util.getCircularDrawable(ViewCommunity.this));
 
-        Util.loadImage(communityBinding.postUser,image,
+        Util.loadImage(communityBinding.postUser, image,
                 Util.getCircularDrawable(ViewCommunity.this));
 
 
-
-        for (int i=0; i<communityModelList.get(0).getImage().size(); i++){
+        for (int i = 0; i < communityModelList.get(0).getImage().size(); i++) {
             HomeSlider homeSlider = new HomeSlider();
             homeSlider.setImage(communityModelList.get(0).getImage().get(i));
             homeSlider.setId(String.valueOf(i));
             homeSliders.add(homeSlider);
         }
 
-        setSliderAndView(communityModelList.get(0).getImage(),homeSliders);
+        setSliderAndView(communityModelList.get(0).getImage(), homeSliders);
 
         setRecycleView(communityModelList.get(0).getComment_reply());
 
     }
 
     private void setSliderAndView(List<String> sliderList, ArrayList<HomeSlider> homeSliders) {
-        final ViewCommunitySlider adapter = new ViewCommunitySlider(this, sliderList,homeSliders);
+        final ViewCommunitySlider adapter = new ViewCommunitySlider(this, sliderList, homeSliders);
         adapter.setCount(sliderList.size());
 
         communityBinding.communityViewLayout.imageSlider.setSliderAdapter(adapter);
@@ -196,12 +192,12 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
         communityBinding.communityViewLayout.imageSlider.setIndicatorUnselectedColor(Color.GRAY);
         communityBinding.communityViewLayout.imageSlider.startAutoCycle();
 
-            communityBinding.communityViewLayout.imageSlider.setOnIndicatorClickListener(position ->
+        communityBinding.communityViewLayout.imageSlider.setOnIndicatorClickListener(position ->
                 communityBinding.communityViewLayout.imageSlider.setCurrentPagePosition(position));
 
     }
 
-    private void setRecycleView( List<CommentReply> commentList){
+    private void setRecycleView(List<CommentReply> commentList) {
         commentAdapter = new CommentAdapter(this, commentList);
         mLayoutManager = new LinearLayoutManager(this);
         communityBinding.recyclerView.setLayoutManager(mLayoutManager);
@@ -210,7 +206,7 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
         communityBinding.recyclerView.setAdapter(commentAdapter);
     }
 
-    private void setClickListener(){
+    private void setClickListener() {
        /* communityBinding.toolbar.setTitle(getResources().getString(R.string.view_community));
         setSupportActionBar(communityBinding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -229,11 +225,11 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.post_button:
-                if(communityBinding.commentEdit.getText().toString().isEmpty()){
+                if (communityBinding.commentEdit.getText().toString().isEmpty()) {
                     Toast.makeText(this, "Comment Field can not be empty.", Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     commentPost();
                 }
                 break;
@@ -243,9 +239,9 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
                 break;
 
             case R.id.likeUser:
-                if(id !=null && !id.isEmpty()){
-                    Intent intent = new Intent(ViewCommunity.this,TotalLikeUser.class);
-                    intent.putExtra("Id",id);
+                if (id != null && !id.isEmpty()) {
+                    Intent intent = new Intent(ViewCommunity.this, TotalLikeUser.class);
+                    intent.putExtra("Id", id);
                     startActivity(intent);
                 }
 
@@ -268,9 +264,9 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
                 break;
 
             case R.id.name:
-                if(created_by !=null && !created_by.isEmpty()){
+                if (created_by != null && !created_by.isEmpty()) {
                     Intent intent = new Intent(ViewCommunity.this, FavouriteRoomateDetail.class);
-                    intent.putExtra(ApiConstant.ROOMMATAE_ID,created_by);
+                    intent.putExtra(ApiConstant.ROOMMATAE_ID, created_by);
                     startActivity(intent);
                 }
 
@@ -282,17 +278,17 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
 
 
             case 01:
-             //  ((RadioButton)v).getText() +" Id is "+v.getId());
-              //  ((RadioButton)view).getText() +" Id is "+view.getId()
-                alertReason = (AlertReason) ((RadioButton)view).getTag();
+                //  ((RadioButton)v).getText() +" Id is "+v.getId());
+                //  ((RadioButton)view).getText() +" Id is "+view.getId()
+                alertReason = (AlertReason) ((RadioButton) view).getTag();
                 reason_check = Integer.parseInt(alertReason.getId());
-             //  Toast.makeText(this, ((RadioButton)view).getText(), Toast.LENGTH_SHORT).show();
+                //  Toast.makeText(this, ((RadioButton)view).getText(), Toast.LENGTH_SHORT).show();
                 break;
 
             case 11:
                 //  ((RadioButton)v).getText() +" Id is "+v.getId());
                 //  ((RadioButton)view).getText() +" Id is "+view.getId()
-                 alertReason = (AlertReason) ((RadioButton)view).getTag();
+                alertReason = (AlertReason) ((RadioButton) view).getTag();
                 reason_check = Integer.parseInt(alertReason.getId());
                 //  Toast.makeText(this, ((RadioButton)view).getText(), Toast.LENGTH_SHORT).show();
                 break;
@@ -300,7 +296,7 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
             case 21:
                 //  ((RadioButton)v).getText() +" Id is "+v.getId());
                 //  ((RadioButton)view).getText() +" Id is "+view.getId()
-                alertReason = (AlertReason) ((RadioButton)view).getTag();
+                alertReason = (AlertReason) ((RadioButton) view).getTag();
                 reason_check = Integer.parseInt(alertReason.getId());
                 //  Toast.makeText(this, ((RadioButton)view).getText(), Toast.LENGTH_SHORT).show();
                 break;
@@ -308,92 +304,109 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
         }
     }
 
-    private void commentPost(){
+    private void commentPost() {
         showProgressDialog(getResources().getString(R.string.loading));
         CommentPost commentPost = new CommentPost();
         commentPost.setComment(communityBinding.commentEdit.getText().toString());
         commentPost.setComment_id(id);
 
-        Map<String,String> headers = new HashMap<>();
-        headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);
-        headers.put(ApiConstant.SOURCES,ApiConstant.SOURCES_VALUE);
-        headers.put(ApiConstant.USER_TYPE,ApiConstant. USER_TYPE_VALUE);
-        headers.put(ApiConstant.USER_DEVICE_TYPE,ApiConstant.USER_DEVICE_TYPE_VALUE);
-        headers.put(ApiConstant.USER_DEVICE_TOKEN,ApiConstant.USER_DEVICE_TOKEN_VALUE);
-        headers.put(ApiConstant.METHOD,ApiConstant.METHOD_GET);
-        headers.put(ApiConstant.AUTHENTICAT_TOKEN,token);
+        Map<String, String> headers = new HashMap<>();
+        headers.put(ApiConstant.CONTENT_TYPE, ApiConstant.CONTENT_TYPE_VALUE);
+        headers.put(ApiConstant.SOURCES, ApiConstant.SOURCES_VALUE);
+        headers.put(ApiConstant.USER_TYPE, ApiConstant.USER_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TYPE, ApiConstant.USER_DEVICE_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TOKEN, ApiConstant.USER_DEVICE_TOKEN_VALUE);
+        headers.put(ApiConstant.METHOD, ApiConstant.METHOD_GET);
+        headers.put(ApiConstant.AUTHENTICAT_TOKEN, token);
 
         communityViewModel = ViewModelProviders.of(this).get(CommunityViewModel.class);
 
-        communityViewModel.getCommentResponse(this,headers,commentPost).observe(this, new Observer<CommentApiResponse>() {
+        communityViewModel.getCommentResponse(this, headers, commentPost).observe(this, new Observer<CommentApiResponse>() {
             @Override
             public void onChanged(CommentApiResponse apiResponse) {
                 hideProgressDialog();
-                if(apiResponse.response !=null){
+                if (apiResponse.response != null) {
                     communityBinding.commentEdit.setText(null);
-                    getCommunity(id,token);
-                }else if(apiResponse.getStatus()== 401){
+                    getCommunity(id, token);
+                } else if (apiResponse.getStatus() == 401) {
                     Toast.makeText(ViewCommunity.this, "Try Later.", Toast.LENGTH_SHORT).show();
-                }
-                else{
+                } else {
                     Toast.makeText(ViewCommunity.this, "Try Later.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
-    private void likeUnlike(){
+    private void likeUnlike() {
         LikeUnlike likeUnlike = new LikeUnlike();
         likeUnlike.setComment_id(id);
 
 
         showProgressDialog(getResources().getString(R.string.loading));
-        Map<String,String> headers = new HashMap<>();
-        headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);
-        headers.put(ApiConstant.SOURCES,ApiConstant.SOURCES_VALUE);
-        headers.put(ApiConstant.USER_TYPE,ApiConstant. USER_TYPE_VALUE);
-        headers.put(ApiConstant.USER_DEVICE_TYPE,ApiConstant.USER_DEVICE_TYPE_VALUE);
-        headers.put(ApiConstant.USER_DEVICE_TOKEN,ApiConstant.USER_DEVICE_TOKEN_VALUE);
-        headers.put(ApiConstant.AUTHENTICAT_TOKEN,token);
+        Map<String, String> headers = new HashMap<>();
+        headers.put(ApiConstant.CONTENT_TYPE, ApiConstant.CONTENT_TYPE_VALUE);
+        headers.put(ApiConstant.SOURCES, ApiConstant.SOURCES_VALUE);
+        headers.put(ApiConstant.USER_TYPE, ApiConstant.USER_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TYPE, ApiConstant.USER_DEVICE_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TOKEN, ApiConstant.USER_DEVICE_TOKEN_VALUE);
+        headers.put(ApiConstant.AUTHENTICAT_TOKEN, token);
 
         communityViewModel = ViewModelProviders.of(this).get(CommunityViewModel.class);
 
-        communityViewModel.getLikeUnilike(this,headers,likeUnlike).observe(this, new Observer<CommentApiResponse>() {
+        communityViewModel.getLikeUnilike(this, headers, likeUnlike).observe(this, new Observer<CommentApiResponse>() {
             @Override
             public void onChanged(CommentApiResponse apiResponse) {
                 hideProgressDialog();
-                if(apiResponse.response !=null){
-                  String likes =  apiResponse.getResponse().getData().getTotal_likes();
-                  communityBinding.communityViewLayout.like.setText(likes);
-                  int user_like = apiResponse.getResponse().getData().getLike_unlike();
-                  if(user_like != 0){
+                if (apiResponse.response != null) {
+                    String likes = apiResponse.getResponse().getData().getTotal_likes();
+                    communityBinding.communityViewLayout.like.setText(likes);
+                    int user_like = apiResponse.getResponse().getData().getLike_unlike();
+                    if (user_like != 0) {
 
-                      communityBinding.communityViewLayout.like.setTextColor(getResources().getColor(R.color.like_color));
-                      communityBinding.communityViewLayout.like.setCompoundDrawableTintList(ColorStateList.valueOf(getResources().getColor(R.color.like_color)));
-                      communityBinding.communityViewLayout.likeUser.setText("You and " + likes  +" others");
-                      communityBinding.communityViewLayout.likeUser.setVisibility(View.VISIBLE);
-                  }else{
-                      if(likes !=null && !likes.isEmpty()){
-                          if(Integer.parseInt(likes)>0){
-                              communityBinding.communityViewLayout.likeUser.setText( likes +" others");
-                              communityBinding.communityViewLayout.likeUser.setVisibility(View.VISIBLE);
-                          }else{
-                              communityBinding.communityViewLayout.likeUser.setVisibility(View.GONE);
-                          }
-                      }
+                        if (likes != null && !likes.isEmpty()) {
+                            if (Integer.parseInt(likes) > 0) {
+                                communityBinding.communityViewLayout.likeUser.setText(likes + " likes");
+                            }
 
-                      communityBinding.communityViewLayout.like.setTextColor(getResources().getColor(R.color.login_subheading));
-                      communityBinding.communityViewLayout.like.setCompoundDrawableTintList(ColorStateList.valueOf(getResources().getColor(R.color.login_subheading)));
-                  }
-                }else{
+                        }
+
+
+                        communityBinding.communityViewLayout.like.setTextColor(getResources().getColor(R.color.like_color));
+                        communityBinding.communityViewLayout.like.setCompoundDrawableTintList(ColorStateList.valueOf(getResources().getColor(R.color.like_color)));
+
+                        communityBinding.communityViewLayout.likeUser.setVisibility(View.VISIBLE);
+
+                    } else {
+                        if (likes != null && !likes.isEmpty()) {
+                            if(Integer.parseInt(likes) >0 ){
+                                communityBinding.communityViewLayout.likeUser.setText(likes + " likes");
+                            }else{
+                                communityBinding.communityViewLayout.likeUser.setVisibility(View.GONE);
+                            }
+                        }
+
+
+                       /* if (likes != null && !likes.isEmpty()) {
+                            if (Integer.parseInt(likes) > 0) {
+                                communityBinding.communityViewLayout.likeUser.setText(likes + " others");
+                                communityBinding.communityViewLayout.likeUser.setVisibility(View.VISIBLE);
+                            } else {
+                                communityBinding.communityViewLayout.likeUser.setVisibility(View.GONE);
+                            }
+                        }*/
+
+                        communityBinding.communityViewLayout.like.setTextColor(getResources().getColor(R.color.login_subheading));
+                        communityBinding.communityViewLayout.like.setCompoundDrawableTintList(ColorStateList.valueOf(getResources().getColor(R.color.login_subheading)));
+                    }
+                } else {
                     Toast.makeText(ViewCommunity.this, "Try Later", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
-    private void getSession(){
-        if(getIntent()!=null){
+    private void getSession() {
+        if (getIntent() != null) {
             id = getIntent().getExtras().getString("Id");
         }
 
@@ -406,42 +419,42 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
 
         // email
         String email = user.get(SessionManager.KEY_EMAIL);
-         image = user.get(SessionManager.KEY_IMAGE);
-     //    id = user.get(SessionManager.KEY_USERID);
+        image = user.get(SessionManager.KEY_IMAGE);
+        //    id = user.get(SessionManager.KEY_USERID);
         token = user.get(SessionManager.KEY_TOKEN);
-        getCommunity(id,token);
+        getCommunity(id, token);
 
-      //  getCommunity("ALL");
+        //  getCommunity("ALL");
 
         //   getBooking(token);
     }
 
-    private void getDefaultData(){
+    private void getDefaultData() {
         showProgressDialog(getResources().getString(R.string.loading));
         String type = "ALL";
 
-       SearchViewModel searchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
+        SearchViewModel searchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
 
-        searchViewModel.getDefaultData(this,type).observe(this, new Observer<FilterApiResponse>() {
+        searchViewModel.getDefaultData(this, type).observe(this, new Observer<FilterApiResponse>() {
             @Override
             public void onChanged(FilterApiResponse filterApiResponse) {
-                  hideProgressDialog();
-                 if(filterApiResponse.filterResponse !=null){
-                   List<AlertReason> reasonList = filterApiResponse.getFilterResponse().getData().getReasons();
+                hideProgressDialog();
+                if (filterApiResponse.filterResponse != null) {
+                    List<AlertReason> reasonList = filterApiResponse.getFilterResponse().getData().getReasons();
 
                    /* List<CityModel>  cityModelList =    filterApiResponse.getFilterResponse().getData().getCityList();
                     List<Period>  periodList = filterApiResponse.getFilterResponse().getData().getPeriodList();*/
-                     showCustomDialog(reasonList);
-                }else {
+                    showCustomDialog(reasonList);
+                } else {
                     Toast.makeText(ViewCommunity.this, "Try Later", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
-    private void showCustomDialog(List<AlertReason> reasonList){
+    private void showCustomDialog(List<AlertReason> reasonList) {
         //before inflating the custom alert dialog layout, we will get the current activity viewgroup
-          ViewGroup viewGroup = findViewById(android.R.id.content);
+        ViewGroup viewGroup = findViewById(android.R.id.content);
 
         //then we will inflate the custom alert dialog xml that we created
         View dialogView = LayoutInflater.from(this).inflate(R.layout.custom_request_dialog, viewGroup, false);
@@ -452,24 +465,24 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
         //setting the view of the builder to our custom view that we already inflated
         builder.setView(dialogView);
 
-        EditText name = (EditText)dialogView.findViewById(R.id.name) ;
-        EditText email = (EditText)dialogView.findViewById(R.id.email);
-        Button ok = (Button)dialogView.findViewById(R.id.buttonOk);
-        ImageView close_dialog = (ImageView)dialogView.findViewById(R.id.close);
+        EditText name = (EditText) dialogView.findViewById(R.id.name);
+        EditText email = (EditText) dialogView.findViewById(R.id.email);
+        Button ok = (Button) dialogView.findViewById(R.id.buttonOk);
+        ImageView close_dialog = (ImageView) dialogView.findViewById(R.id.close);
 
-        RadioGroup radioGroup = (RadioGroup)dialogView.findViewById(R.id.reason_group);
+        RadioGroup radioGroup = (RadioGroup) dialogView.findViewById(R.id.reason_group);
 
         try {
-            radioGroup .setOrientation(LinearLayout.VERTICAL);
+            radioGroup.setOrientation(LinearLayout.VERTICAL);
             for (int i = 0; i <= reasonList.size(); i++) {
                 RadioButton rdbtn = new RadioButton(this);
-                rdbtn.setId(0+1);
+                rdbtn.setId(0 + 1);
                 rdbtn.setText(reasonList.get(i).getReason());
                 rdbtn.setTag(reasonList.get(i));
                 rdbtn.setOnClickListener(this);
                 radioGroup.addView(rdbtn);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -480,22 +493,22 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(name.getText().toString().isEmpty()){
+                if (name.getText().toString().isEmpty()) {
                     Toast.makeText(ViewCommunity.this, "Please enter name", Toast.LENGTH_SHORT).show();
                     return;
-                }else if(email.getText().toString().isEmpty()){
+                } else if (email.getText().toString().isEmpty()) {
                     Toast.makeText(ViewCommunity.this, "Please enter email", Toast.LENGTH_SHORT).show();
                     return;
-                }else{
+                } else {
 
-                  if(reason_check != 0){
-                      EditText description_edit = (EditText)dialogView.findViewById(R.id.description);
-                      String description = description_edit.getText().toString();
-                      sendRequest(name,email,description,String.valueOf(reason_check),id);
-                      alertDialog.dismiss();
-                  }else{
-                      Toast.makeText(ViewCommunity.this, "Select Reason", Toast.LENGTH_SHORT).show();
-                  }
+                    if (reason_check != 0) {
+                        EditText description_edit = (EditText) dialogView.findViewById(R.id.description);
+                        String description = description_edit.getText().toString();
+                        sendRequest(name, email, description, String.valueOf(reason_check), id);
+                        alertDialog.dismiss();
+                    } else {
+                        Toast.makeText(ViewCommunity.this, "Select Reason", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -504,21 +517,21 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
         close_dialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               alertDialog.dismiss();
+                alertDialog.dismiss();
             }
         });
 
     }
 
-    private void sendRequest(EditText name, EditText email, String description, String reason , String id){
+    private void sendRequest(EditText name, EditText email, String description, String reason, String id) {
         showProgressDialog(getResources().getString(R.string.loading));
-        Map<String,String> headers = new HashMap<>();
-        headers.put(ApiConstant.CONTENT_TYPE,ApiConstant.CONTENT_TYPE_VALUE);
-        headers.put(ApiConstant.SOURCES,ApiConstant.SOURCES_VALUE);
-        headers.put(ApiConstant.USER_TYPE,ApiConstant. USER_TYPE_VALUE);
-        headers.put(ApiConstant.USER_DEVICE_TYPE,ApiConstant.USER_DEVICE_TYPE_VALUE);
-        headers.put(ApiConstant.USER_DEVICE_TOKEN,ApiConstant.USER_DEVICE_TOKEN_VALUE);
-        headers.put(ApiConstant.AUTHENTICAT_TOKEN,token);
+        Map<String, String> headers = new HashMap<>();
+        headers.put(ApiConstant.CONTENT_TYPE, ApiConstant.CONTENT_TYPE_VALUE);
+        headers.put(ApiConstant.SOURCES, ApiConstant.SOURCES_VALUE);
+        headers.put(ApiConstant.USER_TYPE, ApiConstant.USER_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TYPE, ApiConstant.USER_DEVICE_TYPE_VALUE);
+        headers.put(ApiConstant.USER_DEVICE_TOKEN, ApiConstant.USER_DEVICE_TOKEN_VALUE);
+        headers.put(ApiConstant.AUTHENTICAT_TOKEN, token);
 
         AlertRequest alertRequest = new AlertRequest();
         alertRequest.setName(name.getText().toString());
@@ -529,17 +542,17 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
 
         communityViewModel = ViewModelProviders.of(this).get(CommunityViewModel.class);
 
-        communityViewModel.sendComplain(this,headers,alertRequest).observe(this, new Observer<ViewCommunityApiResponse>() {
+        communityViewModel.sendComplain(this, headers, alertRequest).observe(this, new Observer<ViewCommunityApiResponse>() {
             @Override
             public void onChanged(ViewCommunityApiResponse communityApiResponse) {
                 hideProgressDialog();
-                if(communityApiResponse.response !=null){
-                    if(communityApiResponse.getResponse().getStatus() == 1){
+                if (communityApiResponse.response != null) {
+                    if (communityApiResponse.getResponse().getStatus() == 1) {
                         String message = communityApiResponse.getResponse().getMessage();
                         Toast.makeText(ViewCommunity.this, message, Toast.LENGTH_SHORT).show();
                     }
-                  //  setView(communityApiResponse.getResponse().getData());
-                }else{
+                    //  setView(communityApiResponse.getResponse().getData());
+                } else {
                     Toast.makeText(ViewCommunity.this, communityApiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                 }
              /*  bookingBinding.shimmerViewContainer.stopShimmer();
@@ -556,7 +569,7 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
         return super.onOptionsItemSelected(item);
     }
 
-    public  void showImageDialog1(String image) {
+    public void showImageDialog1(String image) {
         // custom dialog
         dialog = new Dialog(ViewCommunity.this);
         dialog.setContentView(R.layout.property_view);
@@ -571,7 +584,7 @@ public class ViewCommunity extends BaseActivity implements View.OnClickListener 
                 .error(R.drawable.no_image_available)
                 .into(imageView);
 */
-        Util.loadImage(imageView,image ,
+        Util.loadImage(imageView, image,
                 Util.getCircularDrawable(this));
 
         // Close Button

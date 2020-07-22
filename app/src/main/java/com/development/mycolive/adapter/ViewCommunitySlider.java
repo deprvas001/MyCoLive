@@ -40,7 +40,6 @@ public class ViewCommunitySlider extends
         this.context = context;
         this.sliderList = sliderList;
         this.homeSliders = homeSliders;
-
     }
 
     public void setCount(int count) {
@@ -50,9 +49,6 @@ public class ViewCommunitySlider extends
     @Override
     public ViewCommunitySlider.ViewCommunitySliderVH onCreateViewHolder(ViewGroup parent) {
         View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.image_slider_layout, null);
-
-
-
         return new ViewCommunitySlider.ViewCommunitySliderVH(inflate);
     }
 

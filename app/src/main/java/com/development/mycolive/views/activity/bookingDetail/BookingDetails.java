@@ -134,7 +134,10 @@ public class BookingDetails extends BaseActivity implements View.OnClickListener
           int total_price_int = (int)total_price;
           int early_check_int = (int)early_check;
 
-          bookingDetailsBinding.totalPrice.setText("€ "+String.valueOf(total_price_int)+" + "+String.valueOf(early_check_int)+" (Early_Check_In_Price)");
+          if(early_check_int >0){
+              bookingDetailsBinding.totalPrice.setText("€ "+String.valueOf(total_price_int)+" + "+String.valueOf(early_check_int)+" (Early_Check_In_Price)");
+          }
+
           bookingDetailsBinding.finalPrice.setText("€ "+String.valueOf(final_price_int));
         setRecyclerView(roomDataList,contractResponse);
     }
