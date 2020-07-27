@@ -37,7 +37,7 @@ ActivityContactUsBinding contactUsBinding;
     private void setWebView(){
         WebSettings webSettings = contactUsBinding.webview.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        contactUsBinding.webview.loadUrl(" https://mycolive.com/landing/contactUs");
+        contactUsBinding.webview.loadUrl("https://mycolive.com/landing/contactUs");
     }
 
     private void setClickListener(){

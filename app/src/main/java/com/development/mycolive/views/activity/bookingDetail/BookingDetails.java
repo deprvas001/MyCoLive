@@ -108,6 +108,7 @@ public class BookingDetails extends BaseActivity implements View.OnClickListener
 
         requestBody.setRoom_id(id_list);
         initializeView(roomDataList);
+
         }
 
         setClickListener();
@@ -129,17 +130,20 @@ public class BookingDetails extends BaseActivity implements View.OnClickListener
 
 
           final_price = total_price+early_check;
+          final_price = contractResponse.getTotal_advance_pay_amount();
 
           int final_price_int = (int)final_price;
           int total_price_int = (int)total_price;
           int early_check_int = (int)early_check;
 
           if(early_check_int >0){
-              bookingDetailsBinding.totalPrice.setText("€ "+String.valueOf(total_price_int)+" + "+String.valueOf(early_check_int)+" (Early_Check_In_Price)");
+            //  bookingDetailsBinding.totalPrice.setText("€ "+String.valueOf(total_price_int)+" + "+String.valueOf(early_check_int)+" (Early_Check_In_Price)");
+              bookingDetailsBinding.totalPrice.setText(contractResponse.getAdvance_pay_msg());
           }
 
-          bookingDetailsBinding.finalPrice.setText("€ "+String.valueOf(final_price_int));
-        setRecyclerView(roomDataList,contractResponse);
+         // bookingDetailsBinding.finalPrice.setText("€ "+String.valueOf(final_price_int));
+        bookingDetailsBinding.finalPrice.setText("€ "+String.valueOf(contractResponse.getTotal_advance_pay_amount()));
+          setRecyclerView(roomDataList,contractResponse);
     }
 
     private void setRecyclerView(ArrayList<PropertyRoomData> roomDataList, ContractResponse contractResponse){

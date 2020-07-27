@@ -85,6 +85,7 @@ public class FindRoomateAdapter extends RecyclerView.Adapter<FindRoomateAdapter.
                 Intent intent = new Intent(context, FavouriteRoomateDetail.class);
                 intent.putExtra(ApiConstant.ROOMMATAE_ID,roomateModel.getId());
                 context.startActivity(intent);
+
             }
         });
 

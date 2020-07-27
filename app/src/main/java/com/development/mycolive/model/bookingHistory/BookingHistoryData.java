@@ -14,6 +14,7 @@ public class BookingHistoryData {
     private String address;
     private String near_by_area;
     private String id_proof;
+    private String advance_payment_amount;
     private List<MonthHistory> month;
 
     public int getSr_no() {
@@ -110,5 +111,13 @@ public class BookingHistoryData {
 
     public void setMonth(List<MonthHistory> month) {
         this.month = month;
+    }
+
+    public String getAdvance_payment_amount() {
+        return advance_payment_amount;
+    }
+
+    public void setAdvance_payment_amount(String advance_payment_amount) {
+        this.advance_payment_amount = advance_payment_amount;
     }
 }

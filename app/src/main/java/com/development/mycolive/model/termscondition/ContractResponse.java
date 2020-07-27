@@ -17,6 +17,8 @@ public class ContractResponse implements Parcelable {
     private String duration;
     private String contractDetails;
     private String msg;
+    private int  total_advance_pay_amount;
+    private String advance_pay_msg;
 
     protected ContractResponse(Parcel in) {
         early_checkin_rent = in.readFloat();
@@ -30,6 +32,8 @@ public class ContractResponse implements Parcelable {
         duration = in.readString();
         contractDetails = in.readString();
         msg = in.readString();
+        total_advance_pay_amount = in.readInt();
+        advance_pay_msg = in.readString();
     }
 
     public static final Creator<ContractResponse> CREATOR = new Creator<ContractResponse>() {
@@ -132,6 +136,22 @@ public class ContractResponse implements Parcelable {
         this.contractDetails = contractDetails;
     }
 
+    public int getTotal_advance_pay_amount() {
+        return total_advance_pay_amount;
+    }
+
+    public void setTotal_advance_pay_amount(int total_advance_pay_amount) {
+        this.total_advance_pay_amount = total_advance_pay_amount;
+    }
+
+    public String getAdvance_pay_msg() {
+        return advance_pay_msg;
+    }
+
+    public void setAdvance_pay_msg(String advance_pay_msg) {
+        this.advance_pay_msg = advance_pay_msg;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -150,5 +170,7 @@ public class ContractResponse implements Parcelable {
         parcel.writeString(duration);
         parcel.writeString(contractDetails);
         parcel.writeString(msg);
+        parcel.writeInt(total_advance_pay_amount);
+        parcel.writeString(advance_pay_msg);
     }
 }

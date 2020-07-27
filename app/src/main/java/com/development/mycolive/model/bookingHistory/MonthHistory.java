@@ -14,6 +14,11 @@ public class MonthHistory {
     private String payment_id;
     private String dues_month_id;
     private float dues_amount;
+    private int early_check_yn;
+    private String early_amount;
+    private String no_of_day;
+
+
 
     public String getPayment_id() {
         return payment_id;
@@ -94,4 +99,29 @@ public class MonthHistory {
     public void setPayment(String payment) {
         this.payment = payment;
     }
+
+    public int getEarly_check_yn() {
+        return early_check_yn;
+    }
+
+    public void setEarly_check_yn(int early_check_yn) {
+        this.early_check_yn = early_check_yn;
+    }
+
+    public String getEarly_amount() {
+        return early_amount;
+    }
+
+    public void setEarly_amount(String early_amount) {
+        this.early_amount = early_amount;
+    }
+
+    public String getNo_of_day() {
+        return no_of_day;
+    }
+
+    public void setNo_of_day(String no_of_day) {
+        this.no_of_day = no_of_day;
+    }
 }
+

@@ -169,6 +169,7 @@ BookingHistoryViewModel viewModel;
         historyBinding.appartmentValue.setText(historyData.get(0).getApartment_name());
         historyBinding.roomNameValue.setText(historyData.get(0).getRoom_name());
         historyBinding.postCode.setText(historyData.get(0).getPost_code());
+        historyBinding.advancePayment.setText(" € "+historyData.get(0).getAdvance_payment_amount());
         historyBinding.address.setText(historyData.get(0).getAddress());
         historyBinding.nearBy.setText(historyData.get(0).getNear_by_area());
         historyBinding.proof.setText(historyData.get(0).getId_proof());

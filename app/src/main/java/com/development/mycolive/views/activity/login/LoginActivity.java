@@ -115,7 +115,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                             String type = ApiConstant.NORMAL;
                             String social_id = "abc1111";
 
-                            userLogin(user_email,password,type,social_id);
+                            userLogin(user_email,password,type,social_id,"");
 
                         }
                         else {
@@ -163,7 +163,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         }
     }
 
-    private void userLogin(String user_email, String password, String type, String social_id) {
+    private void userLogin(String user_email, String password, String type, String social_id,String person_name) {
         showProgressDialog(getString(R.string.loading));
 
         Map<String,String> headers = new HashMap<>();
@@ -215,6 +215,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                             Intent i =new Intent(LoginActivity.this,SignupScreen.class);
                             i.putExtra("login_type",type);
                             i.putExtra("socail_id",social_id);
+                            i.putExtra("user_name",person_name);
+                            i.putExtra("user_email",user_email);
                             startActivity(i);
 
                         }
@@ -311,7 +313,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
             Log.e(TAG, "Name: " + personName + ", email: " + email);
 
-            userLogin(email,"",ApiConstant.GOOGLE,socail_id);
+            userLogin(email,"",ApiConstant.GOOGLE,socail_id,personName);
 
         } else {
             Toast.makeText(getApplicationContext(),"Sign in cancel",Toast.LENGTH_LONG).show();
@@ -351,11 +353,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                         try {
                             String first_name = object.getString("first_name");
                             String last_name = object.getString("last_name");
-                            //   String email = object.getString("email");
+                          //  String email = object.getString("email");
+
                             String id = object.getString("id");
                             //     String image_url = "https://graph.facebook.com/" + id + "/picture?type=normal";
 
-                            userLogin("","",ApiConstant.FACEBOOK,id);
+                            userLogin("","",ApiConstant.FACEBOOK,id,first_name+" "+last_name);
                            /* txtUsername.setText("First Name: " + first_name + "\nLast Name: " + last_name);
                             txtEmail.setText(email);
                             Picasso.with(MainActivity.this).load(image_url).into(imageView);*/

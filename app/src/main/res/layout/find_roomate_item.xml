@@ -90,7 +90,7 @@
               android:id="@+id/host_view"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:text="City : "
+              android:text="Host City : "
               android:textColor="#8C8C8C"
               android:layout_below="@id/resident"
               android:layout_toRightOf="@id/imageView"/>
@@ -107,7 +107,7 @@
               android:id="@+id/university_view"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:text="Hot University : "
+              android:text="University : "
               android:textColor="#8C8C8C"
               android:layout_below="@id/host_city"
               android:layout_toRightOf="@id/imageView"/>

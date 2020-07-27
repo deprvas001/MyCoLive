@@ -519,7 +519,6 @@ public class PropertyDetail extends BaseActivity implements View.OnClickListener
                     }catch (Exception e){
                         e.printStackTrace();
                     }
-
                 }
                 break;
 
@@ -532,17 +531,16 @@ public class PropertyDetail extends BaseActivity implements View.OnClickListener
                     }catch (Exception e){
                         e.printStackTrace();
                     }
-
                 }
                 break;
 
             case R.id.insta_icon:
                 if(insta_link!=null && !insta_link.isEmpty()){
-                    try{
+                    try {
                         intent = new Intent(Intent.ACTION_VIEW);
                         intent.setData(Uri.parse(insta_link));
                         startActivity(intent);
-                    }catch (Exception e){
+                    } catch (Exception e){
                         e.printStackTrace();
                     }
 
@@ -604,7 +602,6 @@ public class PropertyDetail extends BaseActivity implements View.OnClickListener
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
          mDatePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
         /*  mDatePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());*/
-
     }
 
     @Override
@@ -739,22 +736,21 @@ public class PropertyDetail extends BaseActivity implements View.OnClickListener
                     //       showCustomDialog(apiResponse.response.getData(),requestBody);
                          nextScreen(apiResponse.response.getData(),requestBody);
 
-                        }else{
+                        } else{
                             Toast.makeText(PropertyDetail.this, apiResponse.getResponse().getData().getMsg()
                                     , Toast.LENGTH_SHORT).show();
                         }
-                    }else{
+                    } else{
                         Toast.makeText(PropertyDetail.this, apiResponse.getResponse().getMessage()
                                 , Toast.LENGTH_SHORT).show();
                     }
 
-                    }else{
+                    } else{
                         Toast.makeText(PropertyDetail.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
         });
     }
-
 
     private SpannableStringBuilder trimSpannable(SpannableStringBuilder spannable) {
      //   checkNotNull(spannable);

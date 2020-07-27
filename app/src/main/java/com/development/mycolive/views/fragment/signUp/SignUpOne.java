@@ -69,7 +69,7 @@ public class SignUpOne extends Fragment implements View.OnClickListener, RadioGr
     private String gender = "";
     private int REQUEST_CODE = 100;
     ProgressDialog progressDialog;
-    String login_type, socail_id;
+    String login_type, socail_id,user_name;
     private boolean isVisible= false;
     private String image_string = "";
     private DatePickerDialog mDatePickerDialog;
@@ -93,6 +93,10 @@ public class SignUpOne extends Fragment implements View.OnClickListener, RadioGr
     private void setOnClickListener() {
         login_type = ((SignupScreen) getActivity()).type;
         socail_id = ((SignupScreen) getActivity()).social_id;
+
+        oneBinding.fieldLayout.inputName.setText(((SignupScreen) getActivity()).user_name);
+        oneBinding.fieldLayout.inputEmail.setText(((SignupScreen) getActivity()).user_email);
+
 
         if (!login_type.equalsIgnoreCase("NORMAL")) {
             oneBinding.fieldLayout.password.setVisibility(View.GONE);

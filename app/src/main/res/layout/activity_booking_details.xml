@@ -81,6 +81,18 @@
 
             />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:layout_margin="10dp"
+            android:textStyle="italic"
+            android:layout_gravity="center_vertical"
+            android:textColor="@android:color/holo_red_light"
+            android:text="@string/advance_payment"/>
+
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -165,6 +177,7 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textColor="@color/edit_text_color"
+            android:text="@string/total_price"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             />

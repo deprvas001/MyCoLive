@@ -13,15 +13,28 @@ import com.development.mycolive.databinding.ActivitySignupScreenBinding;
 import com.development.mycolive.views.fragment.signUp.SignUpOne;
 
 public class SignupScreen extends BaseActivity {
-ActivitySignupScreenBinding screenBinding;
-public String type="",social_id="";
+    ActivitySignupScreenBinding screenBinding;
+    public String type = "", social_id = "", user_name,user_email;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        screenBinding = DataBindingUtil.setContentView(this,R.layout.activity_signup_screen);
-       if(getIntent()!=null ){
-             type = getIntent().getExtras().getString("login_type");
-             social_id = getIntent().getExtras().getString("socail_id");
+        screenBinding = DataBindingUtil.setContentView(this, R.layout.activity_signup_screen);
+        if (getIntent() != null) {
+            type = getIntent().getExtras().getString("login_type");
+            social_id = getIntent().getExtras().getString("socail_id");
+
+            if (getIntent().getExtras().containsKey("user_name")) {
+                if (getIntent().getExtras().getString("user_name") != null) {
+                    user_name = getIntent().getExtras().getString("user_name");
+                }
+            }
+
+            if (getIntent().getExtras().containsKey("user_email")) {
+                if (getIntent().getExtras().getString("user_email") != null) {
+                    user_email = getIntent().getExtras().getString("user_email");
+                }
+            }
         }
         loadFragment(new SignUpOne());
     }
